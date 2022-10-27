@@ -6,7 +6,7 @@
 #    By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/27 13:43:02 by dmalesev          #+#    #+#              #
-#    Updated: 2022/10/27 14:56:24 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/10/27 15:29:59 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,9 @@ LIBS = -O $(LIBRARIES_DIRECTORY)minilibx/libmlx_Linux.a -lXext -lX11 -lm $(DM_BD
 endif
 
 LIBRARIES_DIRECTORY = ./libraries
+
+SDL2_CFLAGS = `$(SDL2_BUILD_DIRECTORY)/lib/bin/sdl2-config --cflags`
+SDL2_LIBS = `$(SDL2_BUILD_DIRECTORY)/lib/bin/sdl2-config --libs`
 
 SDL2_ARCHIVE = $(LIBRARIES_DIRECTORY)/sdl2.tar.gz
 SDL2_BUILD_DIRECTORY = $(LIBRARIES_DIRECTORY)/sdl2
@@ -91,7 +94,7 @@ endif
 all: $(NAME)
 
 $(NAME): $(SDL2) $(LIBFT) $(DM_2D) $(DM_VECTORS) $(OBJECTS_DIRECTORY) $(OBJECTS)
-	@$(CC) $(FLAGS) $(INCLUDES) $(OBJECTS) $(LIBS) -o $(NAME)
+	@$(CC) $(FLAGS) $(INCLUDES) $(OBJECTS) $(SDL2_LIBS) $(SDL2_CFLAGS) $(LIBS) -o $(NAME)
 	@printf "Compiled $(BOLD)$(COLOR)$(MAKE_COLOR)$(NAME)$(RESET)!\n\n"
 
 $(OBJECTS_DIRECTORY):
