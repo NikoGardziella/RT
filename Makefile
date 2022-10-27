@@ -6,7 +6,7 @@
 #    By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/27 13:43:02 by dmalesev          #+#    #+#              #
-#    Updated: 2022/10/27 13:59:17 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/10/27 14:17:18 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ endif
 LIBRARIES_DIRECTORY = ./libraries
 
 SDL2_ARCHIVE = $(LIBRARIES_DIRECTORY)/sdl2.tar.gz
+SDL2_BUILD_DIRECTORY = $(LIBRARIES_DIRECTORY)/sdl2
 SDL2_DIRECTORY = $(LIBRARIES_DIRECTORY)/libsdl2
 SDL2 = $(SDL2_DIRECTORY)/libsdl2.a
 SDL2_HEADERS = $(SDL2_DIRECTORY)/includes
@@ -103,8 +104,11 @@ $(OBJECTS_DIRECTORY)%.o : $(SOURCES_DIRECTORY)%.c $(HEADERS)
 	@$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@ $(ASSERT_OBJECT)
 	@make progress_bar
 
-$(SDL2): $(SDL2_DIRECTORY)
-	@make -C $(LIBFT_DIRECTORY)
+$(SDL2): $(SDL2_DIRECTORY) $(SDL2_BUILD_DIRECTORY)
+	@cd $(SDL2_BUILD_DIRECTORY) && ../libsdl2/configure
+
+$(SDL2_BUILD_DIRECTORY):
+	@mkdir $(SDL2_BUILD_DIRECTORY)
 
 $(SDL2_DIRECTORY):
 	@printf "Unpacking $(SDL2_ARCHIVE)\n\n"
