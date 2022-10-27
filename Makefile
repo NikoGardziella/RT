@@ -6,7 +6,7 @@
 #    By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/27 13:43:02 by dmalesev          #+#    #+#              #
-#    Updated: 2022/10/27 14:17:18 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/10/27 14:56:24 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ FLAGS = -Wall -Wextra -Werror -Wconversion
 
 UNAME = $(shell uname)
 ifeq ($(UNAME), Darwin)
-LIBS = $(LIBFT) $(DM_2D) $(DM_VECTORS)
+LIBS = $(LIBFT) $(DM_2D) $(DM_VECTORS) $(SDL2)
 endif
 ifeq ($(UNAME), Linux)
 LIBS = -O $(LIBRARIES_DIRECTORY)minilibx/libmlx_Linux.a -lXext -lX11 -lm $(DM_BDF_RENDER) $(LIBFT) $(DM_2D) $(DM_VECTORS)
@@ -52,8 +52,8 @@ LIBRARIES_DIRECTORY = ./libraries
 SDL2_ARCHIVE = $(LIBRARIES_DIRECTORY)/sdl2.tar.gz
 SDL2_BUILD_DIRECTORY = $(LIBRARIES_DIRECTORY)/sdl2
 SDL2_DIRECTORY = $(LIBRARIES_DIRECTORY)/libsdl2
-SDL2 = $(SDL2_DIRECTORY)/libsdl2.a
-SDL2_HEADERS = $(SDL2_DIRECTORY)/includes
+SDL2 = $(SDL2_BUILD_DIRECTORY)/lib/lib/libsdl2.a
+SDL2_HEADERS = $(SDL2_BUILD_DIRECTORY)/lib/include/SDL2
 
 DM_VECTORS_DIRECTORY = $(LIBRARIES_DIRECTORY)/dm_vectors
 DM_VECTORS = $(DM_VECTORS_DIRECTORY)/dm_vectors.a
@@ -80,7 +80,7 @@ OBJECTS_DIRECTORY = objects/
 OBJECTS_LIST = $(patsubst %.c, %.o, $(SOURCES_LIST))
 OBJECTS	= $(addprefix $(OBJECTS_DIRECTORY), $(OBJECTS_LIST))
 
-INCLUDES = -I$(HEADERS_DIRECTORY) -I$(LIBFT_HEADERS) -I$(DM_2D_HEADERS) -I$(DM_VECTORS_HEADERS)
+INCLUDES = -I$(HEADERS_DIRECTORY) -I$(LIBFT_HEADERS) -I$(SDL2_HEADERS) -I$(DM_2D_HEADERS) -I$(DM_VECTORS_HEADERS)
 
 ASSERT_OBJECT = && printf "$(ERASE_LINE)" && printf "$@ $(COLOR)$(MAKE_COLOR)$(BOLD) ✓$(RESET)" || printf "$@ $(COLOR)$(MAKE_COLOR)$(BOLD)✘$(RESET)\n\n" | exit -1
 
@@ -105,7 +105,9 @@ $(OBJECTS_DIRECTORY)%.o : $(SOURCES_DIRECTORY)%.c $(HEADERS)
 	@make progress_bar
 
 $(SDL2): $(SDL2_DIRECTORY) $(SDL2_BUILD_DIRECTORY)
-	@cd $(SDL2_BUILD_DIRECTORY) && ../libsdl2/configure
+	@cd $(SDL2_BUILD_DIRECTORY) && ../libsdl2/configure --prefix=`pwd`/lib
+	@make -C $(SDL2_BUILD_DIRECTORY)
+	@make -C $(SDL2_BUILD_DIRECTORY) install
 
 $(SDL2_BUILD_DIRECTORY):
 	@mkdir $(SDL2_BUILD_DIRECTORY)
@@ -141,6 +143,8 @@ fclean: clean
 	@make -C $(LIBFT_DIRECTORY) bclean
 	@make -C $(DM_2D_DIRECTORY) bclean
 	@make -C $(DM_VECTORS_DIRECTORY) bclean
+	@rm -rf $(SDL2_BUILD_DIRECTORY)
+	@rm -rf $(SDL2_DIRECTORY)
 	@printf "\n"
 
 re: fclean all
