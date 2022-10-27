@@ -39,7 +39,8 @@ typedef struct s_sdl
 
 void    sdl_init(t_sdl *sdl)
 {
-    SDL_Init(SDL_INIT_VIDEO);
+    if(SDL_Init(SDL_INIT_VIDEO) != 0)
+		SDL_Quit();
     SDL_CreateWindowAndRenderer(640, 480, 0, &sdl->win, &sdl->renderer);
     sdl->buffer = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_ARGB8888,
             SDL_TEXTUREACCESS_STREAMING, 480, 480);
@@ -80,5 +81,6 @@ int    main(int argc, char **argv)
     SDL_DestroyWindow(sdl.win);
 	(void)argc;
 	(void)argv;
-    return (0);
+	//Dont overwrite this!!!
+    return (1);
 }
