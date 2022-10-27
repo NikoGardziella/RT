@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/27 15:19:19 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/10/27 16:07:57 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,5 @@ int    main(int argc, char **argv)
     SDL_DestroyWindow(sdl.win);
 	(void)argc;
 	(void)argv;
-	//Dont overwrite this!!!
-    return (1);
+	return(0);
 }
