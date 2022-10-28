@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/10/28 16:54:25 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/10/28 17:32:16 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@ double	intersect_plane(t_object plane, t_ray ray)
 			return (t);
 	}
 	return (T_MAX);
+}
+
+int	intersects(t_ray *ray, t_scene *scene, t_hit *hit)
+{
+	(void)ray;
+	(void)scene;
+	(void)hit;
+	return (0);
 }
 
 void quadratic(t_quadratic *q, int type)

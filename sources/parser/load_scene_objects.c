@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_scene_objects.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 09:25:30 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/28 09:27:00 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/10/28 17:43:20 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	read_object(t_object *object, char *line)
 	return (0);
 }
 
-static t_list	*read_scene_file(int fd)
+t_list	*read_scene_file(int fd)
 {
 	t_object	object;
 	t_list		*scene;
@@ -96,7 +96,7 @@ static t_list	*read_scene_file(int fd)
 
 t_list	*load_scene_objects(char *path)
 {
-	t_list	*scene;
+	t_scene	*scene;
 	int		fd;
 
 	fd = open(path, O_RDONLY);

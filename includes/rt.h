@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/27 12:46:07 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/28 16:50:27 by pnoutere         ###   ########.fr       */
+/*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
+/*   Updated: 2022/10/28 17:48:24 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 #  define PI 3.141592
 # endif
 
-
 /*Typedef a.k.a custom types*/
 
 typedef struct s_quadratic
@@ -48,15 +47,15 @@ typedef struct s_quadratic
 	double	c;
 	double	q;
 }	t_quadratic;
+/*Typedef enums*/
 
 typedef enum e_obj_type
 {
-	PLANE,
-	SPHERE,
-	CYLINDER,
-	CONE,
 	LIGHT,
-	CAMERA
+	SPHERE,
+	PLANE,
+	CONE,
+	CYLINDER
 }				t_obj_type;
 
 typedef union		u_color
@@ -67,7 +66,7 @@ typedef union		u_color
 
 typedef struct s_object
 {
-	t_obj_type	type;
+	int			type;
 	t_3d		position;
 	t_3d		rotation;
 	t_3d		length;
@@ -79,11 +78,54 @@ typedef struct s_object
 	t_3d		hit_point;
 }				t_object;
 
+/*Typedef structs*/
+
+typedef struct s_camera_info
+{
+	t_3d		v_up;
+	t_3d		u;
+	t_3d		v;
+	t_3d		w;
+	double		theta;
+	double		half_height;
+	double		half_width;
+}				t_camera_info;
+
+typedef struct s_camera
+{
+	t_3d		pos;
+	t_3d		dir;
+	double		fov;
+	double		scale;
+	double		aspect;
+	t_3d		horizontal;
+	t_3d		vertical;
+	t_3d		lower_left_corner;
+}				t_camera;
+
 typedef struct s_ray
 {
 	t_3d		origin;
 	t_3d		direction;
+	t_object	*origin_object;
 }				t_ray;
+
+typedef struct s_hit
+{
+	t_3d		point;
+	t_3d		normal;
+	t_object	*object;
+	t_3d		light_dir;
+	double		distance;
+	t_uint		color;
+}				t_hit;
+
+typedef struct s_scene
+{
+	t_list		*objects;
+	t_camera	camera;
+	t_uint		ambient_color;
+}				t_scene;
 
 typedef struct s_dim
 {
@@ -112,7 +154,10 @@ typedef struct s_sdl
 typedef struct s_env
 {
 	t_sdl	sdl;
+	int		height;
+	int		width;
 	t_img	*img;
+	t_scene	*scene;
 }	t_env;
 
 /*Init functions*/
@@ -126,8 +171,16 @@ t_img	*free_images(t_img *img, size_t count);
 
 /*Image functions*/
 
-void	main_image(t_img *img, void *param);
+void	main_image(t_img *img, void *param, char *path);
 void	sidebar_button(t_img *img, void *param);
+void	render(t_env *env, t_scene *scene);
+t_uint	raycast(t_ray *ray, t_scene *scene, t_hit *hit);
+t_ray	get_camera_ray(t_camera *camera, double x, double y);
+
+/*parser functions*/
+t_list	*load_scene_objects(char *path);
+int		read_object_info(char *line, t_object *object);
+int		transformations(char *line, t_object *object);
 
 /*Drawing functions*/
 

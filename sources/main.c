@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/28 16:50:54 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/10/28 17:34:11 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	close_prog(void *param, char *exit_msg, int exit_code)
 		env = param;
 		return ;
 	}
-	free_images(env->img, IMAGES);
+	// free_images(env->img, IMAGES);
 	//ft_lstdel(&env->scene, &del_object);
 	ft_putendl(exit_msg);
 	exit (exit_code);
@@ -62,11 +62,10 @@ int	main(int argc, char **argv)
 	close_prog(&env, "Initializing close program function.", 42);
 	ft_bzero(&env, sizeof(t_env));
 	sdl_init(&env.sdl);
-	env.img = create_images(env.sdl.renderer, IMAGES);
-	if (env.img == NULL)
-		close_prog(NULL, "Creating images failed...", -1);
-	process_image(env.sdl.renderer, &env.img[0], 1, &env);
-	process_image(env.sdl.renderer, &env.img[1], 1, &env);
+	// env.img = create_images(env.sdl.renderer, IMAGES);
+	// if (env.img == NULL)
+	// 	close_prog(NULL, "Creating images failed...", -1);
+	main_image(env.img, &env, argv[1]);
 	while (1)
 	{
 		if (env.sdl.event.type == SDL_QUIT || env.sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)

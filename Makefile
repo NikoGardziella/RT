@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/27 13:43:02 by dmalesev          #+#    #+#              #
-#    Updated: 2022/10/28 16:50:47 by pnoutere         ###   ########.fr        #
+#    Updated: 2022/10/28 17:47:24 by pnoutere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,10 @@ SOURCES_LIST =	main.c\
 				images/main_image.c\
 				images/sidebar_button.c\
 				init/create_images.c\
-				intersects.c
+				intersects.c\
+				parser/read_object_info.c\
+				parser/read_object_transformations.c\
+				parser/load_scene_objects.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
 
