@@ -6,7 +6,7 @@
 #    By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/27 13:43:02 by dmalesev          #+#    #+#              #
-#    Updated: 2022/10/27 15:29:59 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/10/28 12:12:09 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,11 @@ HEADERS_LIST =	rt.h
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./sources/
-SOURCES_LIST =	main.c
+SOURCES_LIST =	main.c\
+				put_pixel.c\
+				images/main_image.c\
+				images/sidebar_button.c\
+				init/create_images.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
 
@@ -99,6 +103,9 @@ $(NAME): $(SDL2) $(LIBFT) $(DM_2D) $(DM_VECTORS) $(OBJECTS_DIRECTORY) $(OBJECTS)
 
 $(OBJECTS_DIRECTORY):
 	@mkdir -p $(OBJECTS_DIRECTORY)
+	@mkdir -p $(OBJECTS_DIRECTORY)/init
+	@mkdir -p $(OBJECTS_DIRECTORY)/parser
+	@mkdir -p $(OBJECTS_DIRECTORY)/images
 	@printf "$(COLOR)$(MAKE_COLOR)__________________________________________________________________________________\n"
 	@printf "$(PRINT_NAME): Created $(OBJECTS_DIRECTORY) directory.$(RESET)\n\n\n"
 
@@ -153,7 +160,7 @@ fclean: clean
 re: fclean all
 
 progress_bar:
-	$(eval LOADED_COUNT = $(words $(wildcard $(OBJECTS_DIRECTORY)*.o)))
+	$(eval LOADED_COUNT = $(words $(shell find $(OBJECTS_DIRECTORY) -name '*.o')))
 	@printf "\r$(MOVE)76$(RIGHT)Files compiled [$(BOLD)$(COLOR)$(MAKE_COLOR)$(LOADED_COUNT)$(RESET) / $(BOLD)$(COLOR)$(MAKE_COLOR)$(SOURCE_COUNT)$(RESET)]\n"
 	@for ((i = 1; i <= 100; i++)) ; do\
 		if ((i <= $(LOADED_COUNT) * 100 / $(SOURCE_COUNT))) ; then \
