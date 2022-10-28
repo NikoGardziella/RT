@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/28 12:03:48 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/10/28 12:54:35 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,16 @@ void	sdl_init(t_sdl *sdl)
 
 void	process_image(SDL_Renderer *renderer, t_img *img, int mode, void *param)
 {
+	SDL_Rect	rect[2];
+
+	rect[0] = (SDL_Rect){0, 0, img->dim.size.x, img->dim.size.y};
+	rect[1] = (SDL_Rect){img->dim.start.x, img->dim.start.y, img->dim.size.x, img->dim.size.y};
 	SDL_LockTexture(img->txtr, NULL, &img->addr, &img->line_length);
 	fill_image(img, 0x000000);
 	img->draw_func(img, param);
 	SDL_UnlockTexture(img->txtr);
-	SDL_RenderCopy(renderer, img->txtr, NULL, NULL);
+	/*TEST if RenderClear faster*/
+	SDL_RenderCopy(renderer, img->txtr, &rect[0], &rect[1]);
 	if (mode == 1)
 		SDL_RenderPresent(renderer);
 }
@@ -68,11 +73,11 @@ int	main(int argc, char **argv)
 			SDL_Quit();
 			break ;
 		}
-		else if (env.sdl.event.type == SDL_WINDOWEVENT)
+		/*else if (env.sdl.event.type == SDL_WINDOWEVENT)
 		{
 			if (env.sdl.event.window.event == SDL_WINDOWEVENT_EXPOSED)
-				process_image(env.sdl.renderer, &env.img[0], 1, &env);
-		}
+				put_images_to_screen(env);
+		}*/
 		/*Find out what this does!*/
 		SDL_WaitEvent(&env.sdl.event);
 	}
