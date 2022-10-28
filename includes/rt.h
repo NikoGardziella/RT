@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:46:07 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/28 11:42:09 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/10/28 16:50:27 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,59 @@
 #  define PI 3.141592
 # endif
 
-/*Typedef structs*/
+
+/*Typedef a.k.a custom types*/
+
+typedef struct s_quadratic
+{
+	t_3d	w;
+	t_3d	h;
+	t_3d	subtr_top_bot;
+	double	m;
+	double	discr;
+	double	t0;
+	double	t1;
+	double	a;
+	double	b;
+	double	c;
+	double	q;
+}	t_quadratic;
+
+typedef enum e_obj_type
+{
+	PLANE,
+	SPHERE,
+	CYLINDER,
+	CONE,
+	LIGHT,
+	CAMERA
+}				t_obj_type;
+
+typedef union		u_color
+{
+	uint32_t		combined;
+	uint8_t			channels[4];
+} 					t_color;
+
+typedef struct s_object
+{
+	t_obj_type	type;
+	t_3d		position;
+	t_3d		rotation;
+	t_3d		length;
+	t_color		color;
+	double		radius;
+	t_3d		origin;
+	t_3d		end;
+	t_3d		normal;
+	t_3d		hit_point;
+}				t_object;
+
+typedef struct s_ray
+{
+	t_3d		origin;
+	t_3d		direction;
+}				t_ray;
 
 typedef struct s_dim
 {
@@ -81,5 +133,11 @@ void	sidebar_button(t_img *img, void *param);
 
 void	put_pixel(t_2i coords, t_uint color, void *param);
 void	fill_image(t_img *img, t_uint color);
+
+/*Intersect functions*/
+void	sphere_calculation(t_object sphere, t_ray ray);
+void	cone_calculation(t_object cone, t_ray ray);
+void	quadratic(t_quadratic *q, int type);
+double	intersect_plane(t_object plane, t_ray ray);
 
 #endif

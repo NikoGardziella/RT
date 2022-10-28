@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/27 13:43:02 by dmalesev          #+#    #+#              #
-#    Updated: 2022/10/28 12:12:09 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/10/28 16:50:47 by pnoutere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,7 +79,8 @@ SOURCES_LIST =	main.c\
 				put_pixel.c\
 				images/main_image.c\
 				images/sidebar_button.c\
-				init/create_images.c
+				init/create_images.c\
+				intersects.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
 
