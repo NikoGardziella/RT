@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/28 12:54:35 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/10/28 16:50:54 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	process_image(SDL_Renderer *renderer, t_img *img, int mode, void *param)
 	if (mode == 1)
 		SDL_RenderPresent(renderer);
 }
+
 
 int	main(int argc, char **argv)
 {
