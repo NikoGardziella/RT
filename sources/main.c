@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/31 15:39:38 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/10/31 15:40:35 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ int	main(int argc, char **argv)
 
 	close_prog(&env, "Initializing close program function.", 42);
 	ft_bzero(&env, sizeof(t_env));
+	load_scene_objects(argv[1]);
 	sdl_init(&env.sdl);
 	env.img = create_images(IMAGES);
 	if (env.img == NULL)

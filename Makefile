@@ -79,7 +79,11 @@ SOURCES_LIST =	main.c\
 				put_pixel.c\
 				images/main_image.c\
 				images/sidebar_button.c\
-				init/create_images.c
+				init/create_images.c\
+				parser/load_scene_objects.c\
+				parser/add_object_to_scene.c\
+				parser/read_object_info.c\
+				parser/read_object_transformations.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
 
