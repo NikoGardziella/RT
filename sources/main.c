@@ -113,6 +113,7 @@ int	main(int argc, char **argv)
 
 	close_prog(&env, "Initializing close program function.", 42);
 	ft_bzero(&env, sizeof(t_env));
+	load_scene_objects(argv[1]);
 	sdl_init(&env.sdl);
 	env.img = create_images(IMAGES);
 	if (env.img == NULL)

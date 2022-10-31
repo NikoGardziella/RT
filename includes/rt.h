@@ -63,6 +63,23 @@ typedef struct s_env
 	t_img	*img;
 }	t_env;
 
+typedef struct s_object
+{
+	t_3d	axis;
+	t_3d	origin;
+	double 	radius;
+	int		lumen;
+	uint32_t	color;
+	int		type;
+	double	axis_length;
+}	t_object;
+
+/*Parser Functions*/
+t_list	*load_scene_objects(char *path);
+int		add_object(t_list **objects, t_object *object);
+int		read_object_info(char *line, t_object *object);
+int		transformations(char *line, t_object *object);
+
 /*Init functions*/
 
 t_img	*create_images(size_t count);
