@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dm_vectors.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 16:41:10 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/15 10:21:35 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/10/31 14:15:45 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_3d	add_vectors(t_3d vect1, t_3d vect2);
 t_3d	subtract_vectors(t_3d vect1, t_3d vect2);
 t_3d	scale_vector(t_3d vect, double factor);
 t_3d	divide_vector(t_3d vect, double factor);
+
 /*Vector math*/
 t_3d	cross_product(t_3d vect1, t_3d vect2);
 t_3d	normalize_vector(t_3d vect);
