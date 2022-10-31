@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/31 11:51:05 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/10/31 13:13:26 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,29 +61,32 @@ void	put_image_to_screen_surface(t_img *img, SDL_Surface *screen)
 /*CONTINUE MAKING OWN BLIT FUNCTION*/
 void	blit_surface(SDL_Surface *src, t_dim srcrect, SDL_Surface *dest, t_dim destrect)
 {
-	uint8_t	*addr;
+	uint8_t	*srcaddr;
+	uint8_t	*destaddr;
 	t_2i	coords;
 	int		offset;
 
 	offset = destrect.start.y * dest->pitch;
 	offset += destrect.start.x * dest->format->BytesPerPixel;
 	coords.y = 0;
-	while (coords.y < srcrect.size.y)
+	(void)srcrect;
+	printf("SOURCES BPP! %d\n", src->format->BytesPerPixel);
+	printf("DEST BPP! %d\n", dest->format->BytesPerPixel);
+	while (coords.y < destrect.size.y)
 	{
-		addr = ((uint8_t *)dest->pixels + offset + (dest->pitch * coords.y));
-		if (addr >= (uint8_t *)dest->pixels)
-			addr = (uint8_t *)ft_memcpy(addr, src->pixels + src->pitch * coords.y, (size_t)destrect.size.x * src->format->BytesPerPixel);
-		else
-			printf("HERE! %d\n", coords.y);
+		destaddr = ((uint8_t *)dest->pixels + offset + (dest->pitch * coords.y));
+		srcaddr = ((uint8_t *)src->pixels + (src->pitch * coords.y) + (srcrect.start.x * src->format->BytesPerPixel) + (srcrect.start.y * src->pitch));
+		/*if (srcaddr >= (uint8_t *)src->pixels && srcaddr < (uint8_t *)src->pixels + (srcrect.size.x * src->format->BytesPerPixel) + (srcrect.size.y * src->pitch))
+			srcaddr = (uint8_t *)ft_memcpy(destaddr, srcaddr, (size_t)srcrect.size.x * (src->format->BytesPerPixel));*/
 		coords.x = 0;
-		/*while (coords.x < srcrect.size.x)
+		while (coords.x < destrect.size.x)
 		{
 			//offset = src->pitch;
-			addr = ((uint8_t *)dest->pixels + offset + (uint8_t)(coords.x) + (dest->pitch * coords.y));
-			*addr = *(uint8_t *)src->pixels + (uint8_t)(coords.x) + (uint8_t)(src->pitch * coords.y);
-			//addr += (uint8_t)src->format->BytesPerPixel;
+			destaddr = ((uint8_t *)dest->pixels + offset + (uint8_t)(coords.x) + (dest->pitch * coords.y));
+			*destaddr = *(uint8_t *)src->pixels + (uint8_t)(coords.x) + (uint8_t)(src->pitch * coords.y) + (uint8_t)(srcrect.start.x * src->format->BytesPerPixel) + (uint8_t)(srcrect.start.y * src->pitch);
+			//srcaddr += (uint8_t)src->format->BytesPerPixel;
 			coords.x += 1;
-		}*/
+		}
 		coords.y += 1;
 	}
 }
@@ -117,12 +120,13 @@ int	main(int argc, char **argv)
 	process_image(&env.sdl, &env.img[0], 1, &env);
 	process_image(&env.sdl, &env.img[1], 1, &env);
 	test = SDL_LoadBMP("test.bmp");
+	test = SDL_ConvertSurfaceFormat(test, SDL_PIXELFORMAT_ARGB8888, 0);
 	rect[0] = (SDL_Rect){300, 0, 200, 200};
 	rect[1] = (SDL_Rect){300, 320, 200, 200};
-	dim[0].start = (t_2i){0, 100};
+	dim[0].start = (t_2i){300, 150};
 	dim[0].size = (t_2i){100, 100};
-	dim[1].start = (t_2i){0, 0};
-	dim[1].size = (t_2i){200, 200};
+	dim[1].start = (t_2i){50, 50};
+	dim[1].size = (t_2i){250, 150};
 	SDL_BlitSurface(test, NULL, env.sdl.screen, &rect[0]);
 	blit_surface(test, dim[1], env.sdl.screen, dim[0]);
 	SDL_UpdateWindowSurface(env.sdl.window);
