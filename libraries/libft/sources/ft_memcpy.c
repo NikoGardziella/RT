@@ -6,7 +6,7 @@
 /*   By: dmalesev <dmalesev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 13:36:04 by dmalesev          #+#    #+#             */
-/*   Updated: 2021/11/25 11:58:54 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/10/28 16:48:58 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*ft_memcpy(void *dest, const void *src, size_t len)
 	i = 0;
 	ptr = (unsigned char *)dest;
 	ptr2 = (unsigned char *)src;
-	while (len > i && (ptr || ptr2))
+	while (len > i && ptr && ptr2)
 	{
 		ptr[i] = ptr2[i];
 		i++;

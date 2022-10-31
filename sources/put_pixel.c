@@ -6,29 +6,30 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:40:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/28 11:58:19 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/10/28 17:15:00 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void	put_pixel(t_2i coords, t_uint color, void *param)
+void	put_pixel(t_2i coords, uint32_t color, void *param)
 {
-	t_img			*img;
-	unsigned char	*dst;
-	int				bpp;
+	uint32_t	*dest;
+	t_img		*img;
+	int			offset;
 
 	img = param;
-	bpp = 32;
-	if (coords.x >= 0 && coords.x < img->dim.size.x
-			&& coords.y >= 0 && coords.y < img->dim.size.y)
-	{
-		dst = img->addr + (coords.y * img->line_length + coords.x * (bpp / 8));
-		*(unsigned int *)dst = color;
-	}
+	if (coords.x < 0 || coords.y < 0)
+		return ;
+	if (coords.x >= img->dim.size.x || coords.y >= img->dim.size.y)
+		return ;
+	offset = coords.y * img->surface->pitch;
+	offset += coords.x * img->surface->format->BytesPerPixel;
+	dest = (uint32_t *)((uint8_t *)img->surface->pixels + offset);
+	*dest = color;
 }
 
-void	fill_image(t_img *img, t_uint color)
+void	fill_image(t_img *img, uint32_t color)
 {
 	t_2i	coords;
 

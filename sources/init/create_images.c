@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 10:56:32 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/28 11:43:14 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/10/28 17:23:53 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void	get_image_sizes(t_img *img)
 	t_2i	button;
 
 	button = (t_2i){SCREEN_X / 40, SCREEN_Y / 25};
+	button = (t_2i){SCREEN_X / 4, SCREEN_Y / 3};
 	img[0].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 	img[1].dim.size = (t_2i){button.x, button.y};
 }
@@ -53,8 +54,8 @@ t_img	*free_images(t_img *img, size_t count)
 	i = 0;
 	while (i < count)
 	{
-		if (img && img[i].txtr != NULL)
-			SDL_DestroyTexture(img[i].txtr);
+		if (img && img[i].surface != NULL)
+			SDL_FreeSurface(img[i].surface);
 		i++;
 	}
 	if (img != NULL)
@@ -62,7 +63,7 @@ t_img	*free_images(t_img *img, size_t count)
 	return (NULL);
 }
 
-t_img	*create_images(SDL_Renderer *renderer, size_t count)
+t_img	*create_images(size_t count)
 {
 	t_img	*img;
 	size_t	i;
@@ -78,10 +79,11 @@ t_img	*create_images(SDL_Renderer *renderer, size_t count)
 	{
 		if (img[i].dim.size.x <= 0 || img[i].dim.size.y <= 0)
 			return (free_images(img, i));
-		img[i].txtr = SDL_CreateTexture(renderer,
-				SDL_PIXELFORMAT_ARGB8888,
-				SDL_TEXTUREACCESS_STREAMING,
-				img[i].dim.size.x, img[i].dim.size.y);
+		img[i].surface = SDL_CreateRGBSurface(0,
+				img[i].dim.size.x, img[i].dim.size.y, 32,
+				0xFF0000, 0x00FF00, 0x0000FF, 0xFF000000);
+		if (img[i].surface == NULL)
+			return (free_images(img, count));
 		i++;
 	}
 	get_image_functions(img);

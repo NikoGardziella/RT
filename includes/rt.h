@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:46:07 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/28 11:42:09 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/10/28 17:09:13 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_dim
 
 typedef struct s_img
 {
-	SDL_Texture		*txtr;
+	SDL_Surface		*surface;
 	int				bits_per_pixel;
 	int				line_length;
 	t_dim			dim;
@@ -53,8 +53,8 @@ typedef struct s_img
 typedef struct s_sdl
 {
 	SDL_Event		event;
-	SDL_Renderer	*renderer;
 	SDL_Window		*window;
+	SDL_Surface		*screen;
 }	t_sdl;
 
 typedef struct s_env
@@ -65,7 +65,7 @@ typedef struct s_env
 
 /*Init functions*/
 
-t_img	*create_images(SDL_Renderer *renderer, size_t count);
+t_img	*create_images(size_t count);
 
 /*Close and free functions*/
 
