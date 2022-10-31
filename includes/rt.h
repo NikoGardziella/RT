@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:46:07 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/28 17:09:13 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/10/31 14:39:07 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@
 # endif
 
 /*Typedef structs*/
+
+typedef struct s_2f
+{
+	float	x;
+	float	y;
+}				t_2f;
 
 typedef struct s_dim
 {
@@ -62,6 +68,8 @@ typedef struct s_env
 	t_sdl	sdl;
 	t_img	*img;
 }	t_env;
+
+t_img	*glob_img;
 
 /*Init functions*/
 
