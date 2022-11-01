@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 12:47:59 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/01 15:26:00 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ int	main(int argc, char **argv)
 
 	process_image(&env.sdl, &env.img[0], 1, &env);
 	process_image(&env.sdl, &env.img[1], 1, &env);
-	test = SDL_LoadBMP("test.bmp");
-	test = SDL_ConvertSurfaceFormat(test, SDL_PIXELFORMAT_ARGB8888, 0);
-	//env.scene->objects = load_scene_objects(argv[1]);
+	test = SDL_LoadBMP("dots.bmp");
+	//test = SDL_ConvertSurfaceFormat(test, SDL_PIXELFORMAT_ARGB8888, 0);
+
 	dim[0].start = (t_2i){0, 0};
-	dim[0].size = (t_2i){200, 200};
+	dim[0].size = (t_2i){1000, 1000};
 
 	dim[1].start = (t_2i){0, 0};
 	dim[1].size = (t_2i){500, 500};
