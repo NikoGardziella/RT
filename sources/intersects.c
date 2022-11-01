@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/10/28 17:32:16 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/01 13:16:26 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,20 @@ void	sphere_calculation(t_object sphere, t_ray ray)
 	quadratic(&q, SPHERE);
 	sphere.hit_point = add_vectors(ray.origin,
 			scale_vector(ray.direction, q.t1));
+}
+
+
+void	cylinder_calculation(t_ray ray, t_object cyl)
+{
+	t_quadratic	q;
+	
+	q.w = subtract(ray.origin, cyl.origin);
+	q.h = vec_normalize(subtract(cyl.end, cyl.origin));
+	q.a = dot_product(ray.direction, ray.direction) - pow(dot_product(ray.direction, q.h), 2);
+	q.b = 2 * (dot_product(ray.direction, q.w) - (dot_product(ray.direction, q.h) * dot_product(q.w, q.h)));
+	q.c = dot_product(q.w, q.w)
+		- pow(dot_product(q.w, q.h), 2) - pow(cyl.radius, 2);
+	q.discr = ((q.b * q.b) - (4 * q.a * q.c));
+	q.t0 = T_MAX;
+	q.t1 = T_MAX;
 }
