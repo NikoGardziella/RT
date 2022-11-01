@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 12:23:14 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/28 17:48:44 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/01 12:43:51 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	lumen(char *line, t_object *object)
 		line = ft_strstr(line, str);
 		line = ft_strchr(line, ' ');
 		if (line)
-			object->lumen = (double)ft_atof(line);
+			object->lumen = ft_atoi(line);
 		if (object->lumen < 0)
 			object->lumen = 0;
 		if (object->type == 0)
@@ -86,7 +86,7 @@ static int	color(char *line, t_object *object)
 		line = ft_strstr(line, str);
 		line = ft_strchr(line, ' ');
 		if (line)
-			object->color = (t_uint)ft_atoh(line);
+			object->color.combined = (t_uint)ft_atoh(line);
 		return (1);
 	}
 	return (0);

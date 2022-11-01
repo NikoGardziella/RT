@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/10/27 13:43:02 by dmalesev          #+#    #+#              #
-#    Updated: 2022/10/28 17:47:24 by pnoutere         ###   ########.fr        #
+#    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
+#    Updated: 2022/11/01 12:36:12 by pnoutere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ CC  = gcc
 OPTI_FLAGS = -O3 -flto
 DEBUG_FLAGS = -g -fsanitize=address
 FLAGS = -Wall -Wextra -Werror -Wconversion
-#FLAGS += $(DEBUG_FLAGS)
+FLAGS += $(DEBUG_FLAGS)
 #FLAGS += $(OPTI_FLAGS)
 
 UNAME = $(shell uname)
@@ -44,8 +44,10 @@ ifeq ($(UNAME), Darwin)
 LIBS = $(LIBFT) $(DM_2D) $(DM_VECTORS) $(SDL2)
 endif
 ifeq ($(UNAME), Linux)
-LIBS = -O $(LIBRARIES_DIRECTORY)minilibx/libmlx_Linux.a -lXext -lX11 -lm $(DM_BDF_RENDER) $(LIBFT) $(DM_2D) $(DM_VECTORS)
+LIBS = $(LIBFT) $(DM_2D) $(DM_VECTORS) $(SDL2) $(MATH_LIBRARY)
 endif
+
+MATH_LIBRARY = -lm
 
 LIBRARIES_DIRECTORY = ./libraries
 
@@ -55,7 +57,7 @@ SDL2_LIBS = `$(SDL2_BUILD_DIRECTORY)/lib/bin/sdl2-config --libs`
 SDL2_ARCHIVE = $(LIBRARIES_DIRECTORY)/sdl2.tar.gz
 SDL2_BUILD_DIRECTORY = $(LIBRARIES_DIRECTORY)/sdl2
 SDL2_DIRECTORY = $(LIBRARIES_DIRECTORY)/libsdl2
-SDL2 = $(SDL2_BUILD_DIRECTORY)/lib/lib/libsdl2.a
+SDL2 = $(SDL2_BUILD_DIRECTORY)/lib/lib/libSDL2.a
 SDL2_HEADERS = $(SDL2_BUILD_DIRECTORY)/lib/include/SDL2
 
 DM_VECTORS_DIRECTORY = $(LIBRARIES_DIRECTORY)/dm_vectors
@@ -78,12 +80,13 @@ SOURCES_DIRECTORY = ./sources/
 SOURCES_LIST =	main.c\
 				put_pixel.c\
 				images/main_image.c\
+				images/process_image.c\
 				images/sidebar_button.c\
 				init/create_images.c\
-				intersects.c\
+				parser/load_scene_objects.c\
+				parser/add_object_to_scene.c\
 				parser/read_object_info.c\
-				parser/read_object_transformations.c\
-				parser/load_scene_objects.c
+				parser/read_object_transformations.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
 

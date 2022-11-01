@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/10/28 17:48:24 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/01 12:41:51 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ typedef struct s_quadratic
 	double	c;
 	double	q;
 }	t_quadratic;
-/*Typedef enums*/
 
+/*Typedef enums*/
 typedef enum e_obj_type
 {
 	LIGHT,
@@ -58,6 +58,7 @@ typedef enum e_obj_type
 	CYLINDER
 }				t_obj_type;
 
+/*Typedef structs*/
 typedef union		u_color
 {
 	uint32_t		combined;
@@ -76,9 +77,10 @@ typedef struct s_object
 	t_3d		end;
 	t_3d		normal;
 	t_3d		hit_point;
+	t_3d		axis;
+	double		axis_length;
+	int			lumen;
 }				t_object;
-
-/*Typedef structs*/
 
 typedef struct s_camera_info
 {
@@ -126,6 +128,11 @@ typedef struct s_scene
 	t_camera	camera;
 	t_uint		ambient_color;
 }				t_scene;
+typedef struct s_2f
+{
+	float	x;
+	float	y;
+}				t_2f;
 
 typedef struct s_dim
 {
@@ -136,7 +143,7 @@ typedef struct s_dim
 
 typedef struct s_img
 {
-	SDL_Texture		*txtr;
+	SDL_Surface		*surface;
 	int				bits_per_pixel;
 	int				line_length;
 	t_dim			dim;
@@ -147,8 +154,8 @@ typedef struct s_img
 typedef struct s_sdl
 {
 	SDL_Event		event;
-	SDL_Renderer	*renderer;
 	SDL_Window		*window;
+	SDL_Surface		*screen;
 }	t_sdl;
 
 typedef struct s_env
@@ -160,9 +167,18 @@ typedef struct s_env
 	t_scene	*scene;
 }	t_env;
 
+/*Typedef structs*/
+t_img	*glob_img;
+
+/*Parser Functions*/
+t_list	*load_scene_objects(char *path);
+int		add_object(t_list **objects, t_object *object);
+int		read_object_info(char *line, t_object *object);
+int		transformations(char *line, t_object *object);
+
 /*Init functions*/
 
-t_img	*create_images(SDL_Renderer *renderer, size_t count);
+t_img	*create_images(size_t count);
 
 /*Close and free functions*/
 
@@ -171,7 +187,7 @@ t_img	*free_images(t_img *img, size_t count);
 
 /*Image functions*/
 
-void	main_image(t_img *img, void *param, char *path);
+void	main_image(t_img *img, void *param);
 void	sidebar_button(t_img *img, void *param);
 void	render(t_env *env, t_scene *scene);
 t_uint	raycast(t_ray *ray, t_scene *scene, t_hit *hit);
@@ -181,6 +197,8 @@ t_ray	get_camera_ray(t_camera *camera, double x, double y);
 t_list	*load_scene_objects(char *path);
 int		read_object_info(char *line, t_object *object);
 int		transformations(char *line, t_object *object);
+void	process_image(t_sdl *sdl, t_img *img, int mode, void *param);
+void	blit_surface(SDL_Surface *src, t_dim srcrect, SDL_Surface *dest, t_dim destrect);
 
 /*Drawing functions*/
 

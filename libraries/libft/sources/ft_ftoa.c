@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 12:28:36 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/17 11:18:30 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/10/31 21:24:04 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*ft_ftoa(double f, size_t prec)
 	long long int	i;
 	long long int	pre;
 
-	if (prec < 0)
+	if (!(prec > 0))
 		prec = 0;
 	len = (nbr_length((long long int)f) + 1 + prec);
 	if (f < 0 && f > -1)

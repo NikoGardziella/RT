@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 09:25:30 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/28 17:43:20 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/01 12:43:26 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ t_list	*read_scene_file(int fd)
 
 t_list	*load_scene_objects(char *path)
 {
-	t_scene	*scene;
+	t_list	*scene;
 	int		fd;
 
 	fd = open(path, O_RDONLY);
