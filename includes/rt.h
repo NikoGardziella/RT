@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/01 13:05:37 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/01 14:11:44 by ctrouve          ###   ########.fr       */
+/*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
+/*   Updated: 2022/11/01 16:01:25 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,13 @@ typedef struct s_scene
 	t_camera	*camera;
 	t_uint		ambient_color;
 }				t_scene;
+
+typedef struct s_2d
+{
+	double	x;
+	double	y;
+}				t_2d;
+
 typedef struct s_2f
 {
 	float	x;

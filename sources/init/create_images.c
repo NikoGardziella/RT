@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 10:56:32 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 12:33:39 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/01 13:55:54 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void	get_image_sizes(t_img *img)
 	t_2i	button;
 
 	button = (t_2i){SCREEN_X / 40, SCREEN_Y / 25};
-	button = (t_2i){SCREEN_X / 4, SCREEN_Y / 3};
 	img[0].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 	img[1].dim.size = (t_2i){button.x, button.y};
 }

@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 15:49:05 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/01 15:59:41 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,10 @@ int	main(int argc, char **argv)
 	process_image(&env.sdl, &env.img[0], 1, &env);
 	process_image(&env.sdl, &env.img[1], 1, &env);
 	test = SDL_LoadBMP("test.bmp");
-	test = SDL_ConvertSurfaceFormat(test, SDL_PIXELFORMAT_ARGB8888, 0);
+	//test = SDL_ConvertSurfaceFormat(test, SDL_PIXELFORMAT_ARGB8888, 0);
+	//env.scene->objects = load_scene_objects(argv[1]);
 	dim[0].start = (t_2i){0, 0};
-	dim[0].size = (t_2i){200, 200};
+	dim[0].size = (t_2i){1000, 1000};
 
 	dim[1].start = (t_2i){0, 0};
 	dim[1].size = (t_2i){500, 500};
@@ -80,15 +81,15 @@ int	main(int argc, char **argv)
 		if (SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y) == 1)
 		{
 			dim[1].start = mouse_coords;
-			blit_surface(test, dim[0], env.sdl.screen, dim[1]);
+			blit_surface(env.img[1].surface, &dim[0], env.sdl.screen, &dim[1]);
 			SDL_UpdateWindowSurface(env.sdl.window);
 		}
 		if (env.sdl.event.type == SDL_MOUSEWHEEL)
 		{
 			if (env.sdl.event.wheel.y != 0) // scroll up
 			{
-				dim[1].size.x += env.sdl.event.wheel.y * 5;
-				dim[1].size.y += env.sdl.event.wheel.y * 5;
+				dim[1].size.x += env.sdl.event.wheel.y;
+				dim[1].size.y += env.sdl.event.wheel.y;
 			}
 		}
 		/*else if (env.sdl.event.type == SDL_WINDOWEVENT)
