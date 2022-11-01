@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 12:25:24 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/01 12:56:02 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	close_prog(void *param, char *exit_msg, int exit_code)
 		env = param;
 		return ;
 	}
-	free_images(env->img, IMAGES);
+	// free_images(env->img, IMAGES);
 	//ft_lstdel(&env->scene, &del_object);
 	ft_putendl(exit_msg);
 	exit (exit_code);
@@ -41,6 +41,7 @@ void	sdl_init(t_sdl *sdl)
 		close_prog(NULL, "Creting window surface failed...", -1);
 }
 
+
 int	main(int argc, char **argv)
 {
 	t_env		env;
@@ -58,9 +59,9 @@ int	main(int argc, char **argv)
 
 	process_image(&env.sdl, &env.img[0], 1, &env);
 	process_image(&env.sdl, &env.img[1], 1, &env);
-	test = SDL_LoadBMP("dots.bmp");
+	test = SDL_LoadBMP("test.bmp");
 	//test = SDL_ConvertSurfaceFormat(test, SDL_PIXELFORMAT_ARGB8888, 0);
-
+	//env.scene->objects = load_scene_objects(argv[1]);
 	dim[0].start = (t_2i){0, 0};
 	dim[0].size = (t_2i){1000, 1000};
 

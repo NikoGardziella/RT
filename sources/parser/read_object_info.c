@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_object_info.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 12:23:14 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/16 13:55:27 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/01 12:43:51 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	color(char *line, t_object *object)
 		line = ft_strstr(line, str);
 		line = ft_strchr(line, ' ');
 		if (line)
-			object->color = (t_uint)ft_atoh(line);
+			object->color.combined = (t_uint)ft_atoh(line);
 		return (1);
 	}
 	return (0);
