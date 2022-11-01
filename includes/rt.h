@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/01 12:41:51 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/01 15:19:22 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,13 @@ typedef struct s_scene
 	t_camera	camera;
 	t_uint		ambient_color;
 }				t_scene;
+
+typedef struct s_2d
+{
+	double	x;
+	double	y;
+}				t_2d;
+
 typedef struct s_2f
 {
 	float	x;
@@ -198,7 +205,7 @@ t_list	*load_scene_objects(char *path);
 int		read_object_info(char *line, t_object *object);
 int		transformations(char *line, t_object *object);
 void	process_image(t_sdl *sdl, t_img *img, int mode, void *param);
-void	blit_surface(SDL_Surface *src, t_dim srcrect, SDL_Surface *dest, t_dim destrect);
+void	blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *destrect);
 
 /*Drawing functions*/
 

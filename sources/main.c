@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 15:05:44 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/01 15:36:09 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int argc, char **argv)
 	if (env.img == NULL)
 		close_prog(NULL, "Creating images failed...", -1);
 
-	//process_image(&env.sdl, &env.img[0], 1, &env);
+	process_image(&env.sdl, &env.img[0], 1, &env);
 	process_image(&env.sdl, &env.img[1], 1, &env);
 	test = SDL_LoadBMP("test.bmp");
 	//test = SDL_ConvertSurfaceFormat(test, SDL_PIXELFORMAT_ARGB8888, 0);
@@ -78,7 +78,7 @@ int	main(int argc, char **argv)
 		if (SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y) == 1)
 		{
 			dim[1].start = mouse_coords;
-			blit_surface(test, dim[0], env.sdl.screen, dim[1]);
+			blit_surface(env.img[1].surface, &dim[0], env.sdl.screen, &dim[1]);
 			SDL_UpdateWindowSurface(env.sdl.window);
 		}
 		if (env.sdl.event.type == SDL_MOUSEWHEEL)
