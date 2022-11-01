@@ -6,11 +6,52 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/01 13:16:26 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/01 15:24:33 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+void	intersect_loop(t_ray *ray, t_scene *scene, t_hit *hit)
+{
+	t_list		*objects_list;
+	t_object	*object;
+	double		ret;
+
+	hit->distance = T_MAX;
+	objects_list = scene->objects;
+	while (objects_list != NULL)
+	{
+		object = (t_object *)objects_list->content;
+		if (object->type == SPHERE)
+			ret = intersect_sphere(*object, *ray);
+		if (object->type == PLANE)
+			ret = intersect_plane(*object, *ray);
+		if (object->type == CONE)
+			ret = intersect_cone(*object, *ray);
+		if (object->type == CYLINDER)
+			ret = intersect_cylinder(*object, *ray);
+		if (ret < T_MAX && ret > 0 && ret < hit->distance)
+		{
+			hit->distance = ret;
+			hit->object = object;
+		}
+		objects_list = objects_list->next;
+	}
+}
+
+int	intersects(t_ray *ray, t_scene *scene, t_hit *hit)
+{
+	intersect_loop(ray, scene, hit);
+	if (hit->distance < T_MAX)
+	{
+		hit->point = add_vectors(ray->origin,
+			scale_vector(ray->direction, hit->distance));
+		hit->color = hit->object->color;
+		return (1);
+	}
+	return (0);
+}
 
 double	intersect_plane(t_object plane, t_ray ray)
 {
@@ -27,14 +68,6 @@ double	intersect_plane(t_object plane, t_ray ray)
 			return (t);
 	}
 	return (T_MAX);
-}
-
-int	intersects(t_ray *ray, t_scene *scene, t_hit *hit)
-{
-	(void)ray;
-	(void)scene;
-	(void)hit;
-	return (0);
 }
 
 void quadratic(t_quadratic *q, int type)
@@ -60,7 +93,7 @@ void quadratic(t_quadratic *q, int type)
 	}
 }
 
-void	cone_calculation(t_object cone, t_ray ray)
+double	intersect_cone(t_object cone, t_ray ray)
 {
 	double		ray_dot_product;
 	double		ray_dir_h;
@@ -83,10 +116,11 @@ void	cone_calculation(t_object cone, t_ray ray)
 	q.t0 = T_MAX;
 	q.t1 = T_MAX;
 	quadratic(&q, CONE);
-	cone.hit_point = add_vectors(ray.origin, scale_vector(ray.direction, q.t1));
+	// cone.hit_point = add_vectors(ray.origin, scale_vector(ray.direction, q.t1));
+	return (q.t1);
 }
 
-void	sphere_calculation(t_object sphere, t_ray ray)
+double	intersect_sphere(t_object sphere, t_ray ray)
 {
 	t_quadratic	q;
 
@@ -98,22 +132,22 @@ void	sphere_calculation(t_object sphere, t_ray ray)
 	q.t0 = T_MAX;
 	q.t1 = T_MAX;
 	quadratic(&q, SPHERE);
-	sphere.hit_point = add_vectors(ray.origin,
-			scale_vector(ray.direction, q.t1));
+	// sphere.hit_point = add_vectors(ray.origin, scale_vector(ray.direction, q.t1));
+	return (q.t1);
 }
 
-
-void	cylinder_calculation(t_ray ray, t_object cyl)
+double	intersect_cylinder(t_object cyl, t_ray ray)
 {
 	t_quadratic	q;
 	
-	q.w = subtract(ray.origin, cyl.origin);
-	q.h = vec_normalize(subtract(cyl.end, cyl.origin));
-	q.a = dot_product(ray.direction, ray.direction) - pow(dot_product(ray.direction, q.h), 2);
+	q.w = subtract_vectors(ray.origin, cyl.origin);
+	q.h = normalize_vector(subtract_vectors(cyl.end, cyl.origin));
+	q.a = dot_product(ray.direction, ray.direction) - pow(dot_product(ray.direction, q.h), 2); // check that dot product of ray direction is always one
 	q.b = 2 * (dot_product(ray.direction, q.w) - (dot_product(ray.direction, q.h) * dot_product(q.w, q.h)));
-	q.c = dot_product(q.w, q.w)
-		- pow(dot_product(q.w, q.h), 2) - pow(cyl.radius, 2);
+	q.c = dot_product(q.w, q.w) - pow(dot_product(q.w, q.h), 2) - pow(cyl.radius, 2);
 	q.discr = ((q.b * q.b) - (4 * q.a * q.c));
 	q.t0 = T_MAX;
 	q.t1 = T_MAX;
+	quadratic(&q, CYLINDER);
+	return (q.t1);
 }

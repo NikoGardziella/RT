@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/01 13:09:40 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/01 15:18:14 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,34 @@ typedef union		u_color
 	uint8_t			channels[4];
 } 					t_color;
 
+
 typedef struct s_object
 {
+	double		axis_length;
+	double		radius;
+	double		t;
+	int			lumen;
 	int			type;
+	t_color		color;
+	t_3d		axis;
+	t_3d		end;
+	t_3d		hit_point;
+	t_3d		length;
+	t_3d		normal;
+	t_3d		origin;
 	t_3d		position;
 	t_3d		rotation;
-	t_3d		length;
-	t_color		color;
-	double		radius;
-	t_3d		origin;
-	t_3d		end;
-	t_3d		normal;
-	t_3d		hit_point;
-	t_3d		axis;
-	double		axis_length;
-	int			lumen;
 }				t_object;
+
+typedef struct s_hit
+{
+	t_3d		point;
+	t_3d		normal;
+	t_object	*object;
+	t_3d		light_dir;
+	double		distance;
+	t_color		color;
+}				t_hit;
 
 typedef struct s_camera_info
 {
@@ -112,22 +124,13 @@ typedef struct s_ray
 	t_object	*origin_object;
 }				t_ray;
 
-typedef struct s_hit
-{
-	t_3d		point;
-	t_3d		normal;
-	t_object	*object;
-	t_3d		light_dir;
-	double		distance;
-	t_uint		color;
-}				t_hit;
-
 typedef struct s_scene
 {
 	t_list		*objects;
 	t_camera	camera;
 	t_uint		ambient_color;
 }				t_scene;
+
 typedef struct s_2f
 {
 	float	x;
@@ -206,9 +209,10 @@ void	put_pixel(t_2i coords, t_uint color, void *param);
 void	fill_image(t_img *img, t_uint color);
 
 /*Intersect functions*/
-void	sphere_calculation(t_object sphere, t_ray ray);
-void	cone_calculation(t_object cone, t_ray ray);
 void	quadratic(t_quadratic *q, int type);
 double	intersect_plane(t_object plane, t_ray ray);
+double	intersect_cone(t_object cone, t_ray ray);
+double	intersect_sphere(t_object sphere, t_ray ray);
+double	intersect_cylinder(t_object cyl, t_ray ray);
 
 #endif
