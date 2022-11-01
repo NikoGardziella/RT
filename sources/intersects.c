@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersects.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/11/01 15:50:48 by pnoutere         ###   ########.fr       */
-=======
-/*   Updated: 2022/11/01 15:59:52 by ctrouve          ###   ########.fr       */
->>>>>>> b4b31eeab2cf69eb4abbe144b0f32139b786d919
+/*   Updated: 2022/11/01 16:31:26 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +19,7 @@ void	intersect_loop(t_ray *ray, t_scene *scene, t_hit *hit)
 	double		ret;
 
 	hit->distance = T_MAX;
-	objects_list = scene->objects;
+	objects_list = scene->objects_list;
 	while (objects_list != NULL)
 	{
 		object = (t_object *)objects_list->content;

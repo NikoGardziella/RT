@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
+#    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/01 14:23:20 by ctrouve          ###   ########.fr        #
+#    Updated: 2022/11/01 16:32:40 by pnoutere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,7 +90,8 @@ SOURCES_LIST =	main.c\
 				parser/load_scene_objects.c\
 				parser/read_camera_info.c\
 				parser/read_object_info.c\
-				parser/read_object_transformations.c
+				parser/read_object_transformations.c\
+				intersects.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
 

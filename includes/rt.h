@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/01 16:25:34 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:40:09 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ t_img	*free_images(t_img *img, size_t count);
 
 void	main_image(t_img *img, void *param);
 void	sidebar_button(t_img *img, void *param);
-void	render_scene(t_env *env, t_scene *scene);
+void	render_scene(t_img *img, t_scene *scene);
 t_uint	raycast(t_ray *ray, t_scene *scene, t_hit *hit);
 t_ray	get_camera_ray(t_camera *camera, double x, double y);
 
@@ -227,5 +227,6 @@ double	intersect_plane(t_object plane, t_ray ray);
 double	intersect_cone(t_object cone, t_ray ray);
 double	intersect_sphere(t_object sphere, t_ray ray);
 double	intersect_cylinder(t_object cyl, t_ray ray);
+int		intersects(t_ray *ray, t_scene *scene, t_hit *hit);
 
 #endif
