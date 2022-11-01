@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 11:21:22 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 11:30:27 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/01 11:34:59 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,3 @@ void	process_image(t_sdl *sdl, t_img *img, int mode, void *param)
 		(void)sdl;
 	}
 }
-
-

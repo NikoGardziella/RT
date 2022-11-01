@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 11:29:23 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/01 11:35:50 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,23 +76,16 @@ int	main(int argc, char **argv)
 		}
 		if (SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y) == 1)
 		{
-			printf("TEST!\n");
 			dim[1].start = mouse_coords;
 			blit_surface(test, dim[0], env.sdl.screen, dim[1]);
 			SDL_UpdateWindowSurface(env.sdl.window);
 		}
 		if (env.sdl.event.type == SDL_MOUSEWHEEL)
 		{
-			if (env.sdl.event.wheel.y > 0) // scroll up
+			if (env.sdl.event.wheel.y != 0) // scroll up
 			{
-				printf("TEST!\n");
-				dim[1].size.x += 10;
-				dim[1].size.y += 10;
-			}
-			else if (env.sdl.event.wheel.y < 0) // scroll down
-			{
-				dim[1].size.x -= 10;
-				dim[1].size.y -= 10;
+				dim[1].size.x += env.sdl.event.wheel.y * 5;
+				dim[1].size.y += env.sdl.event.wheel.y * 5;
 			}
 		}
 		/*else if (env.sdl.event.type == SDL_WINDOWEVENT)
