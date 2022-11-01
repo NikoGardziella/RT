@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:46:07 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/31 15:40:57 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/01 11:21:57 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ t_img	*free_images(t_img *img, size_t count);
 
 void	main_image(t_img *img, void *param);
 void	sidebar_button(t_img *img, void *param);
+void	process_image(t_sdl *sdl, t_img *img, int mode, void *param);
+void	blit_surface(SDL_Surface *src, t_dim srcrect, SDL_Surface *dest, t_dim destrect);
 
 /*Drawing functions*/
 
