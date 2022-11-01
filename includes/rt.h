@@ -6,11 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/11/01 15:18:14 by pnoutere         ###   ########.fr       */
-=======
-/*   Updated: 2022/11/01 15:46:46 by pnoutere         ###   ########.fr       */
->>>>>>> a8f5389007c447d43f32c2b7bd36d3de37482ce3
+/*   Updated: 2022/11/01 15:56:51 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,15 +131,12 @@ typedef struct s_scene
 	t_uint		ambient_color;
 }				t_scene;
 
-<<<<<<< HEAD
-=======
 typedef struct s_2d
 {
 	double	x;
 	double	y;
 }				t_2d;
 
->>>>>>> a8f5389007c447d43f32c2b7bd36d3de37482ce3
 typedef struct s_2f
 {
 	float	x;
