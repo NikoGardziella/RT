@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/01 16:01:25 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/01 16:11:38 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ t_list		*load_scene_objects(char *path);
 int			read_object_info(char *line, t_object *object);
 int			transformations(char *line, t_object *object);
 void		process_image(t_sdl *sdl, t_img *img, int mode, void *param);
-void		blit_surface(SDL_Surface *src, t_dim srcrect, SDL_Surface *dest, t_dim destrect);
+void		blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *destrect);
 
 /*Drawing functions*/
 

@@ -6,18 +6,11 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:33:20 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 16:00:40 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/01 16:12:09 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-
-static void render_scene(t_env *env, t_scene *scene)
-{
-	(void)env;
-	(void)scene;
-}
-*/
 
 void	main_image(t_img *img, void *param)
 {

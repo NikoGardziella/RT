@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 15:20:11 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 15:53:41 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/01 16:16:02 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,24 @@ static int	position(char *line, t_camera *camera)
 	if (ft_strnequ(ft_strstr(line, str), str, ft_strlen(str)))
 	{
 		line = ft_strstr(line, str);
-		line += ft_strlen(str);
-		camera->pos.x = (double)ft_atof(line++);
 		line = ft_strchr(line, ' ');
-		camera->pos.y = (double)ft_atof(line++);
-		line = ft_strchr(line, ' ');
-		camera->pos.z = (double)ft_atof(line++);
+		if (line)
+		{
+			camera->pos.x = (double)ft_atof(line++);
+			line = ft_strchr(line, ' ');
+		}
+		if (line)
+		{
+			camera->pos.y = (double)ft_atof(line++);
+			line = ft_strchr(line, ' ');
+		}
+		if (line)
+			camera->pos.z = (double)ft_atof(line++);
 		return (1);
 	}
 	return (0);
 }
+
 
 static int	look_at(char *line, t_camera *camera)
 {
