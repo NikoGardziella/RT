@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 13:07:57 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/01 14:05:09 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,16 @@ int	main(int argc, char **argv)
 
 	close_prog(&env, "Initializing close program function.", 42);
 	ft_bzero(&env, sizeof(t_env));
-	load_scene_objects(argv[1]);
+	env.scene->objects_list = load_scene_objects(argv[1]);
+	env.scene->camera = load_scene_camera(argv[1]);
 	sdl_init(&env.sdl);
 	env.img = create_images(IMAGES);
 	if (env.img == NULL)
 		close_prog(NULL, "Creating images failed...", -1);
-
 	process_image(&env.sdl, &env.img[0], 1, &env);
 	process_image(&env.sdl, &env.img[1], 1, &env);
 	test = SDL_LoadBMP("test.bmp");
 	test = SDL_ConvertSurfaceFormat(test, SDL_PIXELFORMAT_ARGB8888, 0);
-	//env.scene->objects = load_scene_objects(argv[1]);
 	dim[0].start = (t_2i){0, 0};
 	dim[0].size = (t_2i){200, 200};
 
@@ -97,7 +96,6 @@ int	main(int argc, char **argv)
 		/*Find out what this does!*/
 		SDL_WaitEvent(&env.sdl.event);
 	}
-//	env.scene->camera = load_scene_camera(path);
 	SDL_DestroyWindow(env.sdl.window);
 	(void)argc;
 	(void)argv;

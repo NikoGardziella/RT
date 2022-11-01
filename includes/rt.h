@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 13:05:37 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/01 13:11:27 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/01 14:11:44 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ typedef struct s_hit
 
 typedef struct s_scene
 {
-	t_list		*objects;
+	t_list		*objects_list;
 	t_camera	*camera;
 	t_uint		ambient_color;
 }				t_scene;
@@ -190,7 +190,7 @@ t_img	*free_images(t_img *img, size_t count);
 
 void	main_image(t_img *img, void *param);
 void	sidebar_button(t_img *img, void *param);
-void	render(t_env *env, t_scene *scene);
+void	render_scene(t_env *env, t_scene *scene);
 t_uint	raycast(t_ray *ray, t_scene *scene, t_hit *hit);
 t_ray	get_camera_ray(t_camera *camera, double x, double y);
 
@@ -200,7 +200,7 @@ t_ray	get_camera_ray(t_camera *camera, double x, double y);
 t_3d		make_vector(double x, double y, double z);
 t_camera	*load_scene_camera(char *path);
 int			read_camera_info(char *line, t_camera *camera);
-int			init_camera(t_camera *camera, t_3d pos, t_3d dir, double fov);
+int			init_camera(t_camera *camera, t_3d pos, t_3d look_at, double fov);
 t_list		*load_scene_objects(char *path);
 int			read_object_info(char *line, t_object *object);
 int			transformations(char *line, t_object *object);
