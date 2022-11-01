@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 15:20:11 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/31 17:00:38 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/01 15:53:41 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	position(char *line, t_camera *camera)
 {
 	char	*str;
 
-	str = "position";
+	str = "pos";
 	if (ft_strnequ(ft_strstr(line, str), str, ft_strlen(str)))
 	{
 		line = ft_strstr(line, str);
@@ -35,7 +35,7 @@ static int	look_at(char *line, t_camera *camera)
 {
 	char	*str;
 
-	str = "look_at";
+	str = "look";
 	if (ft_strnequ(ft_strstr(line, str), str, ft_strlen(str)))
 	{
 		line = ft_strstr(line, str);

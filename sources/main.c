@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 14:05:09 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/01 15:49:05 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	sdl_init(t_sdl *sdl)
 		close_prog(NULL, "Creating window failed...", -1);
 	sdl->screen = SDL_GetWindowSurface(sdl->window);
 	if (sdl->screen == NULL)
-		close_prog(NULL, "Creting window surface failed...", -1);
+		close_prog(NULL, "Creating window surface failed...", -1);
 }
 
 
@@ -51,6 +51,9 @@ int	main(int argc, char **argv)
 
 	close_prog(&env, "Initializing close program function.", 42);
 	ft_bzero(&env, sizeof(t_env));
+	env.scene = malloc(sizeof(t_scene));
+	if (env.scene == NULL)
+		close_prog(NULL, "Malloc env.scene failed...", -1);
 	env.scene->objects_list = load_scene_objects(argv[1]);
 	env.scene->camera = load_scene_camera(argv[1]);
 	sdl_init(&env.sdl);

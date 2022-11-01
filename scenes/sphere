@@ -13,6 +13,6 @@ OBJECT light
 OBJECT camera
 {
 	pos 0.0 40 30
-	look_at 0 0 0
-	fov 60
+	look 0 0 0
+	fo 60
 }
