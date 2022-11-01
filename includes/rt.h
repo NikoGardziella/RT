@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/27 12:46:07 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/31 18:01:44 by ctrouve          ###   ########.fr       */
+/*   Created: 2022/11/01 13:05:37 by ctrouve           #+#    #+#             */
+/*   Updated: 2022/11/01 13:11:27 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef RT_H
 # define RT_H
@@ -31,26 +32,56 @@
 #  define PI 3.141592
 # endif
 
-/*Typedef enums*/
+/*Typedef a.k.a custom types*/
 
+typedef struct s_quadratic
+{
+	t_3d	w;
+	t_3d	h;
+	t_3d	subtr_top_bot;
+	double	m;
+	double	discr;
+	double	t0;
+	double	t1;
+	double	a;
+	double	b;
+	double	c;
+	double	q;
+}	t_quadratic;
+
+/*Typedef enums*/
 typedef enum e_obj_type
 {
-	PLANE,
-	SPHERE,
-	CYLINDER,
-	CONE,
 	LIGHT,
-	CAMERA
+	SPHERE,
+	PLANE,
+	CONE,
+	CYLINDER
 }				t_obj_type;
 
-/*Typedef unions*/
-typedef union u_color
-{
-	uint32_t	combined;
-	uint8_t		rgba[4];
-}				t_color;
-
 /*Typedef structs*/
+typedef union		u_color
+{
+	uint32_t		combined;
+	uint8_t			channels[4];
+} 					t_color;
+
+typedef struct s_object
+{
+	int			type;
+	t_3d		position;
+	t_3d		rotation;
+	t_3d		length;
+	t_color		color;
+	double		radius;
+	t_3d		origin;
+	t_3d		end;
+	t_3d		normal;
+	t_3d		hit_point;
+	t_3d		axis;
+	double		axis_length;
+	int			lumen;
+}				t_object;
 
 typedef struct s_camera_info
 {
@@ -75,19 +106,6 @@ typedef struct s_camera
 	t_3d		lower_left_corner;
 }				t_camera;
 
-typedef struct s_object
-{
-	t_obj_type	type;
-	t_3d		position;
-	t_3d		rotation;
-	t_3d		scale;
-	t_uint		color;
-	double		radius;
-	t_3d		start;
-	t_3d		end;
-	t_3d		normal;
-}				t_object;
-
 typedef struct s_ray
 {
 	t_3d		origin;
@@ -111,6 +129,11 @@ typedef struct s_scene
 	t_camera	*camera;
 	t_uint		ambient_color;
 }				t_scene;
+typedef struct s_2f
+{
+	float	x;
+	float	y;
+}				t_2f;
 
 typedef struct s_dim
 {
@@ -121,7 +144,7 @@ typedef struct s_dim
 
 typedef struct s_img
 {
-	SDL_Texture		*txtr;
+	SDL_Surface		*surface;
 	int				bits_per_pixel;
 	int				line_length;
 	t_dim			dim;
@@ -132,8 +155,8 @@ typedef struct s_img
 typedef struct s_sdl
 {
 	SDL_Event		event;
-	SDL_Renderer	*renderer;
 	SDL_Window		*window;
+	SDL_Surface		*screen;
 }	t_sdl;
 
 typedef struct s_env
@@ -145,19 +168,18 @@ typedef struct s_env
 	t_scene	*scene;
 }	t_env;
 
-typedef struct s_quadratic
-{
-	double		a;
-	double		b;
-	double		c;
-	double		q;
-	double		t0;
-	double		t1;
-}			t_quadratic;
+/*Typedef structs*/
+t_img	*glob_img;
+
+/*Parser Functions*/
+t_list	*load_scene_objects(char *path);
+int		add_object(t_list **objects, t_object *object);
+int		read_object_info(char *line, t_object *object);
+int		transformations(char *line, t_object *object);
 
 /*Init functions*/
 
-t_img	*create_images(SDL_Renderer *renderer, size_t count);
+t_img	*create_images(size_t count);
 
 /*Close and free functions*/
 
@@ -166,7 +188,7 @@ t_img	*free_images(t_img *img, size_t count);
 
 /*Image functions*/
 
-void	main_image(t_img *img, void *param, char *path);
+void	main_image(t_img *img, void *param);
 void	sidebar_button(t_img *img, void *param);
 void	render(t_env *env, t_scene *scene);
 t_uint	raycast(t_ray *ray, t_scene *scene, t_hit *hit);
@@ -174,11 +196,16 @@ t_ray	get_camera_ray(t_camera *camera, double x, double y);
 
 /*Parser functions*/
 
-t_list		*load_scene_objects(char *path);
+
 t_3d		make_vector(double x, double y, double z);
 t_camera	*load_scene_camera(char *path);
 int			read_camera_info(char *line, t_camera *camera);
 int			init_camera(t_camera *camera, t_3d pos, t_3d dir, double fov);
+t_list		*load_scene_objects(char *path);
+int			read_object_info(char *line, t_object *object);
+int			transformations(char *line, t_object *object);
+void		process_image(t_sdl *sdl, t_img *img, int mode, void *param);
+void		blit_surface(SDL_Surface *src, t_dim srcrect, SDL_Surface *dest, t_dim destrect);
 
 /*Drawing functions*/
 
