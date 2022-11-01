@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 12:56:02 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/01 15:05:44 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int argc, char **argv)
 	if (env.img == NULL)
 		close_prog(NULL, "Creating images failed...", -1);
 
-	process_image(&env.sdl, &env.img[0], 1, &env);
+	//process_image(&env.sdl, &env.img[0], 1, &env);
 	process_image(&env.sdl, &env.img[1], 1, &env);
 	test = SDL_LoadBMP("test.bmp");
 	//test = SDL_ConvertSurfaceFormat(test, SDL_PIXELFORMAT_ARGB8888, 0);
@@ -85,8 +85,8 @@ int	main(int argc, char **argv)
 		{
 			if (env.sdl.event.wheel.y != 0) // scroll up
 			{
-				dim[1].size.x += env.sdl.event.wheel.y * 5;
-				dim[1].size.y += env.sdl.event.wheel.y * 5;
+				dim[1].size.x += env.sdl.event.wheel.y;
+				dim[1].size.y += env.sdl.event.wheel.y;
 			}
 		}
 		/*else if (env.sdl.event.type == SDL_WINDOWEVENT)

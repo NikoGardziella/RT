@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 11:21:22 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 12:28:01 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/01 15:10:07 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,34 @@ void	blit_surface(SDL_Surface *src, t_dim srcrect, SDL_Surface *dest, t_dim dest
 	step.y = (float)srcrect.size.y / (float)destrect.size.y;
 	printf("STEP.X %f STEP.Y %f\n", step.x, step.y);
 	coords.y = 0;
-	while ((coords.y * step.y) < srcrect.size.y)
+	while ((float)(coords.y * step.y) < (float)srcrect.size.y)
 	{
 		coords.x = 0;
-		while ((coords.x * step.x) < srcrect.size.x)
+		while ((float)(coords.x * step.x) < (float)srcrect.size.x)
 		{
-			offset = (uint32_t)(coords.y * dest->pitch);
-			offset += (uint32_t)(coords.x * dest->format->BytesPerPixel);
-			offset += (uint32_t)(destrect.start.x * dest->format->BytesPerPixel + destrect.start.y * dest->pitch);
-			destaddr = (dest->pixels + offset);
-
+			if ((int)coords.x + (int)destrect.start.x >= (int)(dest->w))
+			{
+				printf("COORDS.X %d DESTRECT.X %d\n", destrect.start.x + (int)coords.x, dest->w);
+				break ;
+			}
 			offset = (uint32_t)((int)(coords.y * step.y) * src->pitch);
 			offset += (uint32_t)((int)(coords.x * step.x) * src->format->BytesPerPixel);
 			offset += (uint32_t)(srcrect.start.x * src->format->BytesPerPixel + srcrect.start.y * src->pitch);
 			srcaddr = (src->pixels + offset);
 
+			offset = (uint32_t)(coords.y * dest->pitch);
+			offset += (uint32_t)(coords.x * dest->format->BytesPerPixel);
+			offset += (uint32_t)(destrect.start.x * dest->format->BytesPerPixel + destrect.start.y * dest->pitch);
+			destaddr = (dest->pixels + offset);
+
 			if (destaddr - (uint32_t *)dest->pixels >= 0x0 && destaddr - (uint32_t *)dest->pixels < dest->w * dest->h)
-				*destaddr = *srcaddr;
+			{
+				if (srcaddr - (uint32_t *)src->pixels >= 0x0 && srcaddr - (uint32_t *)src->pixels < src->w * src->h)
+				{
+					if ((int)coords.x + (int)destrect.start.x > 0)
+						*destaddr = *srcaddr;
+				}
+			}
 			coords.x += 1;
 		}
 		coords.y += 1;
@@ -66,7 +77,7 @@ void	process_image(t_sdl *sdl, t_img *img, int mode, void *param)
 		img->draw_func(img, param);
 	if (mode == 1)
 	{
-		//blit_surface(img->surface, img->dim, sdl->screen, img->dim);
+		blit_surface(img->surface, img->dim, sdl->screen, img->dim);
 		SDL_UpdateWindowSurface(sdl->window);
 		(void)sdl;
 	}
