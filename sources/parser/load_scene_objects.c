@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_scene_objects.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 09:25:30 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 12:43:26 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/01 12:59:01 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ static int	read_object(t_object *object, char *line)
 t_list	*read_scene_file(int fd)
 {
 	t_object	object;
-	t_list		*scene;
+	t_list		*objects_list;
 	int			ret;
 	char		*line;
 
 	ret = 1;
-	scene = NULL;
+	objects_list = NULL;
 	ft_bzero(&object, sizeof(t_object));
 	object.type = -1;
 	while (ret > 0)
@@ -84,26 +84,27 @@ t_list	*read_scene_file(int fd)
 			break ;
 		if (read_object(&object, line) == 1 || (ret == 0 && object.type >= 0))
 		{
-			if (add_object(&scene, &object) == -1)
+			if (add_object(&objects_list, &object) == -1)
 				ft_putendl("ERROR: Failed to add object to scene...");
 			read_object(&object, line);
 		}
 		if (line != NULL)
 			free(line);
 	}
-	return (scene);
+	return (objects_list);
 }
 
 t_list	*load_scene_objects(char *path)
 {
-	t_list	*scene;
+	t_list	*objects_list;
 	int		fd;
 
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		return (NULL);
-	scene = read_scene_file(fd);
+
+	objects_list = read_scene_file(fd);
 	if (fd >= 0)
 		close(fd);
-	return (scene);
+	return (objects_list);
 }

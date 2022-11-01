@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
+#    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/01 12:36:12 by pnoutere         ###   ########.fr        #
+#    Updated: 2022/11/01 14:23:20 by ctrouve          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,12 +79,16 @@ HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 SOURCES_DIRECTORY = ./sources/
 SOURCES_LIST =	main.c\
 				put_pixel.c\
+				images/get_camera_ray.c\
 				images/main_image.c\
 				images/process_image.c\
 				images/sidebar_button.c\
+				images/rendering.c\
 				init/create_images.c\
-				parser/load_scene_objects.c\
 				parser/add_object_to_scene.c\
+				parser/load_scene_camera.c\
+				parser/load_scene_objects.c\
+				parser/read_camera_info.c\
 				parser/read_object_info.c\
 				parser/read_object_transformations.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))

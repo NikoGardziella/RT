@@ -6,9 +6,10 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/01 15:56:51 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:25:34 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef RT_H
 # define RT_H
@@ -108,7 +109,7 @@ typedef struct s_camera_info
 typedef struct s_camera
 {
 	t_3d		pos;
-	t_3d		dir;
+	t_3d		look_at;
 	double		fov;
 	double		scale;
 	double		aspect;
@@ -126,8 +127,8 @@ typedef struct s_ray
 
 typedef struct s_scene
 {
-	t_list		*objects;
-	t_camera	camera;
+	t_list		*objects_list;
+	t_camera	*camera;
 	t_uint		ambient_color;
 }				t_scene;
 
@@ -198,16 +199,22 @@ t_img	*free_images(t_img *img, size_t count);
 
 void	main_image(t_img *img, void *param);
 void	sidebar_button(t_img *img, void *param);
-void	render(t_env *env, t_scene *scene);
+void	render_scene(t_env *env, t_scene *scene);
 t_uint	raycast(t_ray *ray, t_scene *scene, t_hit *hit);
 t_ray	get_camera_ray(t_camera *camera, double x, double y);
 
-/*parser functions*/
-t_list	*load_scene_objects(char *path);
-int		read_object_info(char *line, t_object *object);
-int		transformations(char *line, t_object *object);
-void	process_image(t_sdl *sdl, t_img *img, int mode, void *param);
-void	blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *destrect);
+/*Parser functions*/
+
+
+t_3d		make_vector(double x, double y, double z);
+t_camera	*load_scene_camera(char *path);
+int			read_camera_info(char *line, t_camera *camera);
+int			init_camera(t_camera *camera, t_3d pos, t_3d look_at, double fov);
+t_list		*load_scene_objects(char *path);
+int			read_object_info(char *line, t_object *object);
+int			transformations(char *line, t_object *object);
+void		process_image(t_sdl *sdl, t_img *img, int mode, void *param);
+void		blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *destrect);
 
 /*Drawing functions*/
 

@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/11/01 15:50:33 by pnoutere         ###   ########.fr       */
+=======
+/*   Updated: 2022/11/01 15:59:41 by ctrouve          ###   ########.fr       */
+>>>>>>> b4b31eeab2cf69eb4abbe144b0f32139b786d919
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +42,7 @@ void	sdl_init(t_sdl *sdl)
 		close_prog(NULL, "Creating window failed...", -1);
 	sdl->screen = SDL_GetWindowSurface(sdl->window);
 	if (sdl->screen == NULL)
-		close_prog(NULL, "Creting window surface failed...", -1);
+		close_prog(NULL, "Creating window surface failed...", -1);
 }
 
 
@@ -51,12 +55,15 @@ int	main(int argc, char **argv)
 
 	close_prog(&env, "Initializing close program function.", 42);
 	ft_bzero(&env, sizeof(t_env));
-	load_scene_objects(argv[1]);
+	env.scene = malloc(sizeof(t_scene));
+	if (env.scene == NULL)
+		close_prog(NULL, "Malloc env.scene failed...", -1);
+	env.scene->objects_list = load_scene_objects(argv[1]);
+	env.scene->camera = load_scene_camera(argv[1]);
 	sdl_init(&env.sdl);
 	env.img = create_images(IMAGES);
 	if (env.img == NULL)
 		close_prog(NULL, "Creating images failed...", -1);
-
 	process_image(&env.sdl, &env.img[0], 1, &env);
 	process_image(&env.sdl, &env.img[1], 1, &env);
 	test = SDL_LoadBMP("dots.bmp");
