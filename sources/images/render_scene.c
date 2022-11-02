@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/02 14:34:47 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 15:39:47 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,17 @@ t_uint	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 
 void	render_scene(t_img *img, t_scene *scene)
 {
-	t_ray	ray;
-	t_2f	screen;
-	t_2i	coords;
-	t_hit	hit;
-	t_uint	color;
-	t_proj	proj;
+	int			resolution;
+	t_2f		screen;
+	t_2i		temp;
+	t_2i		coords;
+	t_ray		ray;
+	t_hit		hit;
+	t_uint		color;
+	t_proj		proj;
 	t_camera	*camera;
 
+	resolution = 2;
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	proj = init_proj(scene->camera->fov, &img[0].dim.size, &(t_2d){1.0f, 1000.0f});
@@ -71,10 +74,23 @@ void	render_scene(t_img *img, t_scene *scene)
 			}
 			else
 				mid = 0;
-			put_pixel(coords, color, img);
-			coords.x++;
+			
+			temp.y = coords.y;
+			while (temp.y < (coords.y + resolution))
+			{
+				temp.x = coords.x;
+				while (temp.x < (coords.x + resolution))
+				{
+					put_pixel(temp, color, img);
+					temp.x++;
+				}
+				temp.y++;
+			}
+			coords.x += resolution;
+			// coords.x++;
 		}
 		// printf("\n");
-		coords.y++;
+		coords.y += resolution;
+		// coords.y++;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_camera_ray.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:04:53 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/01 13:02:01 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/02 15:00:22 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ t_ray	get_ray(t_2i coords, t_img *img, t_camera *camera, t_proj *proj)
 	dir.right = normalize_vector(cross_product(dir.forward, dir.up));
 	dir.up = scale_vector(dir.up, h_w[1] * norm_screen.x);
 	dir.right =  scale_vector(dir.right, h_w[0] * norm_screen.y);
-
 	ray.forward = add_vectors(dir.forward, dir.right);
 	ray.forward = add_vectors(ray.forward, dir.up);
 	ray.forward = normalize_vector(ray.forward);
