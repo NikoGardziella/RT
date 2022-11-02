@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_debugger.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:18:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 11:33:17 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 12:48:47 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	ray_debugger(t_img *img, void *param)
 			screen.y = (float)(coords.y / SCREEN_Y);
 			ray = get_ray(coords, img, scene->camera, &proj);
 			//ray = get_camera_ray(scene->camera, screen.x, screen.y);
-			printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
+			// printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
 			draw_ray_arrows(img, ray.forward, 0x004466, 2);
 			coords.x += 20;
 		}
