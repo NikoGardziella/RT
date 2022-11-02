@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/02 14:34:47 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 18:18:11 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
+/*
 t_uint	shade(t_scene *scene, t_hit *hit)
 {
 	t_uint	color = 0xFF00FF;
@@ -20,16 +21,16 @@ t_uint	shade(t_scene *scene, t_hit *hit)
 	(void)scene;
 	return (color);
 }
-
+*/
 t_uint	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 {
 	t_uint	color;
 
-	color = scene->ambient_color;
+	color.combined = ft_get_color(scene->ambient_color);
 	// printf("%f %f %f\n", ray->direction.x, ray->direction.y, ray->direction.z);
 	if (intersects(ray, scene, hit))
 	{
-		color = shade(scene, hit);
+		color.combined = shade(scene, hit);
 	}
 	return (color);
 }

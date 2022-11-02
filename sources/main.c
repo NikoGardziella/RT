@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <dmalesev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 14:41:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 16:17:28 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ int	main(int argc, char **argv)
 	env.scene = malloc(sizeof(t_scene));
 	if (env.scene == NULL)
 		close_prog(NULL, "Malloc env.scene failed...", -1);
-	env.scene->objects_list = load_scene_objects(argv[1]);
 	env.scene->camera = load_scene_camera(argv[1]);
+	env.scene->objects_list = load_scene_objects(argv[1]);
+	env.scene->lights_list = load_scene_lights(argv[1]);
 	sdl_init(&env.sdl);
 	env.img = create_images(IMAGES);
 	if (env.img == NULL)

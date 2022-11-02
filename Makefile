@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
+#    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/02 13:24:08 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/02 17:09:24 by ctrouve          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,9 +89,12 @@ SOURCES_LIST =	main.c\
 				images/sidebar_button.c\
 				images/ray_debugger.c\
 				images/render_scene.c\
+				images/shade.c\
+				images/color_op.c\
 				parser/add_object_to_scene.c\
 				parser/load_scene_camera.c\
 				parser/load_scene_objects.c\
+				parser/load_scene_lights.c\
 				parser/read_camera_info.c\
 				parser/read_object_info.c\
 				parser/read_object_transformations.c\
