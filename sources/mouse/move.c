@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 11:50:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 14:00:37 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 14:45:55 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ void	mouse_move(void *param)
 	//t_dim	dim[2];
 
 	env = param;
+	if ((env->mouse_state & 4) == 4)
+	{
+		printf("ROTATING\n");
+		env->scene->camera->ray.forward = rotate_point(env->scene->camera->ray.forward, (t_3d){0.0f, 1.0f, 0.0f});
+	}
 	/*if (SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y) == 1)
 	{
 	}
