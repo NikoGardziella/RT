@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 16:41:48 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/02 09:11:44 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	main(int argc, char **argv)
 		close_prog(NULL, "Creating images failed...", -1);
 	process_image(&env.sdl, &env.img[0], 1, &env);
 	process_image(&env.sdl, &env.img[1], 1, &env);
-	test = SDL_LoadBMP("dots.bmp");
+	test = SDL_LoadBMP("test.bmp");
 	//test = SDL_ConvertSurfaceFormat(test, SDL_PIXELFORMAT_ARGB8888, 0);
 
 	dim[0].start = (t_2i){0, 0};
@@ -80,8 +80,16 @@ int	main(int argc, char **argv)
 		}
 		if (SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y) == 1)
 		{
+			printf("LEFT CLICK\n");
 			dim[1].start = mouse_coords;
-			blit_surface(env.img[1].surface, &dim[0], env.sdl.screen, &dim[1]);
+			blit_surface(test, &dim[0], env.sdl.screen, &dim[1]);
+			SDL_UpdateWindowSurface(env.sdl.window);
+		}
+		else if (SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y) == 4)
+		{
+			printf("RIGHT CLICK\n");
+			dim[1].size = mouse_coords;
+			blit_surface(test, &dim[0], env.sdl.screen, &dim[1]);
 			SDL_UpdateWindowSurface(env.sdl.window);
 		}
 		if (env.sdl.event.type == SDL_MOUSEWHEEL)
