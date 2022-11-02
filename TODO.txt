@@ -1,0 +1,4 @@
+
+Multithreading add;
+Improve blit_surface or make blit_surface_fast;
+Camera movement;
