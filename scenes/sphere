@@ -1,6 +1,6 @@
 OBJECT sphere
 {
-	origin 0.0 0.0 0.0
+	origin 10.0 0.0 40.0
 	radius 5.0
 	color FFFFFF
 }
@@ -12,7 +12,7 @@ OBJECT light
 }
 OBJECT camera
 {
-	pos 0 0 -30
-	look 0 10 0
+	pos 0 0 0
+	look 0 0 20
 	fov 60
 }

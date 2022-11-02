@@ -56,10 +56,21 @@ void	render_scene(t_img *img, t_scene *scene)
 			screen.x = (float)(coords.x / SCREEN_X);
 			screen.y = (float)(coords.y / SCREEN_Y);
 
+
 			//ray = get_camera_ray(scene->camera, screen.x, screen.y);
 			ray = get_ray(coords, img, scene->camera, &proj);
+
 			// printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
 			color = raycast(&ray, scene, &hit);
+
+			if(coords.x == SCREEN_X / 2 && coords.y == SCREEN_Y / 2)
+			{
+				printf("camX: %f  camY: %f  cam:%f\n",camera->ray.forward.x, camera->ray.forward.y, camera->ray.forward.z);
+				printf("rayX: %f  rayY: %f  ray:%f\n",ray.forward.x, ray.forward.y, ray.forward.z);
+				mid = 1;
+			}
+			else
+				mid = 0;
 			put_pixel(coords, color, img);
 			coords.x++;
 		}

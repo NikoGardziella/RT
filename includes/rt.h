@@ -32,6 +32,8 @@
 #  define PI 3.141592
 # endif
 
+int mid;
+
 /*Typedef enums*/
 
 typedef enum e_obj_type

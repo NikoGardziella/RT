@@ -22,7 +22,10 @@ void	intersect_loop(t_ray *ray, t_scene *scene, t_hit *hit)
 	objects_list = scene->objects_list;
 	while (objects_list != NULL)
 	{
+
 		object = (t_object *)objects_list->content;
+		if(mid)
+			printf("objx: %f oby: %f objz: %f  \n", object->origin.x,object->origin.y,object->origin.z);
 		if (object->type == SPHERE)
 			ret = intersect_sphere(*object, *ray);
 		if (object->type == PLANE)
@@ -117,8 +120,8 @@ double	intersect_cone(t_object cone, t_ray ray)
 	q.t0 = T_MAX;
 	q.t1 = T_MAX;
 	quadratic(&q, CONE);
-	if(q.t1 != T_MAX)
-		printf("t1: %lf\n", q.t1);
+	//if(q.t1 != T_MAX)
+	//	printf("t1: %lf\n", q.t1);
 	// cone.hit_point = add_vectors(ray.origin, scale_vector(ray.forward, q.t1));
 	return (q.t1);
 }
