@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/02 09:37:45 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/02 11:24:13 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,8 @@ HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./sources/
 SOURCES_LIST =	main.c\
-				init/create_images.c\
+				init/images.c\
+				init/camera.c\
 				init/rotation_matrices.c\
 				matrix/transform.c\
 				images/put_pixel.c\

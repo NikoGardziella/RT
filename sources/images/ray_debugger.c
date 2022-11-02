@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:18:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 09:52:40 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 11:33:17 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,17 @@ void	ray_debugger(t_img *img, void *param)
 	t_env	*env;
 	t_2f	screen;
 	t_scene	*scene;
+	t_camera	*camera;
 	t_ray	ray;
 	t_2i	coords;
+	t_proj	proj;
 
 	env = param;
 	coords.y = 0;
 	scene = env->scene;
-	init_camera(scene->camera, scene->camera->pos, scene->camera->look_at, \
-		scene->camera->fov);
+	camera = env->scene->camera;
+	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
+	proj = init_proj(scene->camera->fov, &img[0].dim.size, &(t_2d){1.0f, 1000.0f});
 	while (coords.y < img->dim.size.y)
 	{
 		coords.x = 0;
@@ -66,9 +69,10 @@ void	ray_debugger(t_img *img, void *param)
 		{
 			screen.x = (float)(coords.x / SCREEN_X);
 			screen.y = (float)(coords.y / SCREEN_Y);
-			ray = get_camera_ray(scene->camera, screen.x, screen.y);
-			printf("[%.2f %.2f %.2f] ", ray.direction.x, ray.direction.y, ray.direction.z);
-			draw_ray_arrows(img, ray.direction, 0x004466, 2);
+			ray = get_ray(coords, img, scene->camera, &proj);
+			//ray = get_camera_ray(scene->camera, screen.x, screen.y);
+			printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
+			draw_ray_arrows(img, ray.forward, 0x004466, 2);
 			coords.x += 20;
 		}
 		printf("\n");

@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 15:20:11 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 16:16:02 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/02 11:21:16 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ static int	position(char *line, t_camera *camera)
 		line = ft_strchr(line, ' ');
 		if (line)
 		{
-			camera->pos.x = (double)ft_atof(line++);
+			camera->ray.origin.x = (double)ft_atof(line++);
 			line = ft_strchr(line, ' ');
 		}
 		if (line)
 		{
-			camera->pos.y = (double)ft_atof(line++);
+			camera->ray.origin.y = (double)ft_atof(line++);
 			line = ft_strchr(line, ' ');
 		}
 		if (line)
-			camera->pos.z = (double)ft_atof(line++);
+			camera->ray.origin.z = (double)ft_atof(line++);
 		return (1);
 	}
 	return (0);
@@ -41,6 +41,7 @@ static int	position(char *line, t_camera *camera)
 
 static int	look_at(char *line, t_camera *camera)
 {
+	t_3d	look_at;
 	char	*str;
 
 	str = "look";
@@ -48,11 +49,13 @@ static int	look_at(char *line, t_camera *camera)
 	{
 		line = ft_strstr(line, str);
 		line += ft_strlen(str);
-		camera->look_at.x = (double)ft_atof(line++);
+		look_at.x = (double)ft_atof(line++);
 		line = ft_strchr(line, ' ');
-		camera->look_at.y = (double)ft_atof(line++);
+		look_at.y = (double)ft_atof(line++);
 		line = ft_strchr(line, ' ');
-		camera->look_at.z = (double)ft_atof(line++);
+		look_at.z = (double)ft_atof(line++);
+		camera->ray.forward = subtract_vectors(camera->ray.origin, look_at);
+		camera->ray.forward = normalize_vector(camera->ray.forward);
 		return (1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/02 09:39:22 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 11:31:09 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,13 @@ typedef enum e_obj_type
 }				t_obj_type;
 
 /*Typedef structs*/
+
+typedef struct s_dir
+{
+	t_3d	forward;
+	t_3d	up;
+	t_3d	right;
+}				t_dir;
 
 typedef struct s_proj
 {
@@ -108,7 +115,7 @@ typedef struct s_hit
 	t_color		color;
 }				t_hit;
 
-typedef struct s_camera_info
+/*typedef struct s_camera_info
 {
 	t_3d		v_up;
 	t_3d		u;
@@ -117,26 +124,28 @@ typedef struct s_camera_info
 	double		theta;
 	double		half_height;
 	double		half_width;
-}				t_camera_info;
-
-typedef struct s_camera
-{
-	t_3d		pos;
-	t_3d		look_at;
-	double		fov;
-	double		scale;
-	double		aspect;
-	t_3d		horizontal;
-	t_3d		vertical;
-	t_3d		lower_left_corner;
-}				t_camera;
+}				t_camera_info;*/
 
 typedef struct s_ray
 {
 	t_3d		origin;
-	t_3d		direction;
+	t_3d		forward;
 	t_object	*origin_object;
 }				t_ray;
+
+typedef struct s_camera
+{
+	t_ray		ray;
+	t_3d		up;
+	t_3d		right;
+	double		fov;
+	double		aspect_ratio;
+}				t_camera;
+
+	/*double		scale;
+	t_3d		horizontal;
+	t_3d		vertical;
+	t_3d		lower_left_corner;*/
 
 typedef struct s_scene
 {
@@ -218,18 +227,19 @@ void		ray_debugger(t_img *img, void *param);
 void		render_scene(t_img *img, t_scene *scene);
 t_uint		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
 t_ray		get_camera_ray(t_camera *camera, double x, double y);
+t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera, t_proj *proj);
 
 /*Parser functions*/
 
-t_3d		make_vector(double x, double y, double z);
+t_camera	init_camera(t_2i size, t_3d origin, t_3d forward, double fov);
 t_camera	*load_scene_camera(char *path);
-int			read_camera_info(char *line, t_camera *camera);
-int			init_camera(t_camera *camera, t_3d pos, t_3d look_at, double fov);
 t_list		*load_scene_objects(char *path);
-int			read_object_info(char *line, t_object *object);
-int			transformations(char *line, t_object *object);
+t_3d		make_vector(double x, double y, double z);
 void		process_image(t_sdl *sdl, t_img *img, int mode, void *param);
 void		blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *destrect);
+int			read_camera_info(char *line, t_camera *camera);
+int			read_object_info(char *line, t_object *object);
+int			transformations(char *line, t_object *object);
 
 /*Drawing functions*/
 

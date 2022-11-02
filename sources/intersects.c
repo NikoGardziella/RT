@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/01 16:31:26 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/02 11:23:41 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	intersects(t_ray *ray, t_scene *scene, t_hit *hit)
 	if (hit->distance < T_MAX)
 	{
 		hit->point = add_vectors(ray->origin,
-			scale_vector(ray->direction, hit->distance));
+			scale_vector(ray->forward, hit->distance));
 		hit->color = hit->object->color;
 		return (1);
 	}
@@ -59,7 +59,7 @@ double	intersect_plane(t_object plane, t_ray ray)
 	double		denom;
 	double		t;
 
-	denom = dot_product(plane.normal, ray.direction);
+	denom = dot_product(plane.normal, ray.forward);
 	if (denom > 0)
 	{
 		p0l0 = subtract_vectors(plane.origin, ray.origin);
@@ -106,17 +106,17 @@ double	intersect_cone(t_object cone, t_ray ray)
 	q.subtr_top_bot = scale_vector(q.subtr_top_bot, len);
 	q.w = subtract_vectors(ray.origin, cone.origin);
 	q.h = normalize_vector(q.subtr_top_bot);
-	ray_dot_product = dot_product(ray.direction, ray.direction);
-	ray_dir_h = dot_product(ray.direction, q.h);
+	ray_dot_product = dot_product(ray.forward, ray.forward);
+	ray_dir_h = dot_product(ray.forward, q.h);
 	dot_w_h = dot_product(q.w, q.h);
 	q.a = ray_dot_product - (q.m * pow(ray_dir_h, 2)) - pow(ray_dir_h, 2);
-	q.b = 2 * (dot_product(ray.direction, q.w) - (q.m * (ray_dir_h * dot_w_h)) - (ray_dir_h * dot_w_h));
+	q.b = 2 * (dot_product(ray.forward, q.w) - (q.m * (ray_dir_h * dot_w_h)) - (ray_dir_h * dot_w_h));
 	q.c = dot_product(q.w, q.w)	- (q.m * pow(dot_w_h, 2)) - pow(dot_w_h, 2);
 	q.discr = ((q.b * q.b) - (4 * q.a * q.c));
 	q.t0 = T_MAX;
 	q.t1 = T_MAX;
 	quadratic(&q, CONE);
-	// cone.hit_point = add_vectors(ray.origin, scale_vector(ray.direction, q.t1));
+	// cone.hit_point = add_vectors(ray.origin, scale_vector(ray.forward, q.t1));
 	return (q.t1);
 }
 
@@ -125,14 +125,14 @@ double	intersect_sphere(t_object sphere, t_ray ray)
 	t_quadratic	q;
 
 	q.w = subtract_vectors(ray.origin, sphere.origin);
-	q.a = dot_product(ray.direction, ray.direction);
-	q.b = 2 * dot_product(ray.direction, q.w);
+	q.a = dot_product(ray.forward, ray.forward);
+	q.b = 2 * dot_product(ray.forward, q.w);
 	q.c = dot_product(q.w, q.w) - pow(sphere.radius, 2);
 	q.discr = ((q.b * q.b) - (4 * q.a * q.c));
 	q.t0 = T_MAX;
 	q.t1 = T_MAX;
 	quadratic(&q, SPHERE);
-	// sphere.hit_point = add_vectors(ray.origin, scale_vector(ray.direction, q.t1));
+	// sphere.hit_point = add_vectors(ray.origin, scale_vector(ray.forward, q.t1));
 	return (q.t1);
 }
 
@@ -142,8 +142,8 @@ double	intersect_cylinder(t_object cyl, t_ray ray)
 	
 	q.w = subtract_vectors(ray.origin, cyl.origin);
 	q.h = normalize_vector(subtract_vectors(cyl.end, cyl.origin));
-	q.a = dot_product(ray.direction, ray.direction) - pow(dot_product(ray.direction, q.h), 2); // check that dot product of ray direction is always one
-	q.b = 2 * (dot_product(ray.direction, q.w) - (dot_product(ray.direction, q.h) * dot_product(q.w, q.h)));
+	q.a = dot_product(ray.forward, ray.forward) - pow(dot_product(ray.forward, q.h), 2); // check that dot product of ray forward is always one
+	q.b = 2 * (dot_product(ray.forward, q.w) - (dot_product(ray.forward, q.h) * dot_product(q.w, q.h)));
 	q.c = dot_product(q.w, q.w) - pow(dot_product(q.w, q.h), 2) - pow(cyl.radius, 2);
 	q.discr = ((q.b * q.b) - (4 * q.a * q.c));
 	q.t0 = T_MAX;
