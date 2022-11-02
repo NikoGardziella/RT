@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 11:21:22 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 09:13:51 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 15:24:01 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *de
 
 void	process_image(t_sdl *sdl, t_img *img, int mode, void *param)
 {
+	SDL_LockSurface(sdl->screen);
 	fill_image(img, 0x00000000);
 	if (img->draw_func != NULL)
 		img->draw_func(img, param);
@@ -80,4 +81,5 @@ void	process_image(t_sdl *sdl, t_img *img, int mode, void *param)
 		blit_surface(img->surface, NULL, sdl->screen, &img->dim);
 		SDL_UpdateWindowSurface(sdl->window);
 	}
+	SDL_UnlockSurface(sdl->screen);
 }

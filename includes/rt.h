@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/02 13:26:35 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 15:07:44 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,6 +239,7 @@ void		render_scene(t_img *img, t_scene *scene);
 t_uint		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
 t_ray		get_camera_ray(t_camera *camera, double x, double y);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera, t_proj *proj);
+void		put_images_to_screen(t_env *env);
 
 /*Parser functions*/
 

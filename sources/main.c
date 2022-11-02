@@ -6,7 +6,7 @@
 /*   By: dmalesev <dmalesev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 14:41:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 15:20:53 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,12 @@ int	main(int argc, char **argv)
 			if (env.sdl.event.button.button == SDL_BUTTON_RIGHT)
 				right_button_down(mouse_coords, &env);
 		}
-		if (env.sdl.event.type == SDL_MOUSEBUTTONUP)
-		{
-			process_image(&env.sdl, &env.img[0], 1, &env);
-			process_image(&env.sdl, &env.img[1], 1, &env);
-			process_image(&env.sdl, &env.img[2], 1, &env);
-		}
+		//if (env.sdl.event.type == SDL_MOUSEBUTTONUP)
+		//{
+			process_image(&env.sdl, &env.img[0], 0, &env);
+			process_image(&env.sdl, &env.img[2], 0, &env);
+			put_images_to_screen(&env);
+		//}
 		// printf("MOUSE STATE %d\n", env.mouse_state);
 		/*else if (env.sdl.event.type == SDL_WINDOWEVENT)
 		{
@@ -103,3 +103,33 @@ int	main(int argc, char **argv)
 	(void)argv;
 	return(0);
 }
+
+/*
+int main(int argc, char **argv)
+{
+	// do initialize stuff
+	int run = true;
+	SDL_Event evt;
+
+	// game loop
+	while (run)
+	{
+		while(SDL_PollEvent(&evt) != 0)
+		{
+			switch (evt.type)
+			{
+				case SDL_QUIT:
+					run = false;
+					break;
+			}
+		}
+
+		update();
+		render();
+	}
+
+	// clean up
+	SDL_Quit();
+	return 0;
+}
+*/

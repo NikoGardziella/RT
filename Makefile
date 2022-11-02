@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/02 13:24:08 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/02 15:08:25 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,6 +87,7 @@ SOURCES_LIST =	main.c\
 				images/main_image.c\
 				images/process_image.c\
 				images/sidebar_button.c\
+				images/put_images_to_screen.c\
 				images/ray_debugger.c\
 				images/render_scene.c\
 				parser/add_object_to_scene.c\
