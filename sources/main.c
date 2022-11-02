@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmalesev <dmalesev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 09:33:56 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 14:33:19 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,8 @@ void	sdl_init(t_sdl *sdl)
 
 int	main(int argc, char **argv)
 {
-	t_env		env;
-	SDL_Surface	*test;
-	t_dim		dim[2];
-	t_2i		mouse_coords;
+	t_env	env;
+	t_2i	mouse_coords;
 
 	close_prog(&env, "Initializing close program function.", 42);
 	ft_bzero(&env, sizeof(t_env));
@@ -60,18 +58,7 @@ int	main(int argc, char **argv)
 	env.img = create_images(IMAGES);
 	if (env.img == NULL)
 		close_prog(NULL, "Creating images failed...", -1);
-	process_image(&env.sdl, &env.img[0], 1, &env);
-	process_image(&env.sdl, &env.img[1], 1, &env);
-	process_image(&env.sdl, &env.img[2], 1, &env);
-	test = SDL_LoadBMP("test.bmp");
-	//test = SDL_ConvertSurfaceFormat(test, SDL_PIXELFORMAT_ARGB8888, 0);
-
-	dim[0].start = (t_2i){0, 0};
-	dim[0].size = (t_2i){1000, 1000};
-
-	dim[1].start = (t_2i){0, 0};
-	dim[1].size = (t_2i){500, 500};
-
+	env.mouse_state = 0;
 	while (1)
 	{
 		if (env.sdl.event.type == SDL_QUIT || env.sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
@@ -79,28 +66,33 @@ int	main(int argc, char **argv)
 			SDL_Quit();
 			break ;
 		}
-		if (SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y) == 1)
+		if (env.sdl.event.type == SDL_MOUSEMOTION)
+			mouse_move(&env);
+		SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y);
+		if (env.sdl.event.type == SDL_MOUSEBUTTONUP)
 		{
-			printf("LEFT CLICK\n");
-			dim[1].start = mouse_coords;
-			blit_surface(test, &dim[0], env.sdl.screen, &dim[1]);
-			SDL_UpdateWindowSurface(env.sdl.window);
+			if (env.sdl.event.button.button == SDL_BUTTON_LEFT)
+				left_button_up(mouse_coords, &env);
+			if (env.sdl.event.button.button == SDL_BUTTON_RIGHT)
+				right_button_up(mouse_coords, &env);
 		}
-		else if (SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y) == 4)
+		if (env.sdl.event.type == SDL_MOUSEBUTTONDOWN)
 		{
-			printf("RIGHT CLICK\n");
-			dim[1].size = mouse_coords;
-			blit_surface(test, &dim[0], env.sdl.screen, &dim[1]);
-			SDL_UpdateWindowSurface(env.sdl.window);
+			if (env.sdl.event.button.button == SDL_BUTTON_LEFT)
+				left_button_down(mouse_coords, &env);
+			if (env.sdl.event.button.button == SDL_BUTTON_RIGHT)
+				right_button_down(mouse_coords, &env);
 		}
-		if (env.sdl.event.type == SDL_MOUSEWHEEL)
+		if (env.sdl.event.type == SDL_MOUSEBUTTONUP)
 		{
-			if (env.sdl.event.wheel.y != 0) // scroll up
+			if (env.sdl.event.button.button == SDL_BUTTON_LEFT)
 			{
-				dim[1].size.x += env.sdl.event.wheel.y;
-				dim[1].size.y += env.sdl.event.wheel.y;
+				process_image(&env.sdl, &env.img[0], 1, &env);
+				process_image(&env.sdl, &env.img[1], 1, &env);
+				process_image(&env.sdl, &env.img[2], 1, &env);
 			}
 		}
+		// printf("MOUSE STATE %d\n", env.mouse_state);
 		/*else if (env.sdl.event.type == SDL_WINDOWEVENT)
 		{
 			if (env.sdl.event.window.event == SDL_WINDOWEVENT_EXPOSED)
