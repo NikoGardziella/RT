@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/02 15:07:44 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 16:45:30 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,8 @@ typedef struct s_env
 	t_img	*img;
 	t_scene	*scene;
 	uint8_t	mouse_state;
+	t_2i	mouse_coords;
+	t_2i	position;
 }				t_env;
 
 /*Parser Functions*/

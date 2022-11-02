@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 11:50:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 14:45:55 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 17:05:02 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,21 @@ void	mouse_move(void *param)
 	env = param;
 	if ((env->mouse_state & 4) == 4)
 	{
-		printf("ROTATING\n");
-		env->scene->camera->ray.forward = rotate_point(env->scene->camera->ray.forward, (t_3d){0.0f, 1.0f, 0.0f});
+		// printf("ROTATING\n");
+		// if (env->position.x - env->mouse_coords)
+		printf("prepos: %d\n", env->position.x - env->mouse_coords.x);
+		if ((env->position.x - env->mouse_coords.x) > 0)
+			env->scene->camera->ray.forward = rotate_point(env->scene->camera->ray.forward, (t_3d){0.0f, 1.0f, 0.0f});
+		else if ((env->position.x - env->mouse_coords.x) < 0)
+			env->scene->camera->ray.forward = rotate_point(env->scene->camera->ray.forward, (t_3d){0.0f, -1.0f, 0.0f});
+		if ((env->position.y - env->mouse_coords.y) > 0)
+			env->scene->camera->ray.forward = rotate_point(env->scene->camera->ray.forward, (t_3d){1.0f, 0.0f, 0.0f});
+		else if ((env->position.y - env->mouse_coords.y) < 0)
+			env->scene->camera->ray.forward = rotate_point(env->scene->camera->ray.forward, (t_3d){-1.0f, 0.0f, 0.0f});
+		env->position.x = env->mouse_coords.x;
+		env->position.y = env->mouse_coords.y;
+		// printf("prepos: %d %d\n", env->position.x, env->position.y);
+		// printf("curpos: %d %d\n", env->mouse_coords.x, env->mouse_coords.y);
 	}
 	/*if (SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y) == 1)
 	{

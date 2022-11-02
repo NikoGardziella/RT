@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <dmalesev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 15:20:53 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 16:47:30 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	sdl_init(t_sdl *sdl)
 int	main(int argc, char **argv)
 {
 	t_env	env;
-	t_2i	mouse_coords;
+	// t_2i	position;
 
 	close_prog(&env, "Initializing close program function.", 42);
 	ft_bzero(&env, sizeof(t_env));
@@ -68,27 +68,32 @@ int	main(int argc, char **argv)
 		}
 		if (env.sdl.event.type == SDL_MOUSEMOTION)
 			mouse_move(&env);
-		SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y);
+		SDL_GetMouseState(&env.mouse_coords.x, &env.mouse_coords.y);
+		
 		if (env.sdl.event.type == SDL_MOUSEBUTTONUP)
 		{
 			if (env.sdl.event.button.button == SDL_BUTTON_LEFT)
-				left_button_up(mouse_coords, &env);
+				left_button_up(env.mouse_coords, &env);
 			if (env.sdl.event.button.button == SDL_BUTTON_RIGHT)
-				right_button_up(mouse_coords, &env);
+				right_button_up(env.mouse_coords, &env);
 		}
 		if (env.sdl.event.type == SDL_MOUSEBUTTONDOWN)
 		{
 			if (env.sdl.event.button.button == SDL_BUTTON_LEFT)
-				left_button_down(mouse_coords, &env);
+				left_button_down(env.mouse_coords, &env);
 			if (env.sdl.event.button.button == SDL_BUTTON_RIGHT)
-				right_button_down(mouse_coords, &env);
+			{
+				env.position.x = env.mouse_coords.x;
+				env.position.y = env.mouse_coords.y;
+				right_button_down(env.mouse_coords, &env);
+			}
 		}
-		//if (env.sdl.event.type == SDL_MOUSEBUTTONUP)
-		//{
-			process_image(&env.sdl, &env.img[0], 0, &env);
-			process_image(&env.sdl, &env.img[2], 0, &env);
-			put_images_to_screen(&env);
-		//}
+		if (env.sdl.event.type == SDL_MOUSEBUTTONUP)
+		{
+			process_image(&env.sdl, &env.img[0], 1, &env);
+			process_image(&env.sdl, &env.img[1], 1, &env);
+			process_image(&env.sdl, &env.img[2], 1, &env);
+		}
 		// printf("MOUSE STATE %d\n", env.mouse_state);
 		/*else if (env.sdl.event.type == SDL_WINDOWEVENT)
 		{
@@ -103,33 +108,3 @@ int	main(int argc, char **argv)
 	(void)argv;
 	return(0);
 }
-
-/*
-int main(int argc, char **argv)
-{
-	// do initialize stuff
-	int run = true;
-	SDL_Event evt;
-
-	// game loop
-	while (run)
-	{
-		while(SDL_PollEvent(&evt) != 0)
-		{
-			switch (evt.type)
-			{
-				case SDL_QUIT:
-					run = false;
-					break;
-			}
-		}
-
-		update();
-		render();
-	}
-
-	// clean up
-	SDL_Quit();
-	return 0;
-}
-*/
