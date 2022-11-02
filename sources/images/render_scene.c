@@ -60,7 +60,7 @@ void	render_scene(t_img *img, t_scene *scene)
 			ray = get_ray(coords, img, scene->camera, &proj);
 			// printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
 			color = raycast(&ray, scene, &hit);
-			//put_pixel(coords, color, img);
+			put_pixel(coords, color, img);
 			coords.x++;
 		}
 		// printf("\n");

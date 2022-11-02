@@ -49,19 +49,19 @@ static void	draw_ray_arrows(t_img *img, t_3d ray, t_uint color, int mode)
 void	ray_debugger(t_img *img, void *param)
 {
 	t_env	*env;
-	t_2f	screen;
-	t_scene	*scene;
-	t_camera	*camera;
 	t_ray	ray;
+	t_2f	screen;
+	t_scene *scene;
 	t_2i	coords;
 	t_proj	proj;
+	t_camera	*camera;
 
 	env = param;
-	coords.y = 0;
 	scene = env->scene;
-	camera = env->scene->camera;
+	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	proj = init_proj(scene->camera->fov, &img[0].dim.size, &(t_2d){1.0f, 1000.0f});
+	coords.y = 0;
 	while (coords.y < img->dim.size.y)
 	{
 		coords.x = 0;
@@ -69,15 +69,16 @@ void	ray_debugger(t_img *img, void *param)
 		{
 			screen.x = (float)(coords.x / SCREEN_X);
 			screen.y = (float)(coords.y / SCREEN_Y);
-			ray = get_ray(coords, img, scene->camera, &proj);
+
 			//ray = get_camera_ray(scene->camera, screen.x, screen.y);
+			ray = get_ray(coords, img, scene->camera, &proj);
 			// printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
-			draw_ray_arrows(img, ray.forward, 0x004466, 2);
+			draw_ray_arrows(img, ray.forward,0xFF0000,2);
+			//color = raycast(&ray, scene, &hit);
+			//put_pixel(coords, color, img);
 			coords.x += 20;
 		}
-		printf("\n");
-		coords.y += 10;
+		// printf("\n");
+		coords.y += 20;
 	}
-	//coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
-	//draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0x00FFDD);
 }

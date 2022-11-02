@@ -78,15 +78,16 @@ void quadratic(t_quadratic *q, int type)
 	else
 	{
 		if (q->b > 0)
-			q->q = -0.5 * (q->b + sqrt(q->discr));
+			q->q = 0.5 * (q->b + sqrt(q->discr));
 		else
-			q->q = -0.5 * (q->b - sqrt(q->discr));
+			q->q = 0.5 * (q->b - sqrt(q->discr));
 		q->t0 = q->q / q->a;
 		q->t1 = q->c / q->q;
 		if (q->t0 < 0 && q->t1 < 0)
 		{
 			q->t0 = T_MAX;
 			q->t1 = T_MAX;
+			//q->t1 = fabs(q->t1);
 		}
 		else if (q->t1 < 0 && type == CONE)
 			q->t1 = q->t0;
@@ -116,6 +117,8 @@ double	intersect_cone(t_object cone, t_ray ray)
 	q.t0 = T_MAX;
 	q.t1 = T_MAX;
 	quadratic(&q, CONE);
+	if(q.t1 != T_MAX)
+		printf("t1: %lf\n", q.t1);
 	// cone.hit_point = add_vectors(ray.origin, scale_vector(ray.forward, q.t1));
 	return (q.t1);
 }
@@ -131,7 +134,7 @@ double	intersect_sphere(t_object sphere, t_ray ray)
 	q.discr = ((q.b * q.b) - (4 * q.a * q.c));
 	q.t0 = T_MAX;
 	q.t1 = T_MAX;
-	printf("%f %f %f\n", ray.forward.x, ray.forward.y, ray.forward.z);
+	//printf("%f %f %f\n", ray.forward.x, ray.forward.y, ray.forward.z);
 	quadratic(&q, SPHERE);
 	// printf("%f %f\n", q.t1, q.t0);
 	// sphere.hit_point = add_vectors(ray.origin, scale_vector(ray.forward, q.t1));
