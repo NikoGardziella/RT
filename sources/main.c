@@ -6,7 +6,7 @@
 /*   By: dmalesev <dmalesev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 14:33:19 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 14:41:10 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,9 @@ int	main(int argc, char **argv)
 		}
 		if (env.sdl.event.type == SDL_MOUSEBUTTONUP)
 		{
-			if (env.sdl.event.button.button == SDL_BUTTON_LEFT)
-			{
-				process_image(&env.sdl, &env.img[0], 1, &env);
-				process_image(&env.sdl, &env.img[1], 1, &env);
-				process_image(&env.sdl, &env.img[2], 1, &env);
-			}
+			process_image(&env.sdl, &env.img[0], 1, &env);
+			process_image(&env.sdl, &env.img[1], 1, &env);
+			process_image(&env.sdl, &env.img[2], 1, &env);
 		}
 		// printf("MOUSE STATE %d\n", env.mouse_state);
 		/*else if (env.sdl.event.type == SDL_WINDOWEVENT)
