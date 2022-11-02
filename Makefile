@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/02 11:24:13 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/02 13:24:08 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,6 +95,11 @@ SOURCES_LIST =	main.c\
 				parser/read_camera_info.c\
 				parser/read_object_info.c\
 				parser/read_object_transformations.c\
+				mouse/move.c\
+				mouse/left_button/up.c\
+				mouse/left_button/down.c\
+				mouse/right_button/up.c\
+				mouse/right_button/down.c\
 				intersects.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
@@ -123,6 +128,10 @@ $(OBJECTS_DIRECTORY):
 	@mkdir -p $(OBJECTS_DIRECTORY)/parser
 	@mkdir -p $(OBJECTS_DIRECTORY)/images
 	@mkdir -p $(OBJECTS_DIRECTORY)/matrix
+	@mkdir -p $(OBJECTS_DIRECTORY)/mouse
+	@mkdir -p $(OBJECTS_DIRECTORY)/keyboard
+	@mkdir -p $(OBJECTS_DIRECTORY)/mouse/left_button
+	@mkdir -p $(OBJECTS_DIRECTORY)/mouse/right_button
 	@printf "$(COLOR)$(MAKE_COLOR)__________________________________________________________________________________\n"
 	@printf "$(PRINT_NAME): Created $(OBJECTS_DIRECTORY) directory.$(RESET)\n\n\n"
 

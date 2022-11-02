@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/02 11:31:09 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 13:26:35 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ typedef struct s_env
 	int		width;
 	t_img	*img;
 	t_scene	*scene;
+	uint8_t	mouse_state;
 }				t_env;
 
 /*Parser Functions*/
@@ -213,6 +214,14 @@ t_mat		init_rmatrix_x(double angle_x);
 t_mat		init_rmatrix_z(double angle_z);
 t_mat		init_rmatrix_y(double angle_y);
 t_mat		init_pmatrix(t_proj *proj);
+
+/*Mouse functions*/
+
+void	mouse_move(void *param);
+void	left_button_up(t_2i coords, void *param);
+void	left_button_down(t_2i coords, void *param);
+void	right_button_up(t_2i coords, void *param);
+void	right_button_down(t_2i coords, void *param);
 
 /*Close and free functions*/
 

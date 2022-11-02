@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/02 11:33:37 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 11:59:49 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	render_scene(t_img *img, t_scene *scene)
 			//ray = get_camera_ray(scene->camera, screen.x, screen.y);
 			ray = get_ray(coords, img, scene->camera, &proj);
 			color = raycast(&ray, scene, &hit);
-			//put_pixel(coords, color, img);
+			put_pixel(coords, color, img);
 			coords.x++;
 		}
 		coords.y++;
