@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 10:56:32 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 13:55:54 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 09:34:37 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	get_image_sizes(t_img *img)
 	button = (t_2i){SCREEN_X / 40, SCREEN_Y / 25};
 	img[0].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 	img[1].dim.size = (t_2i){button.x, button.y};
+	img[2].dim.size = (t_2i){SCREEN_X / 4, SCREEN_Y / 4};
 }
 
 static void	get_image_positions(t_img *img, size_t count)
@@ -31,6 +32,7 @@ static void	get_image_positions(t_img *img, size_t count)
 	offset = (t_2i){button.x * 30 / 100, button.y * 30 / 100};
 	img[0].dim.start = (t_2i){0, 0};
 	img[1].dim.start = (t_2i){0 + offset.x, 0 + offset.y};
+	img[2].dim.start = (t_2i){0 + offset.x, 0 + offset.y};
 	i = 0;
 	while (i < count)
 	{
@@ -44,6 +46,7 @@ static void	get_image_functions(t_img *img)
 {
 	img[0].draw_func = &main_image;
 	img[1].draw_func = &sidebar_button;
+	img[2].draw_func = &ray_debugger;
 }
 
 t_img	*free_images(t_img *img, size_t count)

@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/01 16:32:40 by pnoutere         ###   ########.fr        #
+#    Updated: 2022/11/02 09:37:45 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,13 +78,16 @@ HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./sources/
 SOURCES_LIST =	main.c\
-				put_pixel.c\
+				init/create_images.c\
+				init/rotation_matrices.c\
+				matrix/transform.c\
+				images/put_pixel.c\
 				images/get_camera_ray.c\
 				images/main_image.c\
 				images/process_image.c\
 				images/sidebar_button.c\
-				images/rendering.c\
-				init/create_images.c\
+				images/ray_debugger.c\
+				images/render_scene.c\
 				parser/add_object_to_scene.c\
 				parser/load_scene_camera.c\
 				parser/load_scene_objects.c\
@@ -118,6 +121,7 @@ $(OBJECTS_DIRECTORY):
 	@mkdir -p $(OBJECTS_DIRECTORY)/init
 	@mkdir -p $(OBJECTS_DIRECTORY)/parser
 	@mkdir -p $(OBJECTS_DIRECTORY)/images
+	@mkdir -p $(OBJECTS_DIRECTORY)/matrix
 	@printf "$(COLOR)$(MAKE_COLOR)__________________________________________________________________________________\n"
 	@printf "$(PRINT_NAME): Created $(OBJECTS_DIRECTORY) directory.$(RESET)\n\n\n"
 
