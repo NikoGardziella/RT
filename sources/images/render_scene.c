@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rendering.c                                        :+:      :+:    :+:   */
+/*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/02 11:59:49 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/02 14:34:47 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	render_scene(t_img *img, t_scene *scene)
 
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
+	proj = init_proj(scene->camera->fov, &img[0].dim.size, &(t_2d){1.0f, 1000.0f});
 	coords.y = 0;
 	while (coords.y < img->dim.size.y)
 	{
@@ -54,12 +55,15 @@ void	render_scene(t_img *img, t_scene *scene)
 		{
 			screen.x = (float)(coords.x / SCREEN_X);
 			screen.y = (float)(coords.y / SCREEN_Y);
+
 			//ray = get_camera_ray(scene->camera, screen.x, screen.y);
 			ray = get_ray(coords, img, scene->camera, &proj);
+			// printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
 			color = raycast(&ray, scene, &hit);
 			put_pixel(coords, color, img);
 			coords.x++;
 		}
+		// printf("\n");
 		coords.y++;
 	}
 }
