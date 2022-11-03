@@ -119,8 +119,6 @@ double	intersect_cone(t_object cone, t_ray ray)
 	q.t0 = T_MAX;
 	q.t1 = T_MAX;
 	quadratic(&q, CONE);
-	if(q.t1 != T_MAX)
-		printf("t1: %lf\n", q.t1);
 	// cone.hit_point = add_vectors(ray.origin, scale_vector(ray.forward, q.t1));
 	return (q.t1);
 }

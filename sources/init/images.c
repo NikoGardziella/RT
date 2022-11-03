@@ -32,7 +32,7 @@ static void	get_image_positions(t_img *img, size_t count)
 	offset = (t_2i){button.x * 30 / 100, button.y * 30 / 100};
 	img[0].dim.start = (t_2i){0, 0};
 	img[1].dim.start = (t_2i){0 + offset.x, 0 + offset.y};
-	img[2].dim.start = (t_2i){0 + offset.x, 0 + offset.y};
+	img[2].dim.start = (t_2i){SCREEN_X - img[2].dim.size.x - offset.x, 0 + offset.y};
 	i = 0;
 	while (i < count)
 	{
