@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 17:08:55 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/03 09:49:52 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:18:01 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_rgba	ft_add_rgba(t_rgba c1, t_rgba c2)
 	return (c1);
 }
 
-/*t_rgba	ft_make_rgba(double r, double g, double b, double a)
+t_rgba	ft_make_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	t_rgba	color;
 
@@ -30,7 +30,7 @@ t_rgba	ft_add_rgba(t_rgba c1, t_rgba c2)
 	color.b = b;
 	color.a = a;
 	return (color);
-}*/
+}
 
 t_rgba	ft_mul_rgba_rgba(t_rgba a, t_rgba b)
 {
@@ -43,24 +43,24 @@ t_rgba	ft_mul_rgba_rgba(t_rgba a, t_rgba b)
 
 t_rgba	ft_mul_rgba(t_rgba c, double t)
 {
-	c.r *= t;
-	c.g *= t;
-	c.b *= t;
-	c.a *= t;
+	c.r *= (uint8_t)(c.r * t);
+	c.g *= (uint8_t)(c.g * t);
+	c.b *= (uint8_t)(c.b * t);
+	c.a *= (uint8_t)(c.a * t);
 	return (c);
 }
-
-int	ft_get_color(t_rgba c)
+/*
+uint32_t	ft_get_color(t_rgba c)
 {
-	int	r;
-	int	g;
-	int	b;
+	uint8_t	r;
+	uint8_t	g;
+	uint8_t	b;
 
 	r = 0;
 	g = 0;
 	b = 0;
-	r = (int)(c.r * 255.0f) << 16;
-	g = (int)(c.g * 255.0f) << 8;
-	b = (int)(c.b * 255.0f);
+	r = (uint8_t)(c.r * 255.0f) << 16;
+	g = (uint8_t)(c.g * 255.0f) << 8;
+	b = (uint8_t)(c.b * 255.0f);
 	return (r | g | b);
-}
+}*/

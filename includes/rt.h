@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/03 09:59:41 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:09:37 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ typedef struct s_object
 	int			lumen;
 	int			type;
 	t_color		color;
-	int			intensity; //only for lights, otherwise 0
 	t_3d		axis;
 	t_3d		end;
 	t_3d		hit_point;
@@ -255,10 +254,10 @@ t_uint		shade(t_scene *scene, t_hit *hit);
 /* Color operations functions*/
 
 t_rgba		ft_add_rgba(t_rgba c1, t_rgba c2);
-t_rgba		ft_make_rgba(double r, double g, double b, double a);
+t_rgba		ft_make_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 t_rgba		ft_mul_rgba_rgba(t_rgba a, t_rgba b);
 t_rgba		ft_mul_rgba(t_rgba c, double t);
-int			ft_get_color(t_rgba c);
+uint			ft_get_color(t_rgba c);
 
 /*Parser functions*/
 
