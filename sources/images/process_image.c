@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 11:21:22 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 09:17:26 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/03 10:22:59 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *de
 void	process_image(t_sdl *sdl, t_img *img, int mode, void *param)
 {
 	SDL_LockSurface(sdl->screen);
-	fill_image(img, 0x00000000);
+	ft_bzero(img->surface->pixels, (size_t)(img->surface->h * img->surface->pitch));
 	if (img->draw_func != NULL)
 		img->draw_func(img, param);
 	if (mode >= 1)
