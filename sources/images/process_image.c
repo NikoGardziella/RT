@@ -6,11 +6,28 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 11:21:22 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 10:22:59 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/03 11:07:50 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+void	put_image_to_screen_surface(t_img *img, SDL_Surface *screen)
+{
+	uint8_t	*dest;
+	int		offset;
+	int		y;
+
+	y = 0;
+	offset = img->dim.start.y * screen->pitch;
+	offset += img->dim.start.x * screen->format->BytesPerPixel;
+	while (y < img->dim.size.y)
+	{
+		dest = ((uint8_t *)screen->pixels + offset + (screen->pitch * y));
+		dest = (uint8_t *)ft_memcpy(dest, img->surface->pixels + img->surface->pitch * y, (size_t)img->surface->pitch);
+		y += 1;
+	}
+}
 
 void	blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *destrect)
 {
@@ -78,7 +95,8 @@ void	process_image(t_sdl *sdl, t_img *img, int mode, void *param)
 		img->draw_func(img, param);
 	if (mode >= 1)
 	{
-		blit_surface(img->surface, NULL, sdl->screen, &img->dim);
+		//blit_surface_fast(img->surface, NULL, sdl->screen, &img->dim);
+		put_image_to_screen_surface(img, sdl->screen);
 	}
 	if (mode >= 2)
 	{
