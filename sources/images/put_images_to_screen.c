@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   put_images_to_screen.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:05:29 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 10:05:53 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/03 14:27:35 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,5 @@ void	put_images_to_screen(t_env *env)
 	process_image(&env->sdl, &env->img[2], 1, env);
 	SDL_UpdateWindowSurface(env->sdl.window);
 	plot_time = (double)time_since_success(0.0f, 0);
-	printf("Plot time %f\n", plot_time);
+	// printf("Plot time %f\n", plot_time);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
+#    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/03 14:24:27 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/03 14:33:48 by pnoutere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -109,6 +109,7 @@ SOURCES_LIST =	main.c\
 				mouse/left_button/down.c\
 				mouse/right_button/up.c\
 				mouse/right_button/down.c\
+				keyboard/keyboard_main.c\
 				intersects.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))

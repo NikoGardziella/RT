@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:18:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 14:35:08 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/03 14:19:08 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	ray_debugger(t_img *img, void *param)
 			//ray = get_camera_ray(scene->camera, screen.x, screen.y);
 			ray = get_ray(coords, img, scene->camera, &proj);
 			// printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
-			draw_ray_arrows(img, ray.forward,0xFF0000,2);
+			draw_ray_arrows(img, ray.forward,0xFF0000, 2);
 			//color = raycast(&ray, scene, &hit);
 			//put_pixel(coords, color, img);
 			coords.x += 20;
