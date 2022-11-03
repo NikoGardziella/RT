@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 13:38:08 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/03 15:37:04 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	main(int argc, char **argv)
 	if (env.img == NULL)
 		close_prog(NULL, "Creating images failed...", -1);
 	env.mouse_state = 0;
+	env.keymap = 0;
 	while (1)
 	{
 		if (env.sdl.event.type == SDL_QUIT || env.sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
