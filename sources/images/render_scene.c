@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/03 13:10:57 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/03 14:27:26 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,15 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 {
 	t_color	color;
 
-	color.channel.r = scene->ambient_color.r;
-	color.channel.g = scene->ambient_color.g;
-	color.channel.b = scene->ambient_color.b;
-	color.channel.a = scene->ambient_color.a;
+	// color.channel.r = scene->ambient_color.r;
+	// color.channel.g = scene->ambient_color.g;
+	// color.channel.b = scene->ambient_color.b;
+	// color.channel.a = scene->ambient_color.a;
+
+	color.channel.r = 0;
+	color.channel.g = 0;
+	color.channel.b = 0;
+	color.channel.a = 0;
 	// printf("%f %f %f\n", ray->direction.x, ray->direction.y, ray->direction.z);
 	if (intersects(ray, scene, hit))
 	{
@@ -69,14 +74,14 @@ void	render_scene(t_img *img, t_scene *scene)
 			// printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
 			color = raycast(&ray, scene, &hit);
 
-			if(coords.x == SCREEN_X / 2 && coords.y == SCREEN_Y / 2)
-			{
-				printf("camX: %f  camY: %f  cam:%f\n",camera->ray.forward.x, camera->ray.forward.y, camera->ray.forward.z);
-				printf("rayX: %f  rayY: %f  ray:%f\n",ray.forward.x, ray.forward.y, ray.forward.z);
-				mid = 1;
-			}
-			else
-				mid = 0;
+			// if(coords.x == SCREEN_X / 2 && coords.y == SCREEN_Y / 2)
+			// {
+			// 	printf("camX: %f  camY: %f  cam:%f\n",camera->ray.forward.x, camera->ray.forward.y, camera->ray.forward.z);
+			// 	printf("rayX: %f  rayY: %f  ray:%f\n",ray.forward.x, ray.forward.y, ray.forward.z);
+			// 	mid = 1;
+			// }
+			// else
+			// 	mid = 0;
 			
 			temp.y = coords.y;
 			while (temp.y < (coords.y + scene->resolution))

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 13:11:59 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:38:08 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	main(int argc, char **argv)
 			break ;
 		}
 		mouse_main(&env);
+		keyboard_main(&env);
 		if (env.scene->resolution > 3)
 			put_images_to_screen(&env);
 		if (env.sdl.event.type == SDL_WINDOWEVENT)
