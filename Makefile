@@ -6,7 +6,7 @@
 #    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/03 13:06:59 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/03 15:21:42 by ctrouve          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,6 +96,7 @@ SOURCES_LIST =	main.c\
 				parser/add_object_to_scene.c\
 				parser/load_scene_camera.c\
 				parser/load_scene_objects.c\
+				parser/load_scene_lights.c\
 				parser/read_camera_info.c\
 				parser/read_object_info.c\
 				parser/read_object_transformations.c\

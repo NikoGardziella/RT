@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 13:11:59 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/03 15:19:51 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	main(int argc, char **argv)
 	env.scene->camera = load_scene_camera(argv[1]);
 	/*PROTECC MALLOC*/
 	env.scene->objects_list = load_scene_objects(argv[1]);
-	//env.scene->lights_list = load_scene_lights(argv[1]);
+	env.scene->lights_list = load_scene_lights(argv[1]);
 	sdl_init(&env.sdl);
 	SDL_RaiseWindow(env.sdl.window);
 	env.img = create_images(IMAGES);

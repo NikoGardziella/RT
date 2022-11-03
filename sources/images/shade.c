@@ -6,11 +6,74 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/03 13:41:48 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/03 15:24:14 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+
+double	ft_max_d(double a, double b)
+{
+	if (a > b)
+		return (a);
+	else
+		return (b);
+}
+
+/*
+** see https://raytracing.github.io/books/RayTracingInOneWeekend.html#
+** diffusematerials/asimplediffusematerial
+** 
+** Diffuse objects that don’t emit light merely take on the color of their 
+** surroundings, but they modulate that with their own intrinsic color. Light 
+** that reflects off a diffuse surface has its direction randomized.
+*/
+t_rgba	calc_diffuse(t_object *light, t_hit *hit)
+{
+	t_rgba	diffuse;
+	t_3d	light_dir;
+	double	ndotl;
+
+//	if (light->type == POINT)
+		light_dir = normalize_vector(subtract_vectors(light->origin, hit->point));
+//	else
+//		light_dir = ft_normalize_vec3(ft_mul_vec3(light->direction, -1.0));
+	ndotl = dot_product(hit->normal, light_dir);
+	diffuse = ft_mul_rgba(light->color.channel, ft_max_d(ndotl, 0.0));
+	return (ft_mul_rgba(diffuse, light->lumen));
+}
+
+/*
+** see https://ogldev.org/www/tutorial19/tutorial19.html
+**
+** k is the specular exponent (linked to the material), we get shine if the 
+** value is positive and no shine (matte surface) for negative values.
+**
+** r is reflection vector
+** c is camera vector
+*/
+t_rgba	calc_specular(t_object *light, t_hit *hit, t_3d cam)
+{
+	t_rgba			specular;
+	t_3d			light_dir;
+	t_3d			r;
+	t_3d			c;
+	uint			k;
+
+	//if (light->type == POINT)
+		light_dir = normalize_vector(subtract_vectors(light->origin, hit->point));
+	//else
+	//	light_dir = ft_normalize_vec3(ft_mul_vec3(light->direction, -1.0));
+	light_dir = scale_vector(light_dir, -1.0);
+	r = normalize_vector(reflect_vector(light_dir, hit->normal));
+	c = normalize_vector(subtract_vectors(cam, hit->point));
+	k = 40;
+	specular = ft_mul_rgba(ft_mul_rgba(light->color.channel, light->lumen), \
+		pow(ft_max_d(dot_product(r, c), 0.0), k));
+	return (specular);
+}
+
 
 t_uint	shade(t_scene *scene, t_hit *hit)
 {
@@ -22,15 +85,15 @@ t_uint	shade(t_scene *scene, t_hit *hit)
 	color_diffuse.channel =  (t_rgba){0, 0, 0, 1};
 	color_specular.channel =  (t_rgba){0, 0, 0, 1};
 	attenuation = 0.0;
-	while (scene->lights_list->next)
+	while (scene->lights_list)
 	{
 		attenuation = 1.0 - (hit->distance / T_MAX);
-		if (!is_in_shadow(&scene->lights_list, scene, hit))
+		//if (!is_in_shadow(&scene->lights_list, scene, hit))
 		{
 			color_diffuse.channel = ft_add_rgba(color_diffuse.channel, \
-				calc_diffuse(&scene->lights_list, hit));
+				calc_diffuse((t_object *)scene->lights_list->content, hit));
 			color_specular.channel = ft_add_rgba(color_specular.channel, \
-				calc_specular(&scene->lights_list, hit, scene->camera->ray.origin));
+				calc_specular((t_object *)scene->lights_list->content, hit, scene->camera->ray.origin));
 		}
 		color_diffuse.channel = ft_mul_rgba(color_diffuse.channel, attenuation);
 		color_specular.channel = ft_mul_rgba(color_specular.channel, attenuation);

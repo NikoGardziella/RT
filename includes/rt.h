@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/03 13:47:06 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/03 15:22:51 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,7 @@ t_list		*load_scene_objects(char *path);
 int			add_object(t_list **objects, t_object *object);
 int			read_object_info(char *line, t_object *object);
 int			transformations(char *line, t_object *object);
+int			read_object(t_object *object, char *line);
 
 /*Init functions*/
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dm_vectors.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 16:41:10 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 16:35:31 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/03 14:37:33 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ t_3d	cross_product(t_3d vect1, t_3d vect2);
 t_3d	normalize_vector(t_3d vect);
 double	dot_product(t_3d vect1, t_3d vect2);
 double	vector_magnitude(t_3d vect);
+t_3d	reflect_vector(t_3d v, t_3d n);
 
 #endif
