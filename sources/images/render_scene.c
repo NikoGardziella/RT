@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/03 10:14:24 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:10:57 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 
 void	render_scene(t_img *img, t_scene *scene)
 {
-	int			resolution;
 	t_2f		screen;
 	t_2i		temp;
 	t_2i		coords;
@@ -51,7 +50,6 @@ void	render_scene(t_img *img, t_scene *scene)
 	t_proj		proj;
 	t_camera	*camera;
 
-	resolution = 3;
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	proj = init_proj(scene->camera->fov, &img[0].dim.size, &(t_2d){1.0f, 1000.0f});
@@ -81,21 +79,23 @@ void	render_scene(t_img *img, t_scene *scene)
 				mid = 0;
 			
 			temp.y = coords.y;
-			while (temp.y < (coords.y + resolution))
+			while (temp.y < (coords.y + scene->resolution))
 			{
 				temp.x = coords.x;
-				while (temp.x < (coords.x + resolution))
+				while (temp.x < (coords.x + scene->resolution))
 				{
 					put_pixel(temp, color.combined, img);
 					temp.x++;
 				}
 				temp.y++;
 			}
-			coords.x += resolution;
+			coords.x += scene->resolution;
 			// coords.x++;
 		}
 		// printf("\n");
-		coords.y += resolution;
+		coords.y += scene->resolution;
 		// coords.y++;
 	}
+	if (scene->resolution > 3)
+		scene->resolution -= 1;
 }

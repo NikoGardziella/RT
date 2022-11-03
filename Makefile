@@ -6,7 +6,7 @@
 #    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/03 11:10:41 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/03 13:06:59 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,6 +78,7 @@ HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./sources/
 SOURCES_LIST =	main.c\
+				init/init_main.c\
 				init/images.c\
 				init/camera.c\
 				init/rotation_matrices.c\
@@ -98,6 +99,7 @@ SOURCES_LIST =	main.c\
 				parser/read_camera_info.c\
 				parser/read_object_info.c\
 				parser/read_object_transformations.c\
+				mouse/mouse_main.c\
 				mouse/move.c\
 				mouse/left_button/up.c\
 				mouse/left_button/down.c\

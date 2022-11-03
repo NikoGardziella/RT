@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/03 09:59:41 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:09:14 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ typedef struct s_scene
 	t_list		*lights_list;
 	t_camera	*camera;
 	t_rgba		ambient_color;
+	int			resolution;
 }				t_scene;
 
 typedef struct s_2d
@@ -221,6 +222,7 @@ int			transformations(char *line, t_object *object);
 
 /*Init functions*/
 
+void		init_main(t_env *env);
 t_img		*create_images(size_t count);
 t_mat		init_rmatrix_x(double angle_x);
 t_mat		init_rmatrix_z(double angle_z);
@@ -229,6 +231,7 @@ t_mat		init_pmatrix(t_proj *proj);
 
 /*Mouse functions*/
 
+void	mouse_main(void *param);
 void	mouse_move(void *param);
 void	left_button_up(void *param);
 void	left_button_down(void *param);
