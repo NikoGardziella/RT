@@ -16,9 +16,12 @@ void	sidebar(t_img *img, void *param)
 {
 	t_env	*env;
 	t_2i	coords;
+	t_2i	color;
 
+	color = (t_2i){0xFF0000,0xFF00FF};
 	env = param;
+
 	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
-	render_str("Camera origin:", &(t_pxl){env->font, put_pixel, img}, &(t_2i){0, 0}, 0xFF0000);
+	display_str(&(t_pxl){env->font, put_pixel, img}, (t_2i){0, 0},"hello" ,color);
 	draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFFFF);
 }

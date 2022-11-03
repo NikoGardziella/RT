@@ -252,6 +252,7 @@ t_img		*free_images(t_img *img, size_t count);
 
 /*Image functions*/
 
+t_2i		display_str(t_pxl *pxl, t_2i coords, char *str, t_2i color);
 void		main_image(t_img *img, void *param);
 void		sidebar_button(t_img *img, void *param);
 void		sidebar(t_img *img, void *param);

@@ -87,6 +87,7 @@ SOURCES_LIST =	main.c\
 				init/camera.c\
 				init/rotation_matrices.c\
 				matrix/transform.c\
+				images/display_strings.c\
 				images/put_pixel.c\
 				images/get_camera_ray.c\
 				images/main_image.c\
