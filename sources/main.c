@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 16:47:30 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/03 09:33:51 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	sdl_init(t_sdl *sdl)
 int	main(int argc, char **argv)
 {
 	t_env	env;
-	// t_2i	position;
 
 	close_prog(&env, "Initializing close program function.", 42);
 	ft_bzero(&env, sizeof(t_env));
@@ -54,6 +53,7 @@ int	main(int argc, char **argv)
 		close_prog(NULL, "Malloc env.scene failed...", -1);
 	env.scene->objects_list = load_scene_objects(argv[1]);
 	env.scene->camera = load_scene_camera(argv[1]);
+	/*PROTECC MALLOC*/
 	sdl_init(&env.sdl);
 	env.img = create_images(IMAGES);
 	if (env.img == NULL)
@@ -67,40 +67,30 @@ int	main(int argc, char **argv)
 			break ;
 		}
 		if (env.sdl.event.type == SDL_MOUSEMOTION)
+		{
 			mouse_move(&env);
-		SDL_GetMouseState(&env.mouse_coords.x, &env.mouse_coords.y);
-		
+		}
 		if (env.sdl.event.type == SDL_MOUSEBUTTONUP)
 		{
 			if (env.sdl.event.button.button == SDL_BUTTON_LEFT)
-				left_button_up(env.mouse_coords, &env);
+				left_button_up(&env);
 			if (env.sdl.event.button.button == SDL_BUTTON_RIGHT)
-				right_button_up(env.mouse_coords, &env);
+				right_button_up(&env);
 		}
 		if (env.sdl.event.type == SDL_MOUSEBUTTONDOWN)
 		{
+			SDL_SetRelativeMouseMode(SDL_FALSE);
 			if (env.sdl.event.button.button == SDL_BUTTON_LEFT)
-				left_button_down(env.mouse_coords, &env);
+				left_button_down(&env);
 			if (env.sdl.event.button.button == SDL_BUTTON_RIGHT)
-			{
-				env.position.x = env.mouse_coords.x;
-				env.position.y = env.mouse_coords.y;
-				right_button_down(env.mouse_coords, &env);
-			}
+				right_button_down(&env);
 		}
-		if (env.sdl.event.type == SDL_MOUSEBUTTONUP)
-		{
-			process_image(&env.sdl, &env.img[0], 1, &env);
-			process_image(&env.sdl, &env.img[1], 1, &env);
-			process_image(&env.sdl, &env.img[2], 1, &env);
-		}
-		// printf("MOUSE STATE %d\n", env.mouse_state);
-		/*else if (env.sdl.event.type == SDL_WINDOWEVENT)
+		else if (env.sdl.event.type == SDL_WINDOWEVENT)
 		{
 			if (env.sdl.event.window.event == SDL_WINDOWEVENT_EXPOSED)
-				put_images_to_screen(env);
-		}*/
-		/*Find out what this does!*/
+				put_images_to_screen(&env);
+		}
+		//printf("MOUSE STATE %d\n", env.mouse_state);
 		SDL_WaitEvent(&env.sdl.event);
 	}
 	SDL_DestroyWindow(env.sdl.window);
