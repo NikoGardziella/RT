@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:05:29 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 14:27:35 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/03 15:15:28 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	put_images_to_screen(t_env *env)
 	process_image(&env->sdl, &env->img[0], 1, env);
 	process_image(&env->sdl, &env->img[1], 1, env);
 	process_image(&env->sdl, &env->img[2], 1, env);
+	if (env->sidebar == 1)
+		process_image(&env->sdl, &env->img[3], 1, env);
 	SDL_UpdateWindowSurface(env->sdl.window);
 	plot_time = (double)time_since_success(0.0f, 0);
 	// printf("Plot time %f\n", plot_time);

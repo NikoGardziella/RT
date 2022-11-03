@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/03 13:46:10 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/03 15:19:55 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "libft.h"
 # include "SDL.h"
 # include "dm_2d.h"
+# include "dm_bdf_render.h"
 # include "dm_vectors.h"
 # include <fcntl.h>
 # include <math.h>
@@ -26,7 +27,7 @@
 # define SCREEN_X 1000
 # define SCREEN_Y 600
 # define T_MAX 100000000.0f
-# define IMAGES 3
+# define IMAGES 4
 
 # ifndef PI
 #  define PI 3.141592
@@ -211,6 +212,8 @@ typedef struct s_env
 	t_img	*img;
 	t_scene	*scene;
 	uint8_t	mouse_state;
+	uint8_t	sidebar;
+	t_font	*font;
 }				t_env;
 
 /*Parser Functions*/
@@ -251,6 +254,7 @@ t_img		*free_images(t_img *img, size_t count);
 
 void		main_image(t_img *img, void *param);
 void		sidebar_button(t_img *img, void *param);
+void		sidebar(t_img *img, void *param);
 void		ray_debugger(t_img *img, void *param);
 void		render_scene(t_img *img, t_scene *scene);
 t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
