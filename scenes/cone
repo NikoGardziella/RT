@@ -1,3 +1,10 @@
+OBJECT cone
+{
+	origin 0.0 0.0 40.0
+	radius 4.0
+	axis 0.0 1.0 0.0
+	color FFFFFF
+}
 OBJECT sphere
 {
 	origin 0.0 0.0 40.0

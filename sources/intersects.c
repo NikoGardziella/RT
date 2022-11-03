@@ -45,6 +45,7 @@ int	intersects(t_ray *ray, t_scene *scene, t_hit *hit)
 	intersect_loop(ray, scene, hit);
 	if (hit->distance < T_MAX)
 	{
+	//	printf("hit t: %lf\n", hit->distance);
 		hit->point = add_vectors(ray->origin,
 			scale_vector(ray->forward, hit->distance));
 		hit->color = hit->object->color;

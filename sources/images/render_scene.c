@@ -33,7 +33,8 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 	// printf("%f %f %f\n", ray->direction.x, ray->direction.y, ray->direction.z);
 	if (intersects(ray, scene, hit))
 	{
-		color.combined = shade(scene, hit);
+		//color.combined = shade(scene, hit);
+			color = hit->color;
 	}
 	return (color);
 }
@@ -50,7 +51,7 @@ void	render_scene(t_img *img, t_scene *scene)
 	t_proj		proj;
 	t_camera	*camera;
 
-	resolution = 8;
+	resolution = 3;
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	proj = init_proj(scene->camera->fov, &img[0].dim.size, &(t_2d){1.0f, 1000.0f});
