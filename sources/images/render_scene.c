@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/03 09:18:16 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/03 09:45:43 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
+/*
 t_uint	shade(t_scene *scene, t_hit *hit)
 {
 	t_uint	color = 0xFF00FF;
@@ -20,16 +21,19 @@ t_uint	shade(t_scene *scene, t_hit *hit)
 	(void)scene;
 	return (color);
 }
-
-t_uint	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
+*/
+t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 {
-	t_uint	color;
+	t_color	color;
 
-	color = scene->ambient_color;
+	color.channel.r = scene->ambient_color.r;
+	color.channel.g = scene->ambient_color.g;
+	color.channel.b = scene->ambient_color.b;
+	color.channel.a = scene->ambient_color.a;
 	// printf("%f %f %f\n", ray->direction.x, ray->direction.y, ray->direction.z);
 	if (intersects(ray, scene, hit))
 	{
-		color = shade(scene, hit);
+		color.combined = shade(scene, hit);
 	}
 	return (color);
 }
@@ -42,7 +46,7 @@ void	render_scene(t_img *img, t_scene *scene)
 	t_2i		coords;
 	t_ray		ray;
 	t_hit		hit;
-	t_uint		color;
+	t_color		color;
 	t_proj		proj;
 	t_camera	*camera;
 
@@ -81,7 +85,7 @@ void	render_scene(t_img *img, t_scene *scene)
 				temp.x = coords.x;
 				while (temp.x < (coords.x + resolution))
 				{
-					put_pixel(temp, color, img);
+					put_pixel(temp, color.combined, img);
 					temp.x++;
 				}
 				temp.y++;

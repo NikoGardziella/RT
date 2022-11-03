@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 09:33:51 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/03 09:50:36 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ int	main(int argc, char **argv)
 	env.scene = malloc(sizeof(t_scene));
 	if (env.scene == NULL)
 		close_prog(NULL, "Malloc env.scene failed...", -1);
-	env.scene->objects_list = load_scene_objects(argv[1]);
 	env.scene->camera = load_scene_camera(argv[1]);
 	/*PROTECC MALLOC*/
+	env.scene->objects_list = load_scene_objects(argv[1]);
+	//env.scene->lights_list = load_scene_lights(argv[1]);
 	sdl_init(&env.sdl);
 	env.img = create_images(IMAGES);
 	if (env.img == NULL)

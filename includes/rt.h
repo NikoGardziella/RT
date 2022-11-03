@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/03 09:31:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/03 09:43:50 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,18 @@ typedef struct s_quadratic
 	double	q;
 }	t_quadratic;
 
+typedef struct		s_rgba
+{
+	uint8_t			r;
+	uint8_t			g;
+	uint8_t			b;
+	uint8_t			a;
+}					t_rgba;
+
 typedef union		u_color
 {
 	uint32_t		combined;
-	uint8_t			channels[4];
+	t_rgba			channel;	
 }					t_color;
 
 typedef struct s_object
@@ -97,6 +105,7 @@ typedef struct s_object
 	int			lumen;
 	int			type;
 	t_color		color;
+	int			intensity; //only for lights, otherwise 0
 	t_3d		axis;
 	t_3d		end;
 	t_3d		hit_point;
@@ -152,8 +161,9 @@ typedef struct s_camera
 typedef struct s_scene
 {
 	t_list		*objects_list;
+	t_list		*lights_list;
 	t_camera	*camera;
-	t_uint		ambient_color;
+	t_rgba		ambient_color;
 }				t_scene;
 
 typedef struct s_2d
@@ -236,22 +246,33 @@ void		main_image(t_img *img, void *param);
 void		sidebar_button(t_img *img, void *param);
 void		ray_debugger(t_img *img, void *param);
 void		render_scene(t_img *img, t_scene *scene);
-t_uint		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
+t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
 t_ray		get_camera_ray(t_camera *camera, double x, double y);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera, t_proj *proj);
 void		put_images_to_screen(t_env *env);
+t_uint		shade(t_scene *scene, t_hit *hit);
+
+/* Color operations functions*/
+
+t_rgba		ft_add_rgba(t_rgba c1, t_rgba c2);
+t_rgba		ft_make_rgba(double r, double g, double b, double a);
+t_rgba		ft_mul_rgba_rgba(t_rgba a, t_rgba b);
+t_rgba		ft_mul_rgba(t_rgba c, double t);
+int			ft_get_color(t_rgba c);
 
 /*Parser functions*/
 
 t_camera	init_camera(t_2i size, t_3d origin, t_3d forward, double fov);
 t_camera	*load_scene_camera(char *path);
 t_list		*load_scene_objects(char *path);
+t_list		*load_scene_lights(char *path);
 t_3d		make_vector(double x, double y, double z);
 void		process_image(t_sdl *sdl, t_img *img, int mode, void *param);
 void		blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *destrect);
 int			read_camera_info(char *line, t_camera *camera);
 int			read_object_info(char *line, t_object *object);
 int			transformations(char *line, t_object *object);
+int			add_object(t_list **objects, t_object *object);
 
 /*Drawing functions*/
 
