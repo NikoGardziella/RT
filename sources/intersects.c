@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersects.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/02 15:04:26 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/03 13:08:41 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ double	intersect_cone(t_object cone, t_ray ray)
 	q.subtr_top_bot = scale_vector(q.subtr_top_bot, len);
 	q.w = subtract_vectors(ray.origin, cone.origin);
 	q.h = normalize_vector(q.subtr_top_bot);
+	q.m = pow(cone.radius, 2) / pow(len, 2);
 	ray_dot_product = dot_product(ray.forward, ray.forward);
 	ray_dir_h = dot_product(ray.forward, q.h);
 	dot_w_h = dot_product(q.w, q.h);
@@ -135,9 +136,7 @@ double	intersect_sphere(t_object sphere, t_ray ray)
 	q.discr = ((q.b * q.b) - (4 * q.a * q.c));
 	q.t0 = T_MAX;
 	q.t1 = T_MAX;
-	//printf("%f %f %f\n", ray.forward.x, ray.forward.y, ray.forward.z);
 	quadratic(&q, SPHERE);
-	// printf("%f %f\n", q.t1, q.t0);
 	// sphere.hit_point = add_vectors(ray.origin, scale_vector(ray.forward, q.t1));
 	return (q.t1);
 }

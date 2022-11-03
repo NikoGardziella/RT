@@ -31,6 +31,7 @@ static int	axis(char *line, t_object *object)
 			object->axis.z = (double)ft_atof(line++);
 		if (object->axis.x == 0 && object->axis.y == 0 && object->axis.z == 0)
 			object->axis = (t_3d){0.0f, 1.0f, 0.0f};
+		object->end = object->axis;
 		object->axis_length = vector_magnitude(object->axis);
 		object->axis = normalize_vector(object->axis);
 		return (1);

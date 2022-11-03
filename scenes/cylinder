@@ -22,6 +22,14 @@ OBJECT sphere
 	radius 7.0
 	color 00FFFF
 }
+OBJECT cylinder
+{
+	origin 0.0 0.0 20.0
+	radius 7.0
+	axis 5.0 0.0 20.0
+	color 00FFFF
+}
+
 OBJECT light
 {
 	origin 0.0 50 60
