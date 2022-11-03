@@ -6,7 +6,7 @@
 #    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/03 13:06:59 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/03 14:24:27 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ OPTI_FLAGS = -O3 -flto
 DEBUG_FLAGS = -g -fsanitize=address
 FLAGS = -Wall -Wextra -Werror -Wconversion
 FLAGS += $(DEBUG_FLAGS)
-#FLAGS += $(OPTI_FLAGS)
+FLAGS += $(OPTI_FLAGS)
 
 UNAME = $(shell uname)
 ifeq ($(UNAME), Darwin)
@@ -59,6 +59,10 @@ SDL2_BUILD_DIRECTORY = $(LIBRARIES_DIRECTORY)/sdl2
 SDL2_DIRECTORY = $(LIBRARIES_DIRECTORY)/libsdl2
 SDL2 = $(SDL2_BUILD_DIRECTORY)/lib/lib/libSDL2.a
 SDL2_HEADERS = $(SDL2_BUILD_DIRECTORY)/lib/include/SDL2
+
+DM_BDF_RENDER_DIRECTORY = $(LIBRARIES_DIRECTORY)/dm_bdf_render/
+DM_BDF_RENDER = $(DM_BDF_RENDER_DIRECTORY)/dm_bdf_render.a
+DM_BDF_RENDER_HEADERS = $(DM_BDF_RENDER_DIRECTORY)/includes/
 
 DM_VECTORS_DIRECTORY = $(LIBRARIES_DIRECTORY)/dm_vectors
 DM_VECTORS = $(DM_VECTORS_DIRECTORY)/dm_vectors.a
@@ -113,7 +117,7 @@ OBJECTS_DIRECTORY = objects/
 OBJECTS_LIST = $(patsubst %.c, %.o, $(SOURCES_LIST))
 OBJECTS	= $(addprefix $(OBJECTS_DIRECTORY), $(OBJECTS_LIST))
 
-INCLUDES = -I$(HEADERS_DIRECTORY) -I$(LIBFT_HEADERS) -I$(SDL2_HEADERS) -I$(DM_2D_HEADERS) -I$(DM_VECTORS_HEADERS)
+INCLUDES = -I$(HEADERS_DIRECTORY) -I$(LIBFT_HEADERS) -I$(SDL2_HEADERS) -I$(DM_2D_HEADERS) -I$(DM_VECTORS_HEADERS) -I$(DM_BDF_RENDER_HEADERS)
 
 ASSERT_OBJECT = && printf "$(ERASE_LINE)" && printf "$@ $(COLOR)$(MAKE_COLOR)$(BOLD) ✓$(RESET)" || printf "$@ $(COLOR)$(MAKE_COLOR)$(BOLD)✘$(RESET)\n\n" | exit -1
 
@@ -123,7 +127,7 @@ endif
 
 all: $(NAME)
 
-$(NAME): $(SDL2) $(LIBFT) $(DM_2D) $(DM_VECTORS) $(OBJECTS_DIRECTORY) $(OBJECTS)
+$(NAME): $(SDL2) $(LIBFT) $(DM_2D) $(DM_VECTORS) $(DM_BDF_RENDER) $(OBJECTS_DIRECTORY) $(OBJECTS)
 	@$(CC) $(FLAGS) $(INCLUDES) $(OBJECTS) $(SDL2_LIBS) $(SDL2_CFLAGS) $(LIBS) -o $(NAME)
 	@printf "Compiled $(BOLD)$(COLOR)$(MAKE_COLOR)$(NAME)$(RESET)!\n\n"
 
@@ -167,11 +171,15 @@ $(DM_VECTORS):
 $(DM_2D):
 	@make -C $(DM_2D_DIRECTORY)
 
+$(DM_BDF_RENDER):
+	@make -C $(DM_BDF_RENDER_DIRECTORY)
+
 clean:
 	@rm -rf $(OBJECTS_DIRECTORY)
 	@printf "$(PRINT_NAME): Deleted $(OBJECTS_DIRECTORY)*\n"
 	@make -C $(LIBFT_DIRECTORY) clean
 	@make -C $(DM_2D_DIRECTORY) clean
+	@make -C $(DM_BDF_RENDER_DIRECTORY) clean
 	@make -C $(DM_VECTORS_DIRECTORY) clean
 	@printf "\n"
 
@@ -184,6 +192,7 @@ fclean: clean
 	@make -C $(LIBFT_DIRECTORY) bclean
 	@make -C $(DM_2D_DIRECTORY) bclean
 	@make -C $(DM_VECTORS_DIRECTORY) bclean
+	@make -C $(DM_BDF_RENDER_DIRECTORY) bclean
 	@rm -rf $(SDL2_BUILD_DIRECTORY)
 	@rm -rf $(SDL2_DIRECTORY)
 	@printf "\n"
