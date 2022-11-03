@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/03 14:33:48 by pnoutere         ###   ########.fr        #
+#    Updated: 2022/11/03 15:23:41 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,10 +41,10 @@ FLAGS += $(OPTI_FLAGS)
 
 UNAME = $(shell uname)
 ifeq ($(UNAME), Darwin)
-LIBS = $(LIBFT) $(DM_2D) $(DM_VECTORS) $(SDL2)
+LIBS = $(LIBFT) $(DM_2D) $(DM_VECTORS) $(DM_BDF_RENDER) $(SDL2)
 endif
 ifeq ($(UNAME), Linux)
-LIBS = $(LIBFT) $(DM_2D) $(DM_VECTORS) $(SDL2) $(MATH_LIBRARY)
+LIBS = $(LIBFT) $(DM_2D) $(DM_VECTORS) $(DM_BDF_RENDER) $(SDL2) $(MATH_LIBRARY)
 endif
 
 MATH_LIBRARY = -lm
@@ -87,11 +87,13 @@ SOURCES_LIST =	main.c\
 				init/camera.c\
 				init/rotation_matrices.c\
 				matrix/transform.c\
+				images/display_strings.c\
 				images/put_pixel.c\
 				images/get_camera_ray.c\
 				images/main_image.c\
 				images/process_image.c\
 				images/sidebar_button.c\
+				images/sidebar.c\
 				images/put_images_to_screen.c\
 				images/ray_debugger.c\
 				images/render_scene.c\
