@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:29:59 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/03 15:48:07 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/03 15:54:41 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,28 +57,4 @@ void keyboard_main(t_env *env)
 		env->scene->resolution = 10;
 		put_images_to_screen(env);
 	}
-	if (env->keymap == 1)
-		printf("A\n");
-	if (env->keymap == 2)
-		printf("W\n");
-	if (env->keymap == 4)
-		printf("D\n");
-	if (env->keymap == 8)
-		printf("S\n");
-	if (env->keymap == 15)
-		printf("AWDS\n");
-	if (env->keymap == 7)
-		printf("AWD\n");
-	if (env->keymap == 14)
-		printf("WDS\n");
-	if (env->keymap == 10)
-		printf("AD\n");
-	if (env->keymap == 11)
-		printf("ADS\n");
-	if (env->keymap == 9)
-		printf("AS\n");
-	if (env->keymap == 6)
-		printf("WD\n");
-	if (env->keymap == 3)
-		printf("AW\n");
 }

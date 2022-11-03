@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/03 15:51:00 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/03 15:57:13 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,6 +254,7 @@ t_img		*free_images(t_img *img, size_t count);
 /*Image functions*/
 
 t_2i		display_str(t_pxl *pxl, t_2i coords, char *str, t_2i color);
+t_2i		display_int(t_pxl *pxl, t_2i coords, int nbr, t_2i color);
 void		main_image(t_img *img, void *param);
 void		sidebar_button(t_img *img, void *param);
 void		sidebar(t_img *img, void *param);
