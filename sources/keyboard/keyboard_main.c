@@ -19,14 +19,14 @@ void keyboard_main(t_env *env)
 	if (env->sdl.event.type == SDL_KEYDOWN)
 	{
 		camera = env->scene->camera;
-		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_A)
-			camera->ray.origin = add_vectors(camera->ray.origin, camera->ray.forward);
 		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_W)
-			camera->ray.origin = add_vectors(camera->ray.origin, scale_vector(camera->up, -1));
-		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_D)
-			camera->ray.origin = add_vectors(camera->ray.origin, scale_vector(camera->ray.forward, -1));
+			camera->ray.origin = add_vectors(camera->ray.origin, camera->ray.forward);
+		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_A)
+			camera->ray.origin = add_vectors(camera->ray.origin, scale_vector(camera->right, -1));
 		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_S)
-			camera->ray.origin = add_vectors(camera->ray.origin, camera->up);
+			camera->ray.origin = add_vectors(camera->ray.origin, scale_vector(camera->ray.forward, -1));
+		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_D)
+			camera->ray.origin = add_vectors(camera->ray.origin, camera->right);
 	
 		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_A)
 			env->keymap |= 1;

@@ -25,7 +25,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 	color.channel.g = 0;
 	color.channel.b = 0;
 	color.channel.a = 0;
-	// printf("%f %f %f\n", ray->direction.x, ray->direction.y, ray->direction.z);
+
 	if (intersects(ray, scene, hit))
 	{
 		color.combined = shade(scene, hit);
@@ -58,7 +58,6 @@ void	render_scene(t_img *img, t_scene *scene)
 				{
 					ray = get_ray(coords, img, scene->camera, &proj);
 					color = raycast(&ray, scene, &hit);
-					// printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
 					put_pixel(coords, color.combined, img);
 				}
 				coords.x += 1;

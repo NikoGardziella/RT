@@ -41,10 +41,11 @@ t_ray	get_ray(t_2i coords, t_img *img, t_camera *camera, t_proj *proj)
 	h_w[0] = (double)tan(proj->fov * PI / 360);
 	h_w[1] = h_w[0] * proj->asp_ratio;
 	dir.forward = camera->ray.forward;
-	dir.up = normalize_vector(cross_product(dir.forward, camera->right));
-	dir.right = normalize_vector(cross_product(dir.forward, dir.up));
-	dir.up = scale_vector(dir.up, h_w[1] * norm_screen.x);
-	dir.right =  scale_vector(dir.right, h_w[0] * norm_screen.y);
+	
+	dir.right = normalize_vector(cross_product(dir.forward, camera->up));
+	dir.up = normalize_vector(cross_product(dir.forward, dir.right));
+	dir.right =  scale_vector(dir.right, h_w[1] * norm_screen.x);
+	dir.up = scale_vector(dir.up, h_w[0] * norm_screen.y);
 	ray.forward = add_vectors(dir.forward, dir.right);
 	ray.forward = add_vectors(ray.forward, dir.up);
 	ray.forward = normalize_vector(ray.forward);

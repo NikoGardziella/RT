@@ -23,7 +23,7 @@ t_camera	init_camera(t_2i size, t_3d origin, t_3d forward, double fov)
 	camera.ray.origin = origin;
 	if (dot_product(camera.up, camera.ray.forward) == 1)
 		camera.up = normalize_vector((t_3d){0.0f, 99.0f, 1.0f});
-	camera.up = normalize_vector(cross_product(camera.up, camera.ray.forward));
 	camera.right = cross_product(camera.up, camera.ray.forward);
+	camera.up = normalize_vector(cross_product(camera.right, camera.ray.forward));
 	return (camera);
 }

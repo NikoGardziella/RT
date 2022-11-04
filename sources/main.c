@@ -33,7 +33,7 @@ void	sdl_init(t_sdl *sdl)
 		SDL_Quit();
 	if (SCREEN_X < 200 || SCREEN_X > 2560 || SCREEN_Y < 200 || SCREEN_Y > 1440)
 		close_prog(NULL, "Window size specified not in range...", -1);
-	sdl->window = SDL_CreateWindow("Ray Tracer", 0, 0, SCREEN_X, SCREEN_Y, 0);
+	sdl->window = SDL_CreateWindow("Ray Tracer", 800, 400, SCREEN_X, SCREEN_Y, 0);
 	if (sdl->window == NULL)
 		close_prog(NULL, "Creating window failed...", -1);
 	sdl->screen = SDL_GetWindowSurface(sdl->window);
