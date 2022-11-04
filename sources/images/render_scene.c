@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/04 10:07:21 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 10:30:17 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ void	render_scene(t_img *img, t_scene *scene)
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	proj = init_proj(scene->camera->fov, &img[0].dim.size, &(t_2d){1.0f, 1000.0f});
 	coords.y = 0;
+	printf("res: %d\n", scene->resolution.x);
 	while (coords.y < img->dim.size.y)
 	{
-		if (coords.y % scene->resolution_range.y == scene->resolution.y - 1)
+		if (coords.y % scene->resolution_range.y == scene->resolution.y)
 		{
 			coords.x = 0;
 			while (coords.x < img->dim.size.x)
@@ -66,11 +67,11 @@ void	render_scene(t_img *img, t_scene *scene)
 		}
 		coords.y += 1;
 	}
-	if (scene->resolution.x >= scene->resolution_range.x)
-		scene->resolution.x -= 1;
-	else if (scene->resolution.y >= scene->resolution_range.x)
+	if (scene->resolution.x <= scene->resolution_range.y)
+		scene->resolution.x += 1;
+	else if (scene->resolution.y <= scene->resolution_range.y)
 	{
-		scene->resolution.x = scene->resolution_range.y;
-		scene->resolution.y -= 1;
+		scene->resolution.x = scene->resolution_range.x;
+		scene->resolution.y += 1;
 	}
 }

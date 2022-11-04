@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/04 09:46:05 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 10:30:32 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	main(int argc, char **argv)
 		}
 		mouse_main(&env);
 		keyboard_main(&env);
-		if (env.scene->resolution.y >= env.scene->resolution_range.x)
+		if (env.scene->resolution.y <= env.scene->resolution_range.y)
 			put_images_to_screen(&env);
 		if (env.sdl.event.type == SDL_WINDOWEVENT)
 		{
