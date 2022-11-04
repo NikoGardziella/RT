@@ -254,6 +254,7 @@ t_img		*free_images(t_img *img, size_t count);
 
 /*Image functions*/
 
+t_2i	display_double(t_pxl *pxl, t_2i coords, t_2d flt_prec, t_2i color);
 t_2i		display_str(t_pxl *pxl, t_2i coords, char *str, t_2i color);
 t_2i		display_int(t_pxl *pxl, t_2i coords, int nbr, t_2i color);
 void		main_image(t_img *img, void *param);
