@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:29:59 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/04 12:26:12 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/04 12:40:34 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	key_up(t_env *env)
 
 void	keyboard_add_vectors(t_env *env)
 {
-	t_camera		*camera;
+	t_camera	*camera;
 
 	camera = env->scene->camera;
 	if ((env->keymap & 2) == 2)
@@ -57,14 +57,14 @@ void	keyboard_add_vectors(t_env *env)
 		camera->ray.origin = add_vectors(camera->ray.origin, camera->up);
 	if ((env->keymap & 15) == 0)
 		return ;
-	env->scene->resolution.x = env->scene->resolution_range.y;
-	env->scene->resolution.y = env->scene->resolution_range.y;
+	env->scene->resolution.x = env->scene->resolution_range.x;
+	env->scene->resolution.y = env->scene->resolution_range.x;
 	put_images_to_screen(env);
 }
 
 void keyboard_main(t_env *env)
 {
-	key_down(env);	
+	key_down(env);
 	key_up(env);
-	keyboard_add_vectors(env);	
+	keyboard_add_vectors(env);
 }
