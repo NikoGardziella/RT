@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 17:08:55 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/03 13:18:01 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/04 14:16:03 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ t_rgba	ft_make_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 
 t_rgba	ft_mul_rgba_rgba(t_rgba a, t_rgba b)
 {
-	a.r *= b.r;
-	a.g *= b.g;
-	a.b *= b.b;
-	a.a *= b.a;
+	a.r = a.r * b.r / 255;
+	a.g = a.g * b.g / 255;
+	a.b = a.b * b.r / 255;
+	a.r = a.r * b.r / 255;
 	return (a);
 }
 
