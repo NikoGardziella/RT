@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/04 14:31:11 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 15:54:34 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,7 +275,7 @@ t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
 t_ray		get_camera_ray(t_camera *camera, double x, double y);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
 void		put_images_to_screen(t_env *env);
-t_uint		shade(t_scene *scene, t_hit *hit);
+uint32_t	shade(t_scene *scene, t_hit *hit);
 
 /* Color operations functions*/
 
