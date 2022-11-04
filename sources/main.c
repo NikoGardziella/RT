@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/04 12:23:00 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 14:00:31 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	main(int argc, char **argv)
 	/*PROTECC MALLOC*/
 	env.scene->objects_list = load_scene_objects(argv[1]);
 	env.scene->lights_list = load_scene_lights(argv[1]);
+	env.scene->camera_angle = (t_3d){0.0f, 0.0f, 0.0f};
 	sdl_init(&env.sdl);
 	SDL_RaiseWindow(env.sdl.window);
 	env.img = create_images(IMAGES);
@@ -72,6 +73,12 @@ int	main(int argc, char **argv)
 		}
 		mouse_main(&env);
 		keyboard_main(&env);
+		if (keyboard_add_vectors(&env) | mouse_move(&env))
+		{
+			env.scene->resolution.x = env.scene->resolution_range.x;
+			env.scene->resolution.y = env.scene->resolution_range.x;
+			put_images_to_screen(&env);
+		}
 		if (env.scene->resolution.y <= env.scene->resolution_range.y)
 		{
 			put_images_to_screen(&env);

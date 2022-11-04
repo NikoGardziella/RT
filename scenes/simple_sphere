@@ -16,3 +16,9 @@ OBJECT plane
 	axis 0.0 0.0 1.0
 	color 777777
 }
+OBJECT camera
+{
+	origin 0.0 0.0 0.0
+	look 0.0 0.0 -45.0
+	fov 60
+}

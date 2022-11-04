@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/04 09:46:35 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 14:18:20 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,13 @@
 # define SCREEN_Y 600
 # define T_MAX 100000000.0f
 # define IMAGES 4
+
+# define KEY_A 1
+# define KEY_W 2
+# define KEY_D 4
+# define KEY_S 8
+# define KEY_SPACE 16
+# define KEY_LSHIFT 32
 
 # ifndef PI
 #  define PI 3.141592
@@ -86,10 +93,10 @@ typedef struct s_quadratic
 
 typedef struct		s_rgba
 {
-	uint8_t			r;
-	uint8_t			g;
-	uint8_t			b;
 	uint8_t			a;
+	uint8_t			b;
+	uint8_t			g;
+	uint8_t			r;
 }					t_rgba;
 
 typedef union		u_color
@@ -163,6 +170,7 @@ typedef struct s_scene
 	t_list		*objects_list;
 	t_list		*lights_list;
 	t_camera	*camera;
+	t_3d		camera_angle;
 	t_rgba		ambient_color;
 	t_2i		resolution_range;
 	t_2i		resolution;
@@ -237,11 +245,12 @@ t_mat		init_pmatrix(t_proj *proj);
 /*Keyboard functions*/
 
 void	keyboard_main(t_env *env);
+int		keyboard_add_vectors(t_env *env);
 
 /*Mouse functions*/
 
+int		mouse_move(void *param);
 void	mouse_main(void *param);
-void	mouse_move(void *param);
 void	left_button_up(void *param);
 void	left_button_down(void *param);
 void	right_button_up(void *param);
@@ -254,7 +263,7 @@ t_img		*free_images(t_img *img, size_t count);
 
 /*Image functions*/
 
-t_2i	display_double(t_pxl *pxl, t_2i coords, t_2d flt_prec, t_2i color);
+t_2i		display_double(t_pxl *pxl, t_2i coords, t_2d flt_prec, t_2i color);
 t_2i		display_str(t_pxl *pxl, t_2i coords, char *str, t_2i color);
 t_2i		display_int(t_pxl *pxl, t_2i coords, int nbr, t_2i color);
 void		main_image(t_img *img, void *param);
@@ -264,7 +273,7 @@ void		ray_debugger(t_img *img, void *param);
 void		render_scene(t_img *img, t_scene *scene);
 t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
 t_ray		get_camera_ray(t_camera *camera, double x, double y);
-t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera, t_proj *proj);
+t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
 void		put_images_to_screen(t_env *env);
 t_uint		shade(t_scene *scene, t_hit *hit);
 
