@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sidebar_button.c                                   :+:      :+:    :+:   */
+/*   reflect_vector.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/28 12:00:51 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 12:28:43 by ctrouve          ###   ########.fr       */
+/*   Created: 2022/09/21 15:38:58 by ctrouve           #+#    #+#             */
+/*   Updated: 2022/11/03 15:00:26 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
+#include "dm_vectors.h"
 
-void	sidebar_button(t_img *img, void *param)
+t_3d	reflect_vector(t_3d v, t_3d n)
 {
-//	t_env	*env;
-//	t_2i	coords;
+	t_3d	r;
 
-//	env = param;
-//	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
-//	draw_rectf(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0x0000FF);
-//	draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFF00);
-
-	(void)img;
-	(void)param;
+	n = normalize_vector(n);
+	r = subtract_vectors(v, scale_vector(n, 2.0f * dot_product(v, n)));
+	return (r);
 }

@@ -6,22 +6,12 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/03 14:27:26 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/04 08:52:14 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-/*
-t_uint	shade(t_scene *scene, t_hit *hit)
-{
-	t_uint	color = 0xFF00FF;
-
-	(void)hit;
-	(void)scene;
-	return (color);
-}
-*/
 t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 {
 	t_color	color;
@@ -38,8 +28,8 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 	// printf("%f %f %f\n", ray->direction.x, ray->direction.y, ray->direction.z);
 	if (intersects(ray, scene, hit))
 	{
-		//color.combined = shade(scene, hit);
-			color = hit->color;
+		color.combined = shade(scene, hit);
+		//	color = hit->color;
 	}
 	return (color);
 }

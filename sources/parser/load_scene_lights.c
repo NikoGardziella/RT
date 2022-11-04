@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 16:17:56 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/02 16:58:13 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/03 15:10:37 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ t_list	*read_lights_file(int fd)
 			break ;
 		if (read_light(&light, line) == 1 || (ret == 0 && light.type == 0))
 		{
-			if (add_object(&objects_list, &object) == -1)
+			if (add_object(&lights_list, &light) == -1)
 				ft_putendl("ERROR: Failed to add object to scene...");
-			read_object(&object, line);
+			read_object(&light, line);
 		}
 		if (line != NULL)
 			free(line);

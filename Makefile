@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/03 15:23:41 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/04 08:56:21 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -102,6 +102,7 @@ SOURCES_LIST =	main.c\
 				parser/add_object_to_scene.c\
 				parser/load_scene_camera.c\
 				parser/load_scene_objects.c\
+				parser/load_scene_lights.c\
 				parser/read_camera_info.c\
 				parser/read_object_info.c\
 				parser/read_object_transformations.c\
@@ -198,6 +199,14 @@ fclean: clean
 	@make -C $(DM_BDF_RENDER_DIRECTORY) bclean
 	@rm -rf $(SDL2_BUILD_DIRECTORY)
 	@rm -rf $(SDL2_DIRECTORY)
+	@printf "\n"
+
+rtclean: clean
+	@make bclean
+	@make -C $(LIBFT_DIRECTORY) bclean
+	@make -C $(DM_2D_DIRECTORY) bclean
+	@make -C $(DM_VECTORS_DIRECTORY) bclean
+	@make -C $(DM_BDF_RENDER_DIRECTORY) bclean
 	@printf "\n"
 
 re: fclean all
