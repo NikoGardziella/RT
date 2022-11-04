@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/04 14:01:02 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 14:18:20 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,10 @@ typedef struct s_quadratic
 
 typedef struct		s_rgba
 {
-	uint8_t			r;
-	uint8_t			g;
-	uint8_t			b;
 	uint8_t			a;
+	uint8_t			b;
+	uint8_t			g;
+	uint8_t			r;
 }					t_rgba;
 
 typedef union		u_color
