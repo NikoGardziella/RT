@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/04 09:46:35 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 13:32:22 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ typedef struct s_scene
 	t_list		*objects_list;
 	t_list		*lights_list;
 	t_camera	*camera;
+	t_3d		camera_angle;
 	t_rgba		ambient_color;
 	t_2i		resolution_range;
 	t_2i		resolution;
@@ -264,7 +265,7 @@ void		ray_debugger(t_img *img, void *param);
 void		render_scene(t_img *img, t_scene *scene);
 t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
 t_ray		get_camera_ray(t_camera *camera, double x, double y);
-t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera, t_proj *proj);
+t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
 void		put_images_to_screen(t_env *env);
 t_uint		shade(t_scene *scene, t_hit *hit);
 

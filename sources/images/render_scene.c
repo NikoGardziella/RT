@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/04 12:40:52 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 13:05:40 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,10 @@ void	render_scene(t_img *img, t_scene *scene)
 	t_ray		ray;
 	t_hit		hit;
 	t_color		color;
-	t_proj		proj;
 	t_camera	*camera;
 
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
-	proj = init_proj(scene->camera->fov, &img[0].dim.size, &(t_2d){1.0f, 1000.0f});
 	coords.y = 0;
 	while (coords.y < img->dim.size.y)
 	{
@@ -73,7 +71,7 @@ void	render_scene(t_img *img, t_scene *scene)
 			{
 				if (coords.x % scene->resolution_range.y == scene->resolution.x)
 				{
-					ray = get_ray(coords, img, scene->camera, &proj);
+					ray = get_ray(coords, img, scene->camera);
 					color = raycast(&ray, scene, &hit);
 					put_pixel(coords, color.combined, img);
 					if (scene->resolution.x == scene->resolution.y)

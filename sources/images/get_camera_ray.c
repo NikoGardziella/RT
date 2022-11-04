@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:04:53 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/02 15:00:22 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/04 13:05:04 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@
 	ray.origin = camera->pos;
 	ray.direction = normalize_vector(subtract_vectors(add_vectors(camera->\
 	lower_left_corner, add_vectors(scale_vector(camera->horizontal, x), \
-	scale_vector(camera->vertical, -y))), ray.origin)); 
+	scale_vector(camera->vertical, -y))), ray.origin));
 	return (ray);
 }*/
 
-t_ray	get_ray(t_2i coords, t_img *img, t_camera *camera, t_proj *proj)
+t_ray	get_ray(t_2i coords, t_img *img, t_camera *camera)
 {
 	t_ray	ray;
 	t_dir	dir;
@@ -38,10 +38,9 @@ t_ray	get_ray(t_2i coords, t_img *img, t_camera *camera, t_proj *proj)
 
 	norm_screen.x = (double)(2 * coords.x) / (double)img->dim.size.x - 1.0;
 	norm_screen.y = (double)(2 * coords.y) / (double)img->dim.size.y - 1.0;
-	h_w[0] = (double)tan(proj->fov * PI / 360);
-	h_w[1] = h_w[0] * proj->asp_ratio;
+	h_w[0] = (double)tan(camera->fov * PI / 360);
+	h_w[1] = h_w[0] * camera->aspect_ratio;
 	dir.forward = camera->ray.forward;
-	
 	dir.right = normalize_vector(cross_product(dir.forward, camera->up));
 	dir.up = normalize_vector(cross_product(dir.forward, dir.right));
 	dir.right =  scale_vector(dir.right, h_w[1] * norm_screen.x);

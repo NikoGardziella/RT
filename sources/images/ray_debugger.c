@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:18:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 14:19:08 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/04 13:05:25 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,28 +50,22 @@ void	ray_debugger(t_img *img, void *param)
 {
 	t_env	*env;
 	t_ray	ray;
-	t_2f	screen;
 	t_scene *scene;
 	t_2i	coords;
-	t_proj	proj;
 	t_camera	*camera;
 
 	env = param;
 	scene = env->scene;
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
-	proj = init_proj(scene->camera->fov, &img[0].dim.size, &(t_2d){1.0f, 1000.0f});
 	coords.y = 0;
 	while (coords.y < img->dim.size.y)
 	{
 		coords.x = 0;
 		while (coords.x < img->dim.size.x)
 		{
-			screen.x = (float)(coords.x / SCREEN_X);
-			screen.y = (float)(coords.y / SCREEN_Y);
-
 			//ray = get_camera_ray(scene->camera, screen.x, screen.y);
-			ray = get_ray(coords, img, scene->camera, &proj);
+			ray = get_ray(coords, img, scene->camera);
 			// printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
 			draw_ray_arrows(img, ray.forward,0xFF0000, 2);
 			//color = raycast(&ray, scene, &hit);

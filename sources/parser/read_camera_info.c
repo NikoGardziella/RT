@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 15:20:11 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 11:21:16 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 13:00:25 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	look_at(char *line, t_camera *camera)
 		look_at.y = (double)ft_atof(line++);
 		line = ft_strchr(line, ' ');
 		look_at.z = (double)ft_atof(line++);
-		camera->ray.forward = subtract_vectors(camera->ray.origin, look_at);
+		camera->ray.forward = subtract_vectors(look_at, camera->ray.origin);
 		camera->ray.forward = normalize_vector(camera->ray.forward);
 		return (1);
 	}

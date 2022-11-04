@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/04 12:23:00 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 13:32:36 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	main(int argc, char **argv)
 	/*PROTECC MALLOC*/
 	env.scene->objects_list = load_scene_objects(argv[1]);
 	env.scene->lights_list = load_scene_lights(argv[1]);
+	env.scene->camera_angle = (t_3d){0.0f, 0.0f, 0.0f};
 	sdl_init(&env.sdl);
 	SDL_RaiseWindow(env.sdl.window);
 	env.img = create_images(IMAGES);
