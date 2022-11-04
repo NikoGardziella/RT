@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:29:59 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/03 15:54:41 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/04 09:41:36 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void keyboard_main(t_env *env)
 		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_S)
 			env->keymap |= 8;
 		env->sdl.event.key.keysym.scancode = 0;
-		env->scene->resolution = 10;
+		env->scene->resolution.x = env->scene->resolution_range.y;
+		env->scene->resolution.y = env->scene->resolution_range.y;
 		put_images_to_screen(env);
 	}
 	// printf("%d ", env->keymap);
@@ -54,7 +55,8 @@ void keyboard_main(t_env *env)
 		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_S)
 			env->keymap ^= 8;
 		env->sdl.event.key.keysym.scancode = 0;
-		env->scene->resolution = 10;
+		env->scene->resolution.x = env->scene->resolution_range.y;
+		env->scene->resolution.y = env->scene->resolution_range.y;
 		put_images_to_screen(env);
 	}
 }

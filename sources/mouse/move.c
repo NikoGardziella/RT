@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 11:50:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 12:49:18 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 09:40:54 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	mouse_move(void *param)
 	{
 		env->scene->camera->ray.forward = rotate_point(env->scene->camera->ray.forward, (t_3d){0.0f, -env->sdl.event.motion.xrel / 5, 0.0f});
 		env->scene->camera->ray.forward = rotate_point(env->scene->camera->ray.forward, (t_3d){-env->sdl.event.motion.yrel / 5, 0.0f, 0.0f});
-		env->scene->resolution = 10;
+		env->scene->resolution.x = env->scene->resolution_range.y;
+		env->scene->resolution.y = env->scene->resolution_range.y;
 		put_images_to_screen(env);
 	}
 }
