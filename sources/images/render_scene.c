@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/04 10:30:17 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 11:44:05 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,23 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 	return (color);
 }
 
+void	resolution_adjust(t_2i coords, uint32_t color, t_img *img, int res_range)
+{
+	t_2i	res_coords;
+
+	res_coords.y = 0;
+	while (res_coords.y < res_range)
+	{
+		res_coords.x = 0;
+		while (res_coords.x < res_range)
+		{
+			put_pixel((t_2i){coords.x + res_coords.x, coords.y + res_coords.y}, color, img);
+			res_coords.x += 1;
+		}
+		res_coords.y += 1;
+	}
+}
+
 void	render_scene(t_img *img, t_scene *scene)
 {
 	t_2i		coords;
@@ -47,7 +64,6 @@ void	render_scene(t_img *img, t_scene *scene)
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	proj = init_proj(scene->camera->fov, &img[0].dim.size, &(t_2d){1.0f, 1000.0f});
 	coords.y = 0;
-	printf("res: %d\n", scene->resolution.x);
 	while (coords.y < img->dim.size.y)
 	{
 		if (coords.y % scene->resolution_range.y == scene->resolution.y)
@@ -59,8 +75,9 @@ void	render_scene(t_img *img, t_scene *scene)
 				{
 					ray = get_ray(coords, img, scene->camera, &proj);
 					color = raycast(&ray, scene, &hit);
-					// printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
 					put_pixel(coords, color.combined, img);
+					if (scene->resolution.x == scene->resolution.y)
+						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
 				}
 				coords.x += 1;
 			}
