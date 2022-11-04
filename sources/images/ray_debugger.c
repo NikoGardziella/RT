@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:18:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/04 14:27:53 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 15:23:44 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	ray_debugger(t_img *img, void *param)
 		// printf("\n");
 		coords.y += 20;
 	}
-	printf("[%.2f %.2f %.2f]\n", camera->up.x, camera->up.y, camera->up.z);
 	draw_ray_arrow(img, camera->up, 0x0000FF, 2);
 	draw_ray_arrow(img, camera->right, 0x00FF00, 2);
 	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
