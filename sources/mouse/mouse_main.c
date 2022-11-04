@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:58 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 13:35:09 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/04 13:46:32 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@ void	mouse_main(void *param)
 	t_env	*env;
 
 	env = param;
-	if (env->sdl.event.type == SDL_MOUSEMOTION)
-	{
-		mouse_move(env);
-	}
+	
 	if (env->sdl.event.type == SDL_MOUSEBUTTONUP)
 	{
 		if (env->sdl.event.button.button == SDL_BUTTON_LEFT)

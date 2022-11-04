@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/04 09:46:35 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 13:47:49 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,13 @@
 # define SCREEN_Y 600
 # define T_MAX 100000000.0f
 # define IMAGES 4
+
+# define KEY_A 1
+# define KEY_W 2
+# define KEY_D 4
+# define KEY_S 8
+# define KEY_SPACE 16
+# define KEY_LSHIFT 32
 
 # ifndef PI
 #  define PI 3.141592
@@ -237,11 +244,11 @@ t_mat		init_pmatrix(t_proj *proj);
 /*Keyboard functions*/
 
 void	keyboard_main(t_env *env);
-
+int		keyboard_add_vectors(t_env *env);
 /*Mouse functions*/
 
+int		mouse_move(void *param);
 void	mouse_main(void *param);
-void	mouse_move(void *param);
 void	left_button_up(void *param);
 void	left_button_down(void *param);
 void	right_button_up(void *param);
