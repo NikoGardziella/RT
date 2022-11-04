@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/04 15:54:34 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 16:25:02 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,10 +219,11 @@ typedef struct s_env
 	int				width;
 	t_img			*img;
 	t_scene			*scene;
+	t_font			*font;
 	uint8_t			mouse_state;
 	unsigned int	keymap;
-	uint8_t	sidebar;
-	t_font	*font;
+	uint8_t			sidebar;
+	int				render_mode;
 }				t_env;
 
 /*Parser Functions*/
@@ -270,7 +271,7 @@ void		main_image(t_img *img, void *param);
 void		sidebar_button(t_img *img, void *param);
 void		sidebar(t_img *img, void *param);
 void		ray_debugger(t_img *img, void *param);
-void		render_scene(t_img *img, t_scene *scene);
+void		render_scene(t_img *img, t_scene *scene, int render_mode);
 t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
 t_ray		get_camera_ray(t_camera *camera, double x, double y);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);

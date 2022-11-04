@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/04 15:50:32 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/04 16:17:45 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,15 @@ t_rgba	calc_diffuse(t_object *light, t_hit *hit)
 		light_dir = normalize_vector(subtract_vectors(light->origin, hit->point));
 //	else
 //		light_dir = ft_normalize_vec3(ft_mul_vec3(light->direction, -1.0));
+	hit->normal = normalize_vector(subtract_vectors(hit->point, hit->object->origin));
+	if (mid == 1)
+		printf("%f %f %f light_dir\n", light_dir.x, light_dir.y, light_dir.z);
+	if (mid == 1)
+		printf("%f %f %f normal\n", hit->normal.x, hit->normal.y, hit->normal.z);
 	ndotl = dot_product(hit->normal, light_dir);
 	diffuse = ft_mul_rgba(hit->object->color.channel, ft_max_d(ndotl, 0.0));
+	if (mid == 1)
+		printf("%f ndotl\n", ndotl);
 //	return (ft_mul_rgba(diffuse, light->lumen));
 	return (diffuse);
 }
@@ -106,16 +113,20 @@ uint32_t	shade(t_scene *scene, t_hit *hit)
 	t_color	color_final;
 	double	attenuation;
 	t_list	*light_loop;
+	t_object	*light;
 
 	color_final.combined = 0x000000;
 	attenuation = 0.0;
 	light_loop = scene->lights_list;
 	while (light_loop)
 	{
-		printf("%d light lumen \n", ((t_object *)(light_loop->content))->lumen);
+		light = (t_object *)light_loop->content;
+		if (mid == 1)
+			printf("%d light lumen \n", light->lumen);
 		attenuation = 1.0 - (hit->distance / T_MAX);
 		color_diffuse.channel = calc_diffuse((t_object *)light_loop->content, hit);
-		printf("%X color_diffuse\n", color_diffuse.combined);
+		if (mid == 1)
+			printf("%X color_diffuse\n", color_diffuse.combined);
 		return (color_diffuse.combined);
 		color_diffuse.channel = ft_mul_rgba_rgba(color_diffuse.channel, hit->object->color.channel);
 //		color_final.channel = ft_add_rgba(color_diffuse.channel, hit->object->color.channel);

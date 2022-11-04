@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:33:20 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 16:39:13 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/04 16:27:11 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	main_image(t_img *img, void *param)
 
 	color = (t_2i){0x00000,0xFFFFFF};
 	env = param;
-	render_scene(img, env->scene);
+	render_scene(img, env->scene, env->render_mode);
 	coords = (t_2i){0, img->dim.size.y - (int)env->font->bound_box[1]};
 	coords = display_str(&(t_pxl){env->font, put_pixel, img}, coords, "cam:" ,color);
 	coords = display_str(&(t_pxl){env->font, put_pixel, img}, coords, " x:" ,color);
