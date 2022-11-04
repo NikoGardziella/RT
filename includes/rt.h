@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/04 08:52:35 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 09:46:35 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,8 @@ typedef struct s_scene
 	t_list		*lights_list;
 	t_camera	*camera;
 	t_rgba		ambient_color;
-	int			resolution;
+	t_2i		resolution_range;
+	t_2i		resolution;
 }				t_scene;
 
 typedef struct s_2d

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/04 08:52:14 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 09:46:21 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 
 void	render_scene(t_img *img, t_scene *scene)
 {
-	t_2f		screen;
-	t_2i		temp;
 	t_2i		coords;
 	t_ray		ray;
 	t_hit		hit;
@@ -51,46 +49,28 @@ void	render_scene(t_img *img, t_scene *scene)
 	coords.y = 0;
 	while (coords.y < img->dim.size.y)
 	{
-		coords.x = 0;
-		while (coords.x < img->dim.size.x)
+		if (coords.y % scene->resolution_range.y == scene->resolution.y - 1)
 		{
-			screen.x = (float)(coords.x / SCREEN_X);
-			screen.y = (float)(coords.y / SCREEN_Y);
-
-
-			//ray = get_camera_ray(scene->camera, screen.x, screen.y);
-			ray = get_ray(coords, img, scene->camera, &proj);
-
-			// printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
-			color = raycast(&ray, scene, &hit);
-
-			// if(coords.x == SCREEN_X / 2 && coords.y == SCREEN_Y / 2)
-			// {
-			// 	printf("camX: %f  camY: %f  cam:%f\n",camera->ray.forward.x, camera->ray.forward.y, camera->ray.forward.z);
-			// 	printf("rayX: %f  rayY: %f  ray:%f\n",ray.forward.x, ray.forward.y, ray.forward.z);
-			// 	mid = 1;
-			// }
-			// else
-			// 	mid = 0;
-			
-			temp.y = coords.y;
-			while (temp.y < (coords.y + scene->resolution))
+			coords.x = 0;
+			while (coords.x < img->dim.size.x)
 			{
-				temp.x = coords.x;
-				while (temp.x < (coords.x + scene->resolution))
+				if (coords.x % scene->resolution_range.y == scene->resolution.x)
 				{
-					put_pixel(temp, color.combined, img);
-					temp.x++;
+					ray = get_ray(coords, img, scene->camera, &proj);
+					color = raycast(&ray, scene, &hit);
+					// printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
+					put_pixel(coords, color.combined, img);
 				}
-				temp.y++;
+				coords.x += 1;
 			}
-			coords.x += scene->resolution;
-			// coords.x++;
 		}
-		// printf("\n");
-		coords.y += scene->resolution;
-		// coords.y++;
+		coords.y += 1;
 	}
-	if (scene->resolution > 3)
-		scene->resolution -= 1;
+	if (scene->resolution.x >= scene->resolution_range.x)
+		scene->resolution.x -= 1;
+	else if (scene->resolution.y >= scene->resolution_range.x)
+	{
+		scene->resolution.x = scene->resolution_range.y;
+		scene->resolution.y -= 1;
+	}
 }
