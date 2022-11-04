@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/04 13:32:36 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 14:00:31 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,12 @@ int	main(int argc, char **argv)
 		}
 		mouse_main(&env);
 		keyboard_main(&env);
+		if (keyboard_add_vectors(&env) | mouse_move(&env))
+		{
+			env.scene->resolution.x = env.scene->resolution_range.x;
+			env.scene->resolution.y = env.scene->resolution_range.x;
+			put_images_to_screen(&env);
+		}
 		if (env.scene->resolution.y <= env.scene->resolution_range.y)
 		{
 			put_images_to_screen(&env);
