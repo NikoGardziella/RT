@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/04 13:05:40 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 15:09:42 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 
 	if (intersects(ray, scene, hit))
 	{
+//		color = hit->color;
 		color.combined = shade(scene, hit);
-		color = hit->color;
 	}
 	return (color);
 }
@@ -74,8 +74,8 @@ void	render_scene(t_img *img, t_scene *scene)
 					ray = get_ray(coords, img, scene->camera);
 					color = raycast(&ray, scene, &hit);
 					put_pixel(coords, color.combined, img);
-					if (scene->resolution.x == scene->resolution.y)
-						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
+//					if (scene->resolution.x == scene->resolution.y)
+//						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
 				}
 				coords.x += 1;
 			}

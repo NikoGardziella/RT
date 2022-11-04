@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 12:23:14 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 13:19:03 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/04 14:28:06 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	color(char *line, t_object *object)
 		line = ft_strstr(line, str);
 		line = ft_strchr(line, ' ');
 		if (line)
-			object->color.combined = (t_uint)ft_atoh(line);
+			object->color.combined = (uint32_t)ft_atoh(line);
 		return (1);
 	}
 	return (0);

@@ -26,7 +26,7 @@ OBJECT light
 {
 	origin 0.0 50 60
 	lumen 1000.0
-	color FFFF00
+	color 00FF00
 }
 OBJECT camera
 {
