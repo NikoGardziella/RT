@@ -6,13 +6,13 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:18:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/04 13:05:25 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 14:27:53 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-static void	draw_ray_arrows(t_img *img, t_3d ray, t_uint color, int mode)
+static void	draw_ray_arrow(t_img *img, t_3d ray, t_uint color, int mode)
 {
 	t_3d	p[2];
 	t_2i	coords;
@@ -38,12 +38,6 @@ static void	draw_ray_arrows(t_img *img, t_3d ray, t_uint color, int mode)
 		line.end = (t_2i){(int)p[1].x, (int)p[1].y};
 		draw_line(&(t_pxl_func){&put_pixel, img}, line, color, 0xFFFFFF);
 	}
-	line.start = (t_2i){0, 0};
-	line.end = (t_2i){0, img->dim.end.y};
-	draw_line(&(t_pxl_func){&put_pixel, img}, line, color, 0xFFFFFF);
-	line.start = (t_2i){img->dim.end.x, 0};
-	line.end = (t_2i){img->dim.end.x, img->dim.end.y};
-	draw_line(&(t_pxl_func){&put_pixel, img}, line, color, 0xFFFFFF);
 }
 
 void	ray_debugger(t_img *img, void *param)
@@ -67,7 +61,7 @@ void	ray_debugger(t_img *img, void *param)
 			//ray = get_camera_ray(scene->camera, screen.x, screen.y);
 			ray = get_ray(coords, img, scene->camera);
 			// printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
-			draw_ray_arrows(img, ray.forward,0xFF0000, 2);
+			draw_ray_arrow(img, ray.forward,0xFF0000, 2);
 			//color = raycast(&ray, scene, &hit);
 			//put_pixel(coords, color, img);
 			coords.x += 20;
@@ -75,4 +69,9 @@ void	ray_debugger(t_img *img, void *param)
 		// printf("\n");
 		coords.y += 20;
 	}
+	printf("[%.2f %.2f %.2f]\n", camera->up.x, camera->up.y, camera->up.z);
+	draw_ray_arrow(img, camera->up, 0x0000FF, 2);
+	draw_ray_arrow(img, camera->right, 0x00FF00, 2);
+	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
+	draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFFFF);
 }
