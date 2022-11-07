@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/07 09:13:10 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/07 09:22:10 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ double	ft_max_d(double a, double b)
 ** Diffuse objects that don’t emit light merely take on the color of their 
 ** surroundings, but they modulate that with their own intrinsic color. Light 
 ** that reflects off a diffuse surface has its direction randomized.
-*/
+
 t_rgba	calc_diffuse(t_object *light, t_hit *hit)
 {
 	t_rgba	diffuse;
@@ -72,7 +72,7 @@ t_rgba	calc_specular(t_object *light, t_hit *hit, t_3d cam)
 		pow(ft_max_d(dot_product(r, c), 0.0), k));
 	return (specular);
 }
-*/
+
 
 t_rgba	calc_diffuse(t_object *light, t_hit *hit)
 {

@@ -6,11 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/11/04 14:21:43 by ctrouve          ###   ########.fr       */
-=======
-/*   Updated: 2022/11/04 16:50:05 by dmalesev         ###   ########.fr       */
->>>>>>> c6e0bc3fc0c84e97e8c27b7d3fca61f5649dce7f
+/*   Updated: 2022/11/07 09:19:56 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +28,9 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 
 	if (intersects(ray, scene, hit))
 	{
-<<<<<<< HEAD
 		color = hit->color;
 		color.combined = shade(scene, hit);
 //		color = hit->color;
-=======
-		color.combined = shade(scene, hit);
->>>>>>> c6e0bc3fc0c84e97e8c27b7d3fca61f5649dce7f
 	}
 	return (color);
 }
