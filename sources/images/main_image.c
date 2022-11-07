@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:33:20 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/04 21:03:47 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 09:12:56 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	main_image(t_img *img, void *param)
 	if (env->scene->resolution.x == env->scene->resolution_range.x && env->scene->resolution.y == env->scene->resolution_range.x)
 	{
 		plot_time = (double)time_since_success(0.0f, 0);
+		coords = (t_2i){0, 0};
 		coords = display_str(&(t_pxl){env->font, put_pixel, img}, coords, "Plot time:" ,color);
 		display_double(&(t_pxl){env->font, put_pixel, img}, coords, (t_2d){plot_time, 3.0f} ,color);
 	}
