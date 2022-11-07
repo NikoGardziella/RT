@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/07 15:39:05 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 16:11:08 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,8 @@ double	intersect_sphere(t_object sphere, t_ray ray)
 	q.t0 = T_MAX;
 	q.t1 = T_MAX;
 	quadratic(&q, SPHERE);
+	if (mid == 1)
+		printf("t0: %f t1: %f\n", q.t0, q.t1);
 	// sphere.hit_point = add_vectors(ray.origin, scale_vector(ray.forward, q.t1));
 	return (q.t1);
 }

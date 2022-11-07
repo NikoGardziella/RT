@@ -1,7 +1,7 @@
 OBJECT sphere
 {
-	origin 0.0 0.0 -45.0
-	radius 15.0
+	origin 0.0 0.0 -5.0
+	radius 1.0
 	color FFFFFF
 }
 OBJECT light
@@ -9,12 +9,6 @@ OBJECT light
 	origin 0.0 0.0 5.0
 	lumen 1000.0
 	color FFFFFF
-}
-OBJECT plane
-{
-	origin 0.0 0.0 -60.0
-	axis 0.0 0.0 1.0
-	color 777777
 }
 OBJECT camera
 {

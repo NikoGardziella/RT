@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/07 15:43:00 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 16:20:49 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ t_rgba	calc_diffuse(t_object *light, t_hit *hit)
 //	else
 //		light_dir = ft_normalize_vec3(ft_mul_vec3(light->direction, -1.0));
 	hit->normal = normalize_vector(subtract_vectors(hit->point, hit->object->origin));
+	if (mid == 1)
+		printf("***************************\n%f distance\n", hit->distance);
 	if (mid == 1)
 		printf("%f %f %f hit_point\n", hit->point.x, hit->point.y, hit->point.z);
 	if (mid == 1)

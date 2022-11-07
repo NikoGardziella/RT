@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/07 14:19:11 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 16:47:24 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ void	render_scene(t_img *img, t_scene *scene, int render_mode)
 						mid = 0;
 					ray = get_ray(coords, img, scene->camera);
 					color = raycast(&ray, scene, &hit);
-					(void)render_mode;
-					//if (render_mode == 1)
-						put_pixel(coords, color.combined, img);
+					if (render_mode ==-1)
+						color = hit.color;
+					put_pixel(coords, color.combined, img);
 					if (scene->resolution.x == scene->resolution.y)
 						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
 				}
