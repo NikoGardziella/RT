@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:39:02 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 15:14:35 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 09:41:59 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	coords_in_area(t_dim dim, t_2i coords)
 {
-	if (coords.x > dim.start.x && coords.x < dim.end.x
-			&& coords.y > dim.start.y && coords.y < dim.end.y)
+	if (coords.x > dim.start.x && coords.x < dim.start.x + dim.size.x
+			&& coords.y > dim.start.y && coords.y < dim.start.y + dim.size.y)
 		return (1);
 	return (0);
 }

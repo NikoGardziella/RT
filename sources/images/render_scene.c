@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/07 09:19:56 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/07 09:42:34 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	render_scene(t_img *img, t_scene *scene, int render_mode)
 					{
 						put_pixel(coords, hit.object->color.combined, img);
 					}
-				//	if (scene->resolution.x == scene->resolution.y)
+					//if (scene->resolution.x == scene->resolution.y)
 				//		resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
 				}
 				coords.x += 1;

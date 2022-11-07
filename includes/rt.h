@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/07 09:23:56 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 09:40:16 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,6 @@ typedef struct s_dim
 {
 	t_2i	size;
 	t_2i	start;
-	t_2i	end;
 }				t_dim;
 
 typedef struct s_img

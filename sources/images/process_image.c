@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 11:21:22 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/04 09:30:36 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 09:41:19 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ void	blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *de
 	if (src == NULL || dest == NULL)
 		return ;
 	if (srcrect == NULL)
-		srcrect = &(t_dim){(t_2i){src->w, src->h}, (t_2i){0, 0}, (t_2i){0, 0}};
+		srcrect = &(t_dim){(t_2i){src->w, src->h}, (t_2i){0, 0}};
 	if (destrect == NULL)
-		destrect = &(t_dim){(t_2i){dest->w, dest->h}, (t_2i){0, 0}, (t_2i){0, 0}};
+		destrect = &(t_dim){(t_2i){dest->w, dest->h}, (t_2i){0, 0}};
 	srcrect->size.x = ft_max(srcrect->size.x, 1);
 	srcrect->size.y = ft_max(srcrect->size.y, 1);
 	srcrect->size.x = ft_min(srcrect->size.x, src->w);
@@ -96,8 +96,8 @@ void	process_image(t_sdl *sdl, t_img *img, int mode, void *param)
 		img->draw_func(img, param);
 	if ((mode & 2) == 2)
 	{
-		//blit_surface_fast(img->surface, NULL, sdl->screen, &img->dim);
-		put_image_to_screen_surface(img, sdl->screen);
+		blit_surface(img->surface, NULL, sdl->screen, &img->dim);
+		//put_image_to_screen_surface(img, sdl->screen);
 	}
 	if ((mode & 4) == 4)
 	{

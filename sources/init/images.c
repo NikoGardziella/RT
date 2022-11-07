@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 10:56:32 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/07 09:23:51 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 09:40:59 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,10 @@ static void	get_image_sizes(t_img *img)
 	img[4].dim.size = (t_2i){SCREEN_X / 3, SCREEN_Y / 3};
 }
 
-static void	get_image_positions(t_img *img, size_t count)
+static void	get_image_positions(t_img *img)
 {
 	t_2i	button;
 	t_2i	offset;
-	size_t	i;
 
 	button = (t_2i){SCREEN_X / 40, SCREEN_Y / 25};
 	offset = (t_2i){button.x * 30 / 100, button.y * 30 / 100};
@@ -37,13 +36,6 @@ static void	get_image_positions(t_img *img, size_t count)
 	img[2].dim.start = (t_2i){SCREEN_X - img[2].dim.size.x - offset.x, 0 + offset.y};
 	img[3].dim.start = (t_2i){0 + offset.x, 0 + offset.y};
 	img[4].dim.start = (t_2i){0, SCREEN_Y / 3 * 2};
-	i = 0;
-	while (i < count)
-	{
-		img[i].dim.end.x = img[i].dim.start.x + img[i].dim.size.x;
-		img[i].dim.end.y = img[i].dim.start.y + img[i].dim.size.y;
-		i++;
-	}
 }
 
 static void	get_image_functions(t_img *img)
@@ -82,7 +74,7 @@ t_img	*create_images(size_t count)
 	ft_bzero(img, sizeof(t_img));
 	i = 0;
 	get_image_sizes(img);
-	get_image_positions(img, count);
+	get_image_positions(img);
 	while (i < count)
 	{
 		if (img[i].dim.size.x <= 0 || img[i].dim.size.y <= 0)
