@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 10:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/04 13:27:19 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 14:26:14 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ t_camera	init_camera(t_2i size, t_3d origin, t_3d forward, double fov)
 	if (dot_product(camera.up, camera.ray.forward) == 1)
 		camera.up = normalize_vector((t_3d){0.0f, 99.0f, 1.0f});
 	camera.right = cross_product(camera.up, camera.ray.forward);
-	camera.up = normalize_vector(cross_product(camera.right, camera.ray.forward));
+	camera.up = normalize_vector(cross_product(camera.ray.forward, camera.right));
 	return (camera);
 }

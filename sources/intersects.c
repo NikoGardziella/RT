@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/03 13:08:41 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/04 21:05:20 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	intersect_loop(t_ray *ray, t_scene *scene, t_hit *hit)
 
 	hit->distance = T_MAX;
 	objects_list = scene->objects_list;
+	ret = 0;
 	while (objects_list != NULL)
 	{
 		object = (t_object *)objects_list->content;

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:29:59 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/04 13:45:17 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/04 16:51:53 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,14 @@ void	key_down(t_env *env)
 {
 	if (env->sdl.event.type == SDL_KEYDOWN)
 	{
-		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_A)
+		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_R)
+		{
+			env->render_mode *= -1;
+			env->scene->resolution.x = env->scene->resolution_range.x;
+			env->scene->resolution.y = env->scene->resolution_range.x;
+			put_images_to_screen(env);
+		}
+		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_A)
 			env->keymap |= KEY_A;
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_W)
 			env->keymap |= KEY_W;
@@ -64,9 +71,9 @@ int	keyboard_add_vectors(t_env *env)
 	if ((env->keymap & KEY_S) == KEY_S)
 		camera->ray.origin = add_vectors(camera->ray.origin, scale_vector(camera->ray.forward, -1));
 	if ((env->keymap & KEY_SPACE) == KEY_SPACE)
-		camera->ray.origin = add_vectors(camera->ray.origin, camera->up);
+		camera->ray.origin = add_vectors(camera->ray.origin, (t_3d){0.0f, 1.0f, 0.0f});
 	if ((env->keymap & KEY_LSHIFT) == KEY_LSHIFT)
-		camera->ray.origin = add_vectors(camera->ray.origin, scale_vector(camera->up, -1));
+		camera->ray.origin = add_vectors(camera->ray.origin, (t_3d){0.0f, -1.0f, 0.0f});
 	if ((env->keymap & 63) == 0)
 		return (0);
 	// env->scene->resolution.x = env->scene->resolution_range.x;

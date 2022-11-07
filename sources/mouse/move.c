@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 11:50:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/04 14:00:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/04 14:57:58 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	mouse_move(void *param)
 			env->scene->camera_angle.y -= (double)env->sdl.event.motion.xrel / 5;
 			angle_overflow(&env->scene->camera_angle);
 			env->scene->camera->ray.forward = rotate_point((t_3d){0.0f, 0.0f, -1.0f}, env->scene->camera_angle);
+			//env->scene->camera->ray.forward = rotate_point(env->scene->camera->ray.forward, (t_3d){0.0f, -env->sdl.event.motion.xrel / 5, 0.0f});
+			//env->scene->camera->ray.forward = rotate_point(env->scene->camera->ray.forward, (t_3d){-env->sdl.event.motion.yrel / 5, 0.0f, 0.0f});
 			return (1);
 		}
 	}

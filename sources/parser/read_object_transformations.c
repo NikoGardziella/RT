@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 12:23:14 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/01 12:35:36 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/04 21:05:03 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ static int	rotate(char *line, t_object *object)
 		line = ft_strchr(line, ' ');
 		if (line)
 			angles.z = (double)ft_atof(line++);
-		//object->axis = rotate_point(object->axis, angles);
-		(void)object;
+		object->axis = rotate_point(object->axis, angles);
 		return (1);
 	}
 	return (0);

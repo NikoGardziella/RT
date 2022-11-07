@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/04 14:12:57 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/07 09:13:10 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,31 +20,8 @@ double	ft_max_d(double a, double b)
 	else
 		return (b);
 }
+
 /*
-int	is_in_shadow(t_light *light, t_scene *scene, t_hit *origin)
-{
-	t_ray	shadow_ray;
-	t_hit	hit;
-
-	shadow_ray.origin = ft_add_vec3(origin->point, \
-		ft_mul_vec3(ft_normalize_vec3(origin->normal), SHADOW_ACNE));
-	shadow_ray.origin_object = origin->object;
-	shadow_ray.shad = TRUE;
-	if (light->type == POINT)
-	{
-		shadow_ray.direction = ft_normalize_vec3((ft_sub_vec3(light->position, \
-			shadow_ray.origin)));
-	}
-	else
-		shadow_ray.direction = \
-			ft_normalize_vec3(ft_mul_vec3(light->direction, -1.0));
-	if (trace(&shadow_ray, scene, &hit, TRUE) && \
-		hit.object != shadow_ray.origin_object)
-		return (TRUE);
-	return (FALSE);
-}
-
-
 ** see https://raytracing.github.io/books/RayTracingInOneWeekend.html#
 ** diffusematerials/asimplediffusematerial
 ** 
@@ -64,12 +41,9 @@ t_rgba	calc_diffuse(t_object *light, t_hit *hit)
 //		light_dir = ft_normalize_vec3(ft_mul_vec3(light->direction, -1.0));
 	ndotl = dot_product(hit->normal, light_dir);
 	diffuse = ft_mul_rgba(light->color.channel, ft_max_d(ndotl, 0.0));
-	diffuse = (t_rgba){0, 255, 255, 1};
-//	return (ft_mul_rgba(diffuse, light->lumen));
-	return (diffuse);
+	return (ft_mul_rgba(diffuse, light->lumen));
 }
 
-/*
 ** see https://ogldev.org/www/tutorial19/tutorial19.html
 **
 ** k is the specular exponent (linked to the material), we get shine if the 
@@ -77,7 +51,7 @@ t_rgba	calc_diffuse(t_object *light, t_hit *hit)
 **
 ** r is reflection vector
 ** c is camera vector
-
+*/
 t_rgba	calc_specular(t_object *light, t_hit *hit, t_3d cam)
 {
 	t_rgba			specular;
@@ -100,27 +74,62 @@ t_rgba	calc_specular(t_object *light, t_hit *hit, t_3d cam)
 }
 */
 
-t_uint	shade(t_scene *scene, t_hit *hit)
+t_rgba	calc_diffuse(t_object *light, t_hit *hit)
+{
+	t_rgba	diffuse;
+	t_3d	light_dir;
+	double	ndotl;
+
+//	if (light->type == POINT)
+		light_dir = normalize_vector(subtract_vectors(light->origin, hit->point));
+//	else
+//		light_dir = ft_normalize_vec3(ft_mul_vec3(light->direction, -1.0));
+	hit->normal = normalize_vector(subtract_vectors(hit->point, hit->object->origin));
+	if (mid == 1)
+		printf("%f %f %f light_dir\n", light_dir.x, light_dir.y, light_dir.z);
+	if (mid == 1)
+		printf("%f %f %f normal\n", hit->normal.x, hit->normal.y, hit->normal.z);
+	ndotl = dot_product(hit->normal, light_dir);
+	diffuse = ft_mul_rgba(hit->object->color.channel, ft_max_d(ndotl, 0.0));
+	if (mid == 1)
+		printf("%f ndotl\n", ndotl);
+//	return (ft_mul_rgba(diffuse, light->lumen));
+	return (diffuse);
+}
+
+
+
+uint32_t	shade(t_scene *scene, t_hit *hit)
 {
 	t_color	color_diffuse;
+	t_color	color_specular;
 	t_color	color_final;
 	double	attenuation;
+	t_list	*light_loop;
+	t_object	*light;
 
 	color_diffuse.channel =  (t_rgba){0, 0, 0, 1};
+	color_specular.channel =  (t_rgba){0, 0, 0, 1};
 	attenuation = 0.0;
-	while (scene->lights_list)
+	light_loop = scene->lights_list;
+	while (light_loop)
 	{
+		light = (t_object *)light_loop->content;
+		if (mid == 1)
+			printf("%d light lumen \n", light->lumen);
 		attenuation = 1.0 - (hit->distance / T_MAX);
 		//if (!is_in_shadow(&scene->lights_list, scene, hit))
 		{
 			color_diffuse.channel = ft_add_rgba(color_diffuse.channel, \
 				calc_diffuse((t_object *)scene->lights_list->content, hit));
-
+			color_specular.channel = ft_add_rgba(color_specular.channel, \
+				calc_specular((t_object *)scene->lights_list->content, hit, scene->camera->ray.origin));
 		}
 		color_diffuse.channel = ft_mul_rgba(color_diffuse.channel, attenuation);
+		color_specular.channel = ft_mul_rgba(color_specular.channel, attenuation);
 		scene->lights_list = scene->lights_list->next;
 	}
-//	color_final.channel = ft_add_rgba(scene->ambient_color, 
-	color_final.channel = ft_mul_rgba_rgba(hit->object->color.channel), color_diffuse.channel);
+	color_final.channel = ft_add_rgba(scene->ambient_color, ft_add_rgba(\
+		ft_mul_rgba_rgba(hit->object->color.channel, color_diffuse.channel), color_specular.channel));
 	return (color_final.combined);
 }
