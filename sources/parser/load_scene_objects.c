@@ -14,7 +14,7 @@
 
 static int	check_if_object(char *line)
 {
-	char	*str[5];
+	char	*str[6];
 
 	str[0] = "OBJECT";
 	if (ft_strnequ(ft_strstr(line, str[0]), str[0], ft_strlen(str[0])))
@@ -26,6 +26,7 @@ static int	check_if_object(char *line)
 		str[2] = "plane";
 		str[3] = "cone";
 		str[4] = "cylinder";
+		str[5] = "box";
 		if (ft_strnequ(ft_strstr(line, str[0]), str[0], ft_strlen(str[0])))
 			return (0);
 		else if (ft_strnequ(ft_strstr(line, str[1]), str[1], ft_strlen(str[1])))
@@ -36,6 +37,8 @@ static int	check_if_object(char *line)
 			return (3);
 		else if (ft_strnequ(ft_strstr(line, str[4]), str[4], ft_strlen(str[4])))
 			return (4);
+		else if (ft_strnequ(ft_strstr(line, str[5]), str[5], ft_strlen(str[5])))
+			return (5);
 		return (-1);
 	}
 	return (-2);
