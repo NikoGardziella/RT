@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 10:56:32 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/07 09:40:59 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 13:44:35 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	get_image_sizes(t_img *img)
 	img[1].dim.size = (t_2i){button.x, button.y};
 	img[2].dim.size = (t_2i){SCREEN_X / 4, SCREEN_Y / 4};
 	img[3].dim.size = (t_2i){SCREEN_X / 4, SCREEN_Y / 5};
-	img[4].dim.size = (t_2i){SCREEN_X / 3, SCREEN_Y / 3};
+	img[4].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
+	img[5].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 }
 
 static void	get_image_positions(t_img *img)
@@ -35,7 +36,8 @@ static void	get_image_positions(t_img *img)
 	img[1].dim.start = (t_2i){0 + offset.x, 0 + offset.y};
 	img[2].dim.start = (t_2i){SCREEN_X - img[2].dim.size.x - offset.x, 0 + offset.y};
 	img[3].dim.start = (t_2i){0 + offset.x, 0 + offset.y};
-	img[4].dim.start = (t_2i){0, SCREEN_Y / 3 * 2};
+	img[4].dim.start = (t_2i){0, 0};
+	img[5].dim.start = (t_2i){0, 0};
 }
 
 static void	get_image_functions(t_img *img)
@@ -45,6 +47,7 @@ static void	get_image_functions(t_img *img)
 	img[2].draw_func = &ray_debugger;
 	img[3].draw_func = &sidebar;
 	img[4].draw_func = NULL;
+	img[5].draw_func = &gradual_render;
 }
 
 t_img	*free_images(t_img *img, size_t count)

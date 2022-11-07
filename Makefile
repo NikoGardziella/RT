@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/04 08:56:21 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/07 13:45:52 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,6 +91,7 @@ SOURCES_LIST =	main.c\
 				images/put_pixel.c\
 				images/get_camera_ray.c\
 				images/main_image.c\
+				images/gradual_render.c\
 				images/process_image.c\
 				images/sidebar_button.c\
 				images/sidebar.c\

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:18:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/04 15:23:44 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 13:47:17 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	draw_ray_arrow(t_img *img, t_3d ray, t_uint color, int mode)
 	t_line	line;
 
 	proj = init_proj(60, &img->dim.size, &(t_2d){0.1f, 1000.0f});
-	ray.x *= -10;
+	ray.x *= 10;
 	ray.y *= 10;
 	ray.z *= 10;
 	p[0] = get_points(img, &ray, &(t_3d){0.0f, 0.0f, 0.0f}, &proj);

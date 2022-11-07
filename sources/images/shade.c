@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/07 09:25:26 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 12:50:48 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ uint32_t	shade(t_scene *scene, t_hit *hit)
 		if (mid == 1)
 			printf("%d light lumen \n", light->lumen);
 		attenuation = 1.0 - (hit->distance / T_MAX);
+		color_diffuse.channel = calc_diffuse(light, hit);
+		return (color_diffuse.combined);
 		//if (!is_in_shadow(&scene->lights_list, scene, hit))
 		{
 			color_diffuse.channel = ft_add_rgba(color_diffuse.channel, \

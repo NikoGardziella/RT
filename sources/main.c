@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/07 09:15:59 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 10:35:22 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	main(int argc, char **argv)
 			env.scene->resolution.y = env.scene->resolution_range.x;
 			put_images_to_screen(&env);
 		}
-		if (env.scene->resolution.y <= env.scene->resolution_range.y)
+		if (env.scene->resolution.y < env.scene->resolution_range.y)
 		{
 			put_images_to_screen(&env);
 		}

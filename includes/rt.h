@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/07 09:40:16 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 13:43:58 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@
 # include <stdio.h>
 # include <time.h>
 
-# define SCREEN_X 1000
-# define SCREEN_Y 600
+# define SCREEN_X 2560 / 3
+# define SCREEN_Y 1440 / 3
 # define T_MAX 100000000.0f
-# define IMAGES 5
+# define IMAGES 6
 
 # define KEY_A 1
 # define KEY_W 2
@@ -276,6 +276,7 @@ t_ray		get_camera_ray(t_camera *camera, double x, double y);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
 void		put_images_to_screen(t_env *env);
 uint32_t	shade(t_scene *scene, t_hit *hit);
+void		gradual_render(t_img *img, void *param);
 
 /* Color operations functions*/
 

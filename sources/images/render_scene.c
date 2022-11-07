@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/07 09:42:34 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 13:29:02 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 
 	if (intersects(ray, scene, hit))
 	{
-		color = hit->color;
 		color.combined = shade(scene, hit);
+		color = hit->color;
 //		color = hit->color;
 	}
 	return (color);
@@ -79,23 +79,20 @@ void	render_scene(t_img *img, t_scene *scene, int render_mode)
 						mid = 0;
 					ray = get_ray(coords, img, scene->camera);
 					color = raycast(&ray, scene, &hit);
-					if (render_mode == 1)
+					(void)render_mode;
+					//if (render_mode == 1)
 						put_pixel(coords, color.combined, img);
-					else if (hit.object != NULL)
-					{
-						put_pixel(coords, hit.object->color.combined, img);
-					}
-					//if (scene->resolution.x == scene->resolution.y)
-				//		resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
+					if (scene->resolution.x == scene->resolution.y)
+						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
 				}
 				coords.x += 1;
 			}
 		}
 		coords.y += 1;
 	}
-	if (scene->resolution.x <= scene->resolution_range.y)
+	if (scene->resolution.x < scene->resolution_range.y && scene->resolution.y < scene->resolution_range.y)
 		scene->resolution.x += 1;
-	else if (scene->resolution.y <= scene->resolution_range.y)
+	if (scene->resolution.x >= scene->resolution_range.y && scene->resolution.y < scene->resolution_range.y)
 	{
 		scene->resolution.x = scene->resolution_range.x;
 		scene->resolution.y += 1;
