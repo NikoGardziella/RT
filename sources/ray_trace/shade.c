@@ -6,11 +6,6 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/07 15:42:45 by ctrouve          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "rt.h"
 
 
 double	ft_max_d(double a, double b)
@@ -58,6 +53,8 @@ t_rgba	calc_diffuse(t_object *light, t_hit *hit)
 		printf("%f %f %f hit_point\n", hit->point.x, hit->point.y, hit->point.z);
 	if (mid == 1)
 		printf("%f %f %f light_dir\n", light_dir.x, light_dir.y, light_dir.z);
+	if (mid == 1)
+		printf("%f %f %f light->origin\n", light->origin.x, light->origin.y, light->origin.z);
 	if (mid == 1)
 		printf("%f %f %f normal\n", hit->normal.x, hit->normal.y, hit->normal.z);
 	ndotl = dot_product(hit->normal, light_dir);
