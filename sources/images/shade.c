@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/07 09:22:10 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/07 09:25:26 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ uint32_t	shade(t_scene *scene, t_hit *hit)
 		}
 		color_diffuse.channel = ft_mul_rgba(color_diffuse.channel, attenuation);
 		color_specular.channel = ft_mul_rgba(color_specular.channel, attenuation);
-		scene->lights_list = scene->lights_list->next;
+		light_loop = light_loop->next;
 	}
 	color_final.channel = ft_add_rgba(scene->ambient_color, ft_add_rgba(\
 		ft_mul_rgba_rgba(hit->object->color.channel, color_diffuse.channel), color_specular.channel));

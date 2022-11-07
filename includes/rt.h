@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/04 16:25:02 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 09:23:56 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define SCREEN_X 1000
 # define SCREEN_Y 600
 # define T_MAX 100000000.0f
-# define IMAGES 4
+# define IMAGES 5
 
 # define KEY_A 1
 # define KEY_W 2

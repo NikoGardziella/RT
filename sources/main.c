@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/04 14:19:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 09:15:59 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	sdl_init(t_sdl *sdl)
 	if (sdl->screen == NULL)
 		close_prog(NULL, "Creating window surface failed...", -1);
 }
-
 
 int	main(int argc, char **argv)
 {

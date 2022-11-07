@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:33:20 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/07 09:12:56 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 09:17:32 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	main_image(t_img *img, void *param)
 	color = (t_2i){0x00000,0xFFFFFF};
 	env = param;
 	render_scene(img, env->scene, env->render_mode);
-	if (env->scene->resolution.x == env->scene->resolution_range.x && env->scene->resolution.y == env->scene->resolution_range.x)
+	if (env->scene->resolution.x == env->scene->resolution_range.y && env->scene->resolution.y == env->scene->resolution_range.y)
 	{
 		plot_time = (double)time_since_success(0.0f, 0);
 		coords = (t_2i){0, 0};
