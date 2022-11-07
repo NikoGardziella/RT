@@ -1,5 +1,5 @@
-/* ************************************************************************** */
 /*                                                                            */
+/* ************************************************************************** */
 /*                                                        :::      ::::::::   */
 /*   intersects.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -31,6 +31,9 @@ void	intersect_loop(t_ray *ray, t_scene *scene, t_hit *hit)
 			ret = intersect_cone(*object, *ray);
 		if (object->type == CYLINDER)
 			ret = intersect_cylinder(*object, *ray);
+		if (object->type == BOX)
+			ret = intersect_box(*object, *ray);
+			
 		if (ret < T_MAX && ret > 0 && ret < hit->distance)
 		{
 			hit->distance = ret;
@@ -45,7 +48,6 @@ int	intersects(t_ray *ray, t_scene *scene, t_hit *hit)
 	intersect_loop(ray, scene, hit);
 	if (hit->distance < T_MAX)
 	{
-	//	printf("hit t: %lf\n", hit->distance);
 		hit->point = add_vectors(ray->origin,
 			scale_vector(ray->forward, hit->distance));
 		hit->color = hit->object->color;
@@ -88,11 +90,62 @@ void quadratic(t_quadratic *q, int type)
 		{
 			q->t0 = T_MAX;
 			q->t1 = T_MAX;
-			//q->t1 = fabs(q->t1);
 		}
 		else if (q->t1 < 0 && type == CONE)
 			q->t1 = q->t0;
 	}
+}
+
+double	intersect_box(t_object box, t_ray ray)
+{
+	t_2d	ty;
+	t_2d	t;
+	t_2d	tz;
+	double	tmp;
+
+	t.x = (box.origin.x - ray.origin.x) / ray.forward.x;
+	t.y = (box.axis.x - ray.origin.x) / ray.forward.x;
+	tmp  = 0.0;
+	if(ray.forward.x <= 0)
+	{
+		t.x = (box.origin.x - ray.origin.x) / ray.forward.x;
+		t.y = (box.axis.x - ray.origin.x) / ray.forward.x;
+	}
+	else
+	{
+		t.x = (box.axis.x - ray.origin.x) / ray.forward.x;
+		t.y = (box.origin.x - ray.origin.x) / ray.forward.x;
+	}
+	ty.x = (box.origin.y - ray.origin.y) / ray.forward.y;
+	ty.y = (box.axis.y - ray.origin.y) / ray.forward.y;
+	if(ty.x > ty.y)
+	{
+		tmp = ty.y;
+		ty.y = ty.x;
+		ty.x = tmp;
+	}
+	if(t.x > ty.y || ty.x > t.y)
+		return(0);
+	if(ty.x > t.x)
+		t.x = ty.x;
+	if(ty.y < t.y)
+		t.y = ty.y;
+	tz.x = (box.origin.z - ray.origin.z) / ray.forward.z;
+	tz.y = (box.axis.z - ray.origin.z) / ray.forward.z;
+	if(tz.x > tz.y)
+	{
+		tmp = tz.y;
+		tz.y = tz.x;
+		tz.x = tmp;
+	}
+	if(t.x > tz.y || tz.x > t.y)
+		return(0);
+
+	if(tz.x > t.x)
+		t.x = tz.x;
+	if(tz.y < t.y)
+		t.y = tz.y;
+	return (t.x);	
 }
 
 double	intersect_cone(t_object cone, t_ray ray)
