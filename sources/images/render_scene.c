@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/07 13:29:02 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 14:19:11 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 
 	if (intersects(ray, scene, hit))
 	{
-		color.combined = shade(scene, hit);
 		color = hit->color;
+		color.combined = shade(scene, hit);
 //		color = hit->color;
 	}
 	return (color);

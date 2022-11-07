@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/04 21:05:20 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 14:16:21 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,17 @@ int	intersects(t_ray *ray, t_scene *scene, t_hit *hit)
 	intersect_loop(ray, scene, hit);
 	if (hit->distance < T_MAX)
 	{
-	//	printf("hit t: %lf\n", hit->distance);
-		hit->point = add_vectors(ray->origin,
-			scale_vector(ray->forward, hit->distance));
+		hit->point = scale_vector(ray->forward, hit->distance);
+		hit->point = add_vectors(ray->origin, hit->point);
 		hit->color = hit->object->color;
+		if (mid == 1)
+		{
+			printf("*********************\n");
+			printf("hit POINT: %f %f %f\n", hit->point.x, hit->point.y, hit->point.z);
+			printf("hit t: %lf\n", hit->distance);
+			printf("ray origin: %f %f %f\n", ray->origin.x, ray->origin.y, ray->origin.z);
+			printf("ray forward: %f %f %f\n", ray->forward.x, ray->forward.y, ray->forward.z);
+		}
 		return (1);
 	}
 	return (0);
