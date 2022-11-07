@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/07 14:16:21 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 15:10:50 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,6 @@ int	intersects(t_ray *ray, t_scene *scene, t_hit *hit)
 		hit->point = scale_vector(ray->forward, hit->distance);
 		hit->point = add_vectors(ray->origin, hit->point);
 		hit->color = hit->object->color;
-		if (mid == 1)
-		{
-			printf("*********************\n");
-			printf("hit POINT: %f %f %f\n", hit->point.x, hit->point.y, hit->point.z);
-			printf("hit t: %lf\n", hit->distance);
-			printf("ray origin: %f %f %f\n", ray->origin.x, ray->origin.y, ray->origin.z);
-			printf("ray forward: %f %f %f\n", ray->forward.x, ray->forward.y, ray->forward.z);
-		}
 		return (1);
 	}
 	return (0);
@@ -79,28 +71,27 @@ double	intersect_plane(t_object plane, t_ray ray)
 	return (T_MAX);
 }
 
-void quadratic(t_quadratic *q, int type)
+void	quadratic(t_quadratic *quadratic, int type)
 {
-	if (q->discr < 0)
+	quadratic->discr = ((quadratic->b * quadratic->b) - (4 * quadratic->a * quadratic->c));
+	if (quadratic->discr < 0)
 		return ;
-	else if (q->discr == 0) {}
+	else if (quadratic->discr == 0)
+	{
+	}
 	else
 	{
-		if (q->b > 0)
-			q->q = 0.5 * (q->b + sqrt(q->discr));
-		else
-			q->q = 0.5 * (q->b - sqrt(q->discr));
-		q->t0 = q->q / q->a;
-		q->t1 = q->c / q->q;
-		if (q->t0 < 0 && q->t1 < 0)
-		{
-			q->t0 = T_MAX;
-			q->t1 = T_MAX;
-			//q->t1 = fabs(q->t1);
-		}
-		else if (q->t1 < 0 && type == CONE)
-			q->t1 = q->t0;
+		quadratic->t0 = (-quadratic->b - sqrt(quadratic->discr)) / (2 * quadratic->a);
+		quadratic->t1 = (-quadratic->b + sqrt(quadratic->discr)) / (2 * quadratic->a);
 	}
+	if (quadratic->t0 < 0 && quadratic->t1 < 0)
+	{
+		quadratic->t0 = T_MAX;
+		quadratic->t1 = T_MAX;
+			//quadratic->t1 = fabs(quadratic->t1);
+	}
+	else if (quadratic->t1 < 0 && type == CONE)
+		quadratic->t1 = quadratic->t0;
 }
 
 double	intersect_cone(t_object cone, t_ray ray)
@@ -123,7 +114,6 @@ double	intersect_cone(t_object cone, t_ray ray)
 	q.a = ray_dot_product - (q.m * pow(ray_dir_h, 2)) - pow(ray_dir_h, 2);
 	q.b = 2 * (dot_product(ray.forward, q.w) - (q.m * (ray_dir_h * dot_w_h)) - (ray_dir_h * dot_w_h));
 	q.c = dot_product(q.w, q.w)	- (q.m * pow(dot_w_h, 2)) - pow(dot_w_h, 2);
-	q.discr = ((q.b * q.b) - (4 * q.a * q.c));
 	q.t0 = T_MAX;
 	q.t1 = T_MAX;
 	quadratic(&q, CONE);

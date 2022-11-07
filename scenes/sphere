@@ -6,13 +6,13 @@ OBJECT sphere
 }
 OBJECT sphere
 {
-	origin 0.0 0.0 -40.0
+	origin 0.0 5.0 -40.0
 	radius 5.0
 	color FFFF00
 }
 OBJECT sphere
 {
-	origin -40.0 0.0 0.0
+	origin -40.0 -15.0 0.0
 	radius 6.0
 	color FF00FF
 }

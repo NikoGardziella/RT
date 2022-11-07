@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:18:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/07 13:47:17 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 15:10:42 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	draw_ray_arrow(t_img *img, t_3d ray, t_uint color, int mode)
 	t_line	line;
 
 	proj = init_proj(60, &img->dim.size, &(t_2d){0.1f, 1000.0f});
-	ray.x *= 10;
+	ray.x *= -10;
 	ray.y *= 10;
 	ray.z *= 10;
 	p[0] = get_points(img, &ray, &(t_3d){0.0f, 0.0f, 0.0f}, &proj);
@@ -58,15 +58,10 @@ void	ray_debugger(t_img *img, void *param)
 		coords.x = 0;
 		while (coords.x < img->dim.size.x)
 		{
-			//ray = get_camera_ray(scene->camera, screen.x, screen.y);
 			ray = get_ray(coords, img, scene->camera);
-			// printf("[%.2f %.2f %.2f] ", ray.forward.x, ray.forward.y, ray.forward.z);
 			draw_ray_arrow(img, ray.forward,0xFF0000, 2);
-			//color = raycast(&ray, scene, &hit);
-			//put_pixel(coords, color, img);
 			coords.x += 20;
 		}
-		// printf("\n");
 		coords.y += 20;
 	}
 	draw_ray_arrow(img, camera->up, 0x0000FF, 2);
