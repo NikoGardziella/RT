@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/07 15:10:50 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 15:39:05 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	intersects(t_ray *ray, t_scene *scene, t_hit *hit)
 		hit->point = scale_vector(ray->forward, hit->distance);
 		hit->point = add_vectors(ray->origin, hit->point);
 		hit->color = hit->object->color;
+		//hit->normal = calculate_normal(hit->object, hit->point, (t_2d){hit->t0, hit->t1});
 		return (1);
 	}
 	return (0);

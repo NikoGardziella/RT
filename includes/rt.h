@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/07 13:43:58 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 15:41:10 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct s_hit
 	t_3d		normal;
 	t_object	*object;
 	t_3d		light_dir;
+	double		t[2];
 	double		distance;
 	t_color		color;
 }				t_hit;
@@ -271,12 +272,15 @@ void		sidebar_button(t_img *img, void *param);
 void		sidebar(t_img *img, void *param);
 void		ray_debugger(t_img *img, void *param);
 void		render_scene(t_img *img, t_scene *scene, int render_mode);
-t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
-t_ray		get_camera_ray(t_camera *camera, double x, double y);
-t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
 void		put_images_to_screen(t_env *env);
-uint32_t	shade(t_scene *scene, t_hit *hit);
 void		gradual_render(t_img *img, void *param);
+
+/*Ray tracing functions*/
+
+t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
+uint32_t	shade(t_scene *scene, t_hit *hit);
+t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
+t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
 
 /* Color operations functions*/
 
@@ -293,8 +297,6 @@ t_camera	*load_scene_camera(char *path);
 t_list		*load_scene_objects(char *path);
 t_list		*load_scene_lights(char *path);
 t_3d		make_vector(double x, double y, double z);
-void		process_image(t_sdl *sdl, t_img *img, int mode, void *param);
-void		blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *destrect);
 int			read_camera_info(char *line, t_camera *camera);
 int			read_object_info(char *line, t_object *object);
 int			transformations(char *line, t_object *object);
@@ -304,6 +306,8 @@ int			add_object(t_list **objects, t_object *object);
 
 void		put_pixel(t_2i coords, t_uint color, void *param);
 void		fill_image(t_img *img, t_uint color);
+void		process_image(t_sdl *sdl, t_img *img, int mode, void *param);
+void		blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *destrect);
 
 /*Intersect functions*/
 
