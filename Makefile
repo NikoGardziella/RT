@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/07 13:45:52 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/07 15:26:39 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,7 +89,6 @@ SOURCES_LIST =	main.c\
 				matrix/transform.c\
 				images/display_strings.c\
 				images/put_pixel.c\
-				images/get_camera_ray.c\
 				images/main_image.c\
 				images/gradual_render.c\
 				images/process_image.c\
@@ -98,8 +97,6 @@ SOURCES_LIST =	main.c\
 				images/put_images_to_screen.c\
 				images/ray_debugger.c\
 				images/render_scene.c\
-				images/shade.c\
-				images/color_op.c\
 				parser/add_object_to_scene.c\
 				parser/load_scene_camera.c\
 				parser/load_scene_objects.c\
@@ -114,7 +111,11 @@ SOURCES_LIST =	main.c\
 				mouse/right_button/up.c\
 				mouse/right_button/down.c\
 				keyboard/keyboard_main.c\
-				intersects.c
+				ray_trace/color_op.c\
+				ray_trace/shade.c\
+				ray_trace/get_camera_ray.c\
+				ray_trace/calculate_normal.c\
+				ray_trace/intersects.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
 
@@ -146,6 +147,7 @@ $(OBJECTS_DIRECTORY):
 	@mkdir -p $(OBJECTS_DIRECTORY)/keyboard
 	@mkdir -p $(OBJECTS_DIRECTORY)/mouse/left_button
 	@mkdir -p $(OBJECTS_DIRECTORY)/mouse/right_button
+	@mkdir -p $(OBJECTS_DIRECTORY)/ray_trace
 	@printf "$(COLOR)$(MAKE_COLOR)__________________________________________________________________________________\n"
 	@printf "$(PRINT_NAME): Created $(OBJECTS_DIRECTORY) directory.$(RESET)\n\n\n"
 
