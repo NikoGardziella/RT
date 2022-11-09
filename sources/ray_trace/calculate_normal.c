@@ -51,6 +51,23 @@ static t_3d	cylinder_normal(t_object *object, t_3d hit_point)
 	return (normal);
 }
 
+static t_3d	box_normal(t_object *object, t_3d hit_point)
+{
+	t_3d	normal;
+	t_3d c;
+	t_3d p;
+	t_3d d;
+	c = scale_vector(add_vectors(object->origin, object->end),0.5);
+	p = subtract_vectors(hit_point, c);
+	d = scale_vector(subtract_vectors(object->origin, object->end), 0.5);
+
+	normal.x = p.x / fabs(d.x);
+	normal.y = p.y / fabs(d.y);
+	normal.z = p.z / fabs(d.z);
+	normal = normalize_vector(normal);
+	return (normal);
+}
+
 t_3d	calculate_normal(t_object *object, t_3d hit_point, t_2d t)
 {
 	t_3d	normal;
@@ -66,6 +83,8 @@ t_3d	calculate_normal(t_object *object, t_3d hit_point, t_2d t)
 		normal = cone_normal(object, hit_point);
 	else if (object->type == 4)
 		normal = cylinder_normal(object, hit_point);
+	else if (object->type == 5)
+		normal = box_normal(object, hit_point);	
 	if (t.x == t.y)
 		normal = scale_vector(normal, -1.0f);
 	return (normal);
