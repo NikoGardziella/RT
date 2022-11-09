@@ -51,7 +51,8 @@ typedef enum e_obj_type
 	SPHERE,
 	PLANE,
 	CONE,
-	CYLINDER
+	CYLINDER,
+	BOX
 }				t_obj_type;
 
 /*Typedef structs*/
@@ -311,6 +312,7 @@ int			intersect_cone(t_object *cone, t_ray ray, t_2d *t);
 int			intersect_sphere(t_object *sphere, t_ray ray, t_2d *t);
 int			intersect_cylinder(t_object *cylinder, t_ray ray, t_2d *t);
 int			intersects(t_ray *ray, t_scene *scene, t_hit *hit, t_2d *t);
+int			intersect_box(t_object *box, t_ray ray, t_2d *t);
 t_2d		intersect_loop(t_ray *ray, t_list *objects, t_hit *hit);
 
 /*Matrix transformation functions*/
