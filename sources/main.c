@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/08 11:39:33 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 12:04:49 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,19 @@ void	sdl_init(t_sdl *sdl)
 		close_prog(NULL, "Creating window surface failed...", -1);
 }
 
+void	render_screen(t_env *env)
+{
+	double	fps;
+
+	fps = 0.01;
+	if (time_since_success(fps, 0) >= fps)
+	{
+		env->scene->resolution.x = env->scene->resolution_range.x;
+		env->scene->resolution.y = env->scene->resolution_range.x;
+		put_images_to_screen(env);
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_env	env;
@@ -88,9 +101,7 @@ int	main(int argc, char **argv)
 		keyboard_main(&env);
 		if (keyboard_add_vectors(&env) | mouse_move(&env))
 		{
-			env.scene->resolution.x = env.scene->resolution_range.x;
-			env.scene->resolution.y = env.scene->resolution_range.x;
-			put_images_to_screen(&env);
+			render_screen(&env);
 		}
 		if (env.scene->resolution.y < env.scene->resolution_range.y)
 		{
