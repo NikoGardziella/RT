@@ -12,6 +12,12 @@ OBJECT sphere
 }
 OBJECT sphere
 {
+	origin 0.0 0.0 0.0
+	radius 70.0
+	color FFFFFF
+}
+OBJECT sphere
+{
 	origin 40.0 0.0 0.0
 	radius 7.0
 	color 00FFFF
@@ -26,19 +32,19 @@ OBJECT box
 OBJECT light
 {
 	origin 0.0 0 0
-	lumen 1000.0
-	color FFFF00
+	lumen 10.0
+	color 00FF00
 }
 OBJECT light
 {
 	origin 20.0 80 0
-	lumen 1000.0
+	lumen 10.0
 	color 0000FF
 }
 OBJECT light
 {
 	origin -10.0 20 0
-	lumen 1000.0
+	lumen 10.0
 	color FF0000
 }
 OBJECT camera

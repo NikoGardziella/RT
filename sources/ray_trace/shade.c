@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/09 14:47:18 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 14:59:38 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ static t_color	calc_light(t_color final, t_color light, t_color object, double l
 	color_calc.x += (int)((double)object.channel.r * level * (double)(light.channel.r / 255.0));
 	color_calc.y += (int)((double)object.channel.g * level * (double)(light.channel.g / 255.0));
 	color_calc.z += (int)((double)object.channel.b * level * (double)(light.channel.b / 255.0));
-	if (mid == 1)
-		printf("final color: r[%d] g[%d] b[%d]\n", final.channel.r, final.channel.g, final.channel.b);
 	final.channel.r = (uint8_t)ft_min(color_calc.x, 255);
 	final.channel.g = (uint8_t)ft_min(color_calc.y, 255);
 	final.channel.b = (uint8_t)ft_min(color_calc.z, 255);

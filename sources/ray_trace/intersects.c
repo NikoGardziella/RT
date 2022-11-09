@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/09 14:35:33 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 15:26:45 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ t_2d	intersect_loop(t_ray *ray, t_list *objects, t_hit *hit)
 			ret = intersect_box(object, *ray, &t);
 		if (ret && t.x < t_closest.x)
 		{
+			if (mid == 1 && hit != NULL)
+				printf("T x[%f] y[%f]\n", t.x, t.y);
+			if (mid == 1 && hit != NULL)
+				printf("OBJECT: [%d]\n", object->type);
 			t_closest = t;
 			if (hit != NULL)
 				hit->object = object;
