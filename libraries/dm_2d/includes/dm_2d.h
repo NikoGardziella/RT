@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 09:13:43 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/13 12:44:02 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 10:38:51 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,28 @@
 # endif
 
 typedef unsigned int	t_uint;
+
+# ifndef S_3I
+#  define S_3I
+
+typedef struct s_3i
+{
+	int	x;
+	int	y;
+	int	z;
+}				t_3i;
+# endif
+
+# ifndef S_3F
+#  define S_3F
+
+typedef struct s_3f
+{
+	float	x;
+	float	y;
+	float	z;
+}				t_3f;
+# endif
 
 # ifndef S_2I
 #  define S_2I
