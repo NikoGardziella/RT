@@ -23,7 +23,6 @@ OBJECT box
 	axis 15.0 15.0 15.0
 	color FF0000
 }
-
 OBJECT light
 {
 	origin 0.0 50 60
