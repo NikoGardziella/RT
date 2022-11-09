@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/08 12:12:48 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 10:53:10 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define SCREEN_X 2560 / 3
 # define SCREEN_Y 1440 / 3
 # define T_MAX 100000000.0f
+# define BIAS 0.000001
 # define IMAGES 6
 
 # define KEY_A 1
@@ -55,6 +56,18 @@ typedef enum e_obj_type
 
 /*Typedef structs*/
 
+typedef struct s_2d
+{
+	double	x;
+	double	y;
+}				t_2d;
+
+typedef struct s_2f
+{
+	float	x;
+	float	y;
+}				t_2f;
+
 typedef struct s_dir
 {
 	t_3d	forward;
@@ -81,14 +94,10 @@ typedef struct s_quadratic
 	t_3d	w;
 	t_3d	h;
 	t_3d	subtr_top_bot;
-	double	m;
-	double	discr;
-	double	t0;
-	double	t1;
 	double	a;
 	double	b;
 	double	c;
-	double	q;
+	double	m;
 }	t_quadratic;
 
 typedef struct		s_rgba
@@ -102,14 +111,13 @@ typedef struct		s_rgba
 typedef union		u_color
 {
 	uint32_t		combined;
-	t_rgba			channel;	
+	t_rgba			channel;
 }					t_color;
 
 typedef struct s_object
 {
 	double		axis_length;
 	double		radius;
-	double		t;
 	int			lumen;
 	int			type;
 	t_color		color;
@@ -128,8 +136,6 @@ typedef struct s_hit
 	t_3d		point;
 	t_3d		normal;
 	t_object	*object;
-	t_3d		light_dir;
-	double		distance;
 	t_color		color;
 }				t_hit;
 
@@ -175,18 +181,6 @@ typedef struct s_scene
 	t_2i		resolution_range;
 	t_2i		resolution;
 }				t_scene;
-
-typedef struct s_2d
-{
-	double	x;
-	double	y;
-}				t_2d;
-
-typedef struct s_2f
-{
-	float	x;
-	float	y;
-}				t_2f;
 
 typedef struct s_dim
 {
@@ -280,7 +274,7 @@ t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
-uint32_t	light_up(t_list *scene, t_uint obj_color, t_ray to_light, t_3d normal);
+uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, t_3d normal);
 
 /* Color operations functions*/
 
@@ -311,12 +305,13 @@ void		blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *d
 
 /*Intersect functions*/
 
-void		quadratic(t_quadratic *q, int type);
-double		intersect_plane(t_object plane, t_ray ray);
-double		intersect_cone(t_object cone, t_ray ray);
-double		intersect_sphere(t_object sphere, t_ray ray);
-double		intersect_cylinder(t_object cyl, t_ray ray);
-int			intersects(t_ray *ray, t_scene *scene, t_hit *hit);
+int			quadratic_equation(t_quadratic *q, t_2d *t);
+int			intersect_plane(t_object *plane, t_ray ray, t_2d *t);
+int			intersect_cone(t_object *cone, t_ray ray, t_2d *t);
+int			intersect_sphere(t_object *sphere, t_ray ray, t_2d *t);
+int			intersect_cylinder(t_object *cylinder, t_ray ray, t_2d *t);
+int			intersects(t_ray *ray, t_scene *scene, t_hit *hit, t_2d *t);
+t_2d		intersect_loop(t_ray *ray, t_list *objects, t_hit *hit);
 
 /*Matrix transformation functions*/
 

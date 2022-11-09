@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/08 11:57:04 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 10:57:14 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_rgba	calc_specular(t_object *light, t_hit *hit, t_3d cam)
 	return (specular);
 }
 
-
+/*
 t_rgba	calc_diffuse(t_object *light, t_hit *hit)
 {
 	t_rgba	diffuse;
@@ -102,7 +102,7 @@ t_rgba	calc_diffuse(t_object *light, t_hit *hit)
 //	return (ft_mul_rgba(diffuse, light->lumen));
 	return (diffuse);
 }
-/*
+
 
 
 uint32_t	shade(t_scene *scene, t_hit *hit)
@@ -156,18 +156,17 @@ static double	get_light_level(double t, double lumen, t_3d normal, t_3d dir)
 	return (light_level);
 }
 
-static t_3i	calc_light(t_3i rgb, t_uint light_color, t_3i obj_rgb, double level)
+static t_color	calc_light(t_color final, t_color light, t_color object, double level)
 {
-	t_3f	light_rgb;
-
-	seperate_rgbf(light_color, &light_rgb.x, &light_rgb.y, &light_rgb.z);
-	rgb.x += (int)((double)obj_rgb.x * level * (double)light_rgb.x);
-	rgb.y += (int)((double)obj_rgb.y * level * (double)light_rgb.y);
-	rgb.z += (int)((double)obj_rgb.z * level * (double)light_rgb.z);
-	rgb.x = ft_min(rgb.x, 255);
-	rgb.y = ft_min(rgb.y, 255);
-	rgb.z = ft_min(rgb.z, 255);
-	return (rgb);
+	final.channel.r += (int)((double)object.channel.r * level * (double)light.channel.r);
+	final.channel.g += (int)((double)object.channel.g * level * (double)light.channel.g);
+	final.channel.b += (int)((double)object.channel.b * level * (double)light.channel.b);
+	
+	final.channel.r = (uint8_t)ft_min(final.channel.r, 255);
+	final.channel.g = (uint8_t)ft_min(final.channel.g, 255);
+	final.channel.b = (uint8_t)ft_min(final.channel.b, 255);
+	
+	return (final);
 }
 
 static t_3d	dir_to_light(t_3d light_origin, t_3d origin, double *t)
@@ -180,30 +179,29 @@ static t_3d	dir_to_light(t_3d light_origin, t_3d origin, double *t)
 	return (light_dir);
 }
 
-uint32_t	light_up(t_list *scene, uint32_t obj_color, t_ray to_light, t_3d normal)
+uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, t_3d normal)
 {
 	t_list		*scene_start;
 	t_object	*object;
-	t_3i		rgb[2];
+	t_color		color;
 	double		t;
 	double		level;
 
-	rgb[0] = (t_3i){0, 0, 0};
-	seperate_rgb(obj_color, &rgb[1].x, &rgb[1].y, &rgb[1].z);
+	ft_bzero(&color, sizeof(t_color));
 	scene_start = scene;
 	while (scene != NULL)
 	{
 		object = (t_object *)scene->content;
 		if (object->type == 0)
 		{
-			to_light.dir = dir_to_light(object->origin, to_light.origin, &t);
-			if (t <= closest_t(scene_start, NULL, to_light, -2).x)
+			to_light.forward = dir_to_light(object->origin, to_light.origin, &t);
+			if (t <= intersect_loop(&to_light, scene_start, NULL).x)
 			{
-				level = get_light_level(t, object->lumen, normal, to_light.dir);
-				rgb[0] = calc_light(rgb[0], object->color, rgb[1], level);
+				level = get_light_level(t, object->lumen, normal, to_light.forward);
+				color = calc_light(color, object->color, obj_color, level);
 			}
 		}
 		scene = scene->next;
 	}
-	return (combine_rgb(rgb[0].x, rgb[0].y, rgb[0].z));
+	return (color.combined);
 }

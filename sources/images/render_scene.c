@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/08 12:05:35 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 10:57:52 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 	t_color	color;
 	t_ray	shadow_ray;
 	t_3d	normal;
+	t_2d	t;
 
 	// color.channel.r = scene->ambient_color.r;
 	// color.channel.g = scene->ambient_color.g;
@@ -39,17 +40,16 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 	color.channel.b = 0;
 	color.channel.a = 0;
 
-	if (intersects(ray, scene, hit))
+	if (intersects(ray, scene, hit, &t))
 	{
 		color = hit->color;
-		normal = calculate_normal(hit->object, hit->point, (t_2d){hit->t[0], T_MAX});
+		normal = calculate_normal(hit->object, hit->point, t);
 		color.combined = render_with_normals(normal);
-		(void)shadow_ray;
+		shadow_ray.origin = scale_vector(normal, BIAS);
+		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
+		color.combined = light_up(scene->objects_list, hit->object->color, shadow_ray, normal);
 		/*
 		color.combined = shade(scene, hit);
-		to_light.origin = scale_vector(normal, utils->shadow_bias);
-		to_light.origin = add_vectors(hit_point, to_light.origin);
-		color.combined = light_up(scene->objects_list, hit->object->color.combined, );
 //		color = hit->color;
 		*/
 	}
@@ -83,8 +83,6 @@ void	render_scene(t_img *img, t_scene *scene, int render_mode)
 
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
-	camera->ray.forward = subtract_vectors((t_3d){0.0f, 0.0f, 40.0f}, camera->ray.origin);
-	camera->ray.forward = normalize_vector(camera->ray.forward);
 	coords.y = 0;
 	while (coords.y < img->dim.size.y)
 	{
