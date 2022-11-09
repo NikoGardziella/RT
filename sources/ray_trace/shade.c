@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/09 14:32:07 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 14:47:18 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,19 @@ static double	get_light_level(double t, double lumen, t_3d normal, t_3d dir)
 
 static t_color	calc_light(t_color final, t_color light, t_color object, double level)
 {
-	final.channel.r += (uint8_t)((double)object.channel.r * level * (double)(light.channel.r / 255.0));
-	final.channel.g += (uint8_t)((double)object.channel.g * level * (double)(light.channel.g / 255.0));
-	final.channel.b += (uint8_t)((double)object.channel.b * level * (double)(light.channel.b / 255.0));
+	t_3i	color_calc;
+
+	color_calc.x = (int)final.channel.r;
+	color_calc.y = (int)final.channel.g;
+	color_calc.z = (int)final.channel.b;
+	color_calc.x += (int)((double)object.channel.r * level * (double)(light.channel.r / 255.0));
+	color_calc.y += (int)((double)object.channel.g * level * (double)(light.channel.g / 255.0));
+	color_calc.z += (int)((double)object.channel.b * level * (double)(light.channel.b / 255.0));
 	if (mid == 1)
 		printf("final color: r[%d] g[%d] b[%d]\n", final.channel.r, final.channel.g, final.channel.b);
-	final.channel.r = (uint8_t)ft_min(final.channel.r, 255);
-	final.channel.g = (uint8_t)ft_min(final.channel.g, 255);
-	final.channel.b = (uint8_t)ft_min(final.channel.b, 255);
+	final.channel.r = (uint8_t)ft_min(color_calc.x, 255);
+	final.channel.g = (uint8_t)ft_min(color_calc.y, 255);
+	final.channel.b = (uint8_t)ft_min(color_calc.z, 255);
 	return (final);
 }
 
@@ -62,7 +67,7 @@ uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray to_light, t_3d n
 	while (object_list != NULL)
 	{
 		object = (t_object *)object_list->content;
-		if (object->type == 0)
+		if (object->type == LIGHT)
 		{
 			to_light.forward = dir_to_light(object->origin, to_light.origin, &t);
 			if (t <= intersect_loop(&to_light, object_list_start, NULL).x)

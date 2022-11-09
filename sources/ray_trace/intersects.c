@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/09 14:01:26 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 14:35:33 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_2d	intersect_loop(t_ray *ray, t_list *objects, t_hit *hit)
 	while (objects_list != NULL)
 	{
 		object = (t_object *)objects_list->content;
+		if (object->type == LIGHT && hit != NULL)
+			ret = intersect_sphere(object, *ray, &t);
 		if (object->type == SPHERE)
 			ret = intersect_sphere(object, *ray, &t);
 		if (object->type == PLANE)

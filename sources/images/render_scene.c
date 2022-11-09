@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/09 14:21:25 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 14:37:49 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 
 	if (intersects(ray, scene, hit, &t))
 	{
-		color = hit->color;
+		if (hit->object->type == LIGHT)
+			return (hit->color);
 		normal = calculate_normal(hit->object, hit->point, t);
 		color.combined = render_with_normals(normal);
 		shadow_ray.origin = scale_vector(normal, BIAS);
