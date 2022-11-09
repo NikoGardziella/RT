@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 11:21:22 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/07 09:41:19 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/07 21:45:44 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,20 @@ void	blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *de
 	uint32_t	*destaddr;
 	t_2d		step;
 	t_2d		coords;
+	t_dim		dim[2];
 
 	if (src == NULL || dest == NULL)
 		return ;
 	if (srcrect == NULL)
-		srcrect = &(t_dim){(t_2i){src->w, src->h}, (t_2i){0, 0}};
+	{
+		dim[0] = (t_dim){(t_2i){src->w, src->h}, (t_2i){0, 0}};
+		srcrect = &dim[0];
+	}
 	if (destrect == NULL)
-		destrect = &(t_dim){(t_2i){dest->w, dest->h}, (t_2i){0, 0}};
+	{
+		dim[1] = (t_dim){(t_2i){dest->w, dest->h}, (t_2i){0, 0}};
+		destrect = &dim[1];
+	}
 	srcrect->size.x = ft_max(srcrect->size.x, 1);
 	srcrect->size.y = ft_max(srcrect->size.y, 1);
 	srcrect->size.x = ft_min(srcrect->size.x, src->w);

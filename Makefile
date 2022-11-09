@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/07 15:26:39 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/08 11:58:51 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ ifeq ($(UNAME), Darwin)
 LIBS = $(LIBFT) $(DM_2D) $(DM_VECTORS) $(DM_BDF_RENDER) $(SDL2)
 endif
 ifeq ($(UNAME), Linux)
-LIBS = $(LIBFT) $(DM_2D) $(DM_VECTORS) $(DM_BDF_RENDER) $(SDL2) $(MATH_LIBRARY)
+LIBS = $(DM_BDF_RENDER) $(LIBFT) $(DM_2D) $(DM_VECTORS) $(SDL2) $(MATH_LIBRARY)
 endif
 
 MATH_LIBRARY = -lm
@@ -112,7 +112,6 @@ SOURCES_LIST =	main.c\
 				mouse/right_button/down.c\
 				keyboard/keyboard_main.c\
 				ray_trace/color_op.c\
-				ray_trace/shade.c\
 				ray_trace/get_camera_ray.c\
 				ray_trace/calculate_normal.c\
 				ray_trace/intersects.c

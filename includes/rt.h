@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/07 15:41:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/08 12:12:48 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ typedef struct s_hit
 	t_3d		normal;
 	t_object	*object;
 	t_3d		light_dir;
-	double		t[2];
 	double		distance;
 	t_color		color;
 }				t_hit;
@@ -281,6 +280,7 @@ t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
+uint32_t	light_up(t_list *scene, t_uint obj_color, t_ray to_light, t_3d normal);
 
 /* Color operations functions*/
 
@@ -318,11 +318,15 @@ double		intersect_sphere(t_object sphere, t_ray ray);
 double		intersect_cylinder(t_object cyl, t_ray ray);
 int			intersects(t_ray *ray, t_scene *scene, t_hit *hit);
 
-/*Matrix transformations*/
+/*Matrix transformation functions*/
 
 t_3d		rotate_point(t_3d point, t_3d rot);
 t_3d		get_points(t_img *img, t_3d *xyz, t_3d *rot, t_proj *proj);
 t_proj		init_proj(double fov, t_2i *dim, t_2d *z_depth);
 void		matrix_multip(t_3d *in, t_3d *out, t_mat *matrix);
+
+/*Other functions*/
+
+double		time_since_success(double ammount, int id);
 
 #endif

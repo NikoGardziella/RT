@@ -6,11 +6,23 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/07 10:35:22 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/08 11:39:33 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+static void	del_object(void *content, size_t content_size)
+{
+	t_object	*object;
+
+	object = (t_object *)content;
+	if (object != NULL)
+	{
+		ft_bzero(content, content_size);
+		free(object);
+	}
+}
 
 void	close_prog(void *param, char *exit_msg, int exit_code)
 {
@@ -22,7 +34,9 @@ void	close_prog(void *param, char *exit_msg, int exit_code)
 		return ;
 	}
 	// free_images(env->img, IMAGES);
-	//ft_lstdel(&env->scene, &del_object);
+	free_font(&env->font);
+	ft_lstdel(&env->scene->objects_list, &del_object);
+	ft_lstdel(&env->scene->lights_list, &del_object);
 	ft_putendl(exit_msg);
 	exit (exit_code);
 }
