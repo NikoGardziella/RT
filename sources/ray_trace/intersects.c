@@ -6,21 +6,20 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/07 16:11:08 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/08 12:17:08 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void	intersect_loop(t_ray *ray, t_scene *scene, t_hit *hit)
+t_2d	intersect_loop(t_ray *ray, t_scene *scene, t_hit *hit)
 {
 	t_list		*objects_list;
 	t_object	*object;
-	double		ret;
+	t_2d		t;
 
-	hit->distance = T_MAX;
 	objects_list = scene->objects_list;
-	ret = 0;
+	t = (t_2d){T_MAX, T_MAX}
 	while (objects_list != NULL)
 	{
 		object = (t_object *)objects_list->content;
@@ -32,16 +31,16 @@ void	intersect_loop(t_ray *ray, t_scene *scene, t_hit *hit)
 			ret = intersect_cone(*object, *ray);
 		if (object->type == CYLINDER)
 			ret = intersect_cylinder(*object, *ray);
-		if (ret < T_MAX && ret > 0 && ret < hit->distance)
+		if (t.x < T_MAX && t.x > 0 && t.x < hit->distance)
 		{
-			hit->distance = ret;
+			hit->distance = t.x;
 			hit->object = object;
 		}
 		objects_list = objects_list->next;
 	}
 }
 
-int	intersects(t_ray *ray, t_scene *scene, t_hit *hit)
+t_2d	intersects(t_ray *ray, t_scene *scene, t_hit *hit)
 {
 	intersect_loop(ray, scene, hit);
 	if (hit->distance < T_MAX)
@@ -55,21 +54,20 @@ int	intersects(t_ray *ray, t_scene *scene, t_hit *hit)
 	return (0);
 }
 
-double	intersect_plane(t_object plane, t_ray ray)
+int	intersect_plane(t_object *plane, t_ray ray, t_2d *t)
 {
-	t_3d		p0l0;
-	double		denom;
-	double		t;
+	double	denom;
+	t_3d	ray_to_obj;
 
-	denom = dot_product(plane.normal, ray.forward);
-	if (denom > 0)
+	denom = dot_product(scale_vector(plane->axis, -1.0f), ray.forward);
+	if (denom > 1e-6)
 	{
-		p0l0 = subtract_vectors(plane.origin, ray.origin);
-		t = dot_product(p0l0, plane.normal) / denom;
-		if (t >= 0.00001)
-			return (t);
+		ray_obj_t = subtract_vectors(plane->origin, ray.origin);
+		t.x = dot_product(ray_obj_t, scale_vector(plane->axis, -1.0f)) / denom;
+		if (t->x >= 0)
+			return (1);
 	}
-	return (T_MAX);
+	return (0);
 }
 
 void	quadratic(t_quadratic *quadratic, int type)
@@ -134,8 +132,6 @@ double	intersect_sphere(t_object sphere, t_ray ray)
 	q.t0 = T_MAX;
 	q.t1 = T_MAX;
 	quadratic(&q, SPHERE);
-	if (mid == 1)
-		printf("t0: %f t1: %f\n", q.t0, q.t1);
 	// sphere.hit_point = add_vectors(ray.origin, scale_vector(ray.forward, q.t1));
 	return (q.t1);
 }

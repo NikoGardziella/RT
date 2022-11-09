@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/07 21:42:58 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/08 11:58:51 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ OPTI_FLAGS = -O3 -flto
 DEBUG_FLAGS = -g -fsanitize=address
 FLAGS = -Wall -Wextra -Werror -Wconversion
 FLAGS += $(DEBUG_FLAGS)
-#FLAGS += $(OPTI_FLAGS)
+FLAGS += $(OPTI_FLAGS)
 
 UNAME = $(shell uname)
 ifeq ($(UNAME), Darwin)
@@ -112,7 +112,6 @@ SOURCES_LIST =	main.c\
 				mouse/right_button/down.c\
 				keyboard/keyboard_main.c\
 				ray_trace/color_op.c\
-				ray_trace/shade.c\
 				ray_trace/get_camera_ray.c\
 				ray_trace/calculate_normal.c\
 				ray_trace/intersects.c

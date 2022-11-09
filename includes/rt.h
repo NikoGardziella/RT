@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/08 10:57:51 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/08 12:12:48 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ typedef struct s_hit
 	t_3d		normal;
 	t_object	*object;
 	t_3d		light_dir;
-	double		t[2];
 	double		distance;
 	t_color		color;
 }				t_hit;
@@ -281,6 +280,7 @@ t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
+uint32_t	light_up(t_list *scene, t_uint obj_color, t_ray to_light, t_3d normal);
 
 /* Color operations functions*/
 
@@ -327,6 +327,6 @@ void		matrix_multip(t_3d *in, t_3d *out, t_mat *matrix);
 
 /*Other functions*/
 
-double	time_since_success(double ammount, int id);
+double		time_since_success(double ammount, int id);
 
 #endif
