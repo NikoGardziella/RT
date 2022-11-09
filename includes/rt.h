@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/09 10:53:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 11:39:32 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ int mid;
 
 typedef enum e_obj_type
 {
-	LIGHT,
-	SPHERE,
-	PLANE,
-	CONE,
-	CYLINDER,
-	BOX
+	LIGHT = 0,
+	SPHERE = 1,
+	PLANE = 2,
+	CONE = 3,
+	CYLINDER = 4,
+	BOX = 5
 }				t_obj_type;
 
 /*Typedef structs*/
@@ -103,10 +103,10 @@ typedef struct s_quadratic
 
 typedef struct		s_rgba
 {
-	uint8_t			a;
-	uint8_t			b;
-	uint8_t			g;
 	uint8_t			r;
+	uint8_t			g;
+	uint8_t			b;
+	uint8_t			a;
 }					t_rgba;
 
 typedef union		u_color
