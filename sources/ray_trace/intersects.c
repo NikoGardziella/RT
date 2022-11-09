@@ -103,27 +103,34 @@ int	quadratic_equation(t_quadratic *quadratic, t_2d *t)
 	return (assess_t(t));
 }
 
+
 int	intersect_box(t_object *box, t_ray ray, t_2d *t)
 {
 	t_2d	ty;
 	t_2d	tz;
 	double	tmp;
 
-	t->x = (box->origin.x - ray.origin.x) / ray.forward.x;
-	t->y = (box->axis.x - ray.origin.x) / ray.forward.x;
+	t->x = ((box->origin.x - ray.origin.x) / ray.forward.x);
+	t->y = ((box->end.x - ray.origin.x) / ray.forward.x);
 	tmp  = 0.0;
-	if(ray.forward.x <= 0)
+/*	if(ray.forward.x >= 0)
 	{
 		t->x = (box->origin.x - ray.origin.x) / ray.forward.x;
-		t->y = (box->axis.x - ray.origin.x) / ray.forward.x;
+		t->y = (box->end.x - ray.origin.x) / ray.forward.x;
 	}
 	else
 	{
-		t->x = (box->axis.x - ray.origin.x) / ray.forward.x;
+		t->x = (box->end.x - ray.origin.x) / ray.forward.x;
 		t->y = (box->origin.x - ray.origin.x) / ray.forward.x;
+	} */
+	if(t->x > t->y)
+	{
+		tmp = t->y;
+		t->y = t->x;
+		t->x = tmp;
 	}
 	ty.x = (box->origin.y - ray.origin.y) / ray.forward.y;
-	ty.y = (box->axis.y - ray.origin.y) / ray.forward.y;
+	ty.y = (box->end.y - ray.origin.y) / ray.forward.y;
 	if(ty.x > ty.y)
 	{
 		tmp = ty.y;
@@ -133,11 +140,11 @@ int	intersect_box(t_object *box, t_ray ray, t_2d *t)
 	if(t->x > ty.y || ty.x > t->y)
 		return(0);
 	if(ty.x > t->x)
-		t->x = ty.x;
+		t->x = (ty.x);
 	if(ty.y < t->y)
-		t->y = ty.y;
+		t->y = (ty.y);
 	tz.x = (box->origin.z - ray.origin.z) / ray.forward.z;
-	tz.y = (box->axis.z - ray.origin.z) / ray.forward.z;
+	tz.y = (box->end.z - ray.origin.z) / ray.forward.z;
 	if(tz.x > tz.y)
 	{
 		tmp = tz.y;
@@ -146,11 +153,15 @@ int	intersect_box(t_object *box, t_ray ray, t_2d *t)
 	}
 	if(t->x > tz.y || tz.x > t->y)
 		return(0);
-
 	if(tz.x > t->x)
-		t->x = tz.x;
+		t->x = (tz.x);
 	if(tz.y < t->y)
-		t->y = tz.y;
+		t->y = (tz.y);
+	if(t->x < 0)
+	{
+		*t = (t_2d){T_MAX,T_MAX};
+		return (0);
+	}
 	return (1);	
 }
 
@@ -207,11 +218,11 @@ int	intersect_plane(t_object *plane, t_ray ray, t_2d *t)
 	double	denom;
 	t_3d	ray_to_obj;
 
-	denom = dot_product(scale_vector(plane->axis, -1.0f), ray.forward);
+	denom = dot_product(scale_vector(plane->end, -1.0f), ray.forward);
 	if (denom > 1e-6)
 	{
 		ray_to_obj = subtract_vectors(plane->origin, ray.origin);
-		t->x = dot_product(ray_to_obj, scale_vector(plane->axis, -1.0f)) / denom;
+		t->x = dot_product(ray_to_obj, scale_vector(plane->end, -1.0f)) / denom;
 		if (t->x >= 0)
 			return (1);
 	}
