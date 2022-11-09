@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/09 11:13:52 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 14:01:26 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,20 +154,16 @@ int	intersect_box(t_object *box, t_ray ray, t_2d *t)
 	return (1);	
 }
 
-int		intersect_cone(t_object *cone, t_ray ray, t_2d *t)
+int	intersect_cone(t_object *cone, t_ray ray, t_2d *t)
 {
 	double		ray_dot_product;
 	double		ray_dir_h;
 	double		dot_w_h;
-	double		len;
 	t_quadratic	q;
 
-	q.subtr_top_bot = subtract_vectors(cone->origin, cone->end);
-	len = vector_magnitude(q.subtr_top_bot);
-	q.subtr_top_bot = scale_vector(q.subtr_top_bot, len);
-	q.w = subtract_vectors(ray.origin, cone->origin);
-	q.h = normalize_vector(q.subtr_top_bot);
-	q.m = pow(cone->radius, 2) / pow(len, 2);
+	q.w = subtract_vectors(ray.origin, cone->end);
+	q.h = cone->axis;
+	q.m = pow(cone->radius, 2) / pow(cone->axis_length, 2);
 	ray_dot_product = dot_product(ray.forward, ray.forward);
 	ray_dir_h = dot_product(ray.forward, q.h);
 	dot_w_h = dot_product(q.w, q.h);

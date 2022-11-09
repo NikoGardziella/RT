@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 12:23:14 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/04 21:05:03 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 14:19:18 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static int	axis(char *line, t_object *object)
 		if (object->axis.x == 0 && object->axis.y == 0 && object->axis.z == 0)
 			object->axis = (t_3d){0.0f, 1.0f, 0.0f};
 		object->end = object->axis;
+		object->axis = subtract_vectors(object->origin, object->end);
 		object->axis_length = vector_magnitude(object->axis);
 		object->axis = normalize_vector(object->axis);
 		return (1);

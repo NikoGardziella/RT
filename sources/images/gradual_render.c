@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:34:58 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/07 16:14:51 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 14:21:02 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	gradual_render(t_img *img, void *param)
 		plot_time = (double)time_since_success(0.0f, 0);
 		coords = (t_2i){0, img->dim.size.y - (int)env->font->bound_box[1] - (int)env->font->bound_box[1]};
 		coords = display_str(&(t_pxl){env->font, put_pixel, img}, coords, "Plot time:" ,color);
-		printf("PLOT TIME: %f\n", plot_time);
 		display_double(&(t_pxl){env->font, put_pixel, img}, coords, (t_2d){plot_time, 3.0f} ,color);
 	}
 	coords = (t_2i){0, img->dim.size.y - (int)env->font->bound_box[1]};
