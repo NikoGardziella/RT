@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:29:59 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/04 16:51:53 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/10 15:32:07 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,17 @@ void	key_up(t_env *env)
 	if (env->sdl.event.type == SDL_KEYUP)
 	{
 		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_A)
-			env->keymap ^= KEY_A;
+			env->keymap = env->keymap & (t_uint)~KEY_A;
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_W)
-			env->keymap ^= KEY_W;
+			env->keymap = env->keymap & (t_uint)~KEY_W;
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_D)
-			env->keymap ^= KEY_D;
+			env->keymap = env->keymap & (t_uint)~KEY_D;
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_S)
-			env->keymap ^= KEY_S;
+			env->keymap = env->keymap & (t_uint)~KEY_S;
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_SPACE)
-			env->keymap ^= KEY_SPACE;
+			env->keymap = env->keymap & (t_uint)~KEY_SPACE;
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_LSHIFT)
-			env->keymap ^= KEY_LSHIFT;
+			env->keymap = env->keymap & (t_uint)~KEY_LSHIFT;
 	}
 }
 

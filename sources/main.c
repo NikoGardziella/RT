@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/09 12:04:49 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/10 15:33:03 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	render_screen(t_env *env)
 int	main(int argc, char **argv)
 {
 	t_env	env;
+	int		running;
 
 	close_prog(&env, "Initializing close program function.", 42);
 	ft_bzero(&env, sizeof(t_env));
@@ -90,29 +91,33 @@ int	main(int argc, char **argv)
 		close_prog(NULL, "Creating images failed...", -1);
 	env.mouse_state = 0;
 	env.keymap = 0;
-	while (1)
+	running = 1;
+	SDL_SetRelativeMouseMode(SDL_FALSE);
+	while (running == 1)
 	{
-		if (env.sdl.event.type == SDL_QUIT || env.sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+		while (SDL_PollEvent(&env.sdl.event))
 		{
-			SDL_Quit();
+			if (env.sdl.event.type == SDL_QUIT || env.sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+			{
+				SDL_Quit();
+				running = 0;
+			}
+			mouse_main(&env);
+			keyboard_main(&env);
+			if (env.sdl.event.type == SDL_WINDOWEVENT)
+			{
+				if (env.sdl.event.window.event == SDL_WINDOWEVENT_EXPOSED)
+					put_images_to_screen(&env);
+			}
+		}
+		if (running == 0)
 			break ;
-		}
-		mouse_main(&env);
-		keyboard_main(&env);
+		if (time_since_success(0.01, 1) >= 0.01)
+			continue ;
 		if (keyboard_add_vectors(&env) | mouse_move(&env))
-		{
 			render_screen(&env);
-		}
 		if (env.scene->resolution.y < env.scene->resolution_range.y)
-		{
 			put_images_to_screen(&env);
-		}
-		if (env.sdl.event.type == SDL_WINDOWEVENT)
-		{
-			if (env.sdl.event.window.event == SDL_WINDOWEVENT_EXPOSED)
-				put_images_to_screen(&env);
-		}
-		SDL_PollEvent(&env.sdl.event);
 	}
 	SDL_DestroyWindow(env.sdl.window);
 	(void)argc;

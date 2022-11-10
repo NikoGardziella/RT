@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:58 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/04 13:46:32 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/10 15:28:30 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,24 @@ void	mouse_main(void *param)
 			left_button_up(env);
 		if (env->sdl.event.button.button == SDL_BUTTON_RIGHT)
 			right_button_up(env);
+		return ;
 	}
 	if (env->sdl.event.type == SDL_MOUSEBUTTONDOWN)
 	{
-		SDL_SetRelativeMouseMode(SDL_FALSE);
 		if (env->sdl.event.button.button == SDL_BUTTON_LEFT)
 			left_button_down(env);
 		if (env->sdl.event.button.button == SDL_BUTTON_RIGHT)
 			right_button_down(env);
+		return ;
+	}
+	if (env->sdl.event.type == SDL_MOUSEMOTION)
+	{
+		env->mouse_state |= 8;
+		if ((env->mouse_state & 12) == 12)
+		{
+			env->scene->camera_angle.x -= (double)env->sdl.event.motion.yrel / 5;
+			env->scene->camera_angle.y -= (double)env->sdl.event.motion.xrel / 5;
+		}
+		return ;
 	}
 }
