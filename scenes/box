@@ -23,6 +23,19 @@ OBJECT box
 	axis 0.0 20.0 0.0
 	color FFFFFF
 }
+OBJECT plane
+{
+	origin 50.0 40.0 10.0
+	axis -1.0 0.0 0.0
+	color FFFFFF
+}
+OBJECT disc
+{
+	origin 30.0 40.0 10.0
+	axis 0.0 -1.0 0.0
+	radius 7.0
+	color FFFFFF
+}
 OBJECT light
 {
 	origin 0.0 0 0

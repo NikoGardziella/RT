@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/09 15:26:45 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/10 15:48:58 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,9 @@ int	quadratic_equation(t_quadratic *quadratic, t_2d *t)
 
 int	intersect_disc(t_object *disc, t_ray ray, t_2d *t)
 {
-	t_3d p;
-	t_3d v;
-	double d2;
+	t_3d	p;
+	t_3d	v;
+	double	d2;
 	if(intersect_plane(disc,ray,t))
 	{
 		p = add_vectors(ray.origin, (scale_vector(ray.forward, t->x)));
@@ -261,11 +261,11 @@ int	intersect_plane(t_object *plane, t_ray ray, t_2d *t)
 	double	denom;
 	t_3d	ray_to_obj;
 
-	denom = dot_product(scale_vector(plane->end, -1.0f), ray.forward);
+	denom = dot_product(scale_vector(plane->axis, -1.0f), ray.forward);
 	if (denom > 1e-6)
 	{
 		ray_to_obj = subtract_vectors(plane->origin, ray.origin);
-		t->x = dot_product(ray_to_obj, scale_vector(plane->end, -1.0f)) / denom;
+		t->x = dot_product(ray_to_obj, scale_vector(plane->axis, -1.0f)) / denom;
 		if (t->x >= 0)
 			return (1);
 	}

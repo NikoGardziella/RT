@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 11:03:56 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/09 12:50:24 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/10 15:38:51 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,15 @@ t_3d	calculate_normal(t_object *object, t_3d hit_point, t_2d t)
 	normal = (t_3d){0.0f, 0.0f, 0.0f};
 	if (object == NULL)
 		return (normal);
-	if (object->type == 0 || object->type == 1)
+	if (object->type == LIGHT || object->type == SPHERE)
 		normal = sphere_normal(object, hit_point);
-	else if (object->type == 2)
+	else if (object->type == PLANE || object->type == DISC)
 		normal = object->axis;
-	else if (object->type == 3)
+	else if (object->type == CONE)
 		normal = cone_normal(object, hit_point);
-	else if (object->type == 4)
+	else if (object->type == CYLINDER)
 		normal = cylinder_normal(object, hit_point);
-	else if (object->type == 5)
+	else if (object->type == BOX)
 		normal = box_normal(object, hit_point);	
 	if (t.x == t.y)
 		normal = scale_vector(normal, -1.0f);
