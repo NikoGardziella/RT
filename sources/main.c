@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/10 15:33:03 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/10 16:08:42 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ int	main(int argc, char **argv)
 				SDL_Quit();
 				running = 0;
 			}
-			mouse_main(&env);
-			keyboard_main(&env);
+			mouse_events(&env);
+			keyboard_events(&env);
 			if (env.sdl.event.type == SDL_WINDOWEVENT)
 			{
 				if (env.sdl.event.window.event == SDL_WINDOWEVENT_EXPOSED)
@@ -114,7 +114,7 @@ int	main(int argc, char **argv)
 			break ;
 		if (time_since_success(0.01, 1) >= 0.01)
 			continue ;
-		if (keyboard_add_vectors(&env) | mouse_move(&env))
+		if (((keyboard_hold(&env) & 1) == 1) | mouse_move(&env))
 			render_screen(&env);
 		if (env.scene->resolution.y < env.scene->resolution_range.y)
 			put_images_to_screen(&env);

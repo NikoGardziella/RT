@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/10 15:48:58 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/10 16:39:51 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,12 +262,11 @@ int	intersect_plane(t_object *plane, t_ray ray, t_2d *t)
 	t_3d	ray_to_obj;
 
 	denom = dot_product(scale_vector(plane->axis, -1.0f), ray.forward);
-	if (denom > 1e-6)
-	{
-		ray_to_obj = subtract_vectors(plane->origin, ray.origin);
-		t->x = dot_product(ray_to_obj, scale_vector(plane->axis, -1.0f)) / denom;
-		if (t->x >= 0)
-			return (1);
-	}
+	ray_to_obj = subtract_vectors(plane->origin, ray.origin);
+	t->x = dot_product(ray_to_obj, scale_vector(plane->axis, -1.0f)) / denom;
+	if (denom < 0)
+		t->y = t->x;
+	if (t->x >= 0)
+		return (1);
 	return (0);
 }

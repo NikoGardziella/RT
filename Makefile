@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/10 15:02:26 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/10 16:01:45 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -104,13 +104,14 @@ SOURCES_LIST =	main.c\
 				parser/read_camera_info.c\
 				parser/read_object_info.c\
 				parser/read_object_transformations.c\
-				mouse/mouse_main.c\
+				mouse/events.c\
 				mouse/move.c\
 				mouse/left_button/up.c\
 				mouse/left_button/down.c\
 				mouse/right_button/up.c\
 				mouse/right_button/down.c\
-				keyboard/keyboard_main.c\
+				keyboard/events.c\
+				keyboard/hold.c\
 				ray_trace/color_op.c\
 				ray_trace/get_camera_ray.c\
 				ray_trace/calculate_normal.c\

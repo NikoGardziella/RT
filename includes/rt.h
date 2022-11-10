@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/09 14:40:02 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/10 16:48:22 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include <stdio.h>
 # include <time.h>
 
-# define SCREEN_X 2560 / 3
-# define SCREEN_Y 1440 / 3
+# define SCREEN_X 2560 / 4
+# define SCREEN_Y 1440 / 4
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 6
@@ -240,13 +240,13 @@ t_mat		init_pmatrix(t_proj *proj);
 
 /*Keyboard functions*/
 
-void	keyboard_main(t_env *env);
-int		keyboard_add_vectors(t_env *env);
+void	keyboard_events(t_env *env);
+int		keyboard_hold(t_env *env);
 
 /*Mouse functions*/
 
+void	mouse_events(void *param);
 int		mouse_move(void *param);
-void	mouse_main(void *param);
 void	left_button_up(void *param);
 void	left_button_down(void *param);
 void	right_button_up(void *param);

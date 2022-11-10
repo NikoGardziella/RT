@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mouse_main.c                                       :+:      :+:    :+:   */
+/*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/03 13:07:58 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/10 15:28:30 by dmalesev         ###   ########.fr       */
+/*   Created: 2022/11/10 16:03:11 by dmalesev          #+#    #+#             */
+/*   Updated: 2022/11/10 16:03:17 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-void	mouse_main(void *param)
+void	mouse_events(void *param)
 {
 	t_env	*env;
 
