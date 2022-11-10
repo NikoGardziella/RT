@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/09 10:36:33 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/10 15:02:26 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -131,9 +131,9 @@ ifneq ($(MAKECMDGOALS),progress_bar)
 $(info Entering $(PRINT_NAME) Makefile!)
 endif
 
-all: $(NAME)
+all: $(SDL2) $(LIBFT) $(DM_2D) $(DM_VECTORS) $(DM_BDF_RENDER) $(NAME)
 
-$(NAME): $(SDL2) $(LIBFT) $(DM_2D) $(DM_VECTORS) $(DM_BDF_RENDER) $(OBJECTS_DIRECTORY) $(OBJECTS)
+$(NAME): $(OBJECTS_DIRECTORY) $(OBJECTS)
 	@$(CC) $(FLAGS) $(INCLUDES) $(OBJECTS) $(SDL2_LIBS) $(SDL2_CFLAGS) $(LIBS) -o $(NAME)
 	@printf "Compiled $(BOLD)$(COLOR)$(MAKE_COLOR)$(NAME)$(RESET)!\n\n"
 
