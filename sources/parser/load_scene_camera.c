@@ -74,7 +74,7 @@ static t_camera	*read_camera_file(int fd, t_camera *camera)
 			break ;
 		read_camera(camera, line);
 		if (line != NULL)
-			free(line);
+			free(line); 
 	}
 	/* at this point, camera->pos, look and fov are parsed*/
 	//init_camera(camera, camera->pos, camera->look_at, camera->fov);

@@ -52,7 +52,8 @@ typedef enum e_obj_type
 	PLANE = 2,
 	CONE = 3,
 	CYLINDER = 4,
-	BOX = 5
+	BOX = 5,
+	DISC = 6
 }				t_obj_type;
 
 /*Typedef structs*/
@@ -306,6 +307,7 @@ void		blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *d
 
 /*Intersect functions*/
 
+int			intersect_disc(t_object *disc, t_ray ray, t_2d *t);
 int			quadratic_equation(t_quadratic *q, t_2d *t);
 int			intersect_plane(t_object *plane, t_ray ray, t_2d *t);
 int			intersect_cone(t_object *cone, t_ray ray, t_2d *t);

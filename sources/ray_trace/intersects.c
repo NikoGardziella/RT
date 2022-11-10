@@ -39,6 +39,9 @@ t_2d	intersect_loop(t_ray *ray, t_list *objects, t_hit *hit)
 			ret = intersect_cylinder(object, *ray, &t);
 		if (object->type == BOX)
 			ret = intersect_box(object, *ray, &t);
+		if (object->type == DISC)
+			ret = intersect_disc(object, *ray, &t);
+		
 		if (ret && t.x < t_closest.x)
 		{
 			if (mid == 1 && hit != NULL)
@@ -52,6 +55,23 @@ t_2d	intersect_loop(t_ray *ray, t_list *objects, t_hit *hit)
 		objects_list = objects_list->next;
 	}
 	return (t_closest);
+}
+
+t_color refraction(t_color obj_col, t_ray *ray, t_scene *scene, t_hit *hit)
+{
+	t_2d *t;
+	
+	t = NULL;
+	*t = intersect_loop(ray, scene->objects_list, hit);
+	if (t->x < T_MAX)
+	{
+		hit->point = scale_vector(ray->forward, t->x);
+		hit->point = add_vectors(ray->origin, hit->point);
+		hit->color = hit->object->color;
+		//hit->normal = calculate_normal(hit->object, hit->point, (t_2d){hit->t0, hit->t1});
+		return (obj_col);
+	}
+	return (obj_col);
 }
 
 int	intersects(t_ray *ray, t_scene *scene, t_hit *hit, t_2d *t)
@@ -109,6 +129,23 @@ int	quadratic_equation(t_quadratic *quadratic, t_2d *t)
 	return (assess_t(t));
 }
 
+int	intersect_disc(t_object *disc, t_ray ray, t_2d *t)
+{
+	t_3d p;
+	t_3d v;
+	double d2;
+	if(intersect_plane(disc,ray,t))
+	{
+		p = add_vectors(ray.origin, (scale_vector(ray.forward, t->x)));
+		v = subtract_vectors(p, disc->origin);
+		d2 = dot_product(v,v);
+		if (d2 <= disc->radius * disc->radius)
+			return (1);
+		else
+			return (0);
+	}
+	return (0);
+}
 
 int	intersect_box(t_object *box, t_ray ray, t_2d *t)
 {

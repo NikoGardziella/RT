@@ -12,12 +12,6 @@ OBJECT sphere
 }
 OBJECT sphere
 {
-	origin 0.0 0.0 0.0
-	radius 70.0
-	color FFFFFF
-}
-OBJECT sphere
-{
 	origin 40.0 0.0 0.0
 	radius 7.0
 	color 00FFFF
