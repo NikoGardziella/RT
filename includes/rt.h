@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/11 12:04:24 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:03:08 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,13 @@ typedef struct s_bmptxtr
 	SDL_Surface	*wasd;
 }				t_bmptxtr;
 
+typedef struct s_mouse
+{
+	t_2i	pos;
+	t_2i	move;
+	uint8_t	state;
+}				t_mouse;
+
 typedef struct s_env
 {
 	t_sdl			sdl;
@@ -204,11 +211,12 @@ typedef struct s_env
 	t_img			*img;
 	t_scene			*scene;
 	t_font			*font;
-	uint8_t			mouse_state;
 	unsigned int	keymap;
 	uint8_t			sidebar;
 	int				render_mode;
+	t_object		*sel_object;
 	t_bmptxtr		bmptxtr;
+	t_mouse			mouse;
 }				t_env;
 
 /*Parser Functions*/
@@ -236,7 +244,7 @@ int		keyboard_hold(t_env *env);
 /*Mouse functions*/
 
 void	mouse_events(void *param);
-int		mouse_move(void *param);
+int		mouse_main(void *param);
 void	left_button_up(void *param);
 void	left_button_down(void *param);
 void	right_button_up(void *param);

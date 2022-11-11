@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/11 12:07:17 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:16:53 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,9 @@ int	main(int argc, char **argv)
 	env.img = create_images(IMAGES);
 	if (env.img == NULL)
 		close_prog(NULL, "Creating images failed...", -1);
-	env.mouse_state = 0;
+	env.mouse.state = 0;
 	env.keymap = 0;
 	running = 1;
-	SDL_SetRelativeMouseMode(SDL_FALSE);
 	while (running == 1)
 	{
 		while (SDL_PollEvent(&env.sdl.event))
@@ -117,7 +116,7 @@ int	main(int argc, char **argv)
 			break ;
 		if (time_since_success(0.01, 1) >= 0.01)
 			continue ;
-		if (((keyboard_hold(&env) & 1) == 1) | mouse_move(&env))
+		if (((keyboard_hold(&env) & 1) == 1) | ((mouse_main(&env) & 1) == 1))
 			render_screen(&env);
 		if (env.scene->resolution.y < env.scene->resolution_range.y)
 			put_images_to_screen(&env);

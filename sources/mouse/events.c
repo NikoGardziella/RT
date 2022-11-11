@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 16:03:11 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/10 16:03:17 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:15:21 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	mouse_events(void *param)
 	t_env	*env;
 
 	env = param;
-	
 	if (env->sdl.event.type == SDL_MOUSEBUTTONUP)
 	{
 		if (env->sdl.event.button.button == SDL_BUTTON_LEFT)
@@ -36,12 +35,7 @@ void	mouse_events(void *param)
 	}
 	if (env->sdl.event.type == SDL_MOUSEMOTION)
 	{
-		env->mouse_state |= 8;
-		if ((env->mouse_state & 12) == 12)
-		{
-			env->scene->camera_angle.x -= (double)env->sdl.event.motion.yrel / 5;
-			env->scene->camera_angle.y -= (double)env->sdl.event.motion.xrel / 5;
-		}
+		env->mouse.state |= 8;
 		return ;
 	}
 }

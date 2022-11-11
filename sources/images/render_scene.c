@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/11 12:06:00 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 15:10:58 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	render_scene(t_img *img, t_scene *scene, int render_mode)
 						mid = 1;
 					else
 						mid = 0;
-					ray = get_ray(coords, img, scene->camera);
+					ray = get_ray(coords, img, camera);
 					color = raycast(&ray, scene, &hit);
 					if (render_mode ==-1)
 						color = hit.color;
