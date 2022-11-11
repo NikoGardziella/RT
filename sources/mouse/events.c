@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 16:03:11 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/11 16:15:21 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 17:39:08 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,14 @@ void	mouse_events(void *param)
 	if (env->sdl.event.type == SDL_MOUSEMOTION)
 	{
 		env->mouse.state |= 8;
+		return ;
+	}
+	if (env->sdl.event.type == SDL_MOUSEWHEEL)
+	{
+		if (env->sdl.event.wheel.y > 0)
+			env->mouse.state |= 16;
+		else if (env->sdl.event.wheel.y < 0)
+			env->mouse.state |= 32;
 		return ;
 	}
 }

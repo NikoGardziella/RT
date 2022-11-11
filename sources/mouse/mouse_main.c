@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 15:30:28 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/11 17:22:41 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 17:48:01 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,34 @@ static int	mouse_move(void *param)
 	return (ret);
 }
 
+static int	mouse_scroll(void *param)
+{
+	t_env	*env;
+	int		ret;
+
+	env = param;
+	ret = 0;
+	if ((env->mouse.state & 16) == 16 && env->sel_ray.object != NULL)
+	{
+		env->sel_ray.hit_point = add_vectors(env->sel_ray.hit_point, env->sel_ray.forward);
+		env->sel_ray.object->origin = add_vectors(env->sel_ray.object->origin, env->sel_ray.forward);
+		env->sel_ray.object->end = add_vectors(env->sel_ray.object->origin, scale_vector(env->sel_ray.object->axis, env->sel_ray.object->axis_length));
+		env->sel_ray.distance += 1;
+		env->mouse.state &= ~(16);
+		ret |= 1;
+	}
+	if ((env->mouse.state & 32) == 32 && env->sel_ray.object != NULL)
+	{
+		env->sel_ray.hit_point = subtract_vectors(env->sel_ray.hit_point, env->sel_ray.forward);
+		env->sel_ray.object->origin = subtract_vectors(env->sel_ray.object->origin, env->sel_ray.forward);
+		env->sel_ray.object->end = add_vectors(env->sel_ray.object->origin, scale_vector(env->sel_ray.object->axis, env->sel_ray.object->axis_length));
+		env->sel_ray.distance -= 1;
+		env->mouse.state &= ~(32);
+		ret |= 1;
+	}
+	return (ret);
+}
+
 static int	mouse_hold(void *param)
 {
 	t_env	*env;
@@ -94,5 +122,6 @@ int	mouse_main(void *param)
 		env->mouse.state = env->mouse.state & ~(8);
 	ret |= mouse_move(param);
 	ret |= mouse_hold(param);
+	ret |= mouse_scroll(param);
 	return (ret);
 }
