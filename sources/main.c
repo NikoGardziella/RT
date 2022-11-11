@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/10 16:08:42 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 12:07:17 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,12 @@ void	close_prog(void *param, char *exit_msg, int exit_code)
 		return ;
 	}
 	// free_images(env->img, IMAGES);
-	free_font(&env->font);
-	ft_lstdel(&env->scene->objects_list, &del_object);
-	ft_lstdel(&env->scene->lights_list, &del_object);
+	if (env->font != NULL)
+		free_font(&env->font);
+	if (env->scene->object_list != NULL)
+		ft_lstdel(&env->scene->object_list, &del_object);
+	if (env->scene->light_list != NULL)
+		ft_lstdel(&env->scene->light_list, &del_object);
 	ft_putendl(exit_msg);
 	exit (exit_code);
 }
@@ -75,14 +78,14 @@ int	main(int argc, char **argv)
 
 	close_prog(&env, "Initializing close program function.", 42);
 	ft_bzero(&env, sizeof(t_env));
-	env.scene = malloc(sizeof(t_scene));
+	env.scene = ft_memalloc(sizeof(t_scene));
 	if (env.scene == NULL)
 		close_prog(NULL, "Malloc env.scene failed...", -1);
 	init_main(&env);
 	env.scene->camera = load_scene_camera(argv[1]);
 	/*PROTECC MALLOC*/
-	env.scene->objects_list = load_scene_objects(argv[1]);
-	env.scene->lights_list = load_scene_lights(argv[1]);
+	env.scene->object_list = load_scene_objects(argv[1]);
+	env.scene->light_list = load_scene_lights(argv[1]);
 	env.scene->camera_angle = (t_3d){0.0f, 0.0f, 0.0f};
 	sdl_init(&env.sdl);
 	SDL_RaiseWindow(env.sdl.window);

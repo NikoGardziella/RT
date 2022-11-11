@@ -23,7 +23,7 @@ OBJECT box
 	axis 10.0 10.0 10.0
 	color FFFFFF
 }
-OBJECT plane
+OBJECT plane negative
 {
 	origin 50.0 40.0 10.0
 	axis -1.0 0.0 0.0

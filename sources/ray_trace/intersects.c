@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/10 16:39:51 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 12:06:30 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_color refraction(t_color obj_col, t_ray *ray, t_scene *scene, t_hit *hit)
 	t_2d *t;
 	
 	t = NULL;
-	*t = intersect_loop(ray, scene->objects_list, hit);
+	*t = intersect_loop(ray, scene->object_list, hit);
 	if (t->x < T_MAX)
 	{
 		hit->point = scale_vector(ray->forward, t->x);
@@ -76,7 +76,7 @@ t_color refraction(t_color obj_col, t_ray *ray, t_scene *scene, t_hit *hit)
 
 int	intersects(t_ray *ray, t_scene *scene, t_hit *hit, t_2d *t)
 {
-	*t = intersect_loop(ray, scene->objects_list, hit);
+	*t = intersect_loop(ray, scene->object_list, hit);
 	if (t->x < T_MAX)
 	{
 		hit->point = scale_vector(ray->forward, t->x);

@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/11 10:58:14 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 12:04:24 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,8 @@ typedef struct s_camera
 
 typedef struct s_scene
 {
-	t_list		*objects_list;
-	t_list		*lights_list;
+	t_list		*object_list;
+	t_list		*light_list;
 	t_camera	*camera;
 	t_3d		camera_angle;
 	t_rgba		ambient_color;
@@ -191,6 +191,11 @@ typedef struct s_sdl
 	SDL_Surface		*screen;
 }				t_sdl;
 
+typedef struct s_bmptxtr
+{
+	SDL_Surface	*wasd;
+}				t_bmptxtr;
+
 typedef struct s_env
 {
 	t_sdl			sdl;
@@ -203,6 +208,7 @@ typedef struct s_env
 	unsigned int	keymap;
 	uint8_t			sidebar;
 	int				render_mode;
+	t_bmptxtr		bmptxtr;
 }				t_env;
 
 /*Parser Functions*/

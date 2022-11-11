@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/09 15:23:43 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 12:06:00 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 		color.combined = render_with_normals(normal);
 		shadow_ray.origin = scale_vector(normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
-		color.combined = light_up(scene->objects_list, hit->object->color, shadow_ray, normal);
+		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
 		/*
 		color.combined = shade(scene, hit);
 //		color = hit->color;
