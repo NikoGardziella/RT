@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 15:30:28 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/11 16:19:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 17:22:41 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static int	mouse_move(void *param)
 	int			ret;
 	t_camera	*camera;
 	t_2i		mouse_coords;
-	t_hit		hit;
 	t_ray		ray;
 
 	env = param;
@@ -39,14 +38,16 @@ static int	mouse_move(void *param)
 	ret = 0;
 	if ((env->mouse.state & 8) == 8)
 	{
-		if ((env->mouse.state & 1) == 1)
+		if ((env->mouse.state & 1) == 1 && env->sel_ray.object != NULL)
 		{
+			ft_bzero(&ray, sizeof(t_ray));
 			*camera = init_camera(env->img[0].dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 			ray = get_ray(mouse_coords, &env->img[0], camera);
-			hit.object = NULL;
-			raycast(&ray, env->scene, &hit);
-			if (hit.object != NULL)
-				env->sel_object = hit.object;
+			ray.hit_point = add_vectors(env->scene->camera->ray.origin, scale_vector(ray.forward, env->sel_ray.distance));
+			env->sel_ray.object->origin = add_vectors(env->sel_ray.object->origin, subtract_vectors(ray.hit_point, env->sel_ray.hit_point));
+			env->sel_ray.object->end = add_vectors(env->sel_ray.object->origin, scale_vector(env->sel_ray.object->axis, env->sel_ray.object->axis_length));
+			env->sel_ray.forward = ray.forward;
+			env->sel_ray.hit_point = ray.hit_point;
 			ret |= 1;
 		}
 		if ((env->mouse.state & 4) == 4)

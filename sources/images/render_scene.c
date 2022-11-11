@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/11 15:10:58 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:43:31 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,12 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 	t_3d	normal;
 	t_2d	t;
 
-	// color.channel.r = scene->ambient_color.r;
-	// color.channel.g = scene->ambient_color.g;
-	// color.channel.b = scene->ambient_color.b;
-	// color.channel.a = scene->ambient_color.a;
-
-	color.channel.r = 0;
-	color.channel.g = 0;
-	color.channel.b = 0;
-	color.channel.a = 0;
-
+	color.combined = 0x000000;
 	if (intersects(ray, scene, hit, &t))
 	{
+		ray->object = hit->object;
+		ray->distance = t.x;
+		ray->hit_point = hit->point;
 		if (hit->object->type == LIGHT)
 			return (hit->color);
 		normal = calculate_normal(hit->object, hit->point, t);
@@ -49,10 +43,6 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 		shadow_ray.origin = scale_vector(normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
 		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
-		/*
-		color.combined = shade(scene, hit);
-//		color = hit->color;
-		*/
 	}
 	return (color);
 }

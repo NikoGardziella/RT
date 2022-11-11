@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/11 16:03:08 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:41:06 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,9 @@ typedef struct s_ray
 {
 	t_3d		origin;
 	t_3d		forward;
-	t_object	*origin_object;
+	t_3d		hit_point;
+	t_object	*object;
+	double		distance;
 }				t_ray;
 
 typedef struct s_camera
@@ -214,7 +216,7 @@ typedef struct s_env
 	unsigned int	keymap;
 	uint8_t			sidebar;
 	int				render_mode;
-	t_object		*sel_object;
+	t_ray			sel_ray;
 	t_bmptxtr		bmptxtr;
 	t_mouse			mouse;
 }				t_env;

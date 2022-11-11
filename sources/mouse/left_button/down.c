@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:39:02 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/11 16:05:54 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:45:04 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	left_button_down(void *param)
 	t_2i		mouse_coords;
 	t_camera	*camera;
 	t_hit		hit;
-	t_ray		ray;
 
 	env = param;
 	camera = env->scene->camera;
@@ -38,14 +37,11 @@ void	left_button_down(void *param)
 		env->sidebar = 1;
 	else if (coords_in_area(env->img[0].dim, mouse_coords))
 	{
+		ft_bzero(&env->sel_ray, sizeof(t_ray));
 		*camera = init_camera(env->img[0].dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
-		ray = get_ray(mouse_coords, &env->img[0], camera);
-		hit.object = NULL;
-		raycast(&ray, env->scene, &hit);
-		if (hit.object == NULL)
-			return ;
-		else
-			env->sel_object = hit.object;
+		env->sel_ray = get_ray(mouse_coords, &env->img[0], camera);
+		env->sel_ray.object = NULL;
+		raycast(&env->sel_ray, env->scene, &hit);
 	}
 	else
 		return ;
