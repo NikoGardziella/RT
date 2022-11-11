@@ -27,7 +27,6 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 {
 	t_color	color;
 	t_ray	shadow_ray;
-	t_3d	normal;
 	t_2d	t;
 
 	// color.channel.r = scene->ambient_color.r;
@@ -44,11 +43,11 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 	{
 		if (hit->object->type == LIGHT)
 			return (hit->color);
-		normal = calculate_normal(hit->object, hit->point, t);
-		color.combined = render_with_normals(normal);
-		shadow_ray.origin = scale_vector(normal, BIAS);
+		
+		color.combined = render_with_normals(hit->normal);
+		shadow_ray.origin = scale_vector(hit->normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
-		color.combined = light_up(scene->objects_list, hit->object->color, shadow_ray, normal);
+		color.combined = light_up(scene->objects_list, hit->object->color, shadow_ray, hit->normal);
 		/*
 		color.combined = shade(scene, hit);
 //		color = hit->color;

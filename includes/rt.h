@@ -29,6 +29,7 @@
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 6
+# define MAX_BOUNCE 1
 
 # define KEY_A 1
 # define KEY_W 2

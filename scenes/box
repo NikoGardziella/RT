@@ -14,14 +14,14 @@ OBJECT sphere
 {
 	origin 40.0 0.0 0.0
 	radius 7.0
-	color 00FFFF
+	color 521100
 }
 OBJECT box
 {
 	origin 10.0 30.0 10.0
 	radius 7.0
 	axis 10.0 10.0 10.0
-	color FFFFFF
+	color 520011
 }
 OBJECT plane
 {
