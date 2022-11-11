@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/10 16:48:22 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 10:58:14 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,17 +141,6 @@ typedef struct s_hit
 	t_color		color;
 }				t_hit;
 
-/*typedef struct s_camera_info
-{
-	t_3d		v_up;
-	t_3d		u;
-	t_3d		v;
-	t_3d		w;
-	double		theta;
-	double		half_height;
-	double		half_width;
-}				t_camera_info;*/
-
 typedef struct s_ray
 {
 	t_3d		origin;
@@ -167,11 +156,6 @@ typedef struct s_camera
 	double		fov;
 	double		aspect_ratio;
 }				t_camera;
-
-	/*double		scale;
-	t_3d		horizontal;
-	t_3d		vertical;
-	t_3d		lower_left_corner;*/
 
 typedef struct s_scene
 {
