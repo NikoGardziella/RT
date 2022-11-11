@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/11 16:16:53 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 22:33:15 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,18 @@ void	close_prog(void *param, char *exit_msg, int exit_code)
 		env = param;
 		return ;
 	}
-	// free_images(env->img, IMAGES);
+	free_images(env->img, IMAGES);
 	if (env->font != NULL)
 		free_font(&env->font);
 	if (env->scene->object_list != NULL)
 		ft_lstdel(&env->scene->object_list, &del_object);
 	if (env->scene->light_list != NULL)
 		ft_lstdel(&env->scene->light_list, &del_object);
+	if (env->sdl.window != NULL)
+		SDL_DestroyWindow(env->sdl.window);
+	if (env->sdl.screen != NULL)
+		SDL_FreeSurface(env->sdl.screen);
+	SDL_Quit();
 	ft_putendl(exit_msg);
 	exit (exit_code);
 }
@@ -101,7 +106,6 @@ int	main(int argc, char **argv)
 		{
 			if (env.sdl.event.type == SDL_QUIT || env.sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 			{
-				SDL_Quit();
 				running = 0;
 			}
 			mouse_events(&env);
@@ -121,7 +125,6 @@ int	main(int argc, char **argv)
 		if (env.scene->resolution.y < env.scene->resolution_range.y)
 			put_images_to_screen(&env);
 	}
-	SDL_DestroyWindow(env.sdl.window);
 	(void)argc;
 	(void)argv;
 	return(0);
