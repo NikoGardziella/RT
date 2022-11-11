@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:34:58 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/11 11:50:33 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 13:56:08 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	gradual_render(t_img *img, void *param)
 	coords = display_double(&(t_pxl){env->font, put_pixel, img}, coords,(t_2d){env->scene->camera->ray.forward.y, 1.0},color);
 	coords = display_str(&(t_pxl){env->font, put_pixel, img}, coords, " z:" ,color);
 	coords = display_double(&(t_pxl){env->font, put_pixel, img}, coords, (t_2d){env->scene->camera->ray.forward.z, 1.0},color);
+	coords = display_str(&(t_pxl){env->font, put_pixel, img}, coords, "  KEYMAP: " ,color);
 	coords = display_int(&(t_pxl){env->font, put_pixel, img}, coords, (int)env->keymap, color);
 	
 	coords = (t_2i){img->dim.size.x / 2, img->dim.size.y / 2};
