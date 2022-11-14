@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 12:23:14 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/07 09:22:26 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/09 14:34:17 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	lumen(char *line, t_object *object)
 			object->lumen = ft_atoi(line);
 		if (object->lumen < 0)
 			object->lumen = 0;
-		if (object->type == 0)
+		if (object->type == LIGHT)
 			object->radius = 0.5f;
 		return (1);
 	}

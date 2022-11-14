@@ -2,7 +2,7 @@ OBJECT cone
 {
 	origin 0.0 0.0 40.0
 	radius 4.0
-	axis 0.0 10.0 40.0
+	axis 0.0 10.0 0.0
 	color FFFFFF
 }
 OBJECT sphere
@@ -31,7 +31,7 @@ OBJECT sphere
 }
 OBJECT light
 {
-	origin 0.0 50 60
+	origin 0.0 50 -60
 	lumen 1000.0
 	color FFFF00
 }

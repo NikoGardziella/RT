@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/07 15:41:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 17:54:19 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define SCREEN_X 2560 / 3
 # define SCREEN_Y 1440 / 3
 # define T_MAX 100000000.0f
+# define BIAS 0.000001
 # define IMAGES 6
 
 # define KEY_A 1
@@ -46,14 +47,28 @@ int mid;
 
 typedef enum e_obj_type
 {
-	LIGHT,
-	SPHERE,
-	PLANE,
-	CONE,
-	CYLINDER
+	LIGHT = 0,
+	SPHERE = 1,
+	PLANE = 2,
+	CONE = 3,
+	CYLINDER = 4,
+	BOX = 5,
+	DISC = 6
 }				t_obj_type;
 
 /*Typedef structs*/
+
+typedef struct s_2d
+{
+	double	x;
+	double	y;
+}				t_2d;
+
+typedef struct s_2f
+{
+	float	x;
+	float	y;
+}				t_2f;
 
 typedef struct s_dir
 {
@@ -81,35 +96,30 @@ typedef struct s_quadratic
 	t_3d	w;
 	t_3d	h;
 	t_3d	subtr_top_bot;
-	double	m;
-	double	discr;
-	double	t0;
-	double	t1;
 	double	a;
 	double	b;
 	double	c;
-	double	q;
+	double	m;
 }	t_quadratic;
 
 typedef struct		s_rgba
 {
-	uint8_t			a;
 	uint8_t			b;
 	uint8_t			g;
 	uint8_t			r;
+	uint8_t			a;
 }					t_rgba;
 
 typedef union		u_color
 {
 	uint32_t		combined;
-	t_rgba			channel;	
+	t_rgba			channel;
 }					t_color;
 
 typedef struct s_object
 {
 	double		axis_length;
 	double		radius;
-	double		t;
 	int			lumen;
 	int			type;
 	t_color		color;
@@ -128,28 +138,16 @@ typedef struct s_hit
 	t_3d		point;
 	t_3d		normal;
 	t_object	*object;
-	t_3d		light_dir;
-	double		t[2];
-	double		distance;
 	t_color		color;
 }				t_hit;
-
-/*typedef struct s_camera_info
-{
-	t_3d		v_up;
-	t_3d		u;
-	t_3d		v;
-	t_3d		w;
-	double		theta;
-	double		half_height;
-	double		half_width;
-}				t_camera_info;*/
 
 typedef struct s_ray
 {
 	t_3d		origin;
 	t_3d		forward;
-	t_object	*origin_object;
+	t_3d		hit_point;
+	t_object	*object;
+	double		distance;
 }				t_ray;
 
 typedef struct s_camera
@@ -161,33 +159,16 @@ typedef struct s_camera
 	double		aspect_ratio;
 }				t_camera;
 
-	/*double		scale;
-	t_3d		horizontal;
-	t_3d		vertical;
-	t_3d		lower_left_corner;*/
-
 typedef struct s_scene
 {
-	t_list		*objects_list;
-	t_list		*lights_list;
+	t_list		*object_list;
+	t_list		*light_list;
 	t_camera	*camera;
 	t_3d		camera_angle;
 	t_rgba		ambient_color;
 	t_2i		resolution_range;
 	t_2i		resolution;
 }				t_scene;
-
-typedef struct s_2d
-{
-	double	x;
-	double	y;
-}				t_2d;
-
-typedef struct s_2f
-{
-	float	x;
-	float	y;
-}				t_2f;
 
 typedef struct s_dim
 {
@@ -212,6 +193,18 @@ typedef struct s_sdl
 	SDL_Surface		*screen;
 }				t_sdl;
 
+typedef struct s_bmptxtr
+{
+	SDL_Surface	*wasd;
+}				t_bmptxtr;
+
+typedef struct s_mouse
+{
+	t_2i	pos;
+	t_2i	move;
+	uint8_t	state;
+}				t_mouse;
+
 typedef struct s_env
 {
 	t_sdl			sdl;
@@ -220,10 +213,12 @@ typedef struct s_env
 	t_img			*img;
 	t_scene			*scene;
 	t_font			*font;
-	uint8_t			mouse_state;
 	unsigned int	keymap;
 	uint8_t			sidebar;
 	int				render_mode;
+	t_ray			sel_ray;
+	t_bmptxtr		bmptxtr;
+	t_mouse			mouse;
 }				t_env;
 
 /*Parser Functions*/
@@ -245,13 +240,13 @@ t_mat		init_pmatrix(t_proj *proj);
 
 /*Keyboard functions*/
 
-void	keyboard_main(t_env *env);
-int		keyboard_add_vectors(t_env *env);
+void	keyboard_events(t_env *env);
+int		keyboard_hold(t_env *env);
 
 /*Mouse functions*/
 
-int		mouse_move(void *param);
-void	mouse_main(void *param);
+void	mouse_events(void *param);
+int		mouse_main(void *param);
 void	left_button_up(void *param);
 void	left_button_down(void *param);
 void	right_button_up(void *param);
@@ -281,6 +276,7 @@ t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
+uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, t_3d normal);
 
 /* Color operations functions*/
 
@@ -311,18 +307,25 @@ void		blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *d
 
 /*Intersect functions*/
 
-void		quadratic(t_quadratic *q, int type);
-double		intersect_plane(t_object plane, t_ray ray);
-double		intersect_cone(t_object cone, t_ray ray);
-double		intersect_sphere(t_object sphere, t_ray ray);
-double		intersect_cylinder(t_object cyl, t_ray ray);
-int			intersects(t_ray *ray, t_scene *scene, t_hit *hit);
+int			intersect_disc(t_object *disc, t_ray ray, t_2d *t);
+int			quadratic_equation(t_quadratic *q, t_2d *t);
+int			intersect_plane(t_object *plane, t_ray ray, t_2d *t);
+int			intersect_cone(t_object *cone, t_ray ray, t_2d *t);
+int			intersect_sphere(t_object *sphere, t_ray ray, t_2d *t);
+int			intersect_cylinder(t_object *cylinder, t_ray ray, t_2d *t);
+int			intersects(t_ray *ray, t_scene *scene, t_hit *hit, t_2d *t);
+int			intersect_box(t_object *box, t_ray ray, t_2d *t);
+t_2d		intersect_loop(t_ray *ray, t_list *objects, t_hit *hit);
 
-/*Matrix transformations*/
+/*Matrix transformation functions*/
 
 t_3d		rotate_point(t_3d point, t_3d rot);
 t_3d		get_points(t_img *img, t_3d *xyz, t_3d *rot, t_proj *proj);
 t_proj		init_proj(double fov, t_2i *dim, t_2d *z_depth);
 void		matrix_multip(t_3d *in, t_3d *out, t_mat *matrix);
+
+/*Other functions*/
+
+double		time_since_success(double ammount, int id);
 
 #endif

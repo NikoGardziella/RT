@@ -1,0 +1,68 @@
+OBJECT sphere
+{
+	origin 0.0 0.0 -40.0
+	radius 5.0
+	color FFFF00
+}
+OBJECT sphere
+{
+	origin -40.0 0.0 0.0
+	radius 6.0
+	color FF00FF
+}
+OBJECT sphere
+{
+	origin 40.0 0.0 0.0
+	radius 7.0
+	color 00FFFF
+}
+OBJECT box
+{
+	origin 10.0 30.0 10.0
+	radius 7.0
+	axis 10.0 10.0 10.0
+	color FFFFFF
+}
+OBJECT plane negative
+{
+	origin 50.0 40.0 10.0
+	axis -1.0 0.0 0.0
+	color FFFFFF
+}
+OBJECT disc
+{
+	origin 0.0 40.0 -50.0
+	axis -1.0 0.0 5.0
+	radius 7.0
+	color FFFFFF
+}
+OBJECT light
+{
+	origin 20 30 -60
+	lumen 10.0
+	color 00FF00
+}
+OBJECT light
+{
+	origin 20.0 80 0
+	lumen 10.0
+	color 0000FF
+}
+OBJECT light
+{
+	origin 40.0 40.0 10.0
+	lumen 10.0
+	color FFFFFF
+}
+OBJECT light
+{
+	origin -10.0 20 0
+	lumen 10.0
+	color FF0000
+}
+OBJECT camera
+{
+	pos 0 0 0
+	look 0 0 -1
+	fov 60
+}

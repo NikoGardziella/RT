@@ -52,13 +52,20 @@ static int	read_camera(t_camera *camera, char *line)
 	return (0);
 }
 
+void	set_camera(t_camera *cam)
+{
+	cam->ray.origin = (t_3d){0.0f, 0.0f, 0.0f};
+	cam->ray.forward = (t_3d){0.0f, 0.0f, -1.0f};
+}
+
 static t_camera	*read_camera_file(int fd, t_camera *camera)
 {
 	int	ret;
 	char*line;
 
 	ret = 1;
-	ft_bzero(camera, sizeof(t_camera));
+	//ft_bzero(camera, sizeof(t_camera));
+	set_camera(camera);
 	while (ret > 0)
 	{	
 		line = NULL;
@@ -67,7 +74,7 @@ static t_camera	*read_camera_file(int fd, t_camera *camera)
 			break ;
 		read_camera(camera, line);
 		if (line != NULL)
-			free(line);
+			free(line); 
 	}
 	/* at this point, camera->pos, look and fov are parsed*/
 	//init_camera(camera, camera->pos, camera->look_at, camera->fov);
@@ -86,7 +93,10 @@ t_camera	*load_scene_camera(char *path)
 	/*PROTECC MALLOG*/
 	camera = read_camera_file(fd, camera);
 	if(camera == NULL)
+	{
+		printf("no cam, closing RT");
 		close_prog(NULL, "Read_camera_file failed...", -1);
+	}
 	if (fd >= 0)
 		close(fd);
 	return (camera);

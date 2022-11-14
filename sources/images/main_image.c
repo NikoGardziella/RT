@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:33:20 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/07 13:46:27 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/09 15:24:03 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,5 @@ void	main_image(t_img *img, void *param)
 	render_scene(img, env->scene, env->render_mode);
 	blit_surface(img->surface, NULL, env->img[4].surface, &dim);
 	blit_surface(env->img[4].surface, &dim, env->img[5].surface, NULL);
+	//blit_surface(img->surface, NULL, env->img[5].surface, NULL);
 }

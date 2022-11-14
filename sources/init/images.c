@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 10:56:32 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/07 13:44:35 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 11:47:40 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 static void	get_image_sizes(t_img *img)
 {
 	t_2i	button;
+	t_2i	offset;
 
 	button = (t_2i){SCREEN_X / 40, SCREEN_Y / 25};
+	offset = (t_2i){button.x * 30 / 100, button.y * 30 / 100};
 	img[0].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 	img[1].dim.size = (t_2i){button.x, button.y};
 	img[2].dim.size = (t_2i){SCREEN_X / 4, SCREEN_Y / 4};
-	img[3].dim.size = (t_2i){SCREEN_X / 4, SCREEN_Y / 5};
+	img[3].dim.size = (t_2i){SCREEN_X / 4, SCREEN_Y - (offset.y * 2)};
 	img[4].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 	img[5].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 }

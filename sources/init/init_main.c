@@ -6,11 +6,18 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/07 13:00:49 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 13:44:14 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+static void	load_textures(t_env *env)
+{
+	env->bmptxtr.wasd = SDL_LoadBMP("test.bmp");
+	if (env->bmptxtr.wasd == NULL)
+		close_prog(NULL, "Failed to load BMP texture...", -3);
+}
 
 void	init_main(t_env *env)
 {
@@ -25,4 +32,5 @@ void	init_main(t_env *env)
 	env->scene->resolution.x = env->scene->resolution_range.x;
 	env->scene->resolution.y = env->scene->resolution_range.x;
 	env->render_mode = -1;
+	load_textures(env);
 }
