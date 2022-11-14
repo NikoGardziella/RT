@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/14 09:31:14 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/14 15:18:39 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,8 +53,10 @@ ifeq ($(UNAME), Linux)
 LIBS = $(DM_BDF_RENDER) $(LIBFT) $(DM_2D) $(DM_VECTORS) $(SDL2) $(MATH_LIBRARY)
 endif
 
+#LIBRARIES DEFINES
 LIBRARIES_DIRECTORY = ./libraries
 
+#SDL2 LIBRARY
 SDL2_CFLAGS = `$(SDL2_BUILD_DIRECTORY)/lib/bin/sdl2-config --cflags`
 SDL2_LIBS = `$(SDL2_BUILD_DIRECTORY)/lib/bin/sdl2-config --libs`
 
@@ -64,26 +66,32 @@ SDL2_DIRECTORY = $(LIBRARIES_DIRECTORY)/libsdl2
 SDL2 = $(SDL2_BUILD_DIRECTORY)/lib/lib/libSDL2.a
 SDL2_HEADERS = $(SDL2_BUILD_DIRECTORY)/lib/include/SDL2
 
+#DM_BDF_RENDER LIBRARY
 DM_BDF_RENDER_DIRECTORY = $(LIBRARIES_DIRECTORY)/dm_bdf_render/
 DM_BDF_RENDER = $(DM_BDF_RENDER_DIRECTORY)/dm_bdf_render.a
 DM_BDF_RENDER_HEADERS = $(DM_BDF_RENDER_DIRECTORY)/includes/
 
+#DM_VECTORS LIBRARY
 DM_VECTORS_DIRECTORY = $(LIBRARIES_DIRECTORY)/dm_vectors
 DM_VECTORS = $(DM_VECTORS_DIRECTORY)/dm_vectors.a
 DM_VECTORS_HEADERS = $(DM_VECTORS_DIRECTORY)/includes
 
+#DM_2D LIBRARY
 DM_2D_DIRECTORY = $(LIBRARIES_DIRECTORY)/dm_2d
 DM_2D = $(DM_2D_DIRECTORY)/dm_2d.a
 DM_2D_HEADERS = $(DM_2D_DIRECTORY)/includes
 
+#LIBFT LIBRARY
 LIBFT_DIRECTORY = $(LIBRARIES_DIRECTORY)/libft
 LIBFT = $(LIBFT_DIRECTORY)/libft.a
 LIBFT_HEADERS = $(LIBFT_DIRECTORY)/includes
 
+#HEADER FILES
 HEADERS_DIRECTORY = ./includes/
 HEADERS_LIST =	rt.h
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
+#SOURCE FILES
 SOURCES_DIRECTORY = ./sources/
 SOURCES_LIST =	main.c\
 				init/init_main.c\
