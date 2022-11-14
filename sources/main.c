@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/11 22:33:15 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/14 15:10:02 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	render_screen(t_env *env)
 {
 	double	fps;
 
-	fps = 0.01;
+	fps = 0.0001;
 	if (time_since_success(fps, 0) >= fps)
 	{
 		env->scene->resolution.x = env->scene->resolution_range.x;

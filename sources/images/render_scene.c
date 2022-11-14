@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/11 16:43:31 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/14 15:06:55 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static t_uint	render_with_normals(t_3d normal)
 	return (combine_rgb((int)rgb.x, (int)rgb.y, (int)rgb.z));
 }
 
-t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
+t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int render_mode)
 {
 	t_color	color;
 	t_ray	shadow_ray;
@@ -36,13 +36,20 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 		ray->object = hit->object;
 		ray->distance = t.x;
 		ray->hit_point = hit->point;
-		if (hit->object->type == LIGHT)
-			return (hit->color);
-		normal = calculate_normal(hit->object, hit->point, t);
-		color.combined = render_with_normals(normal);
-		shadow_ray.origin = scale_vector(normal, BIAS);
-		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
-		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
+		color.combined = hit->object->color.combined;
+		if (render_mode == 1 && hit->object->type != LIGHT)
+		{
+			normal = calculate_normal(hit->object, hit->point, t);
+			//color.combined = render_with_normals(normal);
+			(void)render_with_normals;
+			shadow_ray.origin = scale_vector(normal, BIAS);
+			shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
+			color.combined = light_up(scene->object_list, color, shadow_ray, normal);
+		}
+		if ((hit->object->radius * 2 - (t.y - t.x)) / (hit->object->radius * 2) > 0.7)
+			color.channel.a = 0x01;
+		else if ((hit->object->radius * 2 - (t.y - t.x)) / (hit->object->radius * 2) > 0.6)
+			color.channel.a = 0x02;
 	}
 	return (color);
 }
@@ -64,7 +71,7 @@ void	resolution_adjust(t_2i coords, uint32_t color, t_img *img, int res_range)
 	}
 }
 
-void	render_scene(t_img *img, t_scene *scene, int render_mode)
+void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 {
 	t_2i		coords;
 	t_ray		ray;
@@ -90,9 +97,14 @@ void	render_scene(t_img *img, t_scene *scene, int render_mode)
 					else
 						mid = 0;
 					ray = get_ray(coords, img, camera);
-					color = raycast(&ray, scene, &hit);
-					if (render_mode ==-1)
-						color = hit.color;
+					color = raycast(&ray, scene, &hit, render_mode);
+					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
+					{
+						if (color.channel.a == 0x01)
+							color.combined = 0x00FFFFFF;
+						else if (color.channel.a == 0x02)
+							color.combined = 0x00000000;
+					}
 					put_pixel(coords, color.combined, img);
 					if (scene->resolution.x == scene->resolution.y)
 						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
