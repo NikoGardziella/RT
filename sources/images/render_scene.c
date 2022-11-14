@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/11 16:43:31 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/14 16:32:34 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,13 @@ static t_uint	render_with_normals(t_3d normal)
 	return (combine_rgb((int)rgb.x, (int)rgb.y, (int)rgb.z));
 }
 
-t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
+t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 {
 	t_color	color;
 	t_ray	shadow_ray;
 	t_3d	normal;
 	t_2d	t;
+	t_ray	reflection_ray;
 
 	color.combined = 0x000000;
 	if (intersects(ray, scene, hit, &t))
@@ -43,6 +44,13 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 		shadow_ray.origin = scale_vector(normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
 		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
+		if(ray->object->density == 3.0 && recursion_depth < 2) // arbitrary for now to work with 3SpherePlane
+		{
+			reflection_ray.forward = reflect_vector(ray->forward, normal);
+			ray->distance += 1;
+			recursion_depth++;
+			color = raycast(&reflection_ray, scene, hit, recursion_depth);
+		}
 	}
 	return (color);
 }
@@ -90,7 +98,7 @@ void	render_scene(t_img *img, t_scene *scene, int render_mode)
 					else
 						mid = 0;
 					ray = get_ray(coords, img, camera);
-					color = raycast(&ray, scene, &hit);
+					color = raycast(&ray, scene, &hit, 0);
 					if (render_mode ==-1)
 						color = hit.color;
 					put_pixel(coords, color.combined, img);
