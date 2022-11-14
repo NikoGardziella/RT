@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/10 16:48:22 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 17:54:19 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include <stdio.h>
 # include <time.h>
 
-# define SCREEN_X 2560 / 4
-# define SCREEN_Y 1440 / 4
+# define SCREEN_X 2560 / 3
+# define SCREEN_Y 1440 / 3
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 6
@@ -142,22 +142,13 @@ typedef struct s_hit
 	t_color		color;
 }				t_hit;
 
-/*typedef struct s_camera_info
-{
-	t_3d		v_up;
-	t_3d		u;
-	t_3d		v;
-	t_3d		w;
-	double		theta;
-	double		half_height;
-	double		half_width;
-}				t_camera_info;*/
-
 typedef struct s_ray
 {
 	t_3d		origin;
 	t_3d		forward;
-	t_object	*origin_object;
+	t_3d		hit_point;
+	t_object	*object;
+	double		distance;
 }				t_ray;
 
 typedef struct s_camera
@@ -169,15 +160,10 @@ typedef struct s_camera
 	double		aspect_ratio;
 }				t_camera;
 
-	/*double		scale;
-	t_3d		horizontal;
-	t_3d		vertical;
-	t_3d		lower_left_corner;*/
-
 typedef struct s_scene
 {
-	t_list		*objects_list;
-	t_list		*lights_list;
+	t_list		*object_list;
+	t_list		*light_list;
 	t_camera	*camera;
 	t_3d		camera_angle;
 	t_rgba		ambient_color;
@@ -208,6 +194,18 @@ typedef struct s_sdl
 	SDL_Surface		*screen;
 }				t_sdl;
 
+typedef struct s_bmptxtr
+{
+	SDL_Surface	*wasd;
+}				t_bmptxtr;
+
+typedef struct s_mouse
+{
+	t_2i	pos;
+	t_2i	move;
+	uint8_t	state;
+}				t_mouse;
+
 typedef struct s_env
 {
 	t_sdl			sdl;
@@ -216,10 +214,12 @@ typedef struct s_env
 	t_img			*img;
 	t_scene			*scene;
 	t_font			*font;
-	uint8_t			mouse_state;
 	unsigned int	keymap;
 	uint8_t			sidebar;
 	int				render_mode;
+	t_ray			sel_ray;
+	t_bmptxtr		bmptxtr;
+	t_mouse			mouse;
 }				t_env;
 
 /*Parser Functions*/
@@ -247,7 +247,7 @@ int		keyboard_hold(t_env *env);
 /*Mouse functions*/
 
 void	mouse_events(void *param);
-int		mouse_move(void *param);
+int		mouse_main(void *param);
 void	left_button_up(void *param);
 void	left_button_down(void *param);
 void	right_button_up(void *param);

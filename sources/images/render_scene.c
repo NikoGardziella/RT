@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/09 15:23:43 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:43:31 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,29 +29,19 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit)
 	t_ray	shadow_ray;
 	t_2d	t;
 
-	// color.channel.r = scene->ambient_color.r;
-	// color.channel.g = scene->ambient_color.g;
-	// color.channel.b = scene->ambient_color.b;
-	// color.channel.a = scene->ambient_color.a;
-
-	color.channel.r = 0;
-	color.channel.g = 0;
-	color.channel.b = 0;
-	color.channel.a = 0;
-
+	color.combined = 0x000000;
 	if (intersects(ray, scene, hit, &t))
 	{
+		ray->object = hit->object;
+		ray->distance = t.x;
+		ray->hit_point = hit->point;
 		if (hit->object->type == LIGHT)
 			return (hit->color);
 		
 		color.combined = render_with_normals(hit->normal);
 		shadow_ray.origin = scale_vector(hit->normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
-		color.combined = light_up(scene->objects_list, hit->object->color, shadow_ray, hit->normal);
-		/*
-		color.combined = shade(scene, hit);
-//		color = hit->color;
-		*/
+		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, hit->object->normal);
 	}
 	return (color);
 }
@@ -98,7 +88,7 @@ void	render_scene(t_img *img, t_scene *scene, int render_mode)
 						mid = 1;
 					else
 						mid = 0;
-					ray = get_ray(coords, img, scene->camera);
+					ray = get_ray(coords, img, camera);
 					color = raycast(&ray, scene, &hit);
 					if (render_mode ==-1)
 						color = hit.color;

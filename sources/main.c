@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/10 16:08:42 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 22:33:15 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,18 @@ void	close_prog(void *param, char *exit_msg, int exit_code)
 		env = param;
 		return ;
 	}
-	// free_images(env->img, IMAGES);
-	free_font(&env->font);
-	ft_lstdel(&env->scene->objects_list, &del_object);
-	ft_lstdel(&env->scene->lights_list, &del_object);
+	free_images(env->img, IMAGES);
+	if (env->font != NULL)
+		free_font(&env->font);
+	if (env->scene->object_list != NULL)
+		ft_lstdel(&env->scene->object_list, &del_object);
+	if (env->scene->light_list != NULL)
+		ft_lstdel(&env->scene->light_list, &del_object);
+	if (env->sdl.window != NULL)
+		SDL_DestroyWindow(env->sdl.window);
+	if (env->sdl.screen != NULL)
+		SDL_FreeSurface(env->sdl.screen);
+	SDL_Quit();
 	ft_putendl(exit_msg);
 	exit (exit_code);
 }
@@ -75,31 +83,29 @@ int	main(int argc, char **argv)
 
 	close_prog(&env, "Initializing close program function.", 42);
 	ft_bzero(&env, sizeof(t_env));
-	env.scene = malloc(sizeof(t_scene));
+	env.scene = ft_memalloc(sizeof(t_scene));
 	if (env.scene == NULL)
 		close_prog(NULL, "Malloc env.scene failed...", -1);
 	init_main(&env);
 	env.scene->camera = load_scene_camera(argv[1]);
 	/*PROTECC MALLOC*/
-	env.scene->objects_list = load_scene_objects(argv[1]);
-	env.scene->lights_list = load_scene_lights(argv[1]);
+	env.scene->object_list = load_scene_objects(argv[1]);
+	env.scene->light_list = load_scene_lights(argv[1]);
 	env.scene->camera_angle = (t_3d){0.0f, 0.0f, 0.0f};
 	sdl_init(&env.sdl);
 	SDL_RaiseWindow(env.sdl.window);
 	env.img = create_images(IMAGES);
 	if (env.img == NULL)
 		close_prog(NULL, "Creating images failed...", -1);
-	env.mouse_state = 0;
+	env.mouse.state = 0;
 	env.keymap = 0;
 	running = 1;
-	SDL_SetRelativeMouseMode(SDL_FALSE);
 	while (running == 1)
 	{
 		while (SDL_PollEvent(&env.sdl.event))
 		{
 			if (env.sdl.event.type == SDL_QUIT || env.sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 			{
-				SDL_Quit();
 				running = 0;
 			}
 			mouse_events(&env);
@@ -114,12 +120,11 @@ int	main(int argc, char **argv)
 			break ;
 		if (time_since_success(0.01, 1) >= 0.01)
 			continue ;
-		if (((keyboard_hold(&env) & 1) == 1) | mouse_move(&env))
+		if (((keyboard_hold(&env) & 1) == 1) | ((mouse_main(&env) & 1) == 1))
 			render_screen(&env);
 		if (env.scene->resolution.y < env.scene->resolution_range.y)
 			put_images_to_screen(&env);
 	}
-	SDL_DestroyWindow(env.sdl.window);
 	(void)argc;
 	(void)argv;
 	return(0);

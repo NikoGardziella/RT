@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/10 16:01:45 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/11 15:30:39 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,7 +105,7 @@ SOURCES_LIST =	main.c\
 				parser/read_object_info.c\
 				parser/read_object_transformations.c\
 				mouse/events.c\
-				mouse/move.c\
+				mouse/mouse_main.c\
 				mouse/left_button/up.c\
 				mouse/left_button/down.c\
 				mouse/right_button/up.c\

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/10 16:39:51 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/11 12:06:30 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,17 @@ t_color refraction(t_color obj_col, t_ray *ray, t_scene *scene, t_hit *hit, int 
 {
 	t_2d 	*t;
 	t_list	*object_list_start;
-	t_ray ray1;
-	t_hit hit1;
+	t_ray	ray1;
+	t_hit	hit1;
 
-	if(bounce >= MAX_BOUNCE && hit1.object == NULL && hit->object == NULL && scene->objects_list == NULL && ray == NULL)
+	if(bounce >= MAX_BOUNCE && hit1.object == NULL && hit->object == NULL && scene->object_list == NULL && ray == NULL)
 		return (obj_col);
+	//printf("%p\n", hit->normal);
 	ray1.origin = add_vectors(hit->point, scale_vector(hit->normal,BIAS * -1));
 	ray1.forward = ray->forward;
-	object_list_start = scene->objects_list;
+	object_list_start = scene->object_list;
 	t = NULL;
-	//printf("%p\n", hit->object);
-		if (intersect_loop(&ray1, object_list_start, &hit1).x > 0 && hit1.object != NULL && hit->object != NULL && scene->objects_list != NULL)
+	if (intersect_loop(&ray1, object_list_start, &hit1).x > 0 && hit1.object != NULL && hit->object != NULL && scene->object_list != NULL)
 		{
 			hit1.point = scale_vector(ray->forward, t->x);
 			hit1.point = add_vectors(ray->origin, hit1.point);
@@ -81,20 +81,21 @@ t_color refraction(t_color obj_col, t_ray *ray, t_scene *scene, t_hit *hit, int 
 			obj_col.channel.b = hit1.object->color.channel.b; //(obj_col.channel.b + hit1.object->color.channel.b) / 2;
 			//hit->normal = calculate_normal(hit- >object, hit->point, (t_2d){hit->t0, hit->t1});
 		}
-	if(hit->object != NULL && hit1.object != NULL && scene->objects_list != NULL)
+	if(hit->object != NULL && hit1.object != NULL && scene->object_list != NULL)
 		refraction(obj_col,&ray1, scene, &hit1, bounce + 1);
 	return (obj_col);
 }
 
 int	intersects(t_ray *ray, t_scene *scene, t_hit *hit, t_2d *t)
 {
-	*t = intersect_loop(ray, scene->objects_list, hit);
+	*t = intersect_loop(ray, scene->object_list, hit);
 	if (t->x < T_MAX)
 	{
 		hit->point = scale_vector(ray->forward, t->x);
 		hit->point = add_vectors(ray->origin, hit->point);
 		hit->normal = calculate_normal(hit->object, hit->point, *t);
-		hit->object->color = refraction(hit->object->color,ray,scene,hit,0);
+		hit->object->color = hit->color; //refraction(hit->object->color,ray,scene,hit,0);
+		
 		//hit->normal = calculate_normal(hit->object, hit->point, (t_2d){hit->t0, hit->t1});
 		return (1);
 	}
