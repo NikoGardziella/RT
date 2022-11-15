@@ -6,36 +6,16 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:40:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/14 12:30:12 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/01 15:34:43 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-t_color	get_pixel(t_2i coords, void *param)
-{
-	t_img		*img;
-	uint32_t	*dest;
-	int			offset;
-	t_color		color;
-
-	img = param;
-	color.combined = 0x000000;
-	if (coords.x < 0 || coords.y < 0)
-		return (color);
-	if (coords.x >= img->dim.size.x || coords.y >= img->dim.size.y)
-		return (color);
-	offset = coords.y * img->surface->pitch;
-	offset += coords.x * img->surface->format->BytesPerPixel;
-	dest = (uint32_t *)((uint8_t *)img->surface->pixels + offset);
-	color.combined = (uint32_t)*dest;
-	return (color);
-}
-
 void	put_pixel(t_2i coords, uint32_t color, void *param)
 {
-	t_img		*img;
 	uint32_t	*dest;
+	t_img		*img;
 	int			offset;
 
 	img = param;
