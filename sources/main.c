@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/14 15:24:03 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/15 12:02:50 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	main(int argc, char **argv)
 	{
 		while (SDL_PollEvent(&env.sdl.event))
 		{
-			if (env.sdl.event.type == SDL_QUIT || env.sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+			if (env.sdl.event.type == SDL_QUIT)
 			{
 				running = 0;
 			}

@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/14 15:06:55 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/15 11:59:48 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,6 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int render_mode)
 			shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
 			color.combined = light_up(scene->object_list, color, shadow_ray, normal);
 		}
-		if ((hit->object->radius * 2 - (t.y - t.x)) / (hit->object->radius * 2) > 0.7)
-			color.channel.a = 0x01;
-		else if ((hit->object->radius * 2 - (t.y - t.x)) / (hit->object->radius * 2) > 0.6)
-			color.channel.a = 0x02;
 	}
 	return (color);
 }
@@ -100,10 +96,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 					color = raycast(&ray, scene, &hit, render_mode);
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
 					{
-						if (color.channel.a == 0x01)
-							color.combined = 0x00FFFFFF;
-						else if (color.channel.a == 0x02)
-							color.combined = 0x00000000;
+						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
 					}
 					put_pixel(coords, color.combined, img);
 					if (scene->resolution.x == scene->resolution.y)
