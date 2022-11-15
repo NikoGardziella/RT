@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/14 16:32:34 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/15 11:15:33 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 		shadow_ray.origin = scale_vector(normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
 		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
-		if(ray->object->density == 3.0 && recursion_depth < 2) // arbitrary for now to work with 3SpherePlane
+		if(hit->object->density == 3.0 && recursion_depth < 2) // arbitrary for now to work with 3SpherePlane
 		{
 			reflection_ray.forward = reflect_vector(ray->forward, normal);
-			ray->distance += 1;
+			reflection_ray.origin = add_vectors(hit->point, scale_vector(normal, BIAS * 1));
 			recursion_depth++;
 			color = raycast(&reflection_ray, scene, hit, recursion_depth);
 		}
