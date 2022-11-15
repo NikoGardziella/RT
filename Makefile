@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/11 15:30:39 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/14 09:31:14 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,21 +24,27 @@ DOWN = B
 RIGHT = C
 LEFT = D
 
-#FLAGS AND CONFIGS
+#MULITPLATFORM CONFIGURATIONS
 MAKEFLAGS += --no-print-directory
 SHELL = /bin/bash
 
+#MAKEFILE CONFIGURATIONS
 MAKE_COLOR = ;50;235;150m
 PROJECT_NAME = RT
 NAME = $(PROJECT_NAME)
 PRINT_NAME = $(BOLD)$(COLOR)$(MAKE_COLOR)$(PROJECT_NAME)$(RESET)
 CC  = gcc
+
+#FLAGS
 OPTI_FLAGS = -O3 -flto
 DEBUG_FLAGS = -g -fsanitize=address
 FLAGS = -Wall -Wextra -Werror -Wconversion
 FLAGS += $(DEBUG_FLAGS)
 FLAGS += $(OPTI_FLAGS)
 
+#SYSTEM LIBRARIES
+
+MATH_LIBRARY = -lm
 UNAME = $(shell uname)
 ifeq ($(UNAME), Darwin)
 LIBS = $(LIBFT) $(DM_2D) $(DM_VECTORS) $(DM_BDF_RENDER) $(SDL2)
@@ -46,8 +52,6 @@ endif
 ifeq ($(UNAME), Linux)
 LIBS = $(DM_BDF_RENDER) $(LIBFT) $(DM_2D) $(DM_VECTORS) $(SDL2) $(MATH_LIBRARY)
 endif
-
-MATH_LIBRARY = -lm
 
 LIBRARIES_DIRECTORY = ./libraries
 
