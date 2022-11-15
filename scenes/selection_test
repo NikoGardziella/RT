@@ -1,0 +1,126 @@
+OBJECT sphere
+{
+	origin -20.0 0.0 -50.0
+	radius 5.0
+	color FF0000
+}
+OBJECT sphere
+{
+	origin -15.0 0.0 -50.0
+	radius 5.0
+	color 00FF00
+}
+OBJECT sphere
+{
+	origin -10.0 0.0 -50.0
+	radius 5.0
+	color 0000FF
+}
+OBJECT sphere
+{
+	origin -5.0 0.0 -50.0
+	radius 5.0
+	color FFFF00
+}
+OBJECT sphere
+{
+	origin 0.0 0.0 -50.0
+	radius 5.0
+	color 00FFFF
+}
+OBJECT sphere
+{
+	origin 5.0 0.0 -50.0
+	radius 5.0
+	color FF00FF
+}
+OBJECT sphere
+{
+	origin 10.0 0.0 -50.0
+	radius 5.0
+	color FFFFFF
+}
+OBJECT sphere
+{
+	origin 15.0 0.0 -50.0
+	radius 5.0
+	color 780000
+}
+OBJECT sphere
+{
+	origin 20.0 0.0 -50.0
+	radius 5.0
+	color 007800
+}
+OBJECT sphere
+{
+	origin 25.0 0.0 -50.0
+	radius 5.0
+	color 000078
+}
+OBJECT sphere
+{
+	origin 30.0 0.0 -50.0
+	radius 5.0
+	color FF7800
+}
+OBJECT sphere
+{
+	origin 35.0 0.0 -50.0
+	radius 5.0
+	color FF0078
+}
+OBJECT sphere
+{
+	origin 40.0 0.0 -50.0
+	radius 5.0
+	color 78FF00
+}
+OBJECT sphere
+{
+	origin 45.0 0.0 -50.0
+	radius 5.0
+	color 00FF78
+}
+OBJECT sphere
+{
+	origin 50.0 0.0 -50.0
+	radius 5.0
+	color 7800FF
+}
+OBJECT sphere
+{
+	origin 55.0 0.0 -50.0
+	radius 5.0
+	color 0078FF
+}
+OBJECT sphere
+{
+	origin 60.0 0.0 -50.0
+	radius 5.0
+	color FFFF78
+}
+OBJECT sphere
+{
+	origin 65.0 0.0 -50.0
+	radius 5.0
+	color FF78FF
+}
+OBJECT sphere
+{
+	origin 70.0 0.0 -50.0
+	radius 5.0
+	color 78FFFF
+}
+OBJECT light
+{
+	origin 0.0 100.0 -50.0
+	lumen 100.0
+	color FFFFFF
+}
+OBJECT camera
+{
+	origin -20.0 0.0 0.0
+	look 0.0 0.0 -1.0
+	fov 60
+}
