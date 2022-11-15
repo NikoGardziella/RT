@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/14 16:20:16 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/15 12:41:04 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,13 +268,14 @@ void		main_image(t_img *img, void *param);
 void		sidebar_button(t_img *img, void *param);
 void		sidebar(t_img *img, void *param);
 void		ray_debugger(t_img *img, void *param);
-void		render_scene(t_img *img, t_scene *scene, int render_mode);
+void		render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode);
 void		put_images_to_screen(t_env *env);
 void		gradual_render(t_img *img, void *param);
+void		render_screen(t_env *env);
 
 /*Ray tracing functions*/
 
-t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth);
+t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit, int render_mode, int recursion_depth);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
@@ -303,6 +304,7 @@ int			add_object(t_list **objects, t_object *object);
 /*Drawing functions*/
 
 void		put_pixel(t_2i coords, t_uint color, void *param);
+t_color		get_pixel(t_2i coords, void *param);
 void		fill_image(t_img *img, t_uint color);
 void		process_image(t_sdl *sdl, t_img *img, int mode, void *param);
 void		blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *destrect);
@@ -329,5 +331,6 @@ void		matrix_multip(t_3d *in, t_3d *out, t_mat *matrix);
 /*Other functions*/
 
 double		time_since_success(double ammount, int id);
+int			coords_in_area(t_dim dim, t_2i coords);
 
 #endif
