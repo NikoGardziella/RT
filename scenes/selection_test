@@ -4,6 +4,7 @@ OBJECT sphere
 	radius 5.0
 	color FF0000
 	roughness 0.2
+	density 1
 }
 OBJECT sphere
 {
@@ -11,12 +12,14 @@ OBJECT sphere
 	radius 5.0
 	color 00FF00
 	roughness 1
+	density 1
 }
 OBJECT sphere
 {
 	origin -10.0 0.0 -50.0
 	radius 5.0
 	color 0000FF
+	density 0.8
 }
 OBJECT sphere
 {

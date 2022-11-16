@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/16 12:02:35 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/16 14:45:18 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define KEY_S 8
 # define KEY_SPACE 16
 # define KEY_LSHIFT 32
-# define MAX_RECURSION_DEPTH 5
+# define MAX_RECURSION_DEPTH 2
 
 # ifndef PI
 #  define PI 3.141592

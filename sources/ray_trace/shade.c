@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/14 14:20:59 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/16 14:48:23 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray to_light, t_3d n
 		if (object->type == LIGHT)
 		{
 			to_light.forward = dir_to_light(object->origin, to_light.origin, &t);
-			if (t <= intersect_loop(&to_light, object_list_start, NULL).x)
+			//if (t <= intersect_loop(&to_light, object_list_start, NULL).x)
 			{
 				level = get_light_level(t, object->lumen, normal, to_light.forward);
 				color = calc_light(color, object->color, obj_color, level);

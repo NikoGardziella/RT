@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/16 13:00:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:51:43 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,27 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
 		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
 		if (mid == 1)
-			printf("BOUNCE: [%d] ROUGHNESS: [%f] COLOR: [%u]\n", recursion_depth, hit->object->roughness, hit->object->color.combined);
-		if(hit->object->roughness < 1.0 && recursion_depth < MAX_RECURSION_DEPTH)
+			printf("BOUNCE: %d t.x[%f] t.y[%f]\n", recursion_depth, t.x, t.y);
+		if((hit->object->roughness < 1.0 || hit->object->density < 1.0) && recursion_depth < MAX_RECURSION_DEPTH)
 		{
-			refl = (float)hit->object->roughness;
-			reflection_ray.forward = reflect_vector(ray->forward, normal);
-			reflection_ray.origin = add_vectors(hit->point, scale_vector(normal, BIAS * 1));
-			color_refl = raycast(&reflection_ray, scene, hit, recursion_depth + 1);
-			color.combined = transition_colors(color_refl.combined, color.combined, refl);
+			if (hit->object->roughness < 1.0f)
+			{
+				refl = (float)hit->object->roughness;
+				reflection_ray.forward = reflect_vector(ray->forward, normal);
+				reflection_ray.origin = add_vectors(hit->point, scale_vector(normal, BIAS * 1));
+				color_refl = raycast(&reflection_ray, scene, hit, recursion_depth + 1);
+				color.combined = transition_colors(color_refl.combined, color.combined, refl);
+			}
+			if (hit->object->density < 1.0f)
+			{
+				refl = (float)hit->object->density;
+				reflection_ray.forward = ray->forward;
+				reflection_ray.origin = add_vectors(hit->point, scale_vector(normal, BIAS * -1));
+				if (t.x == t.y)
+					recursion_depth += 1;
+				color_refl = raycast(&reflection_ray, scene, hit, recursion_depth);
+				color.combined = transition_colors(color_refl.combined, color.combined, refl);
+			}
 		}
 	}
 	return (color);
@@ -113,8 +126,8 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 		//				color.combined = transition_colors(color.combined, 0xCD5400, 0.45f);
 					}
 					put_pixel(coords, color.combined, img);
-					if (scene->resolution.x == scene->resolution.y)
-						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
+	//				if (scene->resolution.x == scene->resolution.y)
+	//					resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
 				}
 				coords.x += 1;
 			}

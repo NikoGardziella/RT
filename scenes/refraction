@@ -1,0 +1,47 @@
+OBJECT sphere
+{
+	origin -20.0 0.0 -50.0
+	radius 5.0
+	color FF0000
+	roughness 0.2
+	density 1
+}
+OBJECT sphere
+{
+	origin -15.0 0.0 -50.0
+	radius 5.0
+	color 00FF00
+	roughness 1
+	density 1
+}
+OBJECT sphere
+{
+	origin -10.0 0.0 -50.0
+	radius 5.0
+	color 0000FF
+	density 0.5
+}
+OBJECT sphere
+{
+	origin -5.0 0.0 -50.0
+	radius 5.0
+	color FFFF00
+}
+OBJECT sphere
+{
+	origin 0.0 0.0 -50.0
+	radius 5.0
+	color 78FFFF
+}
+OBJECT light
+{
+	origin 0.0 100.0 -50.0
+	lumen 100.0
+	color FFFFFF
+}
+OBJECT camera
+{
+	origin -20.0 0.0 0.0
+	look 0.0 0.0 -1.0
+	fov 60
+}
