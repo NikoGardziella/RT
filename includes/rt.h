@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/16 11:45:22 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/16 12:02:35 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,6 @@ typedef struct s_object
 	double		density;
 	int			lumen;
 	int			type;
-	double		density;
-	double		roughness;
 	t_color		color;
 	t_3d		axis;
 	t_3d		end;
@@ -271,7 +269,7 @@ void		main_image(t_img *img, void *param);
 void		sidebar_button(t_img *img, void *param);
 void		sidebar(t_img *img, void *param);
 void		ray_debugger(t_img *img, void *param);
-void		render_scene(t_img *img, t_scene *scene, int render_mode);
+void		render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode);
 void		put_images_to_screen(t_env *env);
 void		gradual_render(t_img *img, void *param);
 void		render_screen(t_env *env);

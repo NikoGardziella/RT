@@ -6,13 +6,13 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/16 11:55:29 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/16 12:02:08 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 #include <stdlib.h>
-/*
+
 static t_uint	render_with_normals(t_3d normal)
 {
 	t_3d	rgb;
@@ -23,7 +23,7 @@ static t_uint	render_with_normals(t_3d normal)
 		rgb.z *= fabs(normal.z);
 	return (combine_rgb((int)rgb.x, (int)rgb.y, (int)rgb.z));
 }
-
+/*
 static double	ft_lerp_d(double n1, double n2, double t)
 {
 	return (n1 + (n2 - n1) * t);
@@ -83,7 +83,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 		shadow_ray.origin = scale_vector(normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
 		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
-		if(hit->object->roughness <= 1.0 && recursion_depth < MAX_RECURSION_DEPTH) 
+		if(hit->object->roughness < 1.0 && recursion_depth < MAX_RECURSION_DEPTH) 
 		{
 			refl = 1 - hit->object->roughness;
 			reflection_ray.forward = reflect_vector(ray->forward, normal);
@@ -113,7 +113,7 @@ void	resolution_adjust(t_2i coords, uint32_t color, t_img *img, int res_range)
 	}
 }
 
-void	render_scene(t_img *img, t_scene *scene, int render_mode)
+void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 {
 	t_2i		coords;
 	t_ray		ray;
