@@ -58,20 +58,32 @@ t_2d	intersect_loop(t_ray *ray, t_list *objects, t_hit *hit)
 	return (t_closest);
 }
 
-t_color refraction(t_color obj_col, t_ray *ray, t_scene *scene, t_hit *hit)
+t_color refraction(t_color obj_col, t_ray *ray, t_scene *scene, t_hit *hit, int bounce)
 {
-	t_2d *t;
-	
-	t = NULL;
-	*t = intersect_loop(ray, scene->object_list, hit);
-	if (t->x < T_MAX)
-	{
-		hit->point = scale_vector(ray->forward, t->x);
-		hit->point = add_vectors(ray->origin, hit->point);
-		hit->color = hit->object->color;
-		//hit->normal = calculate_normal(hit->object, hit->point, (t_2d){hit->t0, hit->t1});
+	t_2d 	*t;
+	t_list	*object_list_start;
+	t_ray	ray1;
+	t_hit	hit1;
+
+	if(bounce >= MAX_BOUNCE && hit1.object == NULL && hit->object == NULL && scene->object_list == NULL && ray == NULL)
 		return (obj_col);
-	}
+	//printf("%p\n", hit->normal);
+	ray1.origin = add_vectors(hit->point, scale_vector(hit->normal,BIAS * -1));
+	ray1.forward = ray->forward;
+	object_list_start = scene->object_list;
+	t = NULL;
+	if (intersect_loop(&ray1, object_list_start, &hit1).x > 0 && hit1.object != NULL && hit->object != NULL && scene->object_list != NULL)
+		{
+			hit1.point = scale_vector(ray->forward, t->x);
+			hit1.point = add_vectors(ray->origin, hit1.point);
+			hit1.color = hit1.object->color;
+			obj_col.channel.r = hit1.object->color.channel.r; //(obj_col.channel.r + hit1.object->color.channel.r) / 2;
+			obj_col.channel.g = hit1.object->color.channel.g; //(obj_col.channel.g + hit1.object->color.channel.g) / 2;
+			obj_col.channel.b = hit1.object->color.channel.b; //(obj_col.channel.b + hit1.object->color.channel.b) / 2;
+			//hit->normal = calculate_normal(hit- >object, hit->point, (t_2d){hit->t0, hit->t1});
+		}
+	if(hit->object != NULL && hit1.object != NULL && scene->object_list != NULL)
+		refraction(obj_col,&ray1, scene, &hit1, bounce + 1);
 	return (obj_col);
 }
 
@@ -82,7 +94,9 @@ int	intersects(t_ray *ray, t_scene *scene, t_hit *hit, t_2d *t)
 	{
 		hit->point = scale_vector(ray->forward, t->x);
 		hit->point = add_vectors(ray->origin, hit->point);
-		hit->color = hit->object->color;
+		hit->normal = calculate_normal(hit->object, hit->point, *t);
+		hit->object->color = hit->color; //refraction(hit->object->color,ray,scene,hit,0);
+		
 		//hit->normal = calculate_normal(hit->object, hit->point, (t_2d){hit->t0, hit->t1});
 		return (1);
 	}

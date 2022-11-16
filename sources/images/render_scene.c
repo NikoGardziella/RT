@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/16 14:51:43 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:57:11 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 	t_color	color;
 	t_color	color_refl;
 	t_ray	shadow_ray;
-	t_3d	normal;
 	t_2d	t;
 	t_ray	reflection_ray;
 	float	refl;
@@ -42,12 +41,12 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 		ray->hit_point = hit->point;
 		if (hit->object->type == LIGHT)
 			return (hit->color);
-		normal = calculate_normal(hit->object, hit->point, t);
+		hit->normal = calculate_normal(hit->object, hit->point, t);
 		(void)render_with_normals;
 //		color.combined = render_with_normals(normal);
-		shadow_ray.origin = scale_vector(normal, BIAS);
+		shadow_ray.origin = scale_vector(hit->normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
-		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
+		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, hit->normal);
 		if (mid == 1)
 			printf("BOUNCE: %d t.x[%f] t.y[%f]\n", recursion_depth, t.x, t.y);
 		if((hit->object->roughness < 1.0 || hit->object->density < 1.0) && recursion_depth < MAX_RECURSION_DEPTH)
