@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/14 14:04:09 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/16 11:32:18 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define KEY_S 8
 # define KEY_SPACE 16
 # define KEY_LSHIFT 32
+# define MAX_RECURSION_DEPTH 5
 
 # ifndef PI
 #  define PI 3.141592
@@ -120,6 +121,8 @@ typedef struct s_object
 {
 	double		axis_length;
 	double		radius;
+	double		roughness;
+	double		density;
 	int			lumen;
 	int			type;
 	t_color		color;
@@ -273,7 +276,7 @@ void		render_screen(t_env *env);
 
 /*Ray tracing functions*/
 
-t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit, int render_mode);
+t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);

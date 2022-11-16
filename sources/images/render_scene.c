@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/16 10:55:26 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/16 11:37:22 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,38 @@ static t_uint	render_with_normals(t_3d normal)
 	return (combine_rgb((int)rgb.x, (int)rgb.y, (int)rgb.z));
 }
 
-t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int render_mode)
+t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 {
 	t_color	color;
+	t_color	color_refl;
 	t_ray	shadow_ray;
 	t_3d	normal;
 	t_2d	t;
+	t_ray	reflection_ray;
+	double	refl = 0;
 
-	color.combined = 0x000000;
+	color.combined = 0x000000; // replace with ambient color defined in param file
 	if (intersects(ray, scene, hit, &t))
 	{
 		ray->object = hit->object;
 		ray->distance = t.x;
 		ray->hit_point = hit->point;
-		color.combined = hit->object->color.combined;
-		if (render_mode == 1 && hit->object->type != LIGHT)
+		if (hit->object->type == LIGHT)
+			return (hit->color);
+		normal = calculate_normal(hit->object, hit->point, t);
+		(void)render_with_normals;
+//		color.combined = render_with_normals(normal);
+		shadow_ray.origin = scale_vector(normal, BIAS);
+		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
+		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
+		if(hit->object->roughness <= 1.0 && recursion_depth < MAX_RECURSION_DEPTH) 
 		{
-			normal = calculate_normal(hit->object, hit->point, t);
-			//color.combined = render_with_normals(normal);
-			(void)render_with_normals;
-			shadow_ray.origin = scale_vector(normal, BIAS);
-			shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
-			color.combined = light_up(scene->object_list, color, shadow_ray, normal);
+			refl = 1 - hit->object->roughness;
+			reflection_ray.forward = reflect_vector(ray->forward, normal);
+			reflection_ray.origin = add_vectors(hit->point, scale_vector(normal, BIAS * 1));
+			recursion_depth++;
+			color_refl = raycast(&reflection_ray, scene, hit, recursion_depth);
+			color.combined = transition_colors(color.combined, color_refl.combined, (float)refl);
 		}
 	}
 	return (color);
@@ -78,6 +88,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	coords.y = 0;
+	(void)render_mode;
 	while (coords.y < img->dim.size.y)
 	{
 		if (coords.y % scene->resolution_range.y == scene->resolution.y)
@@ -93,7 +104,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 					else
 						mid = 0;
 					ray = get_ray(coords, img, camera);
-					color = raycast(&ray, scene, &hit, render_mode);
+					color = raycast(&ray, scene, &hit, 0);
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
 					{
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);

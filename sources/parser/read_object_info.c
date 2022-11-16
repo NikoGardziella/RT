@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 12:23:14 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/09 14:34:17 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/14 15:17:16 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,44 @@ static int	color(char *line, t_object *object)
 	return (0);
 }
 
+static int	density(char *line, t_object *object)
+{
+	char	*str;
+
+	str = "density";
+	if (ft_strnequ(ft_strstr(line, str), str, ft_strlen(str)))
+	{
+		line = ft_strstr(line, str);
+		line = ft_strchr(line, ' ');
+		if (line)
+			object->density = (double)ft_atof(line);
+		if (object->density < 1)
+			object->density = 1;
+		return (1);
+	}
+	return (0);
+}
+
+static int	roughness(char *line, t_object *object)
+{
+	char	*str;
+
+	str = "roughness";
+	if (ft_strnequ(ft_strstr(line, str), str, ft_strlen(str)))
+	{
+		line = ft_strstr(line, str);
+		line = ft_strchr(line, ' ');
+		if (line)
+			object->roughness = (double)ft_atof(line);
+		if (object->roughness < 0)
+			object->roughness = 0;
+		if (object->roughness > 1)
+			object->roughness = 1;
+		return (1);
+	}
+	return (0);
+}
+
 int	read_object_info(char *line, t_object *object)
 {
 	if (origin(line, object))
@@ -103,6 +141,10 @@ int	read_object_info(char *line, t_object *object)
 	if (color(line, object))
 		return (1);
 	if (transformations(line, object))
+		return (1);
+	if (density(line, object))
+		return (1);
+	if (roughness(line, object))
 		return (1);
 	return (0);
 }
