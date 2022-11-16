@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/16 12:02:08 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/16 13:00:10 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,42 +23,7 @@ static t_uint	render_with_normals(t_3d normal)
 		rgb.z *= fabs(normal.z);
 	return (combine_rgb((int)rgb.x, (int)rgb.y, (int)rgb.z));
 }
-/*
-static double	ft_lerp_d(double n1, double n2, double t)
-{
-	return (n1 + (n2 - n1) * t);
-}
 
-static t_3d	ft_lerp_t3d(t_3d vec1, t_3d vec2, double t)
-{
-	t_3d	ret_vec;
-
-	ret_vec.x = (uint8_t)ft_lerp_d(vec1.x, vec2.x, t);
-	ret_vec.y = (uint8_t)ft_lerp_d(vec1.y, vec2.y, t);
-	ret_vec.z = (uint8_t)ft_lerp_d(vec1.z, vec2.z, t);
-	return (ret_vec);
-}
-
-static double	rand_range(double min, double max)
-{
-	double random = ((double)rand()) / RAND_MAX;
-	double range = (max - min) * random;
-	double number = min + range;
-	return (number);
-}
-t_3d	rand_unit_vect()
-{
-	t_3d	vec;
-
-	vec.z = rand_range(-1, 1);
-	double rxy = sqrt(1 - vec.z * vec.z);
-	double phi = rand_range(0, 2*PI);
-	vec.x = rxy * cos(phi);
-	vec.y = rxy * sin(phi);
-	return (vec);
-}*/
-
-// see https://blog.demofox.org/2020/06/06/casual-shadertoy-path-tracing-2-image-improvement-and-glossy-reflections/
 t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 {
 	t_color	color;
@@ -67,7 +32,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 	t_3d	normal;
 	t_2d	t;
 	t_ray	reflection_ray;
-	double	refl = 0;
+	float	refl;
 
 	color.combined = 0x000000; // replace with ambient color defined in param file
 	if (intersects(ray, scene, hit, &t))
@@ -83,14 +48,15 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 		shadow_ray.origin = scale_vector(normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
 		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
-		if(hit->object->roughness < 1.0 && recursion_depth < MAX_RECURSION_DEPTH) 
+		if (mid == 1)
+			printf("BOUNCE: [%d] ROUGHNESS: [%f] COLOR: [%u]\n", recursion_depth, hit->object->roughness, hit->object->color.combined);
+		if(hit->object->roughness < 1.0 && recursion_depth < MAX_RECURSION_DEPTH)
 		{
-			refl = 1 - hit->object->roughness;
+			refl = (float)hit->object->roughness;
 			reflection_ray.forward = reflect_vector(ray->forward, normal);
 			reflection_ray.origin = add_vectors(hit->point, scale_vector(normal, BIAS * 1));
-			recursion_depth++;
-			color_refl = raycast(&reflection_ray, scene, hit, recursion_depth);
-			color.combined = transition_colors(color.combined, color_refl.combined, (float)refl);
+			color_refl = raycast(&reflection_ray, scene, hit, recursion_depth + 1);
+			color.combined = transition_colors(color_refl.combined, color.combined, refl);
 		}
 	}
 	return (color);
