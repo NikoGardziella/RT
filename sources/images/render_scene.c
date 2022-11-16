@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/16 16:16:44 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/16 17:10:30 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,14 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 	t_color	color_refl;
 	t_ray	shadow_ray;
 	t_2d	t;
-	t_ray	reflection_ray;
+	t_ray	bounce_ray;
 	float	refl;
 
 	color.combined = 0x000000; // replace with ambient color defined in param file
 	if (intersects(ray, scene, hit, &t))
 	{
+		if (mid == 1)
+			printf("BOUNCE: %d t.x[%f] t.y[%f]\n", recursion_depth, t.x, t.y);
 		ray->object = hit->object;
 		ray->distance = t.x;
 		ray->hit_point = hit->point;
@@ -67,30 +69,28 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 		shadow_ray.origin = scale_vector(hit->normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
 		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, hit->normal);
-		if (mid == 1)
-			printf("BOUNCE: %d t.x[%f] t.y[%f]\n", recursion_depth, t.x, t.y);
 		if((hit->object->roughness < 1.0 || hit->object->density < 10.0) && recursion_depth < MAX_RECURSION_DEPTH)
 		{
 			if (hit->object->roughness < 1.0f)
 			{
 				refl = (float)hit->object->roughness;
-				reflection_ray.forward = reflect_vector(ray->forward, hit->normal);
-				reflection_ray.forward = rand_unit_vect(reflection_ray.forward, (refl));
-				reflection_ray.origin = add_vectors(hit->point, scale_vector(hit->normal, BIAS * 1));
-				color_refl = raycast(&reflection_ray, scene, hit, recursion_depth + 1);
+				bounce_ray.forward = reflect_vector(ray->forward, hit->normal);
+				bounce_ray.forward = rand_unit_vect(bounce_ray.forward, (refl));
+				bounce_ray.origin = add_vectors(hit->point, scale_vector(hit->normal, BIAS * 1));
+				color_refl = raycast(&bounce_ray, scene, hit, recursion_depth + 1);
 				color.combined = color_refl.combined;
 			}
 			if (hit->object->density < 10.0f)
 			{
 				refl = (float)hit->object->density;
-				reflection_ray.forward = get_refraction_ray(hit->normal, ray->forward, hit->object->density);
-				reflection_ray.origin = add_vectors(hit->point, scale_vector(hit->normal, BIAS * -1));
 				if (t.x == t.y)
-				{
+					bounce_ray.forward = get_refraction_ray(hit->normal, ray->forward, (t_2d){hit->object->density, 1});
+				else
+					bounce_ray.forward = get_refraction_ray(hit->normal, ray->forward, (t_2d){1, hit->object->density});
+				bounce_ray.origin = add_vectors(hit->point, scale_vector(hit->normal, BIAS * -1));
+				if (t.x == t.y)
 					recursion_depth += 1;
-					reflection_ray.forward = ray->forward;
-				}
-				color_refl = raycast(&reflection_ray, scene, hit, recursion_depth);
+				color_refl = raycast(&bounce_ray, scene, hit, recursion_depth);
 				color.combined = color_refl.combined;
 			}
 		}

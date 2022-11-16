@@ -3,7 +3,8 @@ OBJECT sphere
 	origin 20.0 0.0 -20.0
 	radius 7.0
 	color FFFF00
-	density 1.02
+	density 10.0
+	roughness 0.5
 }
 OBJECT sphere
 {
@@ -11,6 +12,7 @@ OBJECT sphere
 	radius 7.0
 	color FFFFFF
 	density 1.33
+	roughness 1.0
 }
 OBJECT sphere
 {
@@ -18,7 +20,6 @@ OBJECT sphere
 	radius 5.0
 	color FF0000
 	density 10.0
-	roughness 1.0
 }
 OBJECT plane
 {
