@@ -3,7 +3,7 @@ OBJECT sphere
 	origin 25.0 0.0 0.0
 	radius 25.0
 	density 3.0
-	roughness 0.95
+	roughness 0.5
 	color FFFF00
 }
 OBJECT sphere

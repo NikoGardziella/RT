@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/16 13:00:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:21:12 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,30 @@ static t_uint	render_with_normals(t_3d normal)
 		rgb.z *= fabs(normal.z);
 	return (combine_rgb((int)rgb.x, (int)rgb.y, (int)rgb.z));
 }
+
+
+static double	rand_range(double min, double max)
+{
+	double random = ((double)rand()) / RAND_MAX;
+	double range = (max - min) * random;
+	double number = min + range;
+	return (number);
+}
+static t_3d	rand_unit_vect(t_3d refl_vec, float f)
+{
+	t_3d	vec;
+
+//	vec.z = rand_range(-1, 1);
+	vec.z = refl_vec.z;
+//	double rxy = sqrt(1 - vec.z * vec.z);
+	double phi = rand_range(0, (f) * 2*PI);
+//	vec.x = rxy * cos(phi);
+//	vec.y = rxy * sin(phi);
+	vec.x = refl_vec.x + (f) * refl_vec.x * cos(phi);
+	vec.y = refl_vec.y + (f) * sin(phi);
+	return (vec);
+}
+
 
 t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 {
@@ -54,9 +78,11 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 		{
 			refl = (float)hit->object->roughness;
 			reflection_ray.forward = reflect_vector(ray->forward, normal);
+			reflection_ray.forward = rand_unit_vect(reflection_ray.forward, (refl));
 			reflection_ray.origin = add_vectors(hit->point, scale_vector(normal, BIAS * 1));
 			color_refl = raycast(&reflection_ray, scene, hit, recursion_depth + 1);
-			color.combined = transition_colors(color_refl.combined, color.combined, refl);
+//			color.combined = transition_colors(color_refl.combined, color.combined, refl);
+			color.combined = color_refl.combined;
 		}
 	}
 	return (color);
