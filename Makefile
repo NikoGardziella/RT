@@ -116,6 +116,7 @@ SOURCES_LIST =	main.c\
 				ray_trace/get_camera_ray.c\
 				ray_trace/calculate_normal.c\
 				ray_trace/intersects.c\
+				ray_trace/refraction.c\
 				ray_trace/shade.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
