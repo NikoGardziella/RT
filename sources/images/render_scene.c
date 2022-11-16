@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/15 11:59:48 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/16 10:55:26 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
 					{
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
+		//				color.combined = transition_colors(color.combined, 0xCD5400, 0.45f);
 					}
 					put_pixel(coords, color.combined, img);
 					if (scene->resolution.x == scene->resolution.y)
