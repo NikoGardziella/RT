@@ -6,13 +6,13 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/16 09:41:23 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/16 10:59:54 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 #include <stdlib.h>
-
+/*
 static t_uint	render_with_normals(t_3d normal)
 {
 	t_3d	rgb;
@@ -23,7 +23,7 @@ static t_uint	render_with_normals(t_3d normal)
 		rgb.z *= fabs(normal.z);
 	return (combine_rgb((int)rgb.x, (int)rgb.y, (int)rgb.z));
 }
-/*
+
 static double	ft_lerp_d(double n1, double n2, double t)
 {
 	return (n1 + (n2 - n1) * t);
@@ -69,7 +69,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 	t_ray	reflection_ray;
 	double	refl = 0;
 
-	color.combined = 0x000000;
+	color.combined = 0x000000; // replace with ambient color defined in param file
 	if (intersects(ray, scene, hit, &t))
 	{
 		ray->object = hit->object;
@@ -78,7 +78,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 		if (hit->object->type == LIGHT)
 			return (hit->color);
 		normal = calculate_normal(hit->object, hit->point, t);
-		color.combined = render_with_normals(normal);
+//		color.combined = render_with_normals(normal);
 		shadow_ray.origin = scale_vector(normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
 		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
