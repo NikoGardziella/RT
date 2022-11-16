@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/16 12:02:08 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/16 12:57:44 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,12 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 		normal = calculate_normal(hit->object, hit->point, t);
 		(void)render_with_normals;
 //		color.combined = render_with_normals(normal);
-		shadow_ray.origin = scale_vector(normal, BIAS);
-		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
-		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
+		if(hit->object->roughness == 1)
+		{
+			shadow_ray.origin = scale_vector(normal, BIAS);
+			shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
+			color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
+		}
 		if(hit->object->roughness < 1.0 && recursion_depth < MAX_RECURSION_DEPTH) 
 		{
 			refl = 1 - hit->object->roughness;
