@@ -26,3 +26,11 @@ OBJECT light
 {
 	origin 0.0 50 60
 	lumen 1000.0
+	color FFFFFF
+}
+OBJECT camera
+{
+	pos 0 0 0
+	look 0 0 20
+	fov 60
+}
