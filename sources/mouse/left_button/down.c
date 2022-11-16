@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:39:02 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/14 16:21:28 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/16 11:44:49 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void	left_button_down(void *param)
 		*camera = init_camera(env->img[0].dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 		env->sel_ray = get_ray(mouse_coords, &env->img[0], camera);
 		env->sel_ray.object = NULL;
-		raycast(&env->sel_ray, env->scene, &hit, 0);
+		raycast(&env->sel_ray, env->scene, &hit, MAX_RECURSION_DEPTH);
+		render_screen(env);
 	}
 	else
 		return ;

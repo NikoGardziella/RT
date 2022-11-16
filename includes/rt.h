@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/15 15:32:17 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/16 11:45:22 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define KEY_S 8
 # define KEY_SPACE 16
 # define KEY_LSHIFT 32
+# define MAX_RECURSION_DEPTH 5
 
 # ifndef PI
 #  define PI 3.141592
@@ -120,6 +121,8 @@ typedef struct s_object
 {
 	double		axis_length;
 	double		radius;
+	double		roughness;
+	double		density;
 	int			lumen;
 	int			type;
 	double		density;

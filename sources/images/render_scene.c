@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/16 10:59:54 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/16 11:55:29 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,18 +78,19 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 		if (hit->object->type == LIGHT)
 			return (hit->color);
 		normal = calculate_normal(hit->object, hit->point, t);
+		(void)render_with_normals;
 //		color.combined = render_with_normals(normal);
 		shadow_ray.origin = scale_vector(normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
 		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
-		if(hit->object->roughness <= 1.0 && recursion_depth < 5) 
+		if(hit->object->roughness <= 1.0 && recursion_depth < MAX_RECURSION_DEPTH) 
 		{
 			refl = 1 - hit->object->roughness;
 			reflection_ray.forward = reflect_vector(ray->forward, normal);
 			reflection_ray.origin = add_vectors(hit->point, scale_vector(normal, BIAS * 1));
 			recursion_depth++;
 			color_refl = raycast(&reflection_ray, scene, hit, recursion_depth);
-			color.channel = ft_lerp_rgba(color.channel, color_refl.channel, refl);
+			color.combined = transition_colors(color.combined, color_refl.combined, (float)refl);
 		}
 	}
 	return (color);
@@ -123,6 +124,7 @@ void	render_scene(t_img *img, t_scene *scene, int render_mode)
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	coords.y = 0;
+	(void)render_mode;
 	while (coords.y < img->dim.size.y)
 	{
 		if (coords.y % scene->resolution_range.y == scene->resolution.y)
@@ -139,8 +141,11 @@ void	render_scene(t_img *img, t_scene *scene, int render_mode)
 						mid = 0;
 					ray = get_ray(coords, img, camera);
 					color = raycast(&ray, scene, &hit, 0);
-					if (render_mode ==-1)
-						color = hit.color;
+					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
+					{
+						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
+		//				color.combined = transition_colors(color.combined, 0xCD5400, 0.45f);
+					}
 					put_pixel(coords, color.combined, img);
 					if (scene->resolution.x == scene->resolution.y)
 						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);

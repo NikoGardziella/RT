@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/11 13:44:14 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/14 15:24:23 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ void	init_main(t_env *env)
 {
 	char	*font_path;
 
+	env->scene = ft_memalloc(sizeof(t_scene));
+	if (env->scene == NULL)
+		close_prog(NULL, "Malloc env.scene failed...", -1);
 	font_path = "libraries/dm_bdf_render/examples/bdf_files/ic8x8u.bdf";
 	font_path = "libraries/dm_bdf_render/examples/bdf_files/cascadia_code_semi_bold-12.bdf";
 	env->font = load_font(font_path);
