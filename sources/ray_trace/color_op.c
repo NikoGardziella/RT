@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 17:08:55 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/07 21:25:17 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/15 15:31:52 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,23 @@ t_rgba	ft_mul_rgba(t_rgba c, double t)
 	c.a = (uint8_t)(c.a * t);
 	return (c);
 }
+
+static double	ft_lerp_d(double n1, double n2, double t)
+{
+	return (n1 + (n2 - n1) * t);
+}
+
+t_rgba	ft_lerp_rgba(t_rgba c1, t_rgba c2, double t)
+{
+	t_rgba	color;
+
+	color.r = (uint8_t)ft_lerp_d(c1.r, c2.r, t);
+	color.g = (uint8_t)ft_lerp_d(c1.g, c2.g, t);
+	color.b = (uint8_t)ft_lerp_d(c1.b, c2.b, t);
+	color.a = (uint8_t)ft_lerp_d(c1.a, c2.a, t);
+	return (color);
+}
+
 /*
 uint32_t	ft_get_color(t_rgba c)
 {

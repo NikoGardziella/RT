@@ -1,0 +1,37 @@
+OBJECT sphere
+{
+	origin 10.0 0.0 80.0
+	radius 25.0
+	density 3.0
+	roughness 0.0
+	color FF00FF
+}
+OBJECT sphere
+{
+	origin -10.0 0.0 60.0
+	radius 7.0
+	color FFC0CB
+	density 1.0
+	roughness 0.0
+}
+OBJECT plane
+{
+	origin 0.0 -40.0 0.0
+	axis 0.0 0.0 0.0
+	color 0000FF
+	density 1.0
+	roughness 0.0
+}
+OBJECT light
+{
+	origin 0.0 50 60
+	lumen 1000.0
+	color FFFFFF
+}
+
+OBJECT camera
+{
+	pos 0 0 0
+	look 0 0 20
+	fov 60
+}

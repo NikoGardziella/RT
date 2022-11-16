@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/11 22:33:15 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/15 12:02:50 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	render_screen(t_env *env)
 {
 	double	fps;
 
-	fps = 0.01;
+	fps = 0.0001;
 	if (time_since_success(fps, 0) >= fps)
 	{
 		env->scene->resolution.x = env->scene->resolution_range.x;
@@ -82,15 +82,19 @@ int	main(int argc, char **argv)
 	int		running;
 
 	close_prog(&env, "Initializing close program function.", 42);
+	if (argc > 2)
+		close_prog(NULL, "Too many arguments to run program...", -1);
 	ft_bzero(&env, sizeof(t_env));
-	env.scene = ft_memalloc(sizeof(t_scene));
-	if (env.scene == NULL)
-		close_prog(NULL, "Malloc env.scene failed...", -1);
 	init_main(&env);
 	env.scene->camera = load_scene_camera(argv[1]);
-	/*PROTECC MALLOC*/
+	if (env.scene->camera == NULL)
+		close_prog(NULL, "Parsing camera failed...", -1);
 	env.scene->object_list = load_scene_objects(argv[1]);
+	if (env.scene->object_list == NULL)
+		close_prog(NULL, "Parsing objects failed...", -1);
 	env.scene->light_list = load_scene_lights(argv[1]);
+	if (env.scene->light_list == NULL)
+		close_prog(NULL, "Parsing lights failed...", -1);
 	env.scene->camera_angle = (t_3d){0.0f, 0.0f, 0.0f};
 	sdl_init(&env.sdl);
 	SDL_RaiseWindow(env.sdl.window);
@@ -104,7 +108,7 @@ int	main(int argc, char **argv)
 	{
 		while (SDL_PollEvent(&env.sdl.event))
 		{
-			if (env.sdl.event.type == SDL_QUIT || env.sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+			if (env.sdl.event.type == SDL_QUIT)
 			{
 				running = 0;
 			}
@@ -125,7 +129,5 @@ int	main(int argc, char **argv)
 		if (env.scene->resolution.y < env.scene->resolution_range.y)
 			put_images_to_screen(&env);
 	}
-	(void)argc;
-	(void)argv;
 	return(0);
 }

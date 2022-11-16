@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/11 17:54:19 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/16 12:02:35 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define KEY_S 8
 # define KEY_SPACE 16
 # define KEY_LSHIFT 32
+# define MAX_RECURSION_DEPTH 5
 
 # ifndef PI
 #  define PI 3.141592
@@ -121,6 +122,8 @@ typedef struct s_object
 {
 	double		axis_length;
 	double		radius;
+	double		roughness;
+	double		density;
 	int			lumen;
 	int			type;
 	t_color		color;
@@ -267,13 +270,14 @@ void		main_image(t_img *img, void *param);
 void		sidebar_button(t_img *img, void *param);
 void		sidebar(t_img *img, void *param);
 void		ray_debugger(t_img *img, void *param);
-void		render_scene(t_img *img, t_scene *scene, int render_mode);
+void		render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode);
 void		put_images_to_screen(t_env *env);
 void		gradual_render(t_img *img, void *param);
+void		render_screen(t_env *env);
 
 /*Ray tracing functions*/
 
-t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit);
+t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
@@ -285,6 +289,7 @@ t_rgba		ft_add_rgba(t_rgba c1, t_rgba c2);
 t_rgba		ft_make_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 t_rgba		ft_mul_rgba_rgba(t_rgba a, t_rgba b);
 t_rgba		ft_mul_rgba(t_rgba c, double t);
+t_rgba			ft_lerp_rgba(t_rgba c1, t_rgba c2, double t);
 uint		ft_get_color(t_rgba c);
 
 /*Parser functions*/
@@ -302,6 +307,7 @@ int			add_object(t_list **objects, t_object *object);
 /*Drawing functions*/
 
 void		put_pixel(t_2i coords, t_uint color, void *param);
+t_color		get_pixel(t_2i coords, void *param);
 void		fill_image(t_img *img, t_uint color);
 void		process_image(t_sdl *sdl, t_img *img, int mode, void *param);
 void		blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *destrect);
@@ -328,5 +334,6 @@ void		matrix_multip(t_3d *in, t_3d *out, t_mat *matrix);
 /*Other functions*/
 
 double		time_since_success(double ammount, int id);
+int			coords_in_area(t_dim dim, t_2i coords);
 
 #endif

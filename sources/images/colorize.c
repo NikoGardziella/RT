@@ -1,23 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reflect_vector.c                                   :+:      :+:    :+:   */
+/*   colorize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/21 15:38:58 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/16 12:35:59 by dmalesev         ###   ########.fr       */
+/*   Created: 2022/11/16 10:04:23 by ctrouve           #+#    #+#             */
+/*   Updated: 2022/11/16 10:04:33 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "dm_vectors.h"
+#include "rt.h"
 
-t_3d	reflect_vector(t_3d v, t_3d n)
-{
-	t_3d	r;
-
-	n = normalize_vector(n);
-	v = normalize_vector(v);
-	r = subtract_vectors(v, scale_vector(n, 2.0f * dot_product(v, n)));
-	return (r);
-}
