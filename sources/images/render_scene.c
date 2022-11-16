@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/16 15:35:30 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/16 16:16:44 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,26 @@ static t_uint	render_with_normals(t_3d normal)
 		rgb.y *= fabs(normal.y);
 		rgb.z *= fabs(normal.z);
 	return (combine_rgb((int)rgb.x, (int)rgb.y, (int)rgb.z));
+}
+
+static double	rand_range(double min, double max)
+{
+	double random = ((double)rand()) / RAND_MAX;
+	double range = (max - min) * random;
+	double number = min + range;
+	return (number);
+}
+
+static t_3d	rand_unit_vect(t_3d refl_vec, float f)
+{
+	t_3d	vec;
+	double	phi;
+
+	phi = rand_range(0, (f) * 2*PI);
+	vec.z = refl_vec.z;
+	vec.x = refl_vec.x + (f) * refl_vec.x * cos(phi);
+	vec.y = refl_vec.y + (f) * sin(phi);
+	return (vec);
 }
 
 t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
@@ -55,9 +75,10 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 			{
 				refl = (float)hit->object->roughness;
 				reflection_ray.forward = reflect_vector(ray->forward, hit->normal);
+				reflection_ray.forward = rand_unit_vect(reflection_ray.forward, (refl));
 				reflection_ray.origin = add_vectors(hit->point, scale_vector(hit->normal, BIAS * 1));
 				color_refl = raycast(&reflection_ray, scene, hit, recursion_depth + 1);
-				color.combined = transition_colors(color_refl.combined, color.combined, refl);
+				color.combined = color_refl.combined;
 			}
 			if (hit->object->density < 10.0f)
 			{
@@ -65,9 +86,12 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 				reflection_ray.forward = get_refraction_ray(hit->normal, ray->forward, hit->object->density);
 				reflection_ray.origin = add_vectors(hit->point, scale_vector(hit->normal, BIAS * -1));
 				if (t.x == t.y)
+				{
 					recursion_depth += 1;
+					reflection_ray.forward = ray->forward;
+				}
 				color_refl = raycast(&reflection_ray, scene, hit, recursion_depth);
-				color.combined = transition_colors(color_refl.combined, color.combined, refl);
+				color.combined = color_refl.combined;
 			}
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: ngardzie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 14:50:38 by ngardzie          #+#    #+#             */
-/*   Updated: 2022/11/16 15:22:50 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/16 16:42:27 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,20 @@ t_3d get_refraction_ray(t_3d normal, t_3d ray_dir, double index)
 	double	k;
 
 	NdotI = dot_product(ray_dir, normal);
-	/*if(NdotI < -1)
+	if(NdotI < -1)
 		NdotI = -1;
 	else if(NdotI > 1)
-		NdotI = 1;*/
+		NdotI = 1;
 	if (index < 1)
 		index = 1;
 	if(NdotI < 0)
 	{
-		NdotI = NdotI * -1;
+	//	NdotI = NdotI * -1;
 		eta = etai / index;
 	}
 	else
 	{
-		normal = scale_vector(normal,-1);
+	//	normal = scale_vector(normal,-1);
 		eta = index / etai;
 	}
 	k = 1 - eta * eta * (1 - NdotI * NdotI);	

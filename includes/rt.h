@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/16 15:22:09 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/16 16:46:31 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 6
-# define MAX_BOUNCE 1
+# define MAX_BOUNCE 3
 
 # define KEY_A 1
 # define KEY_W 2
