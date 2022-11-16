@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/16 14:45:18 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/16 15:22:09 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,6 +282,7 @@ uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
 uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, t_3d normal);
+t_3d		get_refraction_ray(t_3d normal, t_3d ray_dir, double index);
 
 /* Color operations functions*/
 

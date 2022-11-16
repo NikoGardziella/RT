@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 12:23:14 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/16 14:28:59 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/16 15:38:41 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,8 @@ static int	density(char *line, t_object *object)
 		line = ft_strchr(line, ' ');
 		if (line)
 			object->density = (double)ft_atof(line);
-		if (object->density < 0)
-			object->density = 0;
-		if (object->density > 1)
-			object->density = 1;
+	//	if (object->density < 1)
+	//		object->density = 1;
 		return (1);
 	}
 	return (0);

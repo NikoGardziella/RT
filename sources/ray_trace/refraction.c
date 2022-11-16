@@ -6,7 +6,7 @@
 /*   By: ngardzie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 14:50:38 by ngardzie          #+#    #+#             */
-/*   Updated: 2022/11/16 14:50:40 by ngardzie         ###   ########.fr       */
+/*   Updated: 2022/11/16 15:22:50 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,35 @@
 
 // source: https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-fresnel
 
-t_3d refraction_ray1(t_hit *hit, t_ray *ray, double ior)
+t_3d get_refraction_ray(t_3d normal, t_3d ray_dir, double index)
 {
-	t_ray *tmp1;
-
-	tmp1 = ray;
 	t_3d refraction_dir;
-	t_3d Nrefr = hit->normal;
-	t_3d I = hit->point;
-	double NdotI = dot_product(I,Nrefr);
+	double	NdotI;
+	double	etai = 1;
+	double	eta;
+	double	k;
 
-	if(NdotI < -1)
+	NdotI = dot_product(ray_dir, normal);
+	/*if(NdotI < -1)
 		NdotI = -1;
 	else if(NdotI > 1)
-		NdotI = 1;
-	double etai = 1;
-	double etat = ior;
-	double tmp = 0.0;
-	double eta;
-	double k;
+		NdotI = 1;*/
+	if (index < 1)
+		index = 1;
 	if(NdotI < 0)
+	{
 		NdotI = NdotI * -1;
+		eta = etai / index;
+	}
 	else
 	{
-		Nrefr = scale_vector(Nrefr,-1);
-		tmp = etat;
-		etat = etai;
-		etai = tmp;
+		normal = scale_vector(normal,-1);
+		eta = index / etai;
 	}
-	eta = etai / etat;
 	k = 1 - eta * eta * (1 - NdotI * NdotI);	
-	
 	if(k < 0)
-		return(ray->forward);
+		return(ray_dir);
 	else
-		refraction_dir = normalize_vector(add_vectors(scale_vector(I,eta) ,scale_vector(Nrefr, (eta * NdotI - sqrt(k)))));
+		refraction_dir = normalize_vector(add_vectors(scale_vector(ray_dir,eta) ,scale_vector(normal, (eta * NdotI - sqrt(k)))));
 	return (refraction_dir);
 }
