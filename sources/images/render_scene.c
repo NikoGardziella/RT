@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/15 16:54:16 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/16 09:41:23 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 	t_3d	normal;
 	t_2d	t;
 	t_ray	reflection_ray;
+	double	refl = 0;
 
 	color.combined = 0x000000;
 	if (intersects(ray, scene, hit, &t))
@@ -81,14 +82,14 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 		shadow_ray.origin = scale_vector(normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
 		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, normal);
-		if(hit->object->density == 3.0 && recursion_depth < 5) // arbitrary for now to work with 3SpherePlane
+		if(hit->object->roughness <= 1.0 && recursion_depth < 5) 
 		{
+			refl = 1 - hit->object->roughness;
 			reflection_ray.forward = reflect_vector(ray->forward, normal);
 			reflection_ray.origin = add_vectors(hit->point, scale_vector(normal, BIAS * 1));
 			recursion_depth++;
 			color_refl = raycast(&reflection_ray, scene, hit, recursion_depth);
-			color_refl.combined *= 0.1;
-			color.channel = ft_add_rgba(color.channel, color_refl.channel);
+			color.channel = ft_lerp_rgba(color.channel, color_refl.channel, refl);
 		}
 	}
 	return (color);
