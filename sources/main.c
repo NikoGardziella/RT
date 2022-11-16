@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/16 11:45:14 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/15 12:02:50 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	render_screen(t_env *env)
 {
 	double	fps;
 
-	fps = 0.01;
+	fps = 0.0001;
 	if (time_since_success(fps, 0) >= fps)
 	{
 		env->scene->resolution.x = env->scene->resolution_range.x;
@@ -108,7 +108,7 @@ int	main(int argc, char **argv)
 	{
 		while (SDL_PollEvent(&env.sdl.event))
 		{
-			if (env.sdl.event.type == SDL_QUIT || env.sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+			if (env.sdl.event.type == SDL_QUIT)
 			{
 				running = 0;
 			}

@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 09:25:30 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 15:22:24 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/16 12:43:54 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ t_list	*read_scene_file(int fd)
 	ret = 1;
 	objects_list = NULL;
 	ft_bzero(&object, sizeof(t_object));
+	object.roughness = 1;
 	object.type = -1;
 	while (ret > 0)
 	{	

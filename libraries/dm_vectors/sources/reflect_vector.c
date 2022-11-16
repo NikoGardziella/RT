@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:38:58 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/15 10:51:59 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/16 12:35:59 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,3 @@ t_3d	reflect_vector(t_3d v, t_3d n)
 	r = subtract_vectors(v, scale_vector(n, 2.0f * dot_product(v, n)));
 	return (r);
 }
-
-
-

@@ -3,12 +3,14 @@ OBJECT sphere
 	origin -20.0 0.0 -50.0
 	radius 5.0
 	color FF0000
+	roughness 0.2
 }
 OBJECT sphere
 {
 	origin -15.0 0.0 -50.0
 	radius 5.0
 	color 00FF00
+	roughness 1
 }
 OBJECT sphere
 {
