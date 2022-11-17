@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:39:02 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/17 09:36:24 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/17 13:10:52 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,13 @@ void	left_button_down(void *param)
 	camera = env->scene->camera;
 	env->mouse.state |= 1;
 	SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y);
-	if (coords_in_area(env->img[3].dim, mouse_coords) && env->sidebar == 1)
+	if (coords_in_area(env->img[1].dim, mouse_coords))
+	{
+		env->sidebar = (int8_t)(env->sidebar * -1);
+		put_images_to_screen(env);
+	}
+	else if (coords_in_area(env->img[3].dim, mouse_coords) && env->sidebar == 1)
 		printf("Placeholder\n");
-	else if (coords_in_area(env->img[1].dim, mouse_coords))
-		env->sidebar = 1;
 	else if (coords_in_area(env->img[0].dim, mouse_coords))
 	{
 		ft_bzero(&env->sel_ray, sizeof(t_ray));

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/14 15:24:23 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/17 13:06:37 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ void	init_main(t_env *env)
 	env->scene->resolution.x = env->scene->resolution_range.x;
 	env->scene->resolution.y = env->scene->resolution_range.x;
 	env->render_mode = -1;
+	env->sidebar = -1;
 	load_textures(env);
 }
