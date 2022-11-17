@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 15:30:28 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/14 11:37:34 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/16 17:29:37 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ static int	mouse_move(void *param)
 		if ((env->mouse.state & 4) == 4)
 		{
 			angle_overflow(&env->scene->camera_angle);
-			env->scene->camera->ray.forward = rotate_point((t_3d){0.0f, 0.0f, -1.0f}, env->scene->camera_angle);
 			env->scene->camera_angle.x -= (double)env->mouse.move.y / 5;
 			env->scene->camera_angle.y -= (double)env->mouse.move.x / 5;
+			env->scene->camera->ray.forward = rotate_point((t_3d){0.0f, 0.0f, -1.0f}, env->scene->camera_angle);
 			//env->scene->camera->ray.forward = rotate_point(env->scene->camera->ray.forward, (t_3d){0.0f, -env->sdl.event.motion.xrel / 5, 0.0f});
 			//env->scene->camera->ray.forward = rotate_point(env->scene->camera->ray.forward, (t_3d){-env->sdl.event.motion.yrel / 5, 0.0f, 0.0f});
 			ret |= 1;
