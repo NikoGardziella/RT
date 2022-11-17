@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/16 17:03:58 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/17 09:35:26 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 6
-# define MAX_BOUNCE 3
 
 # define KEY_A 1
 # define KEY_W 2
@@ -37,7 +36,8 @@
 # define KEY_S 8
 # define KEY_SPACE 16
 # define KEY_LSHIFT 32
-# define MAX_RECURSION_DEPTH 2
+
+# define BOUNCE_COUNT 3
 
 # ifndef PI
 #  define PI 3.141592
