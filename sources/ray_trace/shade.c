@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/16 15:27:48 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/17 11:10:00 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static t_color	calc_light(t_color final, t_color light, t_color object, double l
 	return (final);
 }
 
-static t_3d	dir_to_light(t_3d light_origin, t_3d origin, double *t)
+static t_3d	dir_shadow_ray(t_3d light_origin, t_3d origin, double *t)
 {
 	t_3d	light_dir;
 
@@ -52,7 +52,27 @@ static t_3d	dir_to_light(t_3d light_origin, t_3d origin, double *t)
 	return (light_dir);
 }
 
-uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray to_light, t_3d normal)
+static int	in_shadow(t_list *object_list, t_object *light, t_ray shadow_ray)
+{
+	t_hit	hit;
+	t_2d	refraction_indexes;
+
+	while (intersects(&shadow_ray, object_list, &hit))
+	{
+		if (light == hit.object)
+			return (1);
+		if (hit.object->density >= 10.0f)
+			return (0);
+		refraction_indexes = (t_2d){1, hit.object->density};
+		if (hit.inside == 1)
+			refraction_indexes = (t_2d){hit.object->density, 1};
+		shadow_ray.forward = get_refraction_ray(hit.normal, shadow_ray.forward, refraction_indexes);
+		shadow_ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * -1));
+	}
+	return (0);
+}
+
+uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray shadow_ray, t_3d normal)
 {
 	t_list		*object_list_start;
 	t_object	*object;
@@ -60,17 +80,18 @@ uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray to_light, t_3d n
 	double		t;
 	double		level;
 
-	ft_bzero(&color, sizeof(t_color));
+	color.combined = 0x000000;
 	object_list_start = object_list;
 	while (object_list != NULL)
 	{
 		object = (t_object *)object_list->content;
 		if (object->type == LIGHT)
 		{
-			to_light.forward = dir_to_light(object->origin, to_light.origin, &t);
-			if (t <= intersect_loop(&to_light, object_list_start, NULL).x)
+			//if (t <= intersect_loop(&shadow_ray, object_list_start, NULL).x)
+			shadow_ray.forward = dir_shadow_ray(object->origin, shadow_ray.origin, &t);
+			if (in_shadow(object_list_start, object, shadow_ray) == 1)
 			{
-				level = get_light_level(t, object->lumen, normal, to_light.forward);
+				level = get_light_level(t, object->lumen, normal, shadow_ray.forward);
 				color = calc_light(color, object->color, obj_color, level);
 			}
 		}

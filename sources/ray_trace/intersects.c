@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/17 09:37:08 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/17 12:54:21 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,8 @@ t_2d	intersect_loop(t_ray *ray, t_list *objects, t_hit *hit)
 			ret = intersect_box(object, *ray, &t);
 		if (object->type == DISC)
 			ret = intersect_disc(object, *ray, &t);
-		
 		if (ret && t.x < t_closest.x)
 		{
-		/*	if (mid == 1 && hit != NULL)
-				printf("T x[%f] y[%f]\n", t.x, t.y);
-			if (mid == 1 && hit != NULL)
-				printf("OBJECT: [%d]\n", object->type);
-				*/
 			t_closest = t;
 			if (hit != NULL)
 				hit->object = object;
@@ -58,17 +52,27 @@ t_2d	intersect_loop(t_ray *ray, t_list *objects, t_hit *hit)
 	return (t_closest);
 }
 
-int	intersects(t_ray *ray, t_scene *scene, t_hit *hit, t_2d *t)
+int	intersects(t_ray *ray, t_list *object_list, t_hit *hit)
 {
-	*t = intersect_loop(ray, scene->object_list, hit);
-	if (t->x < T_MAX)
+	t_2d	t;
+
+	t = intersect_loop(ray, object_list, hit);
+	if (t.x < T_MAX)
 	{
-		hit->point = scale_vector(ray->forward, t->x);
+		hit->point = scale_vector(ray->forward, t.x);
 		hit->point = add_vectors(ray->origin, hit->point);
-		hit->normal = calculate_normal(hit->object, hit->point, *t);
-		hit->color = hit->object->color; //refraction(hit->object->color,ray,scene,hit,0);
-		
-		//hit->normal = calculate_normal(hit->object, hit->point, (t_2d){hit->t0, hit->t1});
+		hit->normal = calculate_normal(hit->object, hit->point, t);
+		hit->color = hit->object->color;
+		if (t.x == t.y)
+			hit->inside = 1;
+		else
+			hit->inside = 0;
+		if (ray->object == NULL)
+		{
+			ray->object = hit->object;
+			ray->distance = t.x;
+			ray->hit_point = hit->point;
+		}
 		return (1);
 	}
 	return (0);

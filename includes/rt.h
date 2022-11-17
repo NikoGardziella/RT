@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/17 09:35:26 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/17 10:17:06 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ typedef struct s_hit
 	t_3d		normal;
 	t_object	*object;
 	t_color		color;
+	int			inside;
 }				t_hit;
 
 typedef struct s_ray
@@ -321,7 +322,7 @@ int			intersect_plane(t_object *plane, t_ray ray, t_2d *t);
 int			intersect_cone(t_object *cone, t_ray ray, t_2d *t);
 int			intersect_sphere(t_object *sphere, t_ray ray, t_2d *t);
 int			intersect_cylinder(t_object *cylinder, t_ray ray, t_2d *t);
-int			intersects(t_ray *ray, t_scene *scene, t_hit *hit, t_2d *t);
+int			intersects(t_ray *ray, t_list *object_list, t_hit *hit);
 int			intersect_box(t_object *box, t_ray ray, t_2d *t);
 t_2d		intersect_loop(t_ray *ray, t_list *objects, t_hit *hit);
 

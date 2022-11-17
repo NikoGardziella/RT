@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/17 09:43:11 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/17 12:53:59 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,14 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int bounces)
 	t_color	color;
 	t_color	color_refl;
 	t_ray	shadow_ray;
-	t_2d	t;
 	t_ray	bounce_ray;
 	float	refl;
 
 	color.combined = 0x000000; // replace with ambient color defined in param file
-	if (intersects(ray, scene, hit, &t))
+	if (intersects(ray, scene->object_list, hit))
 	{
-		if (mid == 1)
-			printf("BOUNCE: %d t.x[%f] t.y[%f]\n", bounces, t.x, t.y);
-		ray->object = hit->object;
-		ray->distance = t.x;
-		ray->hit_point = hit->point;
 		if (hit->object->type == LIGHT || bounces == -1)
 			return (hit->color);
-		hit->normal = calculate_normal(hit->object, hit->point, t);
 		(void)render_with_normals;
 //		color.combined = render_with_normals(normal);
 		shadow_ray.origin = scale_vector(hit->normal, BIAS);
@@ -83,12 +76,12 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int bounces)
 			if (hit->object->density < 10.0f)
 			{
 				refl = (float)hit->object->density;
-				if (t.x == t.y)
+				if (hit->inside == 1)
 					bounce_ray.forward = get_refraction_ray(hit->normal, ray->forward, (t_2d){hit->object->density, 1});
 				else
 					bounce_ray.forward = get_refraction_ray(hit->normal, ray->forward, (t_2d){1, hit->object->density});
 				bounce_ray.origin = add_vectors(hit->point, scale_vector(hit->normal, BIAS * -1));
-				if (t.x == t.y)
+				if (hit->inside == 1)
 					bounces -= 1;
 				color_refl = raycast(&bounce_ray, scene, hit, bounces);
 				color.combined = color_refl.combined;
@@ -126,7 +119,6 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	coords.y = 0;
-	(void)render_mode;
 	while (coords.y < img->dim.size.y)
 	{
 		if (coords.y % scene->resolution_range.y == scene->resolution.y)
@@ -142,6 +134,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 					else
 						mid = 0;
 					ray = get_ray(coords, img, camera);
+					ray.object = NULL;
 					if (render_mode == -1)
 						color = raycast(&ray, scene, &hit, -1);
 					else
