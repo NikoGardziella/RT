@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/17 09:40:48 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/17 09:43:11 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static t_3d	rand_unit_vect(t_3d refl_vec, float f)
 	return (vec);
 }
 
-t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
+t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int bounces)
 {
 	t_color	color;
 	t_color	color_refl;
@@ -57,11 +57,11 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 	if (intersects(ray, scene, hit, &t))
 	{
 		if (mid == 1)
-			printf("BOUNCE: %d t.x[%f] t.y[%f]\n", recursion_depth, t.x, t.y);
+			printf("BOUNCE: %d t.x[%f] t.y[%f]\n", bounces, t.x, t.y);
 		ray->object = hit->object;
 		ray->distance = t.x;
 		ray->hit_point = hit->point;
-		if (hit->object->type == LIGHT || recursion_depth == -1)
+		if (hit->object->type == LIGHT || bounces == -1)
 			return (hit->color);
 		hit->normal = calculate_normal(hit->object, hit->point, t);
 		(void)render_with_normals;
@@ -69,7 +69,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 		shadow_ray.origin = scale_vector(hit->normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
 		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, hit->normal);
-		if((hit->object->roughness < 1.0 || hit->object->density < 10.0) && recursion_depth > 0)
+		if((hit->object->roughness < 1.0 || hit->object->density < 10.0) && bounces > 0)
 		{
 			if (hit->object->roughness < 1.0f)
 			{
@@ -77,7 +77,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 				bounce_ray.forward = reflect_vector(ray->forward, hit->normal);
 				bounce_ray.forward = rand_unit_vect(bounce_ray.forward, (refl));
 				bounce_ray.origin = add_vectors(hit->point, scale_vector(hit->normal, BIAS * 1));
-				color_refl = raycast(&bounce_ray, scene, hit, recursion_depth - 1);
+				color_refl = raycast(&bounce_ray, scene, hit, bounces - 1);
 				color.combined = color_refl.combined;
 			}
 			if (hit->object->density < 10.0f)
@@ -89,8 +89,8 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth)
 					bounce_ray.forward = get_refraction_ray(hit->normal, ray->forward, (t_2d){1, hit->object->density});
 				bounce_ray.origin = add_vectors(hit->point, scale_vector(hit->normal, BIAS * -1));
 				if (t.x == t.y)
-					recursion_depth -= 1;
-				color_refl = raycast(&bounce_ray, scene, hit, recursion_depth);
+					bounces -= 1;
+				color_refl = raycast(&bounce_ray, scene, hit, bounces);
 				color.combined = color_refl.combined;
 			}
 		}
