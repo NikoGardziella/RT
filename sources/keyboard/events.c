@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 16:03:21 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/10 16:03:26 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/17 09:44:14 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ void	key_down(t_env *env)
 		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_R)
 		{
 			env->render_mode *= -1;
-			env->scene->resolution.x = env->scene->resolution_range.x;
-			env->scene->resolution.y = env->scene->resolution_range.x;
-			put_images_to_screen(env);
+			render_screen(env);
 		}
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_A)
 			env->keymap |= KEY_A;
