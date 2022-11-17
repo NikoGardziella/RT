@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/15 12:02:50 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/17 09:13:16 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ void	close_prog(void *param, char *exit_msg, int exit_code)
 		ft_lstdel(&env->scene->object_list, &del_object);
 	if (env->scene->light_list != NULL)
 		ft_lstdel(&env->scene->light_list, &del_object);
-	if (env->sdl.window != NULL)
-		SDL_DestroyWindow(env->sdl.window);
+	if (env->scene->camera != NULL)
+		free(env->scene->camera);
 	if (env->sdl.screen != NULL)
 		SDL_FreeSurface(env->sdl.screen);
+	if (env->sdl.window != NULL)
+		SDL_DestroyWindow(env->sdl.window);
 	SDL_Quit();
 	ft_putendl(exit_msg);
 	exit (exit_code);
@@ -129,5 +131,6 @@ int	main(int argc, char **argv)
 		if (env.scene->resolution.y < env.scene->resolution_range.y)
 			put_images_to_screen(&env);
 	}
+	close_prog(NULL, "Exited successfully using [X].", 0);
 	return(0);
 }
