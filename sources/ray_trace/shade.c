@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/17 11:10:00 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/17 14:07:10 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,34 +42,30 @@ static t_color	calc_light(t_color final, t_color light, t_color object, double l
 	return (final);
 }
 
-static t_3d	dir_shadow_ray(t_3d light_origin, t_3d origin, double *t)
-{
-	t_3d	light_dir;
-
-	light_dir = subtract_vectors(light_origin, origin);
-	*t = vector_magnitude(light_dir);
-	light_dir = normalize_vector(light_dir);
-	return (light_dir);
-}
-
-static int	in_shadow(t_list *object_list, t_object *light, t_ray shadow_ray)
+static float	in_shadow(t_list *object_list, t_object *light, t_ray shadow_ray, double *t)
 {
 	t_hit	hit;
 	t_2d	refraction_indexes;
+	float	level;
+	t_3d	refraction_forward;
 
+	level = 1.0f;
 	while (intersects(&shadow_ray, object_list, &hit))
 	{
+		*t += vector_magnitude(subtract_vectors(shadow_ray.origin, light->origin));
 		if (light == hit.object)
-			return (1);
+			return (level);
 		if (hit.object->density >= 10.0f)
-			return (0);
+			return (0.0f);
 		refraction_indexes = (t_2d){1, hit.object->density};
 		if (hit.inside == 1)
 			refraction_indexes = (t_2d){hit.object->density, 1};
-		shadow_ray.forward = get_refraction_ray(hit.normal, shadow_ray.forward, refraction_indexes);
+		refraction_forward = get_refraction_ray(hit.normal, shadow_ray.forward, refraction_indexes);
+		level = (level + (float)dot_product(shadow_ray.forward, refraction_forward)) / 2;
+		shadow_ray.forward = refraction_forward;
 		shadow_ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * -1));
 	}
-	return (0);
+	return (level);
 }
 
 uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray shadow_ray, t_3d normal)
@@ -77,8 +73,9 @@ uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray shadow_ray, t_3d
 	t_list		*object_list_start;
 	t_object	*object;
 	t_color		color;
+	float		level;
+	float		refraction_level;
 	double		t;
-	double		level;
 
 	color.combined = 0x000000;
 	object_list_start = object_list;
@@ -88,11 +85,16 @@ uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray shadow_ray, t_3d
 		if (object->type == LIGHT)
 		{
 			//if (t <= intersect_loop(&shadow_ray, object_list_start, NULL).x)
-			shadow_ray.forward = dir_shadow_ray(object->origin, shadow_ray.origin, &t);
-			if (in_shadow(object_list_start, object, shadow_ray) == 1)
+			shadow_ray.forward = subtract_vectors(object->origin, shadow_ray.origin);
+			t = vector_magnitude(shadow_ray.forward);
+			shadow_ray.forward = normalize_vector(shadow_ray.forward);
+			refraction_level = in_shadow(object_list_start, object, shadow_ray, &t);
+			if (refraction_level > 0.0f)
 			{
-				level = get_light_level(t, object->lumen, normal, shadow_ray.forward);
-				color = calc_light(color, object->color, obj_color, level);
+				level = (float)get_light_level(t, object->lumen, normal, shadow_ray.forward);
+				if (mid == 1)
+					printf("refraction level * diffuse level: %f\n", level * refraction_level);
+				color = calc_light(color, object->color, obj_color, (double)(level * refraction_level));
 			}
 		}
 		object_list = object_list->next;

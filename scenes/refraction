@@ -2,7 +2,7 @@ OBJECT sphere
 {
 	origin 20.0 0.0 -20.0
 	radius 7.0
-	color FFFF00
+	color FFFFFF
 	density 1.005
 }
 OBJECT sphere
@@ -25,19 +25,25 @@ OBJECT plane
 	origin 0.0 0.0 -70.0
 	axis 0.0 0.0 1.0
 	density 10.0
+	color CCCCCC
+}
+OBJECT light
+{
+	origin -20.0 0.0 0.0
+	lumen 20.0
+	color 00FF00
+}
+OBJECT light
+{
+	origin -20.0 8.0 0.0
+	lumen 20.0
 	color 0000FF
 }
 OBJECT light
 {
-	origin 0.0 100.0 -50.0
-	lumen 100.0
-	color FFFFFF
-}
-OBJECT light
-{
-	origin -25.0 20.0 -50.0
-	lumen 100.0
-	color FFFFFF
+	origin -20.0 4.0 0.0
+	lumen 20.0
+	color FF0000
 }
 OBJECT camera
 {
