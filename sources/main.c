@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/17 09:13:16 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/18 11:57:24 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,7 @@ int	main(int argc, char **argv)
 			continue ;
 		if (((keyboard_hold(&env) & 1) == 1) | ((mouse_main(&env) & 1) == 1))
 			render_screen(&env);
-		if (env.scene->resolution.y < env.scene->resolution_range.y)
-			put_images_to_screen(&env);
+		put_images_to_screen(&env);
 	}
 	close_prog(NULL, "Exited successfully using [X].", 0);
 	return(0);

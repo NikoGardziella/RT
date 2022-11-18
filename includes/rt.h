@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/17 13:07:09 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/18 16:14:37 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,8 @@ typedef struct s_scene
 	t_rgba		ambient_color;
 	t_2i		resolution_range;
 	t_2i		resolution;
+	t_2i		accum_resolution;
+	t_3d		*accum_buffer;
 }				t_scene;
 
 typedef struct s_dim
@@ -224,6 +226,7 @@ typedef struct s_env
 	t_ray			sel_ray;
 	t_bmptxtr		bmptxtr;
 	t_mouse			mouse;
+	double			plot_time;
 }				t_env;
 
 /*Parser Functions*/

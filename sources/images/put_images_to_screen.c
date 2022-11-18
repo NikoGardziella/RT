@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:05:29 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/17 13:05:33 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/18 15:04:00 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	put_images_to_screen(t_env *env)
 {
-	if (env->scene->resolution.x == 0 && env->scene->resolution.y == 0)
+	if (env->scene->resolution.x == env->scene->resolution_range.x && env->scene->resolution.y == env->scene->resolution_range.x)
 		process_image(&env->sdl, &env->img[0], 0, env);
 	else
 		process_image(&env->sdl, &env->img[0], 1, env);

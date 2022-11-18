@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:34:58 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/11 16:04:06 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/18 15:25:18 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ double	time_since_success(double ammount, int id)
 void	gradual_render(t_img *img, void *param)
 {
 	t_env	*env;
-	double	plot_time;
 	t_2i	coords;
 	t_2i	color;
 	
@@ -39,11 +38,14 @@ void	gradual_render(t_img *img, void *param)
 	env = param;
 	if (env->scene->resolution.x == env->scene->resolution_range.x && env->scene->resolution.y == env->scene->resolution_range.y)
 	{
-		plot_time = (double)time_since_success(0.0f, 0);
-		coords = (t_2i){0, img->dim.size.y - (int)env->font->bound_box[1] - (int)env->font->bound_box[1]};
-		coords = display_str(&(t_pxl){env->font, put_pixel, img}, coords, "Plot time:" ,color);
-		display_double(&(t_pxl){env->font, put_pixel, img}, coords, (t_2d){plot_time, 3.0f} ,color);
+		if (env->scene->accum_resolution.x == env->scene->resolution_range.x && env->scene->accum_resolution.y == env->scene->resolution_range.x)
+			env->plot_time = (double)time_since_success(0.0f, 0);
 	}
+	if (env->scene->accum_resolution.x == env->scene->resolution_range.x && env->scene->accum_resolution.y == env->scene->resolution_range.y)
+		env->plot_time = (double)time_since_success(0.0f, 0);
+	coords = (t_2i){0, img->dim.size.y - (int)env->font->bound_box[1] - (int)env->font->bound_box[1]};
+	coords = display_str(&(t_pxl){env->font, put_pixel, img}, coords, "Plot time:" ,color);
+	display_double(&(t_pxl){env->font, put_pixel, img}, coords, (t_2d){env->plot_time, 3.0f} ,color);
 	coords = (t_2i){0, img->dim.size.y - (int)env->font->bound_box[1]};
 	coords = display_str(&(t_pxl){env->font, put_pixel, img}, coords, "cam:" ,color);
 	coords = display_str(&(t_pxl){env->font, put_pixel, img}, coords, " x:" ,color);

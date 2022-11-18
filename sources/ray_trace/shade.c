@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/17 14:07:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/18 16:38:46 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static float	in_shadow(t_list *object_list, t_object *light, t_ray shadow_ray, d
 	t_3d	refraction_forward;
 
 	level = 1.0f;
-	while (intersects(&shadow_ray, object_list, &hit))
+	if (intersects(&shadow_ray, object_list, &hit))
 	{
 		*t += vector_magnitude(subtract_vectors(shadow_ray.origin, light->origin));
 		if (light == hit.object)
@@ -92,8 +92,6 @@ uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray shadow_ray, t_3d
 			if (refraction_level > 0.0f)
 			{
 				level = (float)get_light_level(t, object->lumen, normal, shadow_ray.forward);
-				if (mid == 1)
-					printf("refraction level * diffuse level: %f\n", level * refraction_level);
 				color = calc_light(color, object->color, obj_color, (double)(level * refraction_level));
 			}
 		}

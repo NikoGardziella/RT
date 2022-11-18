@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/17 13:06:37 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/18 14:09:13 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ void	init_main(t_env *env)
 	env->scene->resolution_range = (t_2i){0, 5};
 	env->scene->resolution.x = env->scene->resolution_range.x;
 	env->scene->resolution.y = env->scene->resolution_range.x;
+	env->scene->accum_resolution.x = env->scene->resolution_range.x;
+	env->scene->accum_resolution.y = env->scene->resolution_range.x;
+	env->scene->accum_buffer = (t_3d *)malloc(sizeof(t_3d) * (SCREEN_X * SCREEN_Y));
 	env->render_mode = -1;
 	env->sidebar = -1;
 	load_textures(env);

@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/17 12:53:59 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/18 16:30:31 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,57 @@ static t_uint	render_with_normals(t_3d normal)
 	return (combine_rgb((int)rgb.x, (int)rgb.y, (int)rgb.z));
 }
 
+uint32_t	state = 315125;
+
+uint32_t xorshift32(uint32_t *state)
+{
+	uint32_t	x;
+
+	x = *state;
+	x ^= x << 13;
+	x ^= x >> 17;
+	x ^= x << 5;
+	*state = x;
+	return (x);
+}
+
 static double	rand_range(double min, double max)
 {
-	double random = ((double)rand()) / RAND_MAX;
-	double range = (max - min) * random;
+	double random = ((double)xorshift32(&state)) / UINT32_MAX;
+	double range = (max - min + 1) * random;
 	double number = min + range;
 	return (number);
 }
 
-static t_3d	rand_unit_vect(t_3d refl_vec, float f)
+static t_3d	rand_unit_vect(t_3d refl_vec, float max_theta)
 {
 	t_3d	vec;
-	double	phi;
+	t_3d	tangent;
+	t_3d	bitangent;
+	float	phi;
+	float	theta;
+	float	sin_theta;
+	t_2f	random;
 
+	/*
 	phi = rand_range(0, (f) * 2*PI);
 	vec.z = refl_vec.z;
 	vec.x = refl_vec.x + (f) * refl_vec.x * cos(phi);
 	vec.y = refl_vec.y + (f) * sin(phi);
+	*/
+	random.x = (float)rand_range(0, 1);
+	random.y = (float)rand_range(0, 1);
+	if (refl_vec.x > refl_vec.z)
+		tangent = (t_3d){-refl_vec.y, refl_vec.x, 0.0};
+	else
+		tangent = (t_3d){0.0, -refl_vec.z, refl_vec.y};
+	bitangent = cross_product(refl_vec, tangent);
+	phi = 2.0f * (float)PI * random.x;
+	theta = random.y * max_theta;
+	sin_theta = sinf(theta);
+	vec = scale_vector(scale_vector(tangent, cos(phi)), sin_theta);
+	vec = add_vectors(vec, scale_vector(scale_vector(bitangent, sin(phi)), sin_theta));
+	vec = add_vectors(vec, scale_vector(refl_vec, cos(theta)));
 	return (vec);
 }
 
@@ -115,18 +149,37 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	t_hit		hit;
 	t_color		color;
 	t_camera	*camera;
+	t_2i		*resolution;
+	static int	frame_index;
 
+	if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.y)
+	{
+		if (scene->accum_resolution.x == scene->resolution_range.x && scene->accum_resolution.y == scene->resolution_range.y)
+		{
+			scene->accum_resolution.x = scene->resolution_range.x;
+			scene->accum_resolution.y = scene->resolution_range.x;
+		}
+		resolution = &scene->accum_resolution;
+	}
+	else
+	{
+		ft_bzero(scene->accum_buffer, SCREEN_X * SCREEN_Y * sizeof(t_3d));
+		frame_index = 0;
+		resolution = &scene->resolution;
+		scene->accum_resolution.x = scene->resolution_range.x;
+		scene->accum_resolution.y = scene->resolution_range.x;
+	}
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	coords.y = 0;
-	while (coords.y < img->dim.size.y)
+	while (coords.y < img->dim.size.y - 1)
 	{
-		if (coords.y % scene->resolution_range.y == scene->resolution.y)
+		if (coords.y % scene->resolution_range.y == resolution->y)
 		{
 			coords.x = 0;
-			while (coords.x < img->dim.size.x)
+			while (coords.x < img->dim.size.x - 1)
 			{
-				if (coords.x % scene->resolution_range.y == scene->resolution.x)
+				if (coords.x % scene->resolution_range.y == resolution->x)
 				{
 					ft_bzero(&hit, sizeof(t_hit));
 					if (coords.x == img->dim.size.x / 2 && coords.y == img->dim.size.y / 2)
@@ -144,6 +197,16 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
 		//				color.combined = transition_colors(color.combined, 0xCD5400, 0.45f);
 					}
+					if (resolution == &scene->accum_resolution && frame_index > 0)
+					{
+						scene->accum_buffer[coords.y * SCREEN_X + coords.x] = (t_3d){
+							(float)(color.channel.r + scene->accum_buffer[coords.y * SCREEN_X + coords.x].x),
+							(float)(color.channel.g + scene->accum_buffer[coords.y * SCREEN_X + coords.x].y),
+							(float)(color.channel.b + scene->accum_buffer[coords.y * SCREEN_X + coords.x].z)};
+						color.channel.r = (uint8_t)(scene->accum_buffer[coords.y * SCREEN_X + coords.x].x / frame_index);
+						color.channel.g = (uint8_t)(scene->accum_buffer[coords.y * SCREEN_X + coords.x].y / frame_index);
+						color.channel.b = (uint8_t)(scene->accum_buffer[coords.y * SCREEN_X + coords.x].z / frame_index);
+					}
 					put_pixel(coords, color.combined, img);
 					if (scene->resolution.x == scene->resolution.y)
 						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
@@ -153,11 +216,13 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 		}
 		coords.y += 1;
 	}
-	if (scene->resolution.x < scene->resolution_range.y && scene->resolution.y < scene->resolution_range.y)
-		scene->resolution.x += 1;
-	if (scene->resolution.x >= scene->resolution_range.y && scene->resolution.y < scene->resolution_range.y)
+	if (resolution->x == scene->resolution_range.y - 1 && resolution->y == scene->resolution_range.y - 1)
+		frame_index += 1;
+	if (resolution->x < scene->resolution_range.y && resolution->y < scene->resolution_range.y)
+		resolution->x += 1;
+	if (resolution->x >= scene->resolution_range.y && resolution->y < scene->resolution_range.y)
 	{
-		scene->resolution.x = scene->resolution_range.x;
-		scene->resolution.y += 1;
+		resolution->x = scene->resolution_range.x;
+		resolution->y += 1;
 	}
 }

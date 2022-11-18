@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/14 15:18:39 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/18 14:56:11 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ CC  = gcc
 OPTI_FLAGS = -O3 -flto
 DEBUG_FLAGS = -g -fsanitize=address
 FLAGS = -Wall -Wextra -Werror -Wconversion
-FLAGS += $(DEBUG_FLAGS)
+#FLAGS += $(DEBUG_FLAGS)
 FLAGS += $(OPTI_FLAGS)
 
 #SYSTEM LIBRARIES

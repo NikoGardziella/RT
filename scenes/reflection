@@ -1,0 +1,81 @@
+OBJECT sphere
+{
+	origin -30.0 0.0 0.0
+	radius 5.0
+	color FFC0CB
+	roughness 0.0
+}
+OBJECT sphere
+{
+	origin -20.0 0.0 0.0
+	radius 5.0
+	roughness 0.2
+	color FFFF00
+}
+OBJECT sphere
+{
+	origin -10.0 0.0 0.0
+	radius 5.0
+	roughness 0.4
+	color 00FFFF
+}
+OBJECT sphere
+{
+	origin 0.0 0.0 0.0
+	radius 5.0
+	color FFC0CB
+	roughness 0.6
+}
+OBJECT sphere
+{
+	origin 10.0 0.0 0.0
+	radius 5.0
+	color FFC0CB
+	roughness 0.8
+}
+OBJECT sphere
+{
+	origin 20.0 0.0 0.0
+	radius 5.0
+	color FFC0CB
+	roughness 0.999
+}
+OBJECT sphere
+{
+	origin 30.0 0.0 0.0
+	radius 5.0
+	color FFC0CB
+	roughness 1.0
+}
+OBJECT sphere
+{
+	origin 0.0 0.0 60.0
+	radius 20.0
+	color FFFFFF
+	roughness 1.0
+}
+OBJECT plane
+{
+	origin 0.0 -5.0 0.0
+	axis 0.0 1.0 0.0
+	color FFFFFF
+	roughness 1.0
+}
+OBJECT light
+{
+	origin 0 50 0
+	lumen 50.0
+	color FF0000
+}
+OBJECT light
+{
+	origin 0 20 0
+	lumen 50.0
+	color 00FFFF
+}
+OBJECT camera
+{
+	pos 0 0 35
+	look 0 0 -1
+	fov 60
+}
