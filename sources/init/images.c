@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 10:56:32 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/11 11:47:40 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/21 13:23:40 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	get_image_sizes(t_img *img)
 	img[3].dim.size = (t_2i){SCREEN_X / 4, SCREEN_Y - (offset.y * 2)};
 	img[4].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 	img[5].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
+	img[6].dim.size = (t_2i){SCREEN_X / 5, SCREEN_Y / 5};
 }
 
 static void	get_image_positions(t_img *img)
@@ -40,6 +41,7 @@ static void	get_image_positions(t_img *img)
 	img[3].dim.start = (t_2i){0 + offset.x, 0 + offset.y};
 	img[4].dim.start = (t_2i){0, 0};
 	img[5].dim.start = (t_2i){0, 0};
+	img[6].dim.start = (t_2i){0, 0};
 }
 
 static void	get_image_functions(t_img *img)
@@ -50,6 +52,7 @@ static void	get_image_functions(t_img *img)
 	img[3].draw_func = &sidebar;
 	img[4].draw_func = NULL;
 	img[5].draw_func = &gradual_render;
+	img[6].draw_func = NULL;
 }
 
 t_img	*free_images(t_img *img, size_t count)

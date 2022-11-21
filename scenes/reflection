@@ -1,5 +1,12 @@
 OBJECT sphere
 {
+	origin -40.0 0.0 0.0
+	radius 5.0
+	color FFFFFF
+	roughness 0.0
+}
+OBJECT sphere
+{
 	origin -30.0 0.0 0.0
 	radius 5.0
 	color FFC0CB
@@ -59,7 +66,7 @@ OBJECT plane
 	origin 0.0 -5.0 0.0
 	axis 0.0 1.0 0.0
 	color FFFFFF
-	roughness 1.0
+	roughness 0.5
 }
 OBJECT light
 {

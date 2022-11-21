@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/18 16:14:37 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/21 13:23:50 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@
 # include <stdio.h>
 # include <time.h>
 
-# define SCREEN_X 2560 / 3
-# define SCREEN_Y 1440 / 3
+# define SCREEN_X 2560 / 4
+# define SCREEN_Y 1440 / 4
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
-# define IMAGES 6
+# define IMAGES 7
 
 # define KEY_A 1
 # define KEY_W 2
@@ -37,7 +37,7 @@
 # define KEY_SPACE 16
 # define KEY_LSHIFT 32
 
-# define BOUNCE_COUNT 3
+# define BOUNCE_COUNT 1
 
 # ifndef PI
 #  define PI 3.141592
@@ -227,6 +227,7 @@ typedef struct s_env
 	t_bmptxtr		bmptxtr;
 	t_mouse			mouse;
 	double			plot_time;
+	int				frame_index;
 }				t_env;
 
 /*Parser Functions*/
