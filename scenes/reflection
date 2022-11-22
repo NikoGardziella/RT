@@ -47,17 +47,18 @@ OBJECT sphere
 	color FFC0CB
 	roughness 1.0
 }
+OBJECT disc
+{
+	origin 0.0 -5.0 0.0
+	axis 0.0 1.0 0.0
+	radius 50.0
+	color CCCCCC
+	roughness 0.8
+}
 OBJECT sphere
 {
 	origin 0.0 0.0 60.0
 	radius 20.0
-	color FFFFFF
-	roughness 1.0
-}
-OBJECT plane
-{
-	origin 0.0 -5.0 0.0
-	axis 0.0 1.0 0.0
 	color FFFFFF
 	roughness 1.0
 }

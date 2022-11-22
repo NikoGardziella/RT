@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/18 16:14:37 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/22 16:43:58 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define KEY_SPACE 16
 # define KEY_LSHIFT 32
 
-# define BOUNCE_COUNT 3
+# define BOUNCE_COUNT 2
 
 # ifndef PI
 #  define PI 3.141592
@@ -285,8 +285,10 @@ t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
-uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, t_3d normal);
+uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, t_ray reflective);
 t_3d		get_refraction_ray(t_3d normal, t_3d ray_dir, t_2d index);
+/*MOVE TO VECTOR LIBRARY LATER*/
+t_3d	random_vector(t_3d refl_vec, float max_theta);
 
 /* Color operations functions*/
 
