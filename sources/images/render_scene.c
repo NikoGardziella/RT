@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/21 13:49:47 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/22 20:00:35 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static double	rand_range(double min, double max)
 	return (number);
 }
 
-static t_3d	rand_unit_vect(t_3d refl_vec, float max_theta)
+t_3d	random_vector(t_3d refl_vec, float max_theta)
 {
 	t_3d	vec;
 	t_3d	tangent;
@@ -93,18 +93,20 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int bounces)
 			return (hit->color);
 		(void)render_with_normals;
 //		color.combined = render_with_normals(normal);
+		shadow_ray = *ray;
 		shadow_ray.origin = scale_vector(hit->normal, BIAS);
 		shadow_ray.origin = add_vectors(hit->point, shadow_ray.origin);
-		color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, hit->normal);
 		if((hit->object->roughness <= 1.0 || hit->object->density < 10.0) && bounces > 0)
 		{
 			if (hit->object->roughness <= 1.0f)
 			{
 				refl = (float)hit->object->roughness;
 				bounce_ray.forward = reflect_vector(ray->forward, hit->normal);
-				bounce_ray.forward = rand_unit_vect(bounce_ray.forward, (refl));
+				bounce_ray.forward = random_vector(bounce_ray.forward, (refl));
 				bounce_ray.origin = add_vectors(hit->point, scale_vector(hit->normal, BIAS * 1));
+				color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, bounce_ray);
 				color_refl = raycast(&bounce_ray, scene, hit, bounces - 1);
+				//color.combined = color_refl.combined;
 				color.combined = transition_colors(color_refl.combined, color.combined, refl);
 			}
 			if (hit->object->density < 10.0f)
