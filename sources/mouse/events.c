@@ -17,6 +17,18 @@ void	mouse_events(void *param)
 	t_env	*env;
 
 	env = param;
+
+	if(env->sdl.event.type == SDL_MOUSEBUTTONDOWN && env->sdl.event.button.clicks == 2)
+	{
+		if (env->sdl.event.button.button == SDL_BUTTON_LEFT)
+		{
+			//printf("double click\n");
+			left_button_down(env);
+			env->sidebar = (int8_t)(env->sidebar * -1);
+			put_images_to_screen(env);
+		}
+		return ;
+	}
 	if (env->sdl.event.type == SDL_MOUSEBUTTONUP)
 	{
 		if (env->sdl.event.button.button == SDL_BUTTON_LEFT)
@@ -46,4 +58,5 @@ void	mouse_events(void *param)
 			env->mouse.state |= 32;
 		return ;
 	}
+
 }
