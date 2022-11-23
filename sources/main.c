@@ -129,6 +129,7 @@ int	main(int argc, char **argv)
 		if (((keyboard_hold(&env) & 1) == 1) | ((mouse_main(&env) & 1) == 1))
 			render_screen(&env);
 		put_images_to_screen(&env);
+		printf("%d\n", env.selected);
 	}
 	close_prog(NULL, "Exited successfully using [X].", 0);
 	return(0);
