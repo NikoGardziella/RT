@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/23 13:31:15 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/23 15:19:32 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,48 @@ t_3d	random_vector(t_3d refl_vec, float max_theta)
 	return (vec);
 }
 
+static t_rgba	calc_specular(t_scene *scene, t_hit *hit, t_camera *cam)
+{
+	t_rgba	total_color;
+	t_rgba	color;
+	t_3d	cam_ray;
+	t_3d	refl_ray;
+	double	dot;
+	t_list		*light_list_start;
+	t_object	*light;
+	double		attenuation;
+
+	light_list_start = scene->light_list;
+	total_color = ft_make_rgba(0, 0, 0, 1);
+	while (scene->light_list != NULL)
+	{
+		attenuation = 1.0 - (cam->ray.distance / T_MAX);
+//		if(!is_in_shadow(light, scene, hit))
+		{
+			light = (t_object *)scene->light_list->content;
+			refl_ray = subtract_vectors(light->origin, hit->point);
+			refl_ray = normalize_vector(reflect_vector(refl_ray, hit->normal));
+			cam_ray = normalize_vector(subtract_vectors(hit->point, cam->ray.origin));
+			dot = dot_product(cam_ray, refl_ray);
+			if (dot > 0)
+			{
+				color = light->color.channel;
+				color = ft_mul_rgba(color, (1 - hit->object->roughness) *
+					pow(dot, light->lumen));
+				total_color = ft_add_rgba(total_color, color);
+			}
+		}
+		total_color = ft_mul_rgba(total_color, attenuation);
+		scene->light_list = scene->light_list->next;
+	}
+	return (total_color);
+}
+
 t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int bounces)
 {
 	t_color	color;
 	t_color	color_refl;
+	t_color	specular;
 	t_ray	shadow_ray;
 	t_ray	bounce_ray;
 	float	refl;
@@ -106,12 +144,19 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int bounces)
 				bounce_ray.forward = random_vector(bounce_ray.forward, (refl));
 				bounce_ray.origin = add_vectors(hit->point, scale_vector(hit->normal, BIAS * 1));
 				color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, hit->normal);
-				color_refl = raycast(&bounce_ray, scene, hit, bounces - 1);
-				//color.combined = color_refl.combined;
-				color_refl.channel.r *= (double)(ray->object->color.channel.r / 255.0);
-				color_refl.channel.g *= (double)(ray->object->color.channel.g / 255.0);
-				color_refl.channel.b *= (double)(ray->object->color.channel.b / 255.0);
-				color.combined = transition_colors(color_refl.combined, color.combined, refl);
+				if (hit->object->roughness == 0.2)
+				{
+					specular.channel = calc_specular(scene, hit, scene->camera);
+					color.channel = ft_mul_rgba_rgba(color.channel, specular.channel);
+				}
+				else
+				{
+					color_refl = raycast(&bounce_ray, scene, hit, bounces - 1);
+					color_refl.channel.r *= (double)(ray->object->color.channel.r / 255.0);
+					color_refl.channel.g *= (double)(ray->object->color.channel.g / 255.0);
+					color_refl.channel.b *= (double)(ray->object->color.channel.b / 255.0);
+					color.combined = transition_colors(color_refl.combined, color.combined, refl);
+				}
 			}
 			if (hit->object->density < 10.0f)
 			{
