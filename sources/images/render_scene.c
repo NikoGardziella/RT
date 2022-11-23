@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/23 09:14:12 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/23 12:20:00 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static t_uint	render_with_normals(t_3d normal)
 	return (combine_rgb((int)rgb.x, (int)rgb.y, (int)rgb.z));
 }
 
-uint32_t	state = 315125;
+uint32_t	state = 1234;
 
 uint32_t xorshift32(uint32_t *state)
 {
@@ -40,7 +40,8 @@ uint32_t xorshift32(uint32_t *state)
 
 static double	rand_range(double min, double max)
 {
-	double random = ((double)xorshift32(&state)) / UINT32_MAX;
+	double random = ((double)xorshift32(&state) / UINT32_MAX);
+//	random = ((double)rand() / UINT32_MAX);
 	double range = (max - min + 1) * random;
 	double number = min + range;
 	return (number);
@@ -104,7 +105,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int bounces)
 				bounce_ray.forward = reflect_vector(ray->forward, hit->normal);
 				bounce_ray.forward = random_vector(bounce_ray.forward, (refl));
 				bounce_ray.origin = add_vectors(hit->point, scale_vector(hit->normal, BIAS * 1));
-				color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, bounce_ray);
+				color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, hit->normal);
 				color_refl = raycast(&bounce_ray, scene, hit, bounces - 1);
 				//color.combined = color_refl.combined;
 				color.combined = transition_colors(color_refl.combined, color.combined, refl);

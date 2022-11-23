@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/22 17:03:14 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/23 12:35:17 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,15 @@ static t_color	calc_light(t_color final, t_color light, t_color object, double l
 	return (final);
 }
 
-uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray shadow, t_ray reflective)
+static t_3d	offset_shadow_ray(t_ray shadow, t_object *light)
+{
+	shadow.forward = normalize_vector(shadow.forward);
+	shadow.forward = random_vector(shadow.forward, 1.0f);
+	shadow.forward = scale_vector(shadow.forward, light->radius);
+	return (shadow.forward);
+}
+
+uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray shadow, t_3d normal)
 {
 	t_list		*object_list_start;
 	t_object	*object;
@@ -59,12 +67,13 @@ uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray shadow, t_ray re
 		if (object->type == LIGHT)
 		{
 			shadow.forward = subtract_vectors(object->origin, shadow.origin);
+			shadow.forward = add_vectors(shadow.forward, offset_shadow_ray(shadow, object));
 			t = vector_magnitude(shadow.forward);
 			shadow.forward = normalize_vector(shadow.forward);
 			refraction_level = 1.0f;
-			//if (t < intersect_loop(&shadow, object_list_start, NULL).x)
+			if (t < intersect_loop(&shadow, object_list_start, NULL).x)
 			{
-				level = (float)get_light_level(t, object->lumen, reflective.forward, shadow.forward);
+				level = (float)get_light_level(t, object->lumen, normal, shadow.forward);
 				color = calc_light(color, object->color, obj_color, (double)(level * refraction_level));
 			}
 		}
