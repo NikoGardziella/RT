@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/23 10:22:53 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/23 15:41:08 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,7 +286,7 @@ void		slider(t_img *img, void *param);
 
 /*Ray tracing functions*/
 
-t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth);
+t_color		raycast(t_ray *ray, t_scene *scene, int bounces);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
