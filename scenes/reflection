@@ -12,7 +12,7 @@ OBJECT sphere
 	radius 7.0
 	color 444444
 	roughness 0.0
-	density 10.0
+	density 100.0
 }
 OBJECT sphere
 {
