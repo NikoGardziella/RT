@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/22 16:43:58 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/23 10:22:53 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include <stdio.h>
 # include <time.h>
 
-# define SCREEN_X 2560 / 3
-# define SCREEN_Y 1440 / 3
+# define SCREEN_X 2560 / 4
+# define SCREEN_Y 1440 / 4
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 7
@@ -230,6 +230,7 @@ typedef struct s_env
 	t_bmptxtr		bmptxtr;
 	t_mouse			mouse;
 	double			plot_time;
+	int				frame_index;
 }				t_env;
 
 /*Parser Functions*/
@@ -289,7 +290,7 @@ t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
-uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, t_ray reflective);
+uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, t_3d normal);
 t_3d		get_refraction_ray(t_3d normal, t_3d ray_dir, t_2d index);
 /*MOVE TO VECTOR LIBRARY LATER*/
 t_3d	random_vector(t_3d refl_vec, float max_theta);
