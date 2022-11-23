@@ -28,7 +28,7 @@
 # define SCREEN_Y 1440 / 3
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
-# define IMAGES 6
+# define IMAGES 7
 
 # define KEY_A 1
 # define KEY_W 2
@@ -203,6 +203,7 @@ typedef struct s_sdl
 typedef struct s_bmptxtr
 {
 	SDL_Surface	*wasd;
+	SDL_Surface	*slider;
 }				t_bmptxtr;
 
 typedef struct s_mouse
@@ -215,6 +216,7 @@ typedef struct s_mouse
 typedef struct s_env
 {
 	int				selected;
+	int				sel_element;
 	t_sdl			sdl;
 	int				height;
 	int				width;
@@ -279,6 +281,7 @@ void		render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode);
 void		put_images_to_screen(t_env *env);
 void		gradual_render(t_img *img, void *param);
 void		render_screen(t_env *env);
+void		slider(t_img *img, void *param);
 
 /*Ray tracing functions*/
 

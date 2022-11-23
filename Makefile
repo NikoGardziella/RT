@@ -109,6 +109,7 @@ SOURCES_LIST =	main.c\
 				images/put_images_to_screen.c\
 				images/ray_debugger.c\
 				images/render_scene.c\
+				images/material_button.c\
 				parser/add_object_to_scene.c\
 				parser/load_scene_camera.c\
 				parser/load_scene_objects.c\
@@ -130,6 +131,7 @@ SOURCES_LIST =	main.c\
 				ray_trace/intersects.c\
 				ray_trace/refraction.c\
 				ray_trace/shade.c
+
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
 

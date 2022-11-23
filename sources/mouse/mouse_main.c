@@ -97,7 +97,7 @@ static int	mouse_hold(void *param)
 	ret = 0;
 	if (((env->mouse.state & 9) == 1 && env->keymap != 0) || ((env->mouse.state & 9) == 9))
 	{
-		if (env->sel_ray.object != NULL)
+		if (env->sel_ray.object != NULL && env->selected == -1)
 		{
 			ft_bzero(&ray, sizeof(t_ray));
 			*camera = init_camera(env->img[0].dim.size, camera->ray.origin, camera->ray.forward, camera->fov);

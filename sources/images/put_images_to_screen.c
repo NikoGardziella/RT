@@ -22,7 +22,11 @@ void	put_images_to_screen(t_env *env)
 	process_image(&env->sdl, &env->img[5], 3, env);
 	process_image(&env->sdl, &env->img[2], 2, env);
 	if (env->sidebar == 1)
+	{
 		process_image(&env->sdl, &env->img[3], 2, env);
+		if(env->sel_ray.object != NULL)
+			process_image(&env->sdl, &env->img[6], 2, &env->sel_ray.object->roughness);
+	}
 	process_image(&env->sdl, &env->img[1], 2, env);
 	SDL_UpdateWindowSurface(env->sdl.window);
 }

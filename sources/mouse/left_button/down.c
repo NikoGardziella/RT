@@ -36,6 +36,11 @@ void	left_button_down(void *param)
 		env->sidebar = (int8_t)(env->sidebar * -1);
 		put_images_to_screen(env);
 	}
+	else if (coords_in_area(env->img[6].dim, mouse_coords) && env->sidebar == 1 && env->sel_ray.object != NULL)
+	{
+		env->sel_element = 2;
+		
+	}
 	else if (coords_in_area(env->img[3].dim, mouse_coords) && env->sidebar == 1)
 		printf("Placeholder\n");
 	else if (coords_in_area(env->img[0].dim, mouse_coords))
