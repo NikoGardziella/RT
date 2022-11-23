@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/22 16:43:58 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/23 09:14:30 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include <stdio.h>
 # include <time.h>
 
-# define SCREEN_X 2560 / 3
-# define SCREEN_Y 1440 / 3
+# define SCREEN_X 2560 / 4
+# define SCREEN_Y 1440 / 4
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 6
@@ -227,6 +227,7 @@ typedef struct s_env
 	t_bmptxtr		bmptxtr;
 	t_mouse			mouse;
 	double			plot_time;
+	int				frame_index;
 }				t_env;
 
 /*Parser Functions*/
