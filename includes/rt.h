@@ -214,6 +214,7 @@ typedef struct s_mouse
 
 typedef struct s_env
 {
+	int				selected;
 	t_sdl			sdl;
 	int				height;
 	int				width;

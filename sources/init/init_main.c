@@ -39,5 +39,6 @@ void	init_main(t_env *env)
 	env->scene->accum_buffer = (t_3d *)malloc(sizeof(t_3d) * (SCREEN_X * SCREEN_Y));
 	env->render_mode = -1;
 	env->sidebar = -1;
+	env->selected = -1;
 	load_textures(env);
 }
