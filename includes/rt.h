@@ -38,6 +38,7 @@
 # define KEY_LSHIFT 32
 
 # define BOUNCE_COUNT 2
+# define MAX_DENSITY 50
 
 # ifndef PI
 #  define PI 3.141592

@@ -14,6 +14,8 @@
 
 void	put_images_to_screen(t_env *env)
 {
+	double	density;
+
 	if (env->scene->resolution.x == env->scene->resolution_range.x && env->scene->resolution.y == env->scene->resolution_range.x)
 		process_image(&env->sdl, &env->img[0], 0, env);
 	else
@@ -26,8 +28,9 @@ void	put_images_to_screen(t_env *env)
 		process_image(&env->sdl, &env->img[3], 2, env);
 		if(env->sel_ray.object != NULL)
 		{
+			density = (env->sel_ray.object->density - 1)  / (MAX_DENSITY - 1);
 			process_image(&env->sdl, &env->img[6], 2, &env->sel_ray.object->roughness);
-			process_image(&env->sdl, &env->img[7], 2, &env->sel_ray.object->density);
+			process_image(&env->sdl, &env->img[7], 2, &density);
 		}
 	}
 	process_image(&env->sdl, &env->img[1], 2, env);

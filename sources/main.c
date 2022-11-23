@@ -87,6 +87,13 @@ void prog_clock(t_env *env)
 		env->sel_ray.object->roughness = fmin(env->sel_ray.object->roughness , 1.0f);
 		render_screen(env);
 	}
+	if(env->sel_element == 3)
+	{
+		env->sel_ray.object->density = 1 + (((double)MAX_DENSITY - 1) / env->img[7].dim.size.x * (float)(env->mouse.pos.x - env->img[7].dim.start.x));
+		env->sel_ray.object->density = fmax(env->sel_ray.object->density, 1.0f);
+		env->sel_ray.object->density = fmin(env->sel_ray.object->density , MAX_DENSITY);
+		render_screen(env);
+	}
 }
 
 int	main(int argc, char **argv)

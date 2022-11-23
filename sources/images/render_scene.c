@@ -98,7 +98,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 //		color.combined = render_with_normals(normal);
 		shadow_ray.origin = scale_vector(hit.normal, BIAS);
 		shadow_ray.origin = add_vectors(hit.point, shadow_ray.origin);
-		if((hit.object->roughness <= 1.0 || hit.object->density < 10.0) && bounces > 0)
+		if((hit.object->roughness <= 1.0 || hit.object->density < MAX_DENSITY) && bounces > 0)
 		{
 			if (hit.object->roughness <= 1.0f)
 			{
@@ -114,7 +114,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 					color_refl.channel.b *= (double)(hit.object->color.channel.b / 255.0);
 				color.combined = transition_colors(color_refl.combined, color.combined, refl);
 			}
-			if (hit.object->density < 10.0f)
+			if (hit.object->density < MAX_DENSITY)
 			{
 				refl = (float)hit.object->density;
 				if (hit.inside == 1)
