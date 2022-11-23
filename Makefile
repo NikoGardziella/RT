@@ -109,7 +109,7 @@ SOURCES_LIST =	main.c\
 				images/put_images_to_screen.c\
 				images/ray_debugger.c\
 				images/render_scene.c\
-				images/material_button.c\
+				images/slider.c\
 				parser/add_object_to_scene.c\
 				parser/load_scene_camera.c\
 				parser/load_scene_objects.c\
