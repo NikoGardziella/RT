@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/23 15:42:47 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/23 16:24:00 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 	t_hit	hit;
 	t_color	color;
 	t_color	color_refl;
+	t_color	color_refr;
 	t_ray	shadow_ray;
 	t_ray	bounce_ray;
 	float	refl;
@@ -124,8 +125,8 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 				bounce_ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * -1));
 				if (hit.inside == 1)
 					bounces -= 1;
-				color_refl = raycast(&bounce_ray, scene, bounces);
-				color.combined = color_refl.combined;
+				color_refr = raycast(&bounce_ray, scene, bounces);
+				color.combined = transition_colors(color_refr.combined, color_refl.combined, 0.5);
 			}
 		}
 	}
