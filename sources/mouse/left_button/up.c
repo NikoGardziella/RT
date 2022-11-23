@@ -16,8 +16,9 @@ void	left_button_up(void *param)
 {
 	t_env	*env;
 	t_2i	mouse_coords;
-
+	
 	env = param;
+	env->sel_element = 0;
 	env->mouse.state ^= 1;
 	if (env->sel_ray.object != NULL && env->selected == -1)
 	{

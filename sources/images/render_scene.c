@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/23 14:49:36 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/23 13:31:15 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,25 +202,27 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
 		//				color.combined = transition_colors(color.combined, 0xCD5400, 0.45f);
 					}
-					scene->accum_buffer[coords.y * SCREEN_X + coords.x] = (t_3d){
-						(float)((float)color.channel.r / 0xFF + scene->accum_buffer[coords.y * SCREEN_X + coords.x].x),
-						(float)((float)color.channel.g / 0xFF + scene->accum_buffer[coords.y * SCREEN_X + coords.x].y),
-						(float)((float)color.channel.b / 0xFF + scene->accum_buffer[coords.y * SCREEN_X + coords.x].z)};
-					if (env->frame_index == 0)
+					if (resolution == &scene->accum_resolution && env->frame_index > 0)
 					{
-						color.channel.r = (uint8_t)(scene->accum_buffer[coords.y * SCREEN_X + coords.x].x / (env->frame_index) * 0xFF);
-						color.channel.g = (uint8_t)(scene->accum_buffer[coords.y * SCREEN_X + coords.x].y / (env->frame_index) * 0xFF);
-						color.channel.b = (uint8_t)(scene->accum_buffer[coords.y * SCREEN_X + coords.x].z / (env->frame_index) * 0xFF);
+						scene->accum_buffer[coords.y * SCREEN_X + coords.x] = (t_3d){
+							(float)(color.channel.r + scene->accum_buffer[coords.y * SCREEN_X + coords.x].x),
+							(float)(color.channel.g + scene->accum_buffer[coords.y * SCREEN_X + coords.x].y),
+							(float)(color.channel.b + scene->accum_buffer[coords.y * SCREEN_X + coords.x].z)};
+						color.channel.r = (uint8_t)(scene->accum_buffer[coords.y * SCREEN_X + coords.x].x / env->frame_index);
+						color.channel.g = (uint8_t)(scene->accum_buffer[coords.y * SCREEN_X + coords.x].y / env->frame_index);
+						color.channel.b = (uint8_t)(scene->accum_buffer[coords.y * SCREEN_X + coords.x].z / env->frame_index);
 					}
 					put_pixel(coords, color.combined, img);
-					//if (scene->resolution.x == scene->resolution.y)
-					//	resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
+					if (scene->resolution.x == scene->resolution.y)
+						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
 				}
 				coords.x += 1;
 			}
 		}
 		coords.y += 1;
 	}
+	if (resolution->x == scene->resolution_range.y - 1 && resolution->y == scene->resolution_range.y - 1)
+		env->frame_index += 1;
 	if (resolution->x < scene->resolution_range.y && resolution->y < scene->resolution_range.y)
 		resolution->x += 1;
 	if (resolution->x >= scene->resolution_range.y && resolution->y < scene->resolution_range.y)
@@ -228,6 +230,4 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 		resolution->x = scene->resolution_range.x;
 		resolution->y += 1;
 	}
-	if (resolution->x == scene->resolution_range.x && resolution->y == scene->resolution_range.y)
-		env->frame_index += 1;
 }
