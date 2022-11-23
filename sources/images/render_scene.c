@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/23 12:20:00 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/23 13:31:15 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,9 @@ t_color	raycast(t_ray *ray, t_scene *scene, t_hit *hit, int bounces)
 				color.combined = light_up(scene->object_list, hit->object->color, shadow_ray, hit->normal);
 				color_refl = raycast(&bounce_ray, scene, hit, bounces - 1);
 				//color.combined = color_refl.combined;
+				color_refl.channel.r *= (double)(ray->object->color.channel.r / 255.0);
+				color_refl.channel.g *= (double)(ray->object->color.channel.g / 255.0);
+				color_refl.channel.b *= (double)(ray->object->color.channel.b / 255.0);
 				color.combined = transition_colors(color_refl.combined, color.combined, refl);
 			}
 			if (hit->object->density < 10.0f)
