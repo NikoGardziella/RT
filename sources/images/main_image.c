@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:33:20 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/21 13:18:40 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/23 15:56:03 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	main_image(t_img *img, void *param)
 		value = ft_max(env->scene->resolution_range.y - env->scene->resolution.y, 1);
 		dim = (t_dim){(t_2i){env->img[4].dim.size.x / value, env->img[4].dim.size.y / value}, (t_2i){0, 0}};
 		blit_surface(img->surface, NULL, env->img[4].surface, &dim);
-		//blit_surface(env->img[4].surface, &dim, env->img[5].surface, NULL);
-		blit_surface(img->surface, NULL, env->img[5].surface, NULL);
+		blit_surface(env->img[4].surface, &dim, env->img[5].surface, NULL);
+		//blit_surface(img->surface, NULL, env->img[5].surface, NULL);
 	}
 }
