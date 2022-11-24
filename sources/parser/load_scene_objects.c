@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 09:25:30 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/16 15:36:30 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/24 14:38:01 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ t_list	*read_scene_file(int fd)
 	ft_bzero(&object, sizeof(t_object));
 	object.roughness = 1.0f;
 	object.density = MAX_DENSITY;
+	object.metal = 0.0;
 	object.type = -1;
 	while (ret > 0)
 	{	

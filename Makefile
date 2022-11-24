@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
+#    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/23 15:48:14 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/24 15:39:40 by ctrouve          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,9 @@ CC  = gcc
 
 #FLAGS
 OPTI_FLAGS = -O3 -flto
-DEBUG_FLAGS = -g -fsanitize=address
+#DEBUG_FLAGS = -g -fsanitize=address
 FLAGS = -Wall -Wextra -Werror -Wconversion
-#FLAGS += $(DEBUG_FLAGS)
+FLAGS += $(DEBUG_FLAGS)
 FLAGS += $(OPTI_FLAGS)
 
 #SYSTEM LIBRARIES
@@ -112,6 +112,7 @@ SOURCES_LIST =	main.c\
 				images/ray_debugger.c\
 				images/render_scene.c\
 				images/slider.c\
+				images/specular.c\
 				parser/add_object_to_scene.c\
 				parser/load_scene_camera.c\
 				parser/load_scene_objects.c\

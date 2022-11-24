@@ -2,16 +2,16 @@ OBJECT sphere
 {
 	origin 25.0 0.0 0.0
 	radius 25.0
-	density 3.0
-	roughness 0.5
+	roughness 0.0
+	metal 1.0
 	color FF0000
 }
 OBJECT sphere
 {
 	origin -25.0 0.0 0.0
 	radius 15.0
-	density 3.0
 	roughness 0.0
+	metal 0.0
 	color 00FFFF
 }
 OBJECT sphere
@@ -19,7 +19,6 @@ OBJECT sphere
 	origin 0.0 0.0 20.0
 	radius 7.0
 	color FFC0CB
-	density 1.0
 	roughness 1.0
 }
 OBJECT plane
@@ -27,7 +26,6 @@ OBJECT plane
 	origin 0.0 -40.0 0.0
 	axis 0.0 0.0 0.0
 	color 0000FF
-	density 1.0
 	roughness 1.0
 }
 
@@ -36,7 +34,6 @@ OBJECT plane
 	origin 0.0 0.0 -60.0
 	axis 0.0 0.0 90.0
 	color 90EE90
-	density 1.0
 	roughness 1.0
 }
 
