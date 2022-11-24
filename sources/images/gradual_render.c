@@ -12,7 +12,7 @@
 
 #include "rt.h"
 
-double	time_since_success(double ammount, int id)
+double	time_since_success(double ammount, int id,int mode)
 {
 	static struct timespec	time[8];
 	struct timespec			curr_time;
@@ -21,7 +21,7 @@ double	time_since_success(double ammount, int id)
 	clock_gettime(CLOCK_MONOTONIC, &curr_time);
 	elapsed = (curr_time.tv_sec - time[id].tv_sec) * 1000000
 		+ (curr_time.tv_nsec - time[id].tv_nsec) / 1000;
-	if (elapsed > (long int)(ammount * 1000000.0))
+	if (mode == 1 || (mode == 2 && elapsed > (long int)(ammount * 1000000.0)))
 	{
 		time[id] = curr_time;
 	}
@@ -39,10 +39,10 @@ void	gradual_render(t_img *img, void *param)
 	if (env->scene->resolution.x == env->scene->resolution_range.x && env->scene->resolution.y == env->scene->resolution_range.y)
 	{
 		if (env->scene->accum_resolution.x == env->scene->resolution_range.x && env->scene->accum_resolution.y == env->scene->resolution_range.x)
-			env->plot_time = (double)time_since_success(0.0f, 0);
+			env->plot_time = (double)time_since_success(0.0f, 0,2);
 	}
 	if (env->scene->accum_resolution.x == env->scene->resolution_range.x && env->scene->accum_resolution.y == env->scene->resolution_range.y)
-		env->plot_time = (double)time_since_success(0.0f, 0);
+		env->plot_time = (double)time_since_success(0.0f, 0,2);
 	coords = (t_2i){0, img->dim.size.y - (int)env->font->bound_box[1] - (int)env->font->bound_box[1]};
 	coords = display_str(&(t_pxl){env->font, put_pixel, img}, coords, "Plot time: " ,color);
 	coords = display_double(&(t_pxl){env->font, put_pixel, img}, coords, (t_2d){env->plot_time, 3.0f} ,color);

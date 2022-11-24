@@ -43,7 +43,7 @@ void	mouse_events(void *param)
 			left_button_down(env);
 			if(env->sdl.event.button.clicks == 2  && env->sel_ray.object != NULL)
 			{
-				left_double_click(env);
+				//left_double_click(env);
 			}
 		}
 		if (env->sdl.event.button.button == SDL_BUTTON_RIGHT)

@@ -346,7 +346,7 @@ void		matrix_multip(t_3d *in, t_3d *out, t_mat *matrix);
 
 /*Other functions*/
 
-double		time_since_success(double ammount, int id);
+double		time_since_success(double ammount, int id,int mode);
 int			coords_in_area(t_dim dim, t_2i coords);
 
 #endif

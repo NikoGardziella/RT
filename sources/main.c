@@ -70,7 +70,7 @@ void	render_screen(t_env *env)
 	double	fps;
 
 	fps = 0.0001;
-	if (time_since_success(fps, 0) >= fps)
+	if (time_since_success(fps, 0,2) >= fps)
 	{
 		env->scene->resolution.x = env->scene->resolution_range.x;
 		env->scene->resolution.y = env->scene->resolution_range.x;
@@ -142,7 +142,7 @@ int	main(int argc, char **argv)
 		}
 		if (running == 0)
 			break ;
-		if (time_since_success(0.01, 1) >= 0.01)
+		if (time_since_success(0.01,1,2) >= 0.01)
 			continue ;
 		if (((keyboard_hold(&env) & 1) == 1) | ((mouse_main(&env) & 1) == 1))
 			render_screen(&env);

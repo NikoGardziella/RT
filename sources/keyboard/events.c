@@ -21,6 +21,12 @@ void	key_down(t_env *env)
 			env->render_mode *= -1;
 			render_screen(env);
 		}
+		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+		{
+			env->sidebar = -1;
+			ft_bzero(&env->sel_ray, sizeof(t_ray));
+			render_screen(env);
+		}
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_A)
 			env->keymap |= KEY_A;
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_W)
