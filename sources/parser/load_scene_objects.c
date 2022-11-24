@@ -82,7 +82,7 @@ t_list	*read_scene_file(int fd)
 	objects_list = NULL;
 	ft_bzero(&object, sizeof(t_object));
 	object.roughness = 1.0f;
-	object.density = 10.0f;
+	object.density = MAX_DENSITY;
 	object.type = -1;
 	while (ret > 0)
 	{	

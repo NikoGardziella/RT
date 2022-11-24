@@ -78,6 +78,24 @@ void	render_screen(t_env *env)
 	}
 }
 
+void prog_clock(t_env *env)
+{
+	if(env->sel_element == 2)
+	{
+		env->sel_ray.object->roughness = 1.0f / env->img[6].dim.size.x * (float)(env->mouse.pos.x - env->img[6].dim.start.x);
+		env->sel_ray.object->roughness = fmax(env->sel_ray.object->roughness, 0.0f);
+		env->sel_ray.object->roughness = fmin(env->sel_ray.object->roughness , 1.0f);
+		render_screen(env);
+	}
+	if(env->sel_element == 3)
+	{
+		env->sel_ray.object->density = 1 + (((double)MAX_DENSITY - 1) / env->img[7].dim.size.x * (float)(env->mouse.pos.x - env->img[7].dim.start.x));
+		env->sel_ray.object->density = fmax(env->sel_ray.object->density, 1.0f);
+		env->sel_ray.object->density = fmin(env->sel_ray.object->density , MAX_DENSITY);
+		render_screen(env);
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_env	env;
@@ -128,6 +146,7 @@ int	main(int argc, char **argv)
 			continue ;
 		if (((keyboard_hold(&env) & 1) == 1) | ((mouse_main(&env) & 1) == 1))
 			render_screen(&env);
+		prog_clock(&env);
 		put_images_to_screen(&env);
 	}
 	close_prog(NULL, "Exited successfully using [X].", 0);

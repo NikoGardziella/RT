@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:39:02 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/17 13:10:52 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/23 15:43:02 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	left_button_down(void *param)
 	t_env		*env;
 	t_2i		mouse_coords;
 	t_camera	*camera;
-	t_hit		hit;
 
 	env = param;
 	camera = env->scene->camera;
@@ -36,6 +35,14 @@ void	left_button_down(void *param)
 		env->sidebar = (int8_t)(env->sidebar * -1);
 		put_images_to_screen(env);
 	}
+	else if (coords_in_area(env->img[6].dim, mouse_coords) && env->sidebar == 1 && env->sel_ray.object != NULL)
+	{
+		env->sel_element = 2;
+	}
+	else if (coords_in_area(env->img[7].dim, mouse_coords) && env->sidebar == 1 && env->sel_ray.object != NULL)
+	{
+		env->sel_element = 3;
+	}
 	else if (coords_in_area(env->img[3].dim, mouse_coords) && env->sidebar == 1)
 		printf("Placeholder\n");
 	else if (coords_in_area(env->img[0].dim, mouse_coords))
@@ -44,7 +51,7 @@ void	left_button_down(void *param)
 		*camera = init_camera(env->img[0].dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 		env->sel_ray = get_ray(mouse_coords, &env->img[0], camera);
 		env->sel_ray.object = NULL;
-		raycast(&env->sel_ray, env->scene, &hit, 0);
+		raycast(&env->sel_ray, env->scene, 0);
 		render_screen(env);
 	}
 	else

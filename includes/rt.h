@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/23 14:45:34 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/24 10:43:26 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define SCREEN_Y 1440 / 4
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
-# define IMAGES 6
+# define IMAGES 8
 
 # define KEY_A 1
 # define KEY_W 2
@@ -38,6 +38,7 @@
 # define KEY_LSHIFT 32
 
 # define BOUNCE_COUNT 2
+# define MAX_DENSITY 50
 
 # ifndef PI
 #  define PI 3.141592
@@ -203,6 +204,7 @@ typedef struct s_sdl
 typedef struct s_bmptxtr
 {
 	SDL_Surface	*wasd;
+	SDL_Surface	*slider;
 }				t_bmptxtr;
 
 typedef struct s_mouse
@@ -215,6 +217,7 @@ typedef struct s_mouse
 typedef struct s_env
 {
 	int				selected;
+	int				sel_element;
 	t_sdl			sdl;
 	int				height;
 	int				width;
@@ -280,10 +283,11 @@ void		render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode);
 void		put_images_to_screen(t_env *env);
 void		gradual_render(t_img *img, void *param);
 void		render_screen(t_env *env);
+void		slider(t_img *img, void *param);
 
 /*Ray tracing functions*/
 
-t_color		raycast(t_ray *ray, t_scene *scene, t_hit *hit, int recursion_depth);
+t_color		raycast(t_ray *ray, t_scene *scene, int bounces);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);

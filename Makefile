@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/18 14:56:11 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/23 15:48:14 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,12 +45,14 @@ FLAGS += $(OPTI_FLAGS)
 #SYSTEM LIBRARIES
 
 MATH_LIBRARY = -lm
+DL_LIBRARY = -ldl
+PTHREAD_LIBRARY = -pthread
 UNAME = $(shell uname)
 ifeq ($(UNAME), Darwin)
 LIBS = $(LIBFT) $(DM_2D) $(DM_VECTORS) $(DM_BDF_RENDER) $(SDL2)
 endif
 ifeq ($(UNAME), Linux)
-LIBS = $(DM_BDF_RENDER) $(LIBFT) $(DM_2D) $(DM_VECTORS) $(SDL2) $(MATH_LIBRARY)
+LIBS = $(DM_BDF_RENDER) $(LIBFT) $(DM_2D) $(DM_VECTORS) $(SDL2) $(MATH_LIBRARY) $(DL_LIBRARY) $(PTHREAD_LIBRARY)
 endif
 
 #LIBRARIES DEFINES
@@ -109,6 +111,7 @@ SOURCES_LIST =	main.c\
 				images/put_images_to_screen.c\
 				images/ray_debugger.c\
 				images/render_scene.c\
+				images/slider.c\
 				parser/add_object_to_scene.c\
 				parser/load_scene_camera.c\
 				parser/load_scene_objects.c\
@@ -130,6 +133,7 @@ SOURCES_LIST =	main.c\
 				ray_trace/intersects.c\
 				ray_trace/refraction.c\
 				ray_trace/shade.c
+
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
 
