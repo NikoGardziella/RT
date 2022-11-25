@@ -19,7 +19,7 @@ OBJECT sphere
 	origin 0.0 0.0 20.0
 	radius 7.0
 	color FFC0CB
-	roughness 1.0
+	roughness 0.5
 }
 OBJECT plane
 {
@@ -40,7 +40,7 @@ OBJECT plane
 OBJECT light
 {
 	origin 0.0 50 60
-	lumen 1000.0
+	lumen 100.0
 	color FFFFFF
 }
 

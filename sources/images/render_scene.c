@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/24 16:08:38 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/25 16:48:03 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,28 +93,10 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 //		color.combined = render_with_normals(normal);
 		shadow_ray.origin = scale_vector(hit.normal, BIAS);
 		shadow_ray.origin = add_vectors(hit.point, shadow_ray.origin);
+		//color from object
 		color.combined = light_up(scene->object_list, hit.object->color, shadow_ray, hit.normal);
-		if((hit.object->roughness <= 1.0 || hit.object->density < MAX_DENSITY) && bounces > 0)
+		if((hit.object->density < MAX_DENSITY || hit.object->metal > 0 || hit.object->roughness < 1.0) && bounces > 0)
 		{
-			if (hit.object->metal == 1.0)
-			{
-				bounce_ray.forward = reflect_vector(ray->forward, hit.normal);
-				bounce_ray.forward = random_vector(bounce_ray.forward, (float)hit.object->roughness);
-				bounce_ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * 1));
-				color_refl = raycast(&bounce_ray, scene, bounces - 1);
-				//color.combined = color_refl.combined;
-					color_refl.channel.r *= (double)(hit.object->color.channel.r / 255.0);
-					color_refl.channel.g *= (double)(hit.object->color.channel.g / 255.0);
-					color_refl.channel.b *= (double)(hit.object->color.channel.b / 255.0);
-				color.combined = transition_colors(color_refl.combined, color.combined, (float)hit.object->roughness);
-	//			color.channel = ft_add_rgba(color_refl.channel, color.channel);
-			}
-			if (hit.object->metal == 0.0)
-			{
-				color_specular.channel = specular(scene, &hit, ray->distance);
-				color.channel = ft_add_rgba(color_specular.channel, color.channel);
-			//	color.channel = color_specular.channel;
-			}
 			if (hit.object->density < MAX_DENSITY)
 			{
 				if (hit.inside == 1)
@@ -127,6 +109,24 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 					bounces -= 1;
 				color_refr = raycast(&bounce_ray, scene, bounces);
 				color.combined = transition_colors(color_refr.combined, color_refl.combined, 0.0);
+			}
+			if (hit.object->metal == 1.0)
+			{
+				bounce_ray.forward = reflect_vector(ray->forward, hit.normal);
+				bounce_ray.forward = random_vector(bounce_ray.forward, (float)hit.object->roughness);
+				bounce_ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * 1));
+				color_refl = raycast(&bounce_ray, scene, bounces - 1);
+				//color.combined = color_refl.combined;
+					color_refl.channel.r *= (double)(hit.object->color.channel.r / 255.0);
+					color_refl.channel.g *= (double)(hit.object->color.channel.g / 255.0);
+					color_refl.channel.b *= (double)(hit.object->color.channel.b / 255.0);
+				color.combined = transition_colors(color_refl.combined, color.combined, (float)hit.object->roughness);
+//				color.channel = ft_add_rgba(color_refl.channel, color.channel);
+			}
+			if (hit.object->roughness < 1.0 && hit.object->metal < 1.0)
+			{
+				color_specular.channel = shade_specular(scene, hit, ray->distance);
+				color.channel = ft_add_rgba(color_specular.channel, color.channel);
 			}
 		}
 	}

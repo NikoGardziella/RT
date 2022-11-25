@@ -7,7 +7,7 @@ OBJECT sphere
 }
 OBJECT sphere
 {
-	origin -25.0 0.0 0.0
+	origin -60.0 0.0 0.0
 	radius 15.0
 	roughness 0.5
 	color ff007f

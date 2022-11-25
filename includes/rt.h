@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/24 16:33:25 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/25 15:23:23 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 # define SCREEN_X 2560 / 4
 # define SCREEN_Y 1440 / 4
-# define T_MAX 1000.0f
+# define T_MAX 100000.0f
 # define BIAS 0.000001
 # define IMAGES 8
 
@@ -285,7 +285,7 @@ void		put_images_to_screen(t_env *env);
 void		gradual_render(t_img *img, void *param);
 void		render_screen(t_env *env);
 void		slider(t_img *img, void *param);
-t_rgba		specular(t_scene *scene, t_hit *hit, double distance);
+t_rgba		shade_specular(t_scene *scene, t_hit hit, double distance);
 
 /*Ray tracing functions*/
 
