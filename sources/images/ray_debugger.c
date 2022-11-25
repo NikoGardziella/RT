@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:18:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/21 11:14:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/25 16:35:01 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	draw_ray_arrow(t_img *img, t_3d ray, t_uint color, int mode)
 		draw_line(&(t_pxl_func){&put_pixel, img}, line, color, 0xFFFFFF);
 	}
 }
-
+/*
 void	ray_debugger(t_img *img, void *param)
 {
 	t_env	*env;
@@ -66,6 +66,22 @@ void	ray_debugger(t_img *img, void *param)
 	}
 	draw_ray_arrow(img, camera->up, 0x0000FF, 2);
 	draw_ray_arrow(img, camera->right, 0x00FF00, 2);
+	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
+	draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFFFF);
+}
+*/
+void	ray_debugger(t_img *img, void *param)
+{
+	t_env	*env;
+	t_2i	coords;
+	t_3d	ray;
+
+	env = param;
+	ray = random_vector((t_3d){0.0, 1.0, 0.0}, 1.0f);
+	if (dot_product(ray, (t_3d){0.0, 1.0, 0.0}) > 0.0)
+		draw_ray_arrow(img, ray, 0x00CC00, 2);
+	else
+		draw_ray_arrow(img, ray, 0xFF0000, 2);
 	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
 	draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFFFF);
 }
