@@ -28,7 +28,7 @@
 # define SCREEN_Y 1440 / 4
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
-# define IMAGES 8
+# define IMAGES 10
 
 # define KEY_A 1
 # define KEY_W 2
