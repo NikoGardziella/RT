@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/18 11:57:24 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/26 14:23:08 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void prog_clock(t_env *env)
 {
 	if(env->sel_element == 2)
 	{
-		env->sel_ray.object->roughness = 1.0f / env->img[6].dim.size.x * (float)(env->mouse.pos.x - env->img[6].dim.start.x);
+		env->sel_ray.object->roughness = 1.0f / (double)env->img[6].dim.size.x * (float)(env->mouse.pos.x - env->img[6].dim.start.x);
 		env->sel_ray.object->roughness = fmax(env->sel_ray.object->roughness, 0.0f);
 		env->sel_ray.object->roughness = fmin(env->sel_ray.object->roughness , 1.0f);
 		render_screen(env);

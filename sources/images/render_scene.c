@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/23 16:44:15 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/26 14:43:34 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,10 @@ static t_uint	render_with_normals(t_3d normal)
 
 uint32_t	state = 1234;
 
-uint32_t xorshift32(uint32_t *state)
-{
-	uint32_t	x;
-
-	x = *state;
-	x ^= x << 13;
-	x ^= x >> 17;
-	x ^= x << 5;
-	*state = x;
-	return (x);
-}
-
 static double	rand_range(double min, double max)
 {
-	double random = ((double)xorshift32(&state) / UINT32_MAX);
-//	random = ((double)rand() / UINT32_MAX);
+	double random;// = ((double)xorshift32(&state) / UINT32_MAX);
+	random = ((double)rand() / UINT32_MAX);
 	double range = (max - min + 1) * random;
 	double number = min + range;
 	return (number);
@@ -108,9 +96,9 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 				color.combined = light_up(scene->object_list, hit.object->color, shadow_ray, hit.normal);
 				color_refl = raycast(&bounce_ray, scene, bounces - 1);
 				//color.combined = color_refl.combined;
-					color_refl.channel.r *= (double)(hit.object->color.channel.r / 255.0);
-					color_refl.channel.g *= (double)(hit.object->color.channel.g / 255.0);
-					color_refl.channel.b *= (double)(hit.object->color.channel.b / 255.0);
+					color_refl.channel.r = (uint8_t)(color_refl.channel.r * (double)(hit.object->color.channel.r / 255.0));
+					color_refl.channel.g = (uint8_t)(color_refl.channel.g * (double)(hit.object->color.channel.g / 255.0));
+					color_refl.channel.b = (uint8_t)(color_refl.channel.b * (double)(hit.object->color.channel.b / 255.0));
 				color.combined = transition_colors(color_refl.combined, color.combined, (float)hit.object->roughness);
 			}
 			if (hit.object->density < MAX_DENSITY)
@@ -155,9 +143,16 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	t_color		color;
 	t_camera	*camera;
 	t_2i		*resolution;
+	int			i;
 
+	i = 0;
 	if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.y)
 	{
+		while (i < 100)
+		{
+			put_pixel((t_2i){(int)xorshift32(&env->state), (int)xorshift32(&env->state)}, 0xFFFFFF, img);
+			i++;
+		}
 		if (scene->accum_resolution.x == scene->resolution_range.x && scene->accum_resolution.y == scene->resolution_range.y)
 		{
 			scene->accum_resolution.x = scene->resolution_range.x;

@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/23 15:47:45 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/26 14:41:58 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,6 +232,7 @@ typedef struct s_env
 	t_mouse			mouse;
 	double			plot_time;
 	int				frame_index;
+	uint32_t		state;
 }				t_env;
 
 /*Parser Functions*/

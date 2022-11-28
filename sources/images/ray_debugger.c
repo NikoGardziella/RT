@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:18:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/25 16:35:01 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/26 14:23:32 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,10 @@ void	ray_debugger(t_img *img, void *param)
 */
 void	ray_debugger(t_img *img, void *param)
 {
-	t_env	*env;
 	t_2i	coords;
 	t_3d	ray;
 
-	env = param;
+	(void)param;
 	ray = random_vector((t_3d){0.0, 1.0, 0.0}, 1.0f);
 	if (dot_product(ray, (t_3d){0.0, 1.0, 0.0}) > 0.0)
 		draw_ray_arrow(img, ray, 0x00CC00, 2);
