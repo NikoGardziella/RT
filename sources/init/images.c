@@ -62,7 +62,7 @@ static void	get_image_functions(t_img *img)
 	img[5].draw_func = &gradual_render;
 	img[6].draw_func = &slider;
 	img[7].draw_func = &slider;
-	img[8].draw_func = NULL;
+	img[8].draw_func = &draw_rgb_slider;
 	img[9].draw_func = NULL;
 }
 
