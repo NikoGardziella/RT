@@ -16,7 +16,7 @@ void take_screenshot(t_env *env)
 {
 	SDL_Surface *sshot;
 
-	sshot = SDL_CreateRGBSurface(0, SCREEN_X, SCREEN_Y, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+	sshot = SDL_CreateRGBSurface(0, SCREEN_X, SCREEN_Y, 24, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
 	blit_surface(env->img[0].surface,NULL,sshot,NULL);
 	SDL_LockSurface(sshot);
 	if(SDL_SaveBMP(sshot, "screenshot.bmp") != 0)
