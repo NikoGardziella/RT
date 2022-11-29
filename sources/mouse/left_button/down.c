@@ -34,7 +34,7 @@ void	left_button_down(void *param)
 	{
 		env->sidebar = (int8_t)(env->sidebar * -1);
 		//ft_bzero(&env->sel_ray, sizeof(t_ray));
-		render_screen(env);
+		//render_screen(env);
 	}
 	else if (coords_in_area(env->img[6].dim, mouse_coords) && env->sel_ray.object != NULL && env->sidebar == 1)
 	{

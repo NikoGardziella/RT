@@ -31,6 +31,8 @@ void	put_images_to_screen(t_env *env)
 			density = (env->sel_ray.object->density - 1)  / (MAX_DENSITY - 1);
 			process_image(&env->sdl, &env->img[6], 2, &env->sel_ray.object->roughness);
 			process_image(&env->sdl, &env->img[7], 2, &density);
+			process_image(&env->sdl, &env->img[8], 2, NULL);
+			process_image(&env->sdl, &env->img[9], 2, NULL);
 		}
 	}
 	process_image(&env->sdl, &env->img[1], 2, env);
