@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:05:29 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/28 11:07:12 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/29 13:02:30 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ void	put_images_to_screen(t_env *env)
 		if(env->sel_ray.object != NULL)
 		{
 			density = (env->sel_ray.object->density - 1)  / (MAX_DENSITY - 1);
-			process_image(&env->sdl, &env->img[6], 2, &env->sel_ray.object->roughness);
-			process_image(&env->sdl, &env->img[7], 2, &density);
-			process_image(&env->sdl, &env->img[8], 2, NULL);
-			process_image(&env->sdl, &env->img[9], 2, NULL);
+			process_image(&env->sdl, &env->img[6], 3, &env->sel_ray.object->roughness);
+			process_image(&env->sdl, &env->img[7], 3, &density);
+			process_image(&env->sdl, &env->img[8], 3, NULL);
+			process_image(&env->sdl, &env->img[9], 3, NULL);
 		}
 	}
 	process_image(&env->sdl, &env->img[1], 2, env);
