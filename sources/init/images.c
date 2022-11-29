@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 10:56:32 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/23 15:11:33 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/29 12:31:18 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,15 @@ static void	get_image_sizes(t_img *img)
 	offset = (t_2i){button.x * 30 / 100, button.y * 30 / 100};
 	img[0].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 	img[1].dim.size = (t_2i){button.x, button.y};
-	img[2].dim.size = (t_2i){SCREEN_X / 4, SCREEN_Y / 4};
+	img[2].dim.size = (t_2i){SCREEN_X / 4, SCREEN_X / 4};
 	img[3].dim.size = (t_2i){SCREEN_X / 4, SCREEN_Y - (offset.y * 2)};
 	slider = (t_2i){img[3].dim.size.x - offset.x * 2, button.y};
 	img[4].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 	img[5].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 	img[6].dim.size = slider;
 	img[7].dim.size = slider;
+	img[8].dim.size = slider;
+	img[9].dim.size = slider;
 }
 
 static void	get_image_positions(t_img *img)
@@ -44,8 +46,10 @@ static void	get_image_positions(t_img *img)
 	img[3].dim.start = (t_2i){0 + offset.x, 0 + offset.y};
 	img[4].dim.start = (t_2i){0, 0};
 	img[5].dim.start = (t_2i){0, 0};
-	img[6].dim.start = (t_2i){img[3].dim.start.x + offset.x,img[3].dim.start.y + img[3].dim.size.y / 2};
+	img[6].dim.start = (t_2i){img[3].dim.start.x + offset.x,img[3].dim.start.y + img[3].dim.size.y / 4};
 	img[7].dim.start = (t_2i){img[3].dim.start.x + offset.x,img[3].dim.start.y + img[3].dim.size.y / 3};
+	img[8].dim.start = (t_2i){img[3].dim.start.x + offset.x,img[3].dim.start.y + img[3].dim.size.y / 2};
+	img[9].dim.start = (t_2i){img[3].dim.start.x + offset.x,img[3].dim.start.y + img[3].dim.size.y / 1};
 }
 
 static void	get_image_functions(t_img *img)
@@ -58,6 +62,8 @@ static void	get_image_functions(t_img *img)
 	img[5].draw_func = &gradual_render;
 	img[6].draw_func = &slider;
 	img[7].draw_func = &slider;
+	img[8].draw_func = NULL;
+	img[9].draw_func = NULL;
 }
 
 t_img	*free_images(t_img *img, size_t count)

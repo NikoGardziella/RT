@@ -6,45 +6,18 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/25 16:48:03 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/29 15:21:05 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 #include <stdlib.h>
 
-static t_uint	render_with_normals(t_3d normal)
-{
-	t_3d	rgb;
-
-	rgb = (t_3d){255, 255, 255};
-		rgb.x *= fabs(normal.x);
-		rgb.y *= fabs(normal.y);
-		rgb.z *= fabs(normal.z);
-	return (combine_rgb((int)rgb.x, (int)rgb.y, (int)rgb.z));
-}
-
 uint32_t	state = 1234;
 
-uint32_t xorshift32(uint32_t *state)
+uint32_t	random_in_range(uint32_t lower, uint32_t upper, uint32_t *state)
 {
-	uint32_t	x;
-
-	x = *state;
-	x ^= x << 13;
-	x ^= x >> 17;
-	x ^= x << 5;
-	*state = x;
-	return (x);
-}
-
-static double	rand_range(double min, double max)
-{
-	double random = ((double)xorshift32(&state) / UINT32_MAX);
-//	random = ((double)rand() / UINT32_MAX);
-	double range = (max - min + 1) * random;
-	double number = min + range;
-	return (number);
+	return ((xorshift32(state) % (upper - lower + 1)) + lower);
 }
 
 t_3d	random_vector(t_3d refl_vec, float max_theta)
@@ -57,20 +30,84 @@ t_3d	random_vector(t_3d refl_vec, float max_theta)
 	float	sin_theta;
 	t_2f	random;
 
-	random.x = (float)rand_range(0, 1);
-	random.y = (float)rand_range(0, 1);
+	random.x = (float)random_rangef(0, 1, &state);
+	random.y = (float)random_rangef(0, 1, &state);
 	if (refl_vec.x > refl_vec.z)
-		tangent = (t_3d){-refl_vec.y, refl_vec.x, 0.0};
+		tangent = (t_3d){-refl_vec.y, refl_vec.x, 0.25};
 	else
 		tangent = (t_3d){0.0, -refl_vec.z, refl_vec.y};
+	
+	if (dot_product(refl_vec, (t_3d){0.0, 1.0, 0.0}) == 1.0)
+		tangent = cross_product(refl_vec, (t_3d){0.0, 0.0, 1.0});
+	else
+		tangent = cross_product(refl_vec, (t_3d){0.0, 1.0, 0.0});
+	tangent = normalize_vector(tangent);
 	bitangent = cross_product(refl_vec, tangent);
+	tangent = cross_product(refl_vec, bitangent);
+	tan_temp[0] = tangent;
+	tan_temp[1] = bitangent;
 	phi = 2.0f * (float)PI * random.x;
 	theta = random.y * max_theta;
 	sin_theta = sinf(theta);
-	vec = scale_vector(scale_vector(tangent, cos(phi)), sin_theta);
-	vec = add_vectors(vec, scale_vector(scale_vector(bitangent, sin(phi)), sin_theta));
+	vec = scale_vector(tangent, cos(phi));
+	vec = add_vectors(vec, scale_vector(bitangent, sin(phi)));
+	vec = scale_vector(vec, sin_theta);
 	vec = add_vectors(vec, scale_vector(refl_vec, cos(theta)));
 	return (vec);
+	vec = scale_vector(refl_vec, -1);
+	if (max_theta == 0)
+		return (refl_vec);
+	while (1)
+	{
+		if (dot_product(refl_vec, vec) > 1.0f - (max_theta))
+			break ;
+		theta = (float)random_rangef(0, PI * 2, &state);
+		phi = (float)random_rangef(0, PI * 1.0f, &state);
+		vec.z = cos(phi);
+		vec.x = sqrt(1.0 - pow(vec.z, 2)) * cos(theta);
+		vec.y = sqrt(1.0 - pow(vec.z, 2)) * sin(theta);
+	}
+	return (vec);
+	t_3d	vecs[3];
+	vecs[0] = scale_vector(vec, cos(PI));
+	vecs[1] = scale_vector(cross_product(refl_vec, vec), sin(PI));
+	vecs[2] = scale_vector(refl_vec, dot_product(refl_vec, vec));
+	vecs[2] = scale_vector(vecs[2], 1.0 - cos(PI));
+	vec = add_vectors(vecs[0], vecs[1]);
+	vec = add_vectors(vec, vecs[2]);
+	
+	double	angle = angle_between_vectors((t_3d){0.0, 0.0, -1.0}, refl_vec);
+	printf("Angle: %f\n", angle);
+	t_mat	vtovmat;
+	t_mat	vtovmat2;
+	t_mat	mat;
+	double	c;
+	double	s;
+	t_3d	v;
+
+	v = cross_product(vec, refl_vec);
+	c = dot_product(vec, refl_vec);
+	s = vector_magnitude(v);
+	ft_bzero(&mat, sizeof(t_mat));
+	mat.m[0][0] = 1;
+	mat.m[1][2] = 1;
+	mat.m[2][2] = 1;
+	mat.m[3][3] = 1;
+	vtovmat = init_vtovmatrix(v);
+	vtovmat2 = scale_matrix(&vtovmat2, (1.0 - c) / pow(s, 2));
+	vtovmat2 = multiply_matrices(&vtovmat, &vtovmat);
+	mat = add_matrices(&mat, &vtovmat);
+	mat = add_matrices(&mat, &vtovmat2);
+	t_3d	out;
+	matrix_multip(&vec, &out, &mat);
+	/*
+	t_3d	orth[2];
+	orth[0] = cross_product(vec, refl_vec);
+	orth[1] = normalize_vector(cross_product(vec, orth[0]));
+	theta = (float)((1.0 - (dot_product(refl_vec, vec) + 1) / 2) * PI * 2);
+	vec = scale_vector(vec, cos(theta));
+	vec = add_vectors(vec, scale_vector(orth[1], sin(theta)));
+	*/
 }
 
 t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
@@ -89,7 +126,6 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 	{
 		if (hit.object->type == LIGHT || bounces == -1)
 			return (hit.color);
-		(void)render_with_normals;
 //		color.combined = render_with_normals(normal);
 		shadow_ray.origin = scale_vector(hit.normal, BIAS);
 		shadow_ray.origin = add_vectors(hit.point, shadow_ray.origin);
@@ -97,6 +133,19 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 		color.combined = light_up(scene->object_list, hit.object->color, shadow_ray, hit.normal);
 		if((hit.object->density < MAX_DENSITY || hit.object->metal > 0 || hit.object->roughness < 1.0) && bounces > 0)
 		{
+			if (hit.object->roughness <= 1.0f)
+			{
+				bounce_ray.forward = reflect_vector(ray->forward, hit.normal);
+				bounce_ray.forward = random_vector(bounce_ray.forward, (float)hit.object->roughness);
+				bounce_ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * 1));
+				color.combined = light_up(scene->object_list, hit.object->color, shadow_ray, hit.normal);
+				color_refl = raycast(&bounce_ray, scene, bounces - 1);
+				//color.combined = color_refl.combined;
+					color_refl.channel.r = (uint8_t)(color_refl.channel.r * (double)(hit.object->color.channel.r / 255.0));
+					color_refl.channel.g = (uint8_t)(color_refl.channel.g * (double)(hit.object->color.channel.g / 255.0));
+					color_refl.channel.b = (uint8_t)(color_refl.channel.b * (double)(hit.object->color.channel.b / 255.0));
+				color.combined = transition_colors(color_refl.combined, color.combined, (float)hit.object->roughness);
+			}
 			if (hit.object->density < MAX_DENSITY)
 			{
 				if (hit.inside == 1)
@@ -157,9 +206,16 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	t_color		color;
 	t_camera	*camera;
 	t_2i		*resolution;
+	int			i;
 
+	i = 0;
 	if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.y)
 	{
+		while (i < 100)
+		{
+			put_pixel((t_2i){(int)(&env->state), (int)xorshift32(&env->state)}, 0xFFFFFF, img);
+			i++;
+		}
 		if (scene->accum_resolution.x == scene->resolution_range.x && scene->accum_resolution.y == scene->resolution_range.y)
 		{
 			scene->accum_resolution.x = scene->resolution_range.x;

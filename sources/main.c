@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/18 11:57:24 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/26 14:23:08 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	render_screen(t_env *env)
 	double	fps;
 
 	fps = 0.0001;
-	if (time_since_success(fps, 0) >= fps)
+	if (time_since_success(fps, 0,2) >= fps)
 	{
 		env->scene->resolution.x = env->scene->resolution_range.x;
 		env->scene->resolution.y = env->scene->resolution_range.x;
@@ -82,7 +82,7 @@ void prog_clock(t_env *env)
 {
 	if(env->sel_element == 2)
 	{
-		env->sel_ray.object->roughness = 1.0f / env->img[6].dim.size.x * (float)(env->mouse.pos.x - env->img[6].dim.start.x);
+		env->sel_ray.object->roughness = 1.0f / (double)env->img[6].dim.size.x * (float)(env->mouse.pos.x - env->img[6].dim.start.x);
 		env->sel_ray.object->roughness = fmax(env->sel_ray.object->roughness, 0.0f);
 		env->sel_ray.object->roughness = fmin(env->sel_ray.object->roughness , 1.0f);
 		render_screen(env);
@@ -142,7 +142,7 @@ int	main(int argc, char **argv)
 		}
 		if (running == 0)
 			break ;
-		if (time_since_success(0.01, 1) >= 0.01)
+		if (time_since_success(0.01,1,2) >= 0.01)
 			continue ;
 		if (((keyboard_hold(&env) & 1) == 1) | ((mouse_main(&env) & 1) == 1))
 			render_screen(&env);

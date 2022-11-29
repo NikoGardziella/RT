@@ -2,8 +2,7 @@ OBJECT sphere
 {
 	origin 25.0 0.0 0.0
 	radius 25.0
-	roughness 0.0
-	metal 1.0
+	roughness 0.5
 	color FF0000
 }
 OBJECT sphere
@@ -19,12 +18,8 @@ OBJECT sphere
 	origin 0.0 0.0 20.0
 	radius 7.0
 	color FFC0CB
-	roughness 0.5
-}
-OBJECT plane
-{
+	roughness 1.0
 	origin 0.0 -40.0 0.0
-	axis 0.0 0.0 0.0
 	color 0000FF
 	roughness 1.0
 }

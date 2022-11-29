@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/25 15:23:23 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/29 15:20:31 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define SCREEN_Y 1440 / 4
 # define T_MAX 100000.0f
 # define BIAS 0.000001
-# define IMAGES 8
+# define IMAGES 10
 
 # define KEY_A 1
 # define KEY_W 2
@@ -44,7 +44,9 @@
 #  define PI 3.141592
 # endif
 
-int mid;
+/*DELETE THESE LATER*/
+int		mid;
+t_3d	tan_temp[2];
 
 /*Typedef enums*/
 
@@ -233,6 +235,7 @@ typedef struct s_env
 	t_mouse			mouse;
 	double			plot_time;
 	int				frame_index;
+	uint32_t		state;
 }				t_env;
 
 /*Parser Functions*/
@@ -250,6 +253,7 @@ t_img		*create_images(size_t count);
 t_mat		init_rmatrix_x(double angle_x);
 t_mat		init_rmatrix_z(double angle_z);
 t_mat		init_rmatrix_y(double angle_y);
+t_mat		init_vtovmatrix(t_3d orth_vector);
 t_mat		init_pmatrix(t_proj *proj);
 
 /*Keyboard functions*/
@@ -345,10 +349,13 @@ t_3d		rotate_point(t_3d point, t_3d rot);
 t_3d		get_points(t_img *img, t_3d *xyz, t_3d *rot, t_proj *proj);
 t_proj		init_proj(double fov, t_2i *dim, t_2d *z_depth);
 void		matrix_multip(t_3d *in, t_3d *out, t_mat *matrix);
+t_mat		multiply_matrices(t_mat *m1, t_mat *m2);
+t_mat		add_matrices(t_mat *m1, t_mat *m2);
+t_mat		scale_matrix(t_mat *m1, double factor);
 
 /*Other functions*/
 
-double		time_since_success(double ammount, int id);
+double		time_since_success(double ammount, int id,int mode);
 int			coords_in_area(t_dim dim, t_2i coords);
 
 #endif

@@ -33,13 +33,14 @@ void	left_button_down(void *param)
 	if (coords_in_area(env->img[1].dim, mouse_coords))
 	{
 		env->sidebar = (int8_t)(env->sidebar * -1);
-		put_images_to_screen(env);
+		//ft_bzero(&env->sel_ray, sizeof(t_ray));
+		//render_screen(env);
 	}
-	else if (coords_in_area(env->img[6].dim, mouse_coords) && env->sidebar == 1 && env->sel_ray.object != NULL)
+	else if (coords_in_area(env->img[6].dim, mouse_coords) && env->sel_ray.object != NULL && env->sidebar == 1)
 	{
 		env->sel_element = 2;
 	}
-	else if (coords_in_area(env->img[7].dim, mouse_coords) && env->sidebar == 1 && env->sel_ray.object != NULL)
+	else if (coords_in_area(env->img[7].dim, mouse_coords) && env->sel_ray.object != NULL && env->sidebar == 1)
 	{
 		env->sel_element = 3;
 	}
@@ -47,13 +48,21 @@ void	left_button_down(void *param)
 		printf("Placeholder\n");
 	else if (coords_in_area(env->img[0].dim, mouse_coords))
 	{
+		env->sel_element = 1;
 		ft_bzero(&env->sel_ray, sizeof(t_ray));
 		*camera = init_camera(env->img[0].dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 		env->sel_ray = get_ray(mouse_coords, &env->img[0], camera);
 		env->sel_ray.object = NULL;
 		raycast(&env->sel_ray, env->scene, 0);
+		//if(env->sel_ray.object != NULL)
+		//env->sidebar = 1;
 		render_screen(env);
 	}
 	else
 		return ;
+	if(env->sel_ray.object == NULL && env->sidebar == 1)
+	{
+		env->sidebar = -1;
+		put_images_to_screen(env);
+	}
 }

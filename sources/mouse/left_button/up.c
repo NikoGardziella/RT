@@ -22,8 +22,8 @@ void	left_button_up(void *param)
 	env->mouse.state ^= 1;
 	if (env->sel_ray.object != NULL && env->selected == -1)
 	{
-		ft_bzero(&env->sel_ray, sizeof(t_ray));
-		render_screen(env);
+		//ft_bzero(&env->sel_ray, sizeof(t_ray));
+		//render_screen(env);
 	}
 	SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y);
 }

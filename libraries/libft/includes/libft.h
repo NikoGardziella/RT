@@ -6,7 +6,7 @@
 /*   By: dmalesev <dmalesev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 09:17:53 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/13 20:37:08 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/28 09:21:31 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <string.h>
+
+/*FOR INT DEFINES ONLY*/
+# include <stdint.h>
 
 size_t			nbr_length(long n);
 int				ft_atoi(const char *str);
@@ -108,5 +111,9 @@ int				ft_min(int n1, int n2);
 
 /*Utility functions for file reading*/
 size_t			ft_strs_in_file(char *path, char *str);
+
+/*Random number functions*/
+uint32_t		xorshift32(uint32_t *state);
+double			random_rangef(double min, double max, uint32_t *state);
 
 #endif
