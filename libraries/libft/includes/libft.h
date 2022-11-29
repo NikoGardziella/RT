@@ -6,7 +6,7 @@
 /*   By: dmalesev <dmalesev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 09:17:53 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/26 14:33:31 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/28 09:21:31 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,9 @@ int				ft_min(int n1, int n2);
 
 /*Utility functions for file reading*/
 size_t			ft_strs_in_file(char *path, char *str);
+
+/*Random number functions*/
 uint32_t		xorshift32(uint32_t *state);
+double			random_rangef(double min, double max, uint32_t *state);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 09:10:41 by dmalesev          #+#    #+#              #
-#    Updated: 2022/11/03 14:46:27 by ctrouve          ###   ########.fr        #
+#    Updated: 2022/11/28 16:36:33 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,8 @@ SOURCES_LIST =	add_vectors.c\
 				normalize_vector.c\
 				divide_vector.c\
 				vector_magnitude.c\
-				reflect_vector.c
+				reflect_vector.c\
+				angle_between_vectors.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
 

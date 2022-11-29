@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 16:41:10 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/03 14:37:33 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/28 16:37:02 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ t_3d	normalize_vector(t_3d vect);
 double	dot_product(t_3d vect1, t_3d vect2);
 double	vector_magnitude(t_3d vect);
 t_3d	reflect_vector(t_3d v, t_3d n);
+double	angle_between_vectors(t_3d v1, t_3d v2);
 
 #endif

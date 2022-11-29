@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:29:16 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 09:29:52 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/28 14:55:46 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,19 @@ t_mat	init_rmatrix_z(double angle_z)
 	matrix.m[1][1] = cos(angle_z / 180.0f * PI);
 	matrix.m[2][2] = 1;
 	matrix.m[3][3] = 1;
+	return (matrix);
+}
+
+t_mat	init_vtovmatrix(t_3d orth_vector)
+{
+	t_mat	matrix;
+
+	ft_bzero(&matrix, sizeof(t_mat));
+	matrix.m[0][1] = -orth_vector.z;
+	matrix.m[0][2] = orth_vector.y;
+	matrix.m[1][0] = orth_vector.z;
+	matrix.m[1][2] = -orth_vector.x;
+	matrix.m[2][0] = -orth_vector.y;
+	matrix.m[2][1] = orth_vector.x;
 	return (matrix);
 }

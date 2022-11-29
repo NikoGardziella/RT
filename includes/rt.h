@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/26 14:41:58 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/29 12:05:29 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@
 #  define PI 3.141592
 # endif
 
-int mid;
+/*DELETE THESE LATER*/
+int		mid;
+t_3d	tan_temp[2];
 
 /*Typedef enums*/
 
@@ -250,6 +252,7 @@ t_img		*create_images(size_t count);
 t_mat		init_rmatrix_x(double angle_x);
 t_mat		init_rmatrix_z(double angle_z);
 t_mat		init_rmatrix_y(double angle_y);
+t_mat		init_vtovmatrix(t_3d orth_vector);
 t_mat		init_pmatrix(t_proj *proj);
 
 /*Keyboard functions*/
@@ -344,6 +347,9 @@ t_3d		rotate_point(t_3d point, t_3d rot);
 t_3d		get_points(t_img *img, t_3d *xyz, t_3d *rot, t_proj *proj);
 t_proj		init_proj(double fov, t_2i *dim, t_2d *z_depth);
 void		matrix_multip(t_3d *in, t_3d *out, t_mat *matrix);
+t_mat		multiply_matrices(t_mat *m1, t_mat *m2);
+t_mat		add_matrices(t_mat *m1, t_mat *m2);
+t_mat		scale_matrix(t_mat *m1, double factor);
 
 /*Other functions*/
 

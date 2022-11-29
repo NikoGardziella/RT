@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 12:24:32 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/02 09:28:07 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/28 15:33:57 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,70 @@ t_3d	get_points(t_img *img, t_3d *xyz, t_3d *rot, t_proj *proj)
 	matrix_multip(&point_rot, &point_proj, &pmatrix);
 	scale_into_view(img, &point_proj.x, &point_proj.y);
 	return (point_proj);
+}
+
+t_mat	multiply_matrices(t_mat *m1, t_mat *m2)
+{
+	t_mat	mat;
+	int		i;
+	int		j;
+
+	j = 0;
+	ft_bzero(&mat, sizeof(t_mat));
+	while (j < 4)
+	{
+		i = 0;
+		while (i < 4)
+		{
+			mat.m[j][i] = m1->m[j][0] * m2->m[0][i] + m1->m[j][1] * m2->m[1][i]
+				+ m1->m[j][2] * m2->m[2][i] + m1->m[j][3] * m2->m[3][i];
+			i++;
+		}
+		j++;
+	}
+	return (mat);
+}
+
+t_mat	add_matrices(t_mat *m1, t_mat *m2)
+{
+	t_mat	mat;
+	int		i;
+	int		j;
+
+	j = 0;
+	ft_bzero(&mat, sizeof(t_mat));
+	while (j < 4)
+	{
+		i = 0;
+		while (i < 4)
+		{
+			mat.m[j][i] = m1->m[j][i] + m2->m[j][i];
+			i++;
+		}
+		j++;
+	}
+	return (mat);
+}
+
+t_mat	scale_matrix(t_mat *m1, double factor)
+{
+	t_mat	mat;
+	int		i;
+	int		j;
+
+	j = 0;
+	ft_bzero(&mat, sizeof(t_mat));
+	while (j < 4)
+	{
+		i = 0;
+		while (i < 4)
+		{
+			mat.m[j][i] = m1->m[j][i] * factor;
+			i++;
+		}
+		j++;
+	}
+	return (mat);
 }
 
 void	matrix_multip(t_3d *in, t_3d *out, t_mat *matrix)
