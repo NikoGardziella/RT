@@ -33,7 +33,7 @@ t_3d	random_vector(t_3d refl_vec, float max_theta)
 	random.x = (float)random_rangef(0, 1, &state);
 	random.y = (float)random_rangef(0, 1, &state);
 	if (refl_vec.x > refl_vec.z)
-		tangent = (t_3d){-refl_vec.y, refl_vec.x, 0.0};
+		tangent = (t_3d){-refl_vec.y, refl_vec.x, 0.25};
 	else
 		tangent = (t_3d){0.0, -refl_vec.z, refl_vec.y};
 	
@@ -192,7 +192,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	{
 		while (i < 100)
 		{
-			put_pixel((t_2i){(int)xorshift32(&env->state), (int)xorshift32(&env->state)}, 0xFFFFFF, img);
+			put_pixel((t_2i){(int)(&env->state), (int)xorshift32(&env->state)}, 0xFFFFFF, img);
 			i++;
 		}
 		if (scene->accum_resolution.x == scene->resolution_range.x && scene->accum_resolution.y == scene->resolution_range.y)

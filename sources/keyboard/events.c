@@ -12,8 +12,22 @@
 
 #include "rt.h"
 
+void take_screenshot(t_env *env)
+{
+	SDL_Surface *sshot;
+
+	sshot = SDL_CreateRGBSurface(0, SCREEN_X, SCREEN_Y, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+	blit_surface(env->img[0].surface,NULL,sshot,NULL);
+	SDL_LockSurface(sshot);
+	if(SDL_SaveBMP(sshot, "screenshot.bmp") != 0)
+		ft_putendl("SDL screenshot error");
+	SDL_UnlockSurface(sshot);
+	SDL_FreeSurface(sshot);
+}
+
 void	key_down(t_env *env)
 {
+
 	if (env->sdl.event.type == SDL_KEYDOWN)
 	{
 		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_R)
@@ -39,6 +53,8 @@ void	key_down(t_env *env)
 			env->keymap |= KEY_SPACE;
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_LSHIFT)
 			env->keymap |= KEY_LSHIFT;
+		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_K)
+				take_screenshot(env);
 	}
 }
 
