@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/30 13:34:06 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 13:41:10 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,11 @@ typedef struct s_camera
 	double		aspect_ratio;
 }				t_camera;
 
+typedef struct s_cam_hit
+{
+	t_3d		point;
+	uint32_t	color;
+}				t_cam_hit;
 
 typedef struct s_scene
 {
@@ -219,12 +224,6 @@ typedef struct s_mouse
 	t_2i	move;
 	uint8_t	state;
 }				t_mouse;
-
-typedef struct s_cam_hit
-{
-	t_3d		point;
-	uint32_t	color;
-}				t_cam_hit;
 
 typedef struct s_env
 {
