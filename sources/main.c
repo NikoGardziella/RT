@@ -80,6 +80,9 @@ void	render_screen(t_env *env)
 
 void prog_clock(t_env *env)
 {
+	t_2i	coords;
+
+
 	if(env->sel_element == 2)
 	{
 		env->sel_ray.object->roughness = 1.0f / (double)env->img[6].dim.size.x * (float)(env->mouse.pos.x - env->img[6].dim.start.x);
@@ -92,6 +95,18 @@ void prog_clock(t_env *env)
 		env->sel_ray.object->density = 1 + (((double)MAX_DENSITY - 1) / env->img[7].dim.size.x * (float)(env->mouse.pos.x - env->img[7].dim.start.x));
 		env->sel_ray.object->density = fmax(env->sel_ray.object->density, 1.0f);
 		env->sel_ray.object->density = fmin(env->sel_ray.object->density , MAX_DENSITY);
+		render_screen(env);
+	}
+	if(env->sel_element == 4)
+	{
+		coords = env->mouse.pos;
+		coords.x -= env->img[8].dim.start.x;
+		coords.y -= env->img[8].dim.start.y;
+		coords.x = ft_max(coords.x, 0);
+		coords.y = ft_max(coords.y, 0);
+		coords.x = ft_min(coords.x, env->img[8].dim.size.x);
+		coords.y = ft_min(coords.y, env->img[8].dim.size.y);
+		env->sel_ray.object->color.combined = (rgb_slider(&env->img[8],&coords));
 		render_screen(env);
 	}
 }

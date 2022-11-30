@@ -44,6 +44,10 @@ void	left_button_down(void *param)
 	{
 		env->sel_element = 3;
 	}
+	else if (coords_in_area(env->img[8].dim, mouse_coords) && env->sel_ray.object != NULL && env->sidebar == 1)
+	{
+		env->sel_element = 4;
+	}
 	else if (coords_in_area(env->img[3].dim, mouse_coords) && env->sidebar == 1)
 		printf("Placeholder\n");
 	else if (coords_in_area(env->img[0].dim, mouse_coords))

@@ -302,6 +302,9 @@ void		put_images_to_screen(t_env *env);
 void		gradual_render(t_img *img, void *param);
 void		render_screen(t_env *env);
 void		slider(t_img *img, void *param);
+void		draw_shade_picker(t_img *img, void *param);
+void		draw_rgb_slider(t_img *img, void *param);
+t_uint		rgb_slider(t_img *img, t_2i *coords);
 
 /*Ray tracing functions*/
 

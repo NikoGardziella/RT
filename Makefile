@@ -112,6 +112,8 @@ SOURCES_LIST =	main.c\
 				images/ray_debugger.c\
 				images/render_scene.c\
 				images/slider.c\
+				images/draw_rgb_slider.c\
+				images/draw_shade_picker.c\
 				parser/add_object_to_scene.c\
 				parser/load_scene_camera.c\
 				parser/load_scene_objects.c\
