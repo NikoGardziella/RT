@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/24 16:07:33 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 11:23:09 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ static int	check_for_refraction(t_ray *shadow, t_list *object_list)
 	ret = 0;
 	while (intersects(shadow, object_list, &hit) && hit.object != NULL && hit.object->density < MAX_DENSITY)
 	{
-		shadow->forward = subtract_vectors(hit.object->origin, shadow->origin);
-		shadow->forward = offset_shadow_ray(*shadow, hit.object->radius);
+		//shadow->forward = subtract_vectors(hit.object->origin, shadow->origin);
+	//	shadow->forward = offset_shadow_ray(*shadow, hit.object->radius);
 		shadow->forward = get_refraction_ray(hit.normal, shadow->forward, (t_2d){1, hit.object->density});
 		shadow->origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * -1));
 		ret = 1;
