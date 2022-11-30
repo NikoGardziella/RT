@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   photon_mapping.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 11:16:53 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/30 13:39:09 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 13:54:56 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,16 @@ static void	resolution_adjust(t_2i coords, uint32_t color, t_img *img, int res_r
 
 static t_cam_hit	photon_raycast(t_ray *ray, t_scene *scene)
 {
-	(void)(scene);
-	(void)(ray);
-	return ((t_cam_hit){(t_3d){0.0, 0.0, 0.0}, 0xFF5200});
+	t_hit		hit;
+	t_cam_hit	cam_hit;
+
+	ft_bzero(&cam_hit, sizeof(t_cam_hit));
+	if (intersects(ray, scene->object_list, &hit))
+	{
+		cam_hit.point = hit.point;
+		cam_hit.color = hit.object->color.combined;
+	}
+	return (cam_hit);
 }
 
 static void	shoot_photons(t_scene *scene,size_t count)
