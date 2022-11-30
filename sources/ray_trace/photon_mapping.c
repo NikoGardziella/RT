@@ -52,24 +52,29 @@ static void	shoot_photons(t_scene *scene,size_t count)
 	int			i;
 	
 	light_list = scene->light_list;
-	i = 0;
 	while (light_list != NULL)
 	{
 		light = (t_object *)light_list->content;
 		ray.origin = light->origin;
-		ray.forward = random_vector((t_3d){0, 1, 0}, 2.0f);
-		if (intersects(&ray, scene->object_list, &hit))
+		while(count > 0)
 		{
-			while(i < SCREEN_X * SCREEN_Y)
+			ray.forward = random_vector((t_3d){0, 1, 0}, 2.0f);
+			if (intersects(&ray, scene->object_list, &hit))
 			{
-				if(vector_magnitude(subtract_vectors(hit.point, scene->cam_hit_buffer[i].point)) <= PHOTON_RADIUS)
+				i = 0;	
+				while(i < SCREEN_X * SCREEN_Y)
 				{
-					scene->photon_buffer[i] = light->color.combined;
+					printf("%d\n", i);
+					if(vector_magnitude(subtract_vectors(hit.point, scene->cam_hit_buffer[i].point)) <= PHOTON_RADIUS)
+					{
+						scene->photon_buffer[i] = light->color.combined;
+					}
+					i++;
 				}
-				i++;
 			}
+			light_list = light_list->next;
+			count--;
 		}
-		light_list = light_list->next;
 	}
 
 }

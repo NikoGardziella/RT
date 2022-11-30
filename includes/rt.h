@@ -30,7 +30,7 @@
 # define BIAS 0.000001
 # define IMAGES 10
 # define THREADS 32
-# define PHOTONS 1000
+# define PHOTONS 1
 # define PHOTON_RADIUS 0.5
 
 # define KEY_A 1
