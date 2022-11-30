@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/29 12:05:29 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 12:41:35 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,12 @@
 # include <stdio.h>
 # include <time.h>
 
-# define SCREEN_X 2560 / 4
-# define SCREEN_Y 1440 / 4
+# define SCREEN_X 2560 / 2
+# define SCREEN_Y 1440 / 2
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
+# define THREADS 16
 
 # define KEY_A 1
 # define KEY_W 2
@@ -167,6 +168,7 @@ typedef struct s_camera
 	double		aspect_ratio;
 }				t_camera;
 
+
 typedef struct s_scene
 {
 	t_list		*object_list;
@@ -236,6 +238,18 @@ typedef struct s_env
 	int				frame_index;
 	uint32_t		state;
 }				t_env;
+
+typedef struct s_multithread
+{
+	t_env		*env;
+	t_img		*img;
+	t_2i		*resolution;
+	int			nb;
+	int			start;
+	int			end;
+	int 		render_mode;
+}				t_multithread;
+
 
 /*Parser Functions*/
 
