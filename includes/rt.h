@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/30 12:40:29 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 13:34:06 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,13 @@
 # include <stdio.h>
 # include <time.h>
 
-# define SCREEN_X 2560 / 2
-# define SCREEN_Y 1440 / 2
+# define SCREEN_X 2560 / 4
+# define SCREEN_Y 1440 / 4
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
+# define THREADS 32
+# define PHOTONS 1000
 
 # define KEY_A 1
 # define KEY_W 2
@@ -167,6 +169,7 @@ typedef struct s_camera
 	double		aspect_ratio;
 }				t_camera;
 
+
 typedef struct s_scene
 {
 	t_list		*object_list;
@@ -178,7 +181,7 @@ typedef struct s_scene
 	t_2i		resolution;
 	t_2i		accum_resolution;
 	t_3d		*accum_buffer;
-	t_ray		*ray_buffer;
+	t_cam_hit	*cam_hit_buffer;
 }				t_scene;
 
 typedef struct s_dim
@@ -217,6 +220,12 @@ typedef struct s_mouse
 	uint8_t	state;
 }				t_mouse;
 
+typedef struct s_cam_hit
+{
+	t_3d		point;
+	uint32_t	color;
+}				t_cam_hit;
+
 typedef struct s_env
 {
 	int				selected;
@@ -237,6 +246,18 @@ typedef struct s_env
 	int				frame_index;
 	uint32_t		state;
 }				t_env;
+
+typedef struct s_multithread
+{
+	t_env		*env;
+	t_img		*img;
+	t_2i		*resolution;
+	int			nb;
+	int			start;
+	int			end;
+	int 		render_mode;
+}				t_multithread;
+
 
 /*Parser Functions*/
 
@@ -301,8 +322,10 @@ t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
 uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, t_3d normal);
 t_3d		get_refraction_ray(t_3d normal, t_3d ray_dir, t_2d index);
+
 /*MOVE TO VECTOR LIBRARY LATER*/
 t_3d	random_vector(t_3d refl_vec, float max_theta);
+void	photon_mapping(t_env *env, t_img *img, t_multithread *tab);
 
 /* Color operations functions*/
 

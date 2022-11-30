@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/30 12:39:35 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 13:16:15 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 #include <stdlib.h>
+#include <pthread.h>
 
 uint32_t	state = 1234;
 
@@ -92,7 +93,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 	return (color);
 }
 
-void	resolution_adjust(t_2i coords, uint32_t color, t_img *img, int res_range)
+static void	resolution_adjust(t_2i coords, uint32_t color, t_img *img, int res_range)
 {
 	t_2i	res_coords;
 
@@ -109,41 +110,37 @@ void	resolution_adjust(t_2i coords, uint32_t color, t_img *img, int res_range)
 	}
 }
 
-void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
-{
-	t_2i		coords;
-	t_ray		ray;
-	t_color		color;
-	t_camera	*camera;
-	t_2i		*resolution;
 
-	if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.y)
-	{
-		if (scene->accum_resolution.x == scene->resolution_range.x && scene->accum_resolution.y == scene->resolution_range.y)
-		{
-			scene->accum_resolution.x = scene->resolution_range.x;
-			scene->accum_resolution.y = scene->resolution_range.x;
-		}
-		resolution = &scene->accum_resolution;
-	}
-	else
-	{
-		ft_bzero(scene->accum_buffer, SCREEN_X * SCREEN_Y * sizeof(t_3d));
-//		ft_bzero(scene->ray_buffer, SCREEN_X * SCREEN_Y * sizeof(t_ray));
-		env->frame_index = 0;
-		resolution = &scene->resolution;
-		scene->accum_resolution.x = scene->resolution_range.x;
-		scene->accum_resolution.y = scene->resolution_range.x;
-	}
+void	*render_loop(void *arg)
+{
+	t_env				*env;
+	t_img				*img;
+	t_multithread		*tab;
+	t_2i				*resolution;
+	int 				render_mode;
+	t_2i				coords;
+	t_ray				ray;
+	t_color				color;
+	t_camera			*camera;
+	t_scene				*scene;
+
+	tab = (t_multithread *)arg;
+	env = tab->env;
+	img = tab->img;
+	resolution = tab->resolution;
+	render_mode = tab->render_mode;
+	scene = env->scene;
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	coords.y = 0;
+	photon_mapping(env, img, tab);
+	return (NULL);
 	while (coords.y < img->dim.size.y - 1)
 	{
 		if (coords.y % scene->resolution_range.y == resolution->y)
 		{
-			coords.x = 0;
-			while (coords.x < img->dim.size.x - 1)
+			coords.x = tab->start;
+			while (coords.x < tab->end)
 			{
 				if (coords.x % scene->resolution_range.y == resolution->x)
 				{
@@ -159,10 +156,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 						color = raycast(&ray, scene, BOUNCE_COUNT);
 					//scene->ray_buffer[coords.y * img->dim.size.x + coords.x] = ray;
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
-					{
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
-		//				color.combined = transition_colors(color.combined, 0xCD5400, 0.45f);
-					}
 					if (resolution == &scene->accum_resolution && env->frame_index > 0)
 					{
 						scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
@@ -182,6 +176,57 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 		}
 		coords.y += 1;
 	}
+	return (NULL);
+}
+
+void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
+{
+	t_2i				*resolution;
+	pthread_t			tids[THREADS];
+	t_multithread		tab[THREADS];
+	int			i;
+
+	i = 0;
+	if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.y)
+	{
+		if (scene->accum_resolution.x == scene->resolution_range.x && scene->accum_resolution.y == scene->resolution_range.y)
+		{
+			scene->accum_resolution.x = scene->resolution_range.x;
+			scene->accum_resolution.y = scene->resolution_range.x;
+		}
+		resolution = &scene->accum_resolution;
+	}
+	else
+	{
+		// ft_bzero(scene->accum_buffer, (size_t)(img->surface->w * img->surface->h) * sizeof(t_3d));
+
+		ft_bzero(scene->accum_buffer, SCREEN_X * SCREEN_Y * sizeof(t_3d));
+		env->frame_index = 0;
+		resolution = &scene->resolution;
+		scene->accum_resolution.x = scene->resolution_range.x;
+		scene->accum_resolution.y = scene->resolution_range.x;
+	}
+	i = 0;
+	while (i < THREADS)
+	{
+		tab[i].start = i * (img->surface->w / THREADS);
+		tab[i].end = (i + 1) * (img->surface->w / THREADS);
+		tab[i].img = img;
+		tab[i].env = env;
+		tab[i].render_mode = render_mode;
+		tab[i].resolution = resolution;
+		pthread_create(&tids[i], NULL, render_loop, (void *)&tab[i]);
+		i++;
+	}
+	i = 0;
+	while (i < THREADS)
+	{
+		pthread_join(tids[i], NULL);
+		i++;
+	}
+	// render_loop(img, render_mode, resolution, env);
+	// coords / color / ray
+	// assign_tab(t_data *img, t_draw *tab, int i)
 	if (resolution->x == scene->resolution_range.y - 1 && resolution->y == scene->resolution_range.y - 1)
 		env->frame_index += 1;
 	if (resolution->x < scene->resolution_range.y && resolution->y < scene->resolution_range.y)
