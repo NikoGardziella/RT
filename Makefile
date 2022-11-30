@@ -6,7 +6,7 @@
 #    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/29 15:21:21 by ctrouve          ###   ########.fr        #
+#    Updated: 2022/11/30 15:45:10 by ctrouve          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -120,6 +120,8 @@ SOURCES_LIST =	main.c\
 				parser/read_camera_info.c\
 				parser/read_object_info.c\
 				parser/read_object_transformations.c\
+				mapping/checkerboard.c\
+				mapping/normal_map.c\
 				mouse/events.c\
 				mouse/mouse_main.c\
 				mouse/left_button/up.c\
@@ -159,13 +161,14 @@ $(NAME): $(OBJECTS_DIRECTORY) $(OBJECTS)
 $(OBJECTS_DIRECTORY):
 	@mkdir -p $(OBJECTS_DIRECTORY)
 	@mkdir -p $(OBJECTS_DIRECTORY)/init
-	@mkdir -p $(OBJECTS_DIRECTORY)/parser
 	@mkdir -p $(OBJECTS_DIRECTORY)/images
 	@mkdir -p $(OBJECTS_DIRECTORY)/matrix
+	@mkdir -p $(OBJECTS_DIRECTORY)/mapping
 	@mkdir -p $(OBJECTS_DIRECTORY)/mouse
 	@mkdir -p $(OBJECTS_DIRECTORY)/keyboard
 	@mkdir -p $(OBJECTS_DIRECTORY)/mouse/left_button
 	@mkdir -p $(OBJECTS_DIRECTORY)/mouse/right_button
+	@mkdir -p $(OBJECTS_DIRECTORY)/parser
 	@mkdir -p $(OBJECTS_DIRECTORY)/ray_trace
 	@printf "$(COLOR)$(MAKE_COLOR)__________________________________________________________________________________\n"
 	@printf "$(PRINT_NAME): Created $(OBJECTS_DIRECTORY) directory.$(RESET)\n\n\n"

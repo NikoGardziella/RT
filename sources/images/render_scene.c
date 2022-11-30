@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/29 15:21:05 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:01:53 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,22 +130,22 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 		shadow_ray.origin = scale_vector(hit.normal, BIAS);
 		shadow_ray.origin = add_vectors(hit.point, shadow_ray.origin);
 		//color from object
-		color.combined = light_up(scene->object_list, hit.object->color, shadow_ray, hit.normal);
+		color.combined = light_up(scene->object_list, hit.color, shadow_ray, hit.normal);
 		if((hit.object->density < MAX_DENSITY || hit.object->metal > 0 || hit.object->roughness < 1.0) && bounces > 0)
 		{
-			if (hit.object->roughness <= 1.0f)
-			{
-				bounce_ray.forward = reflect_vector(ray->forward, hit.normal);
-				bounce_ray.forward = random_vector(bounce_ray.forward, (float)hit.object->roughness);
-				bounce_ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * 1));
-				color.combined = light_up(scene->object_list, hit.object->color, shadow_ray, hit.normal);
-				color_refl = raycast(&bounce_ray, scene, bounces - 1);
-				//color.combined = color_refl.combined;
-					color_refl.channel.r = (uint8_t)(color_refl.channel.r * (double)(hit.object->color.channel.r / 255.0));
-					color_refl.channel.g = (uint8_t)(color_refl.channel.g * (double)(hit.object->color.channel.g / 255.0));
-					color_refl.channel.b = (uint8_t)(color_refl.channel.b * (double)(hit.object->color.channel.b / 255.0));
-				color.combined = transition_colors(color_refl.combined, color.combined, (float)hit.object->roughness);
-			}
+			// if (hit.object->roughness <= 1.0f)
+			// {
+			// 	bounce_ray.forward = reflect_vector(ray->forward, hit.normal);
+			// 	bounce_ray.forward = random_vector(bounce_ray.forward, (float)hit.object->roughness);
+			// 	bounce_ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * 1));
+			// 	color.combined = light_up(scene->object_list, hit.object->color, shadow_ray, hit.normal);
+			// 	color_refl = raycast(&bounce_ray, scene, bounces - 1);
+			// 	//color.combined = color_refl.combined;
+			// 		color_refl.channel.r = (uint8_t)(color_refl.channel.r * (double)(hit.object->color.channel.r / 255.0));
+			// 		color_refl.channel.g = (uint8_t)(color_refl.channel.g * (double)(hit.object->color.channel.g / 255.0));
+			// 		color_refl.channel.b = (uint8_t)(color_refl.channel.b * (double)(hit.object->color.channel.b / 255.0));
+			// 	color.combined = transition_colors(color_refl.combined, color.combined, (float)hit.object->roughness);
+			// }
 			if (hit.object->density < MAX_DENSITY)
 			{
 				if (hit.inside == 1)

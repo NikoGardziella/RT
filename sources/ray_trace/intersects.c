@@ -1,12 +1,12 @@
-/*                                                                            */
 /* ************************************************************************** */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   intersects.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/17 12:54:21 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:36:15 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,12 @@ int	intersects(t_ray *ray, t_list *object_list, t_hit *hit)
 		hit->point = scale_vector(ray->forward, t.x);
 		hit->point = add_vectors(ray->origin, hit->point);
 		hit->normal = calculate_normal(hit->object, hit->point, t);
-		hit->color = hit->object->color;
+		if (hit->object->pattern == CHECKER)
+			hit->color = define_checker_color(hit->object, hit->point);
+		else if (hit->object->pattern == NORMAL)
+			hit->color = define_normal_color(hit->normal);
+		else
+			hit->color = hit->object->color;
 		if (t.x == t.y)
 			hit->inside = 1;
 		else

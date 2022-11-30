@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/29 15:20:31 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:44:35 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,13 @@ typedef enum e_obj_type
 	BOX = 5,
 	DISC = 6
 }				t_obj_type;
+
+typedef enum e_pattern
+{
+	NONE = 0,
+	NORMAL = 1,
+	CHECKER = 2
+}				t_pattern;
 
 /*Typedef structs*/
 
@@ -121,6 +128,13 @@ typedef union		u_color
 	t_rgba			channel;
 }					t_color;
 
+typedef struct s_checker
+{
+	double	width;
+	double	height;
+	t_color	color_a;
+	t_color	color_b;
+}				t_checker;
 typedef struct s_object
 {
 	double		axis_length;
@@ -130,6 +144,7 @@ typedef struct s_object
 	double		metal;
 	int			lumen;
 	int			type;
+	int			pattern;
 	t_color		color;
 	t_3d		axis;
 	t_3d		end;
@@ -300,7 +315,12 @@ t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
 uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, t_3d normal);
 t_3d		get_refraction_ray(t_3d normal, t_3d ray_dir, t_2d index);
 /*MOVE TO VECTOR LIBRARY LATER*/
-t_3d	random_vector(t_3d refl_vec, float max_theta);
+t_3d		random_vector(t_3d refl_vec, float max_theta);
+
+/* mapping & pattern functions*/
+t_color		define_checker_color(t_object *hit_object, t_3d hit_point);
+t_2d		spherical_map(t_object sphere, t_3d p);
+t_color		define_normal_color(t_3d hit_normal);
 
 /* Color operations functions*/
 
@@ -308,7 +328,7 @@ t_rgba		ft_add_rgba(t_rgba c1, t_rgba c2);
 t_rgba		ft_make_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 t_rgba		ft_mul_rgba_rgba(t_rgba a, t_rgba b);
 t_rgba		ft_mul_rgba(t_rgba c, double t);
-t_rgba			ft_lerp_rgba(t_rgba c1, t_rgba c2, double t);
+t_rgba		ft_lerp_rgba(t_rgba c1, t_rgba c2, double t);
 uint		ft_get_color(t_rgba c);
 
 /*Parser functions*/

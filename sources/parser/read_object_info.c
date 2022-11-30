@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 12:23:14 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/24 14:32:00 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/11/30 13:50:56 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,22 @@ static int	metal(char *line, t_object *object)
 	return (0);
 }
 
+static int	pattern(char *line, t_object *object)
+{
+	char	*str;
+
+	str = "pattern";
+	if (ft_strnequ(ft_strstr(line, str), str, ft_strlen(str)))
+	{
+		line = ft_strstr(line, str);
+		line = ft_strchr(line, ' ');
+		if (line)
+			object->pattern = (int)ft_atoi(line);
+		return (1);
+	}
+	return (0);
+}
+
 int	read_object_info(char *line, t_object *object)
 {
 	if (origin(line, object))
@@ -161,6 +177,8 @@ int	read_object_info(char *line, t_object *object)
 	if (roughness(line, object))
 		return (1);
 	if (metal(line, object))
+		return (1);
+	if (pattern(line, object))
 		return (1);
 	return (0);
 }
