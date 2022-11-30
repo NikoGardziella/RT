@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/25 16:50:45 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/11/30 11:25:22 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -134,6 +134,7 @@ SOURCES_LIST =	main.c\
 				ray_trace/calculate_normal.c\
 				ray_trace/intersects.c\
 				ray_trace/refraction.c\
+				ray_trace/photon_mapping.c\
 				ray_trace/shade.c
 
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))

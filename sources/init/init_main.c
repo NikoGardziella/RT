@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/26 14:42:12 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 11:40:06 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ void	init_main(t_env *env)
 	env->scene->accum_resolution.x = env->scene->resolution_range.x;
 	env->scene->accum_resolution.y = env->scene->resolution_range.x;
 	env->scene->accum_buffer = (t_3d *)malloc(sizeof(t_3d) * (SCREEN_X * SCREEN_Y));
+	if (env->scene->accum_buffer == NULL)
+		close_prog(NULL, "Failed to malloc for accum_buffer...", -4);
+	env->scene->ray_buffer = (t_ray *)malloc(sizeof(t_ray) * (SCREEN_X * SCREEN_Y));
+	if (env->scene->ray_buffer == NULL)
+		close_prog(NULL, "Failed to malloc for ray_buffer...", -5);
 	env->render_mode = -1;
 	env->sidebar = -1;
 	env->selected = -1;

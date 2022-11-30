@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/30 11:30:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 12:39:35 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,16 +116,9 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	t_color		color;
 	t_camera	*camera;
 	t_2i		*resolution;
-	int			i;
 
-	i = 0;
 	if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.y)
 	{
-		while (i < 100)
-		{
-			put_pixel((t_2i){(int)(&env->state), (int)xorshift32(&env->state)}, 0xFFFFFF, img);
-			i++;
-		}
 		if (scene->accum_resolution.x == scene->resolution_range.x && scene->accum_resolution.y == scene->resolution_range.y)
 		{
 			scene->accum_resolution.x = scene->resolution_range.x;
@@ -136,6 +129,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	else
 	{
 		ft_bzero(scene->accum_buffer, SCREEN_X * SCREEN_Y * sizeof(t_3d));
+//		ft_bzero(scene->ray_buffer, SCREEN_X * SCREEN_Y * sizeof(t_ray));
 		env->frame_index = 0;
 		resolution = &scene->resolution;
 		scene->accum_resolution.x = scene->resolution_range.x;
@@ -163,6 +157,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 						color = raycast(&ray, scene, -1);
 					else
 						color = raycast(&ray, scene, BOUNCE_COUNT);
+					//scene->ray_buffer[coords.y * img->dim.size.x + coords.x] = ray;
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
 					{
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
@@ -170,13 +165,13 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 					}
 					if (resolution == &scene->accum_resolution && env->frame_index > 0)
 					{
-						scene->accum_buffer[coords.y * SCREEN_X + coords.x] = (t_3d){
-							(float)(color.channel.r + scene->accum_buffer[coords.y * SCREEN_X + coords.x].x),
-							(float)(color.channel.g + scene->accum_buffer[coords.y * SCREEN_X + coords.x].y),
-							(float)(color.channel.b + scene->accum_buffer[coords.y * SCREEN_X + coords.x].z)};
-						color.channel.r = (uint8_t)(scene->accum_buffer[coords.y * SCREEN_X + coords.x].x / env->frame_index);
-						color.channel.g = (uint8_t)(scene->accum_buffer[coords.y * SCREEN_X + coords.x].y / env->frame_index);
-						color.channel.b = (uint8_t)(scene->accum_buffer[coords.y * SCREEN_X + coords.x].z / env->frame_index);
+						scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
+							(float)(color.channel.r + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
+							(float)(color.channel.g + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y),
+							(float)(color.channel.b + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z)};
+						color.channel.r = (uint8_t)(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x / env->frame_index);
+						color.channel.g = (uint8_t)(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y / env->frame_index);
+						color.channel.b = (uint8_t)(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z / env->frame_index);
 					}
 					put_pixel(coords, color.combined, img);
 					if (scene->resolution.x == scene->resolution.y)

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:18:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/29 12:27:39 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 11:27:07 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	ray_debugger(t_img *img, void *param)
 	float	theta;
 
 	env = param;
-	theta = 0.5f;
+	theta = 1.0f;
 	ray = random_vector(env->scene->camera->ray.forward, theta);
 	if (dot_product(env->scene->camera->ray.forward, ray) > 1.0f - (theta))
 		draw_ray_arrow(img, ray, 0x00CC00, 2);

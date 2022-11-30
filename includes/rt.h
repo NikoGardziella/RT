@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/29 12:05:29 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 12:40:29 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include <stdio.h>
 # include <time.h>
 
-# define SCREEN_X 2560 / 4
-# define SCREEN_Y 1440 / 4
+# define SCREEN_X 2560 / 2
+# define SCREEN_Y 1440 / 2
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
@@ -178,6 +178,7 @@ typedef struct s_scene
 	t_2i		resolution;
 	t_2i		accum_resolution;
 	t_3d		*accum_buffer;
+	t_ray		*ray_buffer;
 }				t_scene;
 
 typedef struct s_dim
