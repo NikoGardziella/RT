@@ -31,6 +31,7 @@
 # define IMAGES 10
 # define THREADS 32
 # define PHOTONS 1000
+# define PHOTON_RADIUS 0.5
 
 # define KEY_A 1
 # define KEY_W 2
@@ -187,6 +188,7 @@ typedef struct s_scene
 	t_2i		accum_resolution;
 	t_3d		*accum_buffer;
 	t_cam_hit	*cam_hit_buffer;
+	uint32_t	*photon_buffer;
 }				t_scene;
 
 typedef struct s_dim

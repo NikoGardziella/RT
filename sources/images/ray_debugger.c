@@ -78,7 +78,7 @@ void	ray_debugger(t_img *img, void *param)
 	float	theta;
 
 	env = param;
-	theta = 1.0f;
+	theta = 2.0f;
 	ray = random_vector(env->scene->camera->ray.forward, theta);
 	if (dot_product(env->scene->camera->ray.forward, ray) > 1.0f - (theta))
 		draw_ray_arrow(img, ray, 0x00CC00, 2);

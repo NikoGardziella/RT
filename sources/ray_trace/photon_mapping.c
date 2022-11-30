@@ -31,11 +31,39 @@ static void	resolution_adjust(t_2i coords, uint32_t color, t_img *img, int res_r
 
 static t_cam_hit	photon_raycast(t_ray *ray, t_scene *scene)
 {
-	(t_cam_hit){(t_3d){0.0, 0.0, 0.0}, 0xFF5200};
+	(void)(scene);
+	(void)(ray);
+	return ((t_cam_hit){(t_3d){0.0, 0.0, 0.0}, 0xFF5200});
 }
 
-static void	shoot_photons(t_uint32 *buffer, t_object *lights, size_t count)
+static void	shoot_photons(t_scene *scene,size_t count)
 {
+	t_object *light;
+	t_ray		ray;
+	t_hit		hit;
+	t_list		*light_list;
+	int			i;
+	
+	light_list = scene->light_list;
+	i = 0;
+	while (light_list != NULL)
+	{
+		light = (t_object *)light_list->content;
+		ray.origin = light->origin;
+		ray.forward = random_vector((t_3d){0, 1, 0}, 2.0f);
+		if (intersects(&ray, scene->object_list, &hit))
+		{
+			while(i < SCREEN_X * SCREEN_Y)
+			{
+				if(vector_magnitude(subtract_vectors(hit.point, scene->cam_hit_buffer[i].point)) <= PHOTON_RADIUS)
+				{
+					scene->photon_buffer[i] = light->color.combined;
+				}
+				i++;
+			}
+		}
+		light_list = light_list->next;
+	}
 
 }
 
@@ -98,5 +126,5 @@ void	photon_mapping(t_env *env, t_img *img, t_multithread *tab)
 		}
 		coords.y += 1;
 	}
-	shoot_photons(&scene->photon_buffer, scene->light_list, PHOTONS);
+	shoot_photons(scene, PHOTONS);
 }
