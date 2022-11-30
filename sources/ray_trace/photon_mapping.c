@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 11:16:53 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/30 13:54:56 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:53:21 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,40 +43,44 @@ static t_cam_hit	photon_raycast(t_ray *ray, t_scene *scene)
 	return (cam_hit);
 }
 
-static void	shoot_photons(t_scene *scene,size_t count)
+static void	shoot_photons(t_scene *scene, int start, int end, size_t count)
 {
-	t_object *light;
+	t_object	*light;
 	t_ray		ray;
 	t_hit		hit;
 	t_list		*light_list;
-	int			i;
+	t_2i		coords;
 	
 	light_list = scene->light_list;
 	while (light_list != NULL)
 	{
 		light = (t_object *)light_list->content;
 		ray.origin = light->origin;
+		count = 1;
 		while(count > 0)
 		{
-			ray.forward = random_vector((t_3d){0, 1, 0}, 2.0f);
+			ray.forward = random_vector((t_3d){0.0, 0.0, -1.0}, 2.0f);
 			if (intersects(&ray, scene->object_list, &hit))
 			{
-				i = 0;	
-				while(i < SCREEN_X * SCREEN_Y)
+				coords.y = 0;
+				while(coords.y < SCREEN_Y)
 				{
-					printf("%d\n", i);
-					if(vector_magnitude(subtract_vectors(hit.point, scene->cam_hit_buffer[i].point)) <= PHOTON_RADIUS)
+					coords.x = start;
+					while(coords.x < end)
 					{
-						scene->photon_buffer[i] = light->color.combined;
+						if(vector_magnitude(subtract_vectors(hit.point, scene->cam_hit_buffer[coords.x + coords.y * SCREEN_X].point)) <= PHOTON_RADIUS)
+						{
+							scene->photon_buffer[coords.x + coords.y * SCREEN_X] = light->color.combined;
+						}
+						coords.x++;
 					}
-					i++;
+					coords.y++;
 				}
 			}
 			light_list = light_list->next;
 			count--;
 		}
 	}
-
 }
 
 void	photon_mapping(t_env *env, t_img *img, t_multithread *tab)
@@ -138,5 +142,5 @@ void	photon_mapping(t_env *env, t_img *img, t_multithread *tab)
 		}
 		coords.y += 1;
 	}
-	shoot_photons(scene, PHOTONS);
+	shoot_photons(scene, tab->start, tab->end, PHOTONS);
 }

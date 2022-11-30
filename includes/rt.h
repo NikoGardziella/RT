@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/30 13:41:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:10:16 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define BIAS 0.000001
 # define IMAGES 10
 # define THREADS 32
-# define PHOTONS 1
+# define PHOTONS 20000
 # define PHOTON_RADIUS 0.5
 
 # define KEY_A 1

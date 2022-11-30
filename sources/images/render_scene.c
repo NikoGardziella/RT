@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/30 13:16:15 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:07:44 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 		// ft_bzero(scene->accum_buffer, (size_t)(img->surface->w * img->surface->h) * sizeof(t_3d));
 
 		ft_bzero(scene->accum_buffer, SCREEN_X * SCREEN_Y * sizeof(t_3d));
+		ft_bzero(scene->photon_buffer, SCREEN_X * SCREEN_Y * sizeof(uint32_t));
 		env->frame_index = 0;
 		resolution = &scene->resolution;
 		scene->accum_resolution.x = scene->resolution_range.x;
