@@ -26,16 +26,16 @@ OBJECT sphere
 OBJECT plane
 {
 	origin 0.0 -40.0 0.0
-	axis 0.0 0.0 0.0
+	axis 0.0 1.0 0.0
 	color 0000FF
 	roughness 1.0
-	pattern 0
+	pattern 2
 }
 
 OBJECT plane
 {
 	origin 0.0 0.0 -60.0
-	axis 0.0 0.0 90.0
+	axis 0.0 0.0 1.0
 	color 90EE90
 	roughness 1.0
 	pattern 2
