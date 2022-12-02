@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/30 11:23:09 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:58:27 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ static int	check_for_refraction(t_ray *shadow, t_list *object_list)
 	
 	ft_bzero(&hit, sizeof(t_hit));
 	ret = 0;
-	while (intersects(shadow, object_list, &hit) && hit.object != NULL && hit.object->density < MAX_DENSITY)
+	while (intersects(shadow, object_list, &hit, 0) && hit.object != NULL && hit.object->density < MAX_DENSITY)
 	{
 		//shadow->forward = subtract_vectors(hit.object->origin, shadow->origin);
-	//	shadow->forward = offset_shadow_ray(*shadow, hit.object->radius);
+		//shadow->forward = offset_shadow_ray(*shadow, hit.object->radius);
 		shadow->forward = get_refraction_ray(hit.normal, shadow->forward, (t_2d){1, hit.object->density});
 		shadow->origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * -1));
 		ret = 1;
@@ -87,7 +87,7 @@ uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray shadow, t_3d nor
 			shadow.forward = add_vectors(shadow.forward, offset_shadow_ray(shadow, object->radius));
 			t = vector_magnitude(shadow.forward);
 			shadow.forward = normalize_vector(shadow.forward);
-			if (check_for_refraction(&shadow, object_list_start) || t < intersect_loop(&shadow, object_list_start, NULL).x)
+			if (check_for_refraction(&shadow, object_list_start) || t < intersect_loop(&shadow, object_list_start, NULL, 0).x)
 			{
 				level = (float)get_light_level(t, object->lumen, normal, shadow.forward);
 				color = calc_light(color, object->color, obj_color, (double)(level));

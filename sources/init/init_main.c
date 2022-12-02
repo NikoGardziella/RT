@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/30 14:32:41 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/02 16:16:32 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,6 @@ void	init_main(t_env *env)
 	env->scene->cam_hit_buffer = (t_cam_hit *)malloc(sizeof(t_cam_hit) * (SCREEN_X * SCREEN_Y));
 	if (env->scene->cam_hit_buffer == NULL)
 		close_prog(NULL, "Failed to malloc for cam_hit_buffer...", -5);
-	env->scene->photon_buffer = (uint32_t *)malloc(sizeof(uint32_t) * (SCREEN_X * SCREEN_Y));
-	if (env->scene->photon_buffer == NULL)
-		close_prog(NULL, "Failed to malloc for photon_buffer...", -5);
 	env->render_mode = -1;
 	env->sidebar = -1;
 	env->selected = -1;

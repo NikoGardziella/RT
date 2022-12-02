@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/30 15:10:16 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/02 16:19:15 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@
 # define BIAS 0.000001
 # define IMAGES 10
 # define THREADS 32
-# define PHOTONS 20000
-# define PHOTON_RADIUS 0.5
+# define PHOTONS 1000
+# define N_CLOSEST_PHOTONS 1
+# define PHOTON_RADIUS 0.2
 
 # define KEY_A 1
 # define KEY_W 2
@@ -170,16 +171,24 @@ typedef struct s_camera
 	double		aspect_ratio;
 }				t_camera;
 
-typedef struct s_cam_hit
+typedef struct s_ray_hit
 {
 	t_3d		point;
 	uint32_t	color;
+}				t_ray_hit;
+
+typedef struct s_cam_hit
+{
+	t_ray_hit	hit;
+	t_ray_hit	photon[N_CLOSEST_PHOTONS];
 }				t_cam_hit;
 
 typedef struct s_scene
 {
 	t_list		*object_list;
 	t_list		*light_list;
+	t_list		*photon_list[THREADS];
+	t_list		*last_photon_node[THREADS];
 	t_camera	*camera;
 	t_3d		camera_angle;
 	t_rgba		ambient_color;
@@ -188,7 +197,6 @@ typedef struct s_scene
 	t_2i		accum_resolution;
 	t_3d		*accum_buffer;
 	t_cam_hit	*cam_hit_buffer;
-	uint32_t	*photon_buffer;
 }				t_scene;
 
 typedef struct s_dim
@@ -237,7 +245,7 @@ typedef struct s_env
 	t_img			*img;
 	t_scene			*scene;
 	t_font			*font;
-	unsigned int	keymap;
+	t_uint			keymap;
 	int8_t			sidebar;
 	int				render_mode;
 	t_ray			sel_ray;
@@ -259,7 +267,6 @@ typedef struct s_multithread
 	int 		render_mode;
 }				t_multithread;
 
-
 /*Parser Functions*/
 
 t_list		*load_scene_objects(char *path);
@@ -280,17 +287,17 @@ t_mat		init_pmatrix(t_proj *proj);
 
 /*Keyboard functions*/
 
-void	keyboard_events(t_env *env);
-int		keyboard_hold(t_env *env);
+void		keyboard_events(t_env *env);
+int			keyboard_hold(t_env *env);
 
 /*Mouse functions*/
 
-void	mouse_events(void *param);
-int		mouse_main(void *param);
-void	left_button_up(void *param);
-void	left_button_down(void *param);
-void	right_button_up(void *param);
-void	right_button_down(void *param);
+void		mouse_events(void *param);
+int			mouse_main(void *param);
+void		left_button_up(void *param);
+void		left_button_down(void *param);
+void		right_button_up(void *param);
+void		right_button_down(void *param);
 
 /*Close and free functions*/
 
@@ -326,7 +333,10 @@ t_3d		get_refraction_ray(t_3d normal, t_3d ray_dir, t_2d index);
 
 /*MOVE TO VECTOR LIBRARY LATER*/
 t_3d	random_vector(t_3d refl_vec, float max_theta);
+/*Photon mapping functions*/
 void	photon_mapping(t_env *env, t_img *img, t_multithread *tab);
+void	shoot_photons(t_scene *scene, size_t count, int thread_id);
+void	*compare_ray_hits(void *arg);
 
 /* Color operations functions*/
 
@@ -334,7 +344,7 @@ t_rgba		ft_add_rgba(t_rgba c1, t_rgba c2);
 t_rgba		ft_make_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 t_rgba		ft_mul_rgba_rgba(t_rgba a, t_rgba b);
 t_rgba		ft_mul_rgba(t_rgba c, double t);
-t_rgba			ft_lerp_rgba(t_rgba c1, t_rgba c2, double t);
+t_rgba		ft_lerp_rgba(t_rgba c1, t_rgba c2, double t);
 uint		ft_get_color(t_rgba c);
 
 /*Parser functions*/
@@ -365,9 +375,9 @@ int			intersect_plane(t_object *plane, t_ray ray, t_2d *t);
 int			intersect_cone(t_object *cone, t_ray ray, t_2d *t);
 int			intersect_sphere(t_object *sphere, t_ray ray, t_2d *t);
 int			intersect_cylinder(t_object *cylinder, t_ray ray, t_2d *t);
-int			intersects(t_ray *ray, t_list *object_list, t_hit *hit);
+int			intersects(t_ray *ray, t_list *object_list, t_hit *hit, int mode);
 int			intersect_box(t_object *box, t_ray ray, t_2d *t);
-t_2d		intersect_loop(t_ray *ray, t_list *objects, t_hit *hit);
+t_2d		intersect_loop(t_ray *ray, t_list *objects, t_hit *hit, int mode);
 
 /*Matrix transformation functions*/
 

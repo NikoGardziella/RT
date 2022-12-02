@@ -6,7 +6,7 @@
 /*   By: dmalesev <dmalesev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:18:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/30 15:42:13 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/02 15:37:29 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,20 @@ void	ray_debugger(t_img *img, void *param)
 		while (coords.x < img->dim.size.x)
 		{
 			ray = get_ray(coords, img, scene->camera);
-			draw_ray_arrow(img, ray.forward,0xFF0000, 2);
+			draw_ray_arrow(img, ray.forward, 0xFF0000, 2);
 			coords.x += 20;
 		}
 		coords.y += 20;
 	}
+	ray = get_ray(env->mouse.pos, img, scene->camera);
+	draw_ray_arrow(img, ray.forward, 0xFFC600, 2);
 	draw_ray_arrow(img, camera->up, 0x0000FF, 2);
 	draw_ray_arrow(img, camera->right, 0x00FF00, 2);
 	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
 	draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFFFF);
 }
 */
-/*
+
 void	ray_debugger(t_img *img, void *param)
 {
 	t_env	*env;
@@ -87,36 +89,6 @@ void	ray_debugger(t_img *img, void *param)
 		draw_ray_arrow(img, ray, 0xFF0000, 2);
 	draw_ray_arrow(img, tan_temp[0], 0x0000FF, 2);
 	draw_ray_arrow(img, tan_temp[1], 0xAC5600, 2);
-	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
-	draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFFFF);
-}
-*/
-void	ray_debugger(t_img *img, void *param)
-{
-	t_env	*env;
-	t_2i	coords;
-	t_2f	step;
-	uint32_t	color;
-
-	env = param;
-	coords.y = 0;
-	step.x = (float)(1.0f / (SCREEN_X)) * (float)img->dim.size.x;
-	step.y = (float)(1.0f / (SCREEN_Y)) * (float)img->dim.size.y;
-	while (coords.y < SCREEN_Y)
-	{
-		coords.x = 0;
-		while (coords.x < SCREEN_X)
-		{
-			color = env->scene->photon_buffer[coords.x + coords.y * SCREEN_X];
-			t_2i	pixel;
-			pixel.x = (int)((float)coords.x * step.x);
-			pixel.y = (int)((float)coords.y * step.y);
-			put_pixel(pixel, color, img);
-			coords.x += 1;
-		}
-		coords.y += 1;
-	}
-	(void)draw_ray_arrow;
 	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
 	draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFFFF);
 }

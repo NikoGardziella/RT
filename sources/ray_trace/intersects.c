@@ -6,13 +6,13 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/30 15:05:59 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:54:43 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-t_2d	intersect_loop(t_ray *ray, t_list *objects, t_hit *hit)
+t_2d	intersect_loop(t_ray *ray, t_list *objects, t_hit *hit, int mode)
 {
 	t_list		*objects_list;
 	t_object	*object;
@@ -27,8 +27,8 @@ t_2d	intersect_loop(t_ray *ray, t_list *objects, t_hit *hit)
 	while (objects_list != NULL)
 	{
 		object = (t_object *)objects_list->content;
-		//if (object->type == LIGHT && hit != NULL)
-		//	ret = intersect_sphere(object, *ray, &t);
+		if (object->type == LIGHT && mode == 1)
+			ret = intersect_sphere(object, *ray, &t);
 		if (object->type == SPHERE)
 			ret = intersect_sphere(object, *ray, &t);
 		if (object->type == PLANE)
@@ -52,11 +52,11 @@ t_2d	intersect_loop(t_ray *ray, t_list *objects, t_hit *hit)
 	return (t_closest);
 }
 
-int	intersects(t_ray *ray, t_list *object_list, t_hit *hit)
+int	intersects(t_ray *ray, t_list *object_list, t_hit *hit, int mode)
 {
 	t_2d	t;
 
-	t = intersect_loop(ray, object_list, hit);
+	t = intersect_loop(ray, object_list, hit, mode);
 	if (t.x < T_MAX)
 	{
 		hit->point = scale_vector(ray->forward, t.x);
