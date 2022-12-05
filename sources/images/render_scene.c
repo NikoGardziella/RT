@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/02 16:21:00 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/05 12:31:14 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ static void	draw_photon_scene(t_img *img, void *param)
 						env->scene->cam_hit_buffer[coords.x + coords.y * SCREEN_X].hit.point,
 						env->scene->cam_hit_buffer[coords.x + coords.y * SCREEN_X].photon[N_CLOSEST_PHOTONS - 1].point
 						));
-			furthest *= 2;
+			furthest *= 1;
 			furthest = fmax(furthest, 0.0);
 			furthest = fmin(furthest, 1.0);
 			color[0].combined = env->scene->cam_hit_buffer[coords.x + coords.y * SCREEN_X].photon[N_CLOSEST_PHOTONS - 1].color;
@@ -339,7 +339,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 			pthread_join(tids[i], NULL);
 			i++;
 		}
-		
+		double	radius = get_smallest_photon_cluster(scene->cam_hit_buffer);
 		draw_photon_scene(img, env);
 	}
 	// render_loop(img, render_mode, resolution, env);

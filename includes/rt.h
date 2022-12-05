@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/02 16:19:15 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/05 11:49:06 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
-# define THREADS 32
-# define PHOTONS 1000
+# define THREADS 24
+# define PHOTONS 100
 # define N_CLOSEST_PHOTONS 1
 # define PHOTON_RADIUS 0.2
 
