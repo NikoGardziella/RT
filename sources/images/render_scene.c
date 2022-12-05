@@ -340,6 +340,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 			i++;
 		}
 		double	radius = get_smallest_photon_cluster(scene->cam_hit_buffer);
+		(void)radius;
 		draw_photon_scene(img, env);
 	}
 	// render_loop(img, render_mode, resolution, env);

@@ -321,6 +321,7 @@ void		slider(t_img *img, void *param);
 void		draw_shade_picker(t_img *img, void *param);
 void		draw_rgb_slider(t_img *img, void *param);
 t_uint		rgb_slider(t_img *img, t_2i *coords);
+double 		get_smallest_photon_cluster(t_cam_hit *hit_buffer);
 
 /*Ray tracing functions*/
 
