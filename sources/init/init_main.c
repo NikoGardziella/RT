@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/05 11:48:38 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/05 14:37:22 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,5 @@ void	init_main(t_env *env)
 	env->selected = -1;
 	env->state = 15252;
 	load_textures(env);
+	temp_env = env;
 }
