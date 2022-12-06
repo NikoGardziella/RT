@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 15:28:49 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/01 16:14:32 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/06 18:41:17 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,36 +51,48 @@ t_2d	spherical_map(t_object sphere, t_3d p)
 	return (pos);
 }
 
-/*
-** First we translate the coord into new_coord in a horizontal plan (0, 1, 0)
-** then in 2D into this plan by negating the y coordinate.
-*/
-static t_2d	planar_map(t_object hit_object, t_3d hit_point)
+static double	ft_deg_to_rad(double deg)
 {
-	t_2d	coord_2d;
-	t_3d	abc_param;
-	double	d;
-	double	k;
-	t_3d	new_coord;
-
-	abc_param.x = hit_object.axis.x;
-	abc_param.y = hit_object.axis.y;
-	abc_param.z = hit_object.axis.z;
-	// abc_param.x = 0;
-	// abc_param.y = 1;
-	// abc_param.z = 0;
-	d = hit_object.axis.x * hit_object.origin.x + hit_object.axis.y * hit_object.origin.y + hit_object.axis.z * hit_object.origin.z;
-//	d = hit_object.origin.y;
-	k = (d - (abc_param.x * hit_point.x) - (abc_param.y * hit_point.y) - (abc_param.z * hit_point.z)) /\
-	 (abc_param.x * abc_param.x + abc_param.y * abc_param.y + abc_param.z * abc_param.z);
-	new_coord.x = hit_point.x + k * abc_param.x;
-	new_coord.y = hit_point.y + k * abc_param.y;
-	new_coord.z = hit_point.z + k * abc_param.z;
-	coord_2d.x = new_coord.x;
-	coord_2d.y = new_coord.z;
-	return (coord_2d);
+	return (deg * M_PI / 180.0);
 }
 
+t_3d	ft_rotate_vec3(t_3d v, t_3d rot)
+{
+	t_3d	res;
+
+	rot.x = ft_deg_to_rad(rot.x);
+	rot.y = ft_deg_to_rad(rot.y);
+	rot.z = ft_deg_to_rad(rot.z);
+	res.x = v.x;
+	res.y = v.y * cos(rot.x) + v.z * sin(rot.x);
+	res.z = -v.y * sin(rot.x) + v.z * cos(rot.x);
+	v = (t_3d){res.x, res.y, res.z};
+	res.x = v.x * cos(rot.y) + v.z * sin(rot.y);
+	res.y = v.y;
+	res.z = -v.x * sin(rot.y) + v.z * cos(rot.y);
+	v = (t_3d){res.x, res.y, res.z};
+	res.x = v.x * cos(rot.z) - v.y * sin(rot.z);
+	res.y = v.x * sin(rot.z) + v.y * cos(rot.z);
+	res.z = v.z;
+	return (res);
+}
+
+t_2d	plane_checker(t_object object, t_3d coords)
+{
+	t_3d	new_coords;
+	t_3d	rot;
+	t_2d	uv_coords;
+
+	new_coords.x = coords.x - object.origin.x;
+	new_coords.y = coords.y - object.origin.y;
+	new_coords.z = coords.z - object.origin.z;
+	rot = (t_3d){-1 * object.axis.x, -1 * object.axis.y, -1 * object.axis.z};
+	rot = normalize_vector(rot);
+	//new_coords = ft_rotate_vec3(new_coords, rot);
+	uv_coords.x = new_coords.x;
+	uv_coords.y = new_coords.z;
+	return (uv_coords);
+}
 /*
 ** If you want your checkers to look "square" on the sphere, be sure and set 
 ** the width to twice the height. This is because of how the spherical map is 
@@ -96,7 +108,6 @@ t_color	define_checker_color(t_object *hit_object, t_3d hit_point)
 	t_color		color_b;
 	double		height;
 
-//	height = hit_object->radius / 2;
 	color_a.combined = hit_object->color.combined;
 	color_b.combined = 0xFFFFFF;
 	if (hit_object->type == SPHERE)
@@ -104,13 +115,14 @@ t_color	define_checker_color(t_object *hit_object, t_3d hit_point)
 		height = hit_object->radius / 2;
 		uv_pos = spherical_map(*hit_object, hit_point);
 		checker = init_checker(2 * height, height, color_a, color_b);
+		color_out = uv_pattern_at(checker, uv_pos.x, uv_pos.y);
 	}
 	else
 	{
 		height = 10;
-		uv_pos = planar_map(*hit_object, hit_point);
+		uv_pos = plane_checker(*hit_object, hit_point);
 		checker = init_checker(height, height, color_a, color_b);
+		color_out = uv_pattern_at(checker, uv_pos.x, uv_pos.y);
 	}
-	color_out = uv_pattern_at(checker, uv_pos.x, uv_pos.y);
 	return (color_out);
 }
