@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/05 15:44:19 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/06 16:45:18 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@
 # define THREADS 12
 # define PHOTONS 32
 # define N_CLOSEST_PHOTONS 10
-# define PHOTON_RADIUS 0.2
+# define CAMERA_BOUNCES 1
+# define LIGHT_BOUNCES 3
+# define BOUNCE_COUNT 3
+# define MAX_DENSITY 50
 
 # define KEY_A 1
 # define KEY_W 2
@@ -40,9 +43,6 @@
 # define KEY_S 8
 # define KEY_SPACE 16
 # define KEY_LSHIFT 32
-
-# define BOUNCE_COUNT 10
-# define MAX_DENSITY 50
 
 # ifndef PI
 #  define PI 3.141592
