@@ -36,6 +36,7 @@
 # define LIGHT_BOUNCES 4
 # define BOUNCE_COUNT 3
 # define MAX_DENSITY 50
+# define MAX_LUMEN 1000
 
 # define KEY_A 1
 # define KEY_W 2

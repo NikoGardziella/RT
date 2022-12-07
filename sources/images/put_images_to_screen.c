@@ -15,6 +15,7 @@
 void	put_images_to_screen(t_env *env)
 {
 	double	density;
+	double	lumen;
 
 	if (env->scene->resolution.x == env->scene->resolution_range.x && env->scene->resolution.y == env->scene->resolution_range.x)
 	{
@@ -31,7 +32,12 @@ void	put_images_to_screen(t_env *env)
 	if (env->sidebar == 1)
 	{
 		process_image(&env->sdl, &env->img[3], 2, env);
-		if(env->sel_ray.object != NULL)
+		if(env->sel_ray.object->type == LIGHT)
+		{
+			lumen = (env->sel_ray.object->lumen - 1)  / (MAX_LUMEN - 1);
+			process_image(&env->sdl, &env->img[7], 3, &lumen);
+		}
+		else if(env->sel_ray.object != NULL)
 		{
 			density = (env->sel_ray.object->density - 1)  / (MAX_DENSITY - 1);
 			process_image(&env->sdl, &env->img[6], 3, &env->sel_ray.object->roughness);
