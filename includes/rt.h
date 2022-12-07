@@ -36,6 +36,7 @@
 # define LIGHT_BOUNCES 3
 # define BOUNCE_COUNT 3
 # define MAX_DENSITY 50
+# define MAX_LUMEN 1000
 
 # define KEY_A 1
 # define KEY_W 2
@@ -43,10 +44,6 @@
 # define KEY_S 8
 # define KEY_SPACE 16
 # define KEY_LSHIFT 32
-
-# define BOUNCE_COUNT 2
-# define MAX_DENSITY 50
-#define MAX_LUMEN 1000
 
 # ifndef PI
 #  define PI 3.141592
