@@ -43,6 +43,7 @@
 
 # define BOUNCE_COUNT 2
 # define MAX_DENSITY 50
+# define MAX_LUMEN 1000
 
 # ifndef PI
 #  define PI 3.141592

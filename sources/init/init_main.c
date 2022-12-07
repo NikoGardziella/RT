@@ -14,7 +14,7 @@
 
 static void	load_textures(t_env *env)
 {
-	env->bmptxtr.wasd = SDL_LoadBMP("test.bmp");
+	env->bmptxtr.wasd = SDL_LoadBMP("Grey_40.bmp");
 	if (env->bmptxtr.wasd == NULL)
 		close_prog(NULL, "Failed to load BMP texture...", -3);
 	/* env->bmptxtr.slider = SDL_LoadBMP("slider.bmp");

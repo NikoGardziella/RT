@@ -40,6 +40,10 @@ void	left_button_down(void *param)
 	{
 		env->sel_element = 2;
 	}
+	else if (coords_in_area(env->img[7].dim, mouse_coords) && env->sel_ray.object->type == LIGHT && env->sidebar == 1)
+	{
+		env->sel_element = 5;
+	}
 	else if (coords_in_area(env->img[7].dim, mouse_coords) && env->sel_ray.object != NULL && env->sidebar == 1)
 	{
 		env->sel_element = 3;
