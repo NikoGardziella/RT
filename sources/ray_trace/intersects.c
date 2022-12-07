@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/30 15:36:15 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/07 14:44:10 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	intersects(t_ray *ray, t_list *object_list, t_hit *hit)
 		hit->point = add_vectors(ray->origin, hit->point);
 		hit->normal = calculate_normal(hit->object, hit->point, t);
 		if (hit->object->pattern == CHECKER)
-			hit->color = define_checker_color(hit->object, hit->point);
+			hit->color = define_checker_color(hit);
 		else if (hit->object->pattern == NORMAL)
 			hit->color = define_normal_color(hit->normal);
 		else

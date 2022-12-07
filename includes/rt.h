@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/30 15:44:35 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/07 14:45:44 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,7 +318,7 @@ t_3d		get_refraction_ray(t_3d normal, t_3d ray_dir, t_2d index);
 t_3d		random_vector(t_3d refl_vec, float max_theta);
 
 /* mapping & pattern functions*/
-t_color		define_checker_color(t_object *hit_object, t_3d hit_point);
+t_color		define_checker_color(t_hit *hit);
 t_2d		spherical_map(t_object sphere, t_3d p);
 t_color		define_normal_color(t_3d hit_normal);
 
