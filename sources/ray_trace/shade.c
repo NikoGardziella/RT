@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/06 22:48:52 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/07 10:54:57 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ static void	cast_light_ray(t_object *light, t_list *object_list)
 
 	light_ray.origin = light->origin;
 	light_ray.forward = random_vector((t_3d){0.0, 1.0, 0.0}, 2.0f);
-	light->color.combined = 0x000000;
 	if (intersects(&light_ray, object_list, &hit, 0) == 1)
 	{
 		light->color.channel.r = (uint8_t)(light->color.channel.r * (double)(hit.object->color.channel.r / 255.0));
@@ -83,6 +82,8 @@ static void	cast_light_ray(t_object *light, t_list *object_list)
 		light->color.channel.b = (uint8_t)(light->color.channel.b * (double)(hit.object->color.channel.b / 255.0));
 		light->origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * 1));
 	}
+	else
+		light->color.combined = 0x000000;
 }
 
 uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray shadow, t_3d normal)
