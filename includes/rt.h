@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/05 11:49:06 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/07 11:02:27 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,13 @@
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
-# define THREADS 24
-# define PHOTONS 100
-# define N_CLOSEST_PHOTONS 1
-# define PHOTON_RADIUS 0.2
+# define THREADS 12
+# define PHOTONS 32
+# define N_CLOSEST_PHOTONS 10
+# define CAMERA_BOUNCES 1
+# define LIGHT_BOUNCES 3
+# define BOUNCE_COUNT 3
+# define MAX_DENSITY 50
 
 # define KEY_A 1
 # define KEY_W 2
@@ -43,7 +46,7 @@
 
 # define BOUNCE_COUNT 2
 # define MAX_DENSITY 50
-# define MAX_LUMEN 1000
+#define MAX_LUMEN 1000
 
 # ifndef PI
 #  define PI 3.141592
@@ -255,7 +258,10 @@ typedef struct s_env
 	double			plot_time;
 	int				frame_index;
 	uint32_t		state;
+	double			photon_cluster_radius;
 }				t_env;
+
+t_env	*temp_env;
 
 typedef struct s_multithread
 {

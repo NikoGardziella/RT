@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/05 11:48:38 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/06 14:32:58 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	init_main(t_env *env)
 	env->font = load_font(font_path);
 	if (env->font == NULL)
 		close_prog(NULL, "Failed to load font...", -2);
-	env->scene->resolution_range = (t_2i){0, 3};
+	env->scene->resolution_range = (t_2i){0, 2};
 	env->scene->resolution.x = env->scene->resolution_range.x;
 	env->scene->resolution.y = env->scene->resolution_range.x;
 	env->scene->accum_resolution.x = env->scene->resolution_range.x;
@@ -50,4 +50,5 @@ void	init_main(t_env *env)
 	env->selected = -1;
 	env->state = 15252;
 	load_textures(env);
+	temp_env = env;
 }

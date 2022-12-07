@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 11:16:53 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/02 16:01:50 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/04 23:41:29 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static t_ray_hit	camera_raycast(t_ray *ray, t_scene *scene)
 void	photon_mapping(t_env *env, t_img *img, t_multithread *tab)
 {
 	t_2i		*resolution;
-	int 		render_mode;
 	t_2i		coords;
 	t_ray		ray;
 	t_camera	*camera;
@@ -38,7 +37,6 @@ void	photon_mapping(t_env *env, t_img *img, t_multithread *tab)
 	env = tab->env;
 	img = tab->img;
 	resolution = tab->resolution;
-	render_mode = tab->render_mode;
 	scene = env->scene;
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
