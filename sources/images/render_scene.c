@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/07 11:02:59 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:27:19 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,12 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 
 	color.combined = 0x000000;
 	ft_bzero(&hit, sizeof(t_hit));
-	if (bounces > 0 && intersects(ray, scene->object_list, &hit, 1))
+	if (intersects(ray, scene->object_list, &hit, 1))
 	{
 		if (hit.object->type == LIGHT || bounces == -1)
 			return (hit.color);
+		if (bounces <= 0)
+			return (color);
 		shadow_ray.origin = scale_vector(hit.normal, BIAS);
 		shadow_ray.origin = add_vectors(hit.point, shadow_ray.origin);
 		if (hit.object->roughness <= 1.0f)
@@ -127,10 +129,10 @@ void	*render_loop(void *arg)
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	coords.y = 0;
-	if (render_mode == -1)
+	//if (render_mode == -1)
 	{
-		photon_mapping(env, img, tab);
-		return (NULL);
+	//	photon_mapping(env, img, tab);
+	//	return (NULL);
 	}
 	while (coords.y < img->dim.size.y - 1)
 	{
@@ -152,7 +154,6 @@ void	*render_loop(void *arg)
 						color = raycast(&ray, scene, -1);
 					else
 						color = raycast(&ray, scene, CAMERA_BOUNCES);
-					//scene->ray_buffer[coords.y * img->dim.size.x + coords.x] = ray;
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
 					if (resolution == &scene->accum_resolution && env->frame_index > 0)
@@ -327,7 +328,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 		pthread_join(tids[i], NULL);
 		i++;
 	}
-	if (render_mode == -1)
+	if (render_mode == -42)
 	{
 		connect_photon_thread_lists(scene);
 		//(void)connect_photon_thread_lists;

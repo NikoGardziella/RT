@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:39:02 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/07 11:02:49 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/07 11:17:02 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	left_button_down(void *param)
 		env->sel_ray = get_ray(mouse_coords, &env->img[0], camera);
 		env->sel_ray.object = NULL;
 		raycast(&env->sel_ray, env->scene, 1);
-		printf("%p\n", env->sel_ray.object);
 		//if(env->sel_ray.object != NULL)
 		//env->sidebar = 1;
 		render_screen(env);

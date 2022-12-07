@@ -80,7 +80,7 @@ OBJECT sphere
 }
 OBJECT light
 {
-	origin 0 0 35
+	origin 10 15 25
 	lumen 50.0
 	radius 2.0
 	color FFFFFF

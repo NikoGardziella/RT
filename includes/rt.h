@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/07 11:02:27 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/07 16:37:02 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define PHOTONS 32
 # define N_CLOSEST_PHOTONS 10
 # define CAMERA_BOUNCES 1
-# define LIGHT_BOUNCES 3
+# define LIGHT_BOUNCES 4
 # define BOUNCE_COUNT 3
 # define MAX_DENSITY 50
 
