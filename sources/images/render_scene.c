@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/07 12:27:19 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/08 13:58:25 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,10 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 			color_refr = raycast(&bounce_ray, scene, bounces);
 			color.combined = transition_colors(color_refr.combined, color_refl.combined, 0.0);
 		}
+		if (hit.object->type == LIGHT)
+			color.combined = 0x000000;
 	}
+
 	return (color);
 }
 
@@ -134,6 +137,7 @@ void	*render_loop(void *arg)
 	//	photon_mapping(env, img, tab);
 	//	return (NULL);
 	}
+	double col;
 	while (coords.y < img->dim.size.y - 1)
 	{
 		if (coords.y % scene->resolution_range.y == resolution->y)
@@ -153,11 +157,36 @@ void	*render_loop(void *arg)
 					if (render_mode == -1)
 						color = raycast(&ray, scene, -1);
 					else
+					{
 						color = raycast(&ray, scene, CAMERA_BOUNCES);
+						t_list *every_light;
+						t_object *light;
+						every_light = scene->object_list;
+						while (every_light)
+						{
+							light = (t_object *)every_light->content;
+							if (light->type == LIGHT)
+							{
+								break ;
+							}
+							every_light = every_light->next;
+						}
+						col = ray_march(coords, ray, light, scene);
+					}
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
 					if (resolution == &scene->accum_resolution && env->frame_index > 0)
 					{
+						t_color temp;
+						temp.combined = 0xffffff;
+						temp.channel.r = (uint8_t)((float)temp.channel.r * col);
+						temp.channel.g = (uint8_t)((float)temp.channel.g * col);
+						temp.channel.b = (uint8_t)((float)temp.channel.b * col);
+						color.combined = transition_colors(color.combined, temp.combined, (float)col);
+						// color.channel.r =  (uint8_t)((float)color.channel.r * col);
+						// color.channel.g =  (uint8_t)((float)color.channel.g * col);
+						// color.channel.b =  (uint8_t)((float)color.channel.b * col);
+						
 						scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
 							(float)(color.channel.r + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
 							(float)(color.channel.g + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y),
