@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 12:30:56 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/08 13:43:41 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/08 14:22:41 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ double ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene)
 		random_point_light.forward = random_vector((t_3d){0.0, 1.0, 0.0}, 2.0f);
 		t_hit hit;
 		intersects(&random_point_light, scene->object_list, &hit, 1);
+		// fixed
 		// if (intersects(&random_point_light, scene->object_list, &hit, 1))
 		// {
 		// 	// temp_light.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * -1));
