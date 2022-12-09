@@ -6,14 +6,14 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 12:30:56 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/09 17:03:18 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/09 17:23:46 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
 #define STEP_COUNT 16
-#define PARTICLE_INTENSITY 1.0
+#define PARTICLE_INTENSITY 0.0
 #define LIGHT_INTENSITY 200.0
 #define SIGMA 0.3
 
