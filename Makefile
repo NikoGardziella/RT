@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/06 15:11:22 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/12/08 13:09:53 by pnoutere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -138,7 +138,8 @@ SOURCES_LIST =	main.c\
 				ray_trace/photon_mapping.c\
 				ray_trace/shoot_photons.c\
 				ray_trace/compare_ray_hits.c\
-				ray_trace/shade.c
+				ray_trace/shade.c\
+				ray_trace/equiangular_sampling.c
 
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
