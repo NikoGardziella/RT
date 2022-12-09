@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/08 14:22:28 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/09 14:18:57 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ void	*render_loop(void *arg)
 	//	return (NULL);
 	}
 	double col;
+	t_object *light;
 	while (coords.y < img->dim.size.y - 1)
 	{
 		if (coords.y % scene->resolution_range.y == resolution->y)
@@ -160,7 +161,6 @@ void	*render_loop(void *arg)
 					{
 						color = raycast(&ray, scene, CAMERA_BOUNCES);
 						t_list *every_light;
-						t_object *light;
 						every_light = scene->object_list;
 						while (every_light)
 						{
@@ -175,10 +175,10 @@ void	*render_loop(void *arg)
 					}
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
-					if (resolution == &scene->accum_resolution && env->frame_index > 0)
+					if (resolution == &scene->accum_resolution && env->frame_index > 0 && render_mode == 1)
 					{
 						t_color temp;
-						temp.combined = 0xffffff;
+						temp.combined = light->color.combined;
 						temp.channel.r = (uint8_t)((float)temp.channel.r * col);
 						temp.channel.g = (uint8_t)((float)temp.channel.g * col);
 						temp.channel.b = (uint8_t)((float)temp.channel.b * col);

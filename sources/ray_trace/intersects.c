@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/08 13:54:43 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/09 13:19:09 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	intersects(t_ray *ray, t_list *object_list, t_hit *hit, int mode)
 	t_2d	t;
 
 	t = intersect_loop(ray, object_list, hit, mode);
+	ray->distance = t.x;
 	if (t.x < T_MAX)
 	{
 		hit->point = scale_vector(ray->forward, t.x);
@@ -70,7 +71,6 @@ int	intersects(t_ray *ray, t_list *object_list, t_hit *hit, int mode)
 		if (ray->object == NULL)
 		{
 			ray->object = hit->object;
-			ray->distance = t.x;
 			ray->hit_point = hit->point;
 		}
 		return (1);

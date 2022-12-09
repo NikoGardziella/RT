@@ -1,15 +1,22 @@
 OBJECT sphere
 {
-	origin 15.0 -25.0 -60
-	radius 16.0
-	color 0000ff
+	origin 15.0 0.0 -100
+	radius 5.0
+	color FF0000
+}
+
+OBJECT sphere
+{
+	origin -15.0 0.0 -100
+	radius 5.0
+	color FF0000
 }
 OBJECT light
 {
-	origin 0.0 0 -100
+	origin 0 0 -100
 	lumen 1000.0
 	radius 1.0
-	color FFFFFF
+	color FF0000
 }
 OBJECT camera
 {
