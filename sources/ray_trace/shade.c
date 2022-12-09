@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:08:05 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/08 14:47:11 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/09 16:01:33 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,11 @@ uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray shadow, t_3d nor
 				shadow.forward = subtract_vectors(temp_light.origin, shadow.origin);
 				//shadow.forward = add_vectors(shadow.forward, offset_shadow_ray(shadow, object->radius));
 				(void)offset_shadow_ray;
+				(void)check_for_refraction;
 				t = vector_magnitude(shadow.forward);
 				shadow.forward = normalize_vector(shadow.forward);
-				if (check_for_refraction(&shadow, object_list_start) || t < intersect_loop(&shadow, object_list_start, &hit, 0).x)
+				//if (check_for_refraction(&shadow, object_list_start) || 
+				if (t < intersect_loop(&shadow, object_list_start, &hit, 0).x)
 				{
 					level = (float)get_light_level(t, temp_light.lumen, normal, shadow.forward);
 					color = calc_light(color, temp_light.color, obj_color, (double)(level));

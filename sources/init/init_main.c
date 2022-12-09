@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/09 15:52:58 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/09 16:01:40 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	init_main(t_env *env)
 	env->font = load_font(font_path);
 	if (env->font == NULL)
 		close_prog(NULL, "Failed to load font...", -2);
-	env->scene->resolution_range = (t_2i){0, 2};
+	env->scene->resolution_range = (t_2i){0, 3};
 	env->scene->resolution.x = env->scene->resolution_range.x;
 	env->scene->resolution.y = env->scene->resolution_range.x;
 	env->scene->accum_resolution.x = env->scene->resolution_range.x;
@@ -45,6 +45,12 @@ void	init_main(t_env *env)
 	env->scene->cam_hit_buffer = (t_cam_hit *)malloc(sizeof(t_cam_hit) * (SCREEN_X * SCREEN_Y));
 	if (env->scene->cam_hit_buffer == NULL)
 		close_prog(NULL, "Failed to malloc for cam_hit_buffer...", -5);
+	env->scene->cam_hit_color = (uint32_t *)malloc(sizeof(uint32_t) * (SCREEN_X * SCREEN_Y));
+	if (env->scene->cam_hit_color == NULL)
+		close_prog(NULL, "Failed to malloc for cam_hit_color...", -5);
+	env->scene->cam_hit_intensity = (uint32_t *)malloc(sizeof(uint32_t) * (SCREEN_X * SCREEN_Y));
+	if (env->scene->cam_hit_intensity == NULL)
+		close_prog(NULL, "Failed to malloc for cam_hit_intensity...", -5);
 	env->render_mode = -1;
 	env->sidebar = -1;
 	env->selected = -1;

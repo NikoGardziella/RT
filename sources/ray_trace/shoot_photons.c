@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 09:52:03 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/02 14:19:58 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/09 11:59:42 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,24 @@ static void	add_photon_node(t_list **photon_list, t_hit *hit, t_object *light)
 	}
 }
 
+static int	check_for_refraction(t_ray *ray, t_list *object_list, t_hit *hit)
+{
+	int		ret;
+	
+	ft_bzero(hit, sizeof(t_hit));
+	ret = 0;
+	while (intersects(ray, object_list, hit, 0) && hit->object != NULL && hit->object->density < MAX_DENSITY)
+	{
+		ray->origin = add_vectors(hit->point, scale_vector(hit->normal, BIAS * -1));
+		if (hit->inside == 1)
+			ray->forward = get_refraction_ray(hit->normal, ray->forward, (t_2d){hit->object->density, 1});
+		else
+			ray->forward = get_refraction_ray(hit->normal, ray->forward, (t_2d){1, hit->object->density});
+		ret = 1;
+	}
+	return (ret);
+}
+
 void	shoot_photons(t_scene *scene, size_t count, int i)
 {
 	t_list		*light_list;
@@ -43,7 +61,7 @@ void	shoot_photons(t_scene *scene, size_t count, int i)
 		{
 			ray.origin = light->origin;
 			ray.forward = random_vector((t_3d){0.0, 0.0, -1.0}, 2.0f);
-			if (intersects(&ray, scene->object_list, &hit, 0))
+			if (check_for_refraction(&ray, scene->object_list, &hit))// || intersects(&ray, scene->object_list, &hit, 0))
 			{
 				add_photon_node(&scene->photon_list[i], &hit, light);
 				if (scene->photon_list[i]->next == NULL)

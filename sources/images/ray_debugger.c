@@ -6,7 +6,7 @@
 /*   By: dmalesev <dmalesev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:18:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/07 11:40:04 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/08 09:54:42 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	draw_ray_arrow(t_img *img, t_3d ray, t_uint color, int mode)
 		draw_line(&(t_pxl_func){&put_pixel, img}, line, color, 0xFFFFFF);
 	}
 }
-/*
+
 void	ray_debugger(t_img *img, void *param)
 {
 	t_env	*env;
@@ -64,15 +64,13 @@ void	ray_debugger(t_img *img, void *param)
 		}
 		coords.y += 20;
 	}
-	ray = get_ray(env->mouse.pos, img, scene->camera);
-	draw_ray_arrow(img, ray.forward, 0xFFC600, 2);
 	draw_ray_arrow(img, camera->up, 0x0000FF, 2);
 	draw_ray_arrow(img, camera->right, 0x00FF00, 2);
 	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
 	draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFFFF);
 }
-*/
 
+/*
 void	ray_debugger(t_img *img, void *param)
 {
 	t_env	*env;
@@ -92,3 +90,4 @@ void	ray_debugger(t_img *img, void *param)
 	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
 	draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFFFF);
 }
+*/

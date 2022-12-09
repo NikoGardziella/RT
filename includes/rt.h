@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/09 14:39:49 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/09 16:01:51 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
-# define THREADS 12
-# define PHOTONS 32
-# define N_CLOSEST_PHOTONS 10
-# define CAMERA_BOUNCES 1
-# define LIGHT_BOUNCES 4
+# define THREADS 32
+# define PHOTONS 5000
+# define PHOTON_RADIUS 1.0
+# define N_CLOSEST_PHOTONS 1
+# define CAMERA_BOUNCES 4
+# define LIGHT_BOUNCES 3
 # define BOUNCE_COUNT 3
-# define MAX_DENSITY 50
+# define MAX_DENSITY 5
 # define MAX_LUMEN 1000
 
 # define KEY_A 1
@@ -126,6 +127,12 @@ typedef union		u_color
 	t_rgba			channel;
 }					t_color;
 
+typedef struct		s_emission
+{
+	t_color			color;
+	double			intensity;
+}					t_emission;
+
 typedef struct s_object
 {
 	double		axis_length;
@@ -198,6 +205,8 @@ typedef struct s_scene
 	t_2i		accum_resolution;
 	t_3d		*accum_buffer;
 	t_cam_hit	*cam_hit_buffer;
+	uint32_t	*cam_hit_color;
+	uint32_t	*cam_hit_intensity;
 }				t_scene;
 
 typedef struct s_dim
@@ -329,7 +338,7 @@ double 		get_smallest_photon_cluster(t_cam_hit *hit_buffer);
 
 /*Ray tracing functions*/
 
-t_color		raycast(t_ray *ray, t_scene *scene, int bounces);
+t_emission		raycast(t_ray *ray, t_scene *scene, int bounces);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
