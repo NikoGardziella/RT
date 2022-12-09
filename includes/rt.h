@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/09 16:01:51 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/09 16:51:35 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ typedef struct s_ray
 	t_3d		hit_point;
 	t_object	*object;
 	double		distance;
+	t_2i		coords;
 }				t_ray;
 
 typedef struct s_camera

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/09 16:01:45 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/09 17:05:53 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,27 @@ t_emission	raycast(t_ray *ray, t_scene *scene, int bounces)
 		if (hit.object->type == LIGHT)
 			color.combined = 0x000000;
 	}
+	t_object	*light;
+	t_list		*every_light;
+	every_light = scene->object_list;
+	while (every_light)
+	{
+		light = (t_object *)every_light->content;
+		if (light->type == LIGHT)
+		{
+			break ;
+		}
+		every_light = every_light->next;
+	}
+	double col = ray_march(ray->coords, *ray, light, scene);
+
+	t_color temp;
+	temp.combined = light->color.combined;
+	temp.channel.r = (uint8_t)((float)temp.channel.r * col);
+	temp.channel.g = (uint8_t)((float)temp.channel.g * col);
+	temp.channel.b = (uint8_t)((float)temp.channel.b * col);
+
+	color.combined = transition_colors(color.combined, temp.combined, (float)col);
 	emission.color.combined = color.combined;
 	return (emission);
 }
@@ -150,8 +171,7 @@ void	*render_loop(void *arg)
 	{
 		photon_mapping(env, img, tab);
 	}
-	double col;
-	t_object *light;
+	// double col;
 	while (coords.y < img->dim.size.y - 1)
 	{
 		if (coords.y % scene->resolution_range.y == resolution->y)
@@ -172,19 +192,8 @@ void	*render_loop(void *arg)
 						emission = raycast(&ray, scene, -1);
 					else
 					{
+						ray.coords = coords;
 						emission = raycast(&ray, scene, CAMERA_BOUNCES);
-						t_list *every_light;
-						every_light = scene->object_list;
-						while (every_light)
-						{
-							light = (t_object *)every_light->content;
-							if (light->type == LIGHT)
-							{
-								break ;
-							}
-							every_light = every_light->next;
-						}
-						col = ray_march(coords, ray, light, scene);
 					}
 					color.combined = emission.color.combined;
 					if (render_mode == 1)
@@ -193,12 +202,12 @@ void	*render_loop(void *arg)
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
 					if (resolution == &scene->accum_resolution && env->frame_index > 0 && render_mode == 1)
 					{
-						t_color temp;
-						temp.combined = light->color.combined;
-						temp.channel.r = (uint8_t)((float)temp.channel.r * col);
-						temp.channel.g = (uint8_t)((float)temp.channel.g * col);
-						temp.channel.b = (uint8_t)((float)temp.channel.b * col);
-						color.combined = transition_colors(color.combined, temp.combined, (float)col);
+						// t_color temp;
+						// temp.combined = light->color.combined;
+						// temp.channel.r = (uint8_t)((float)temp.channel.r * col);
+						// temp.channel.g = (uint8_t)((float)temp.channel.g * col);
+						// temp.channel.b = (uint8_t)((float)temp.channel.b * col);
+						// color.combined = transition_colors(color.combined, temp.combined, (float)col);
 						// color.channel.r =  (uint8_t)((float)color.channel.r * col);
 						// color.channel.g =  (uint8_t)((float)color.channel.g * col);
 						// color.channel.b =  (uint8_t)((float)color.channel.b * col);
