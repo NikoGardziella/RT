@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/Users/ctrouve/Documents/12_RT/GIT_RT_Groupwork/libraries/sdl2/lib/lib'
+libdir='/Users/ctrouve/Documents/conu_code/RT/GIT_RT_Group/libraries/sdl2/lib/lib'
