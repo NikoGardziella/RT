@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/09 15:44:37 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/09 15:49:21 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,10 +185,10 @@ void	*render_loop(void *arg)
 							every_light = every_light->next;
 						}
 						col = ray_march(coords, ray, light, scene);
+					}
 					color.combined = emission.color.combined;
 					if (render_mode == 1)
 						emission.intensity = 1;
-					}
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
 					if (resolution == &scene->accum_resolution && env->frame_index > 0)
