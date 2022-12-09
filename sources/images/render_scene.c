@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/09 16:01:45 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/09 17:17:19 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ t_emission	raycast(t_ray *ray, t_scene *scene, int bounces)
 		if (hit.object->roughness <= 1.0f)
 		{
 			bounce_ray.forward = reflect_vector(ray->forward, hit.normal);
-			double	angle;
-			angle = angle_between_vectors(bounce_ray.forward, hit.normal);
 			bounce_ray.forward = random_vector(bounce_ray.forward, (float)hit.object->roughness);
 			bounce_ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * 1));
 			color.combined = light_up(scene->object_list, hit.object->color, shadow_ray, hit.normal);
@@ -95,9 +93,11 @@ t_emission	raycast(t_ray *ray, t_scene *scene, int bounces)
 			bounce_ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * -1));
 			if (hit.inside == 1)
 				bounces -= 1;
+			double	angle;
+			angle = fmax(dot_product(scale_vector(bounce_ray.forward, -1), hit.normal), 0.0);
 			color_refr = raycast(&bounce_ray, scene, bounces);
 			emission.intensity = color_refr.intensity;
-			color.combined = transition_colors(color_refr.color.combined, color.combined, 0.0f);
+			color.combined = transition_colors(color.combined, color_refr.color.combined, (float)angle);
 		}
 		if (hit.object->type == LIGHT)
 			color.combined = 0x000000;
@@ -191,7 +191,7 @@ void	*render_loop(void *arg)
 						emission.intensity = 1;
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
-					if (resolution == &scene->accum_resolution && env->frame_index > 0 && render_mode == 1)
+					if (resolution == &scene->accum_resolution && env->frame_index > 0 && render_mode >= 0)
 					{
 						t_color temp;
 						temp.combined = light->color.combined;
