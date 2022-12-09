@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 16:03:21 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/17 09:44:14 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/09 13:41:53 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ void	key_down(t_env *env)
 	{
 		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_R)
 		{
-			env->render_mode *= -1;
+			env->render_mode += 1;
+			if (env->render_mode >= 2)
+				env->render_mode = -1;
 			render_screen(env);
 		}
 		if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)

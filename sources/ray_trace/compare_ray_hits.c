@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 15:17:21 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/05 12:06:05 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/09 10:52:24 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void push_photons_to_right(t_ray_hit *photon)
 	}
 }
 
-static void	find_n_nearest_photons(t_cam_hit *cam, t_list *photon_list)
+static void	find_n_nearest_photons(t_cam_hit *cam, uint32_t *hit_light, uint32_t *intensity, t_list *photon_list)
 {
 	t_list		*photon_looper;
 	t_ray_hit	*photon_hit;
@@ -38,22 +38,30 @@ static void	find_n_nearest_photons(t_cam_hit *cam, t_list *photon_list)
 	while (i < N_CLOSEST_PHOTONS)
 	{
 		photon_looper = photon_list;
-		if (cam->photon[i].color != 0x000000)
+		if (*hit_light != 0x000000)
 		{
 			vector = subtract_vectors(cam->hit.point, cam->photon[i].point);
 			distance = vector_magnitude(vector);
 		}
 		else
+		{
+			*intensity = 0;
 			distance = -1.0;
+		}
 		while (photon_looper != NULL)
 		{
 			photon_hit = (t_ray_hit *)photon_looper->content;
 			vector = subtract_vectors(cam->hit.point, photon_hit->point);
-			if (distance > vector_magnitude(vector) || distance < 0)
+			if ((distance > vector_magnitude(vector) || distance < 0) && vector_magnitude(vector) < PHOTON_RADIUS)
 			{
 				if (distance > 0)
 					push_photons_to_right(cam->photon);
-				cam->photon[i] = *photon_hit;
+				cam->photon[i].point = photon_hit->point;
+				if (i == 0)
+				{
+					*hit_light = photon_hit->color;
+					*intensity += 1;
+				}
 				i = -1;
 				break ;
 			}
@@ -92,9 +100,8 @@ void	*compare_ray_hits(void *arg)
 				{
 					buffer_coords = coords.y * tab->img->dim.size.x + coords.x;
 					cam = &scene->cam_hit_buffer[buffer_coords];
-					find_n_nearest_photons(cam, scene->photon_list[0]);
-					if (coords.x == tab->img->dim.size.x / 2 && coords.y == tab->img->dim.size.y / 2)
-						printf("furthest_photon %f %f %f\n", cam->photon[N_CLOSEST_PHOTONS - 1].point.x, cam->photon[N_CLOSEST_PHOTONS - 1].point.y, cam->photon[N_CLOSEST_PHOTONS - 1].point.z);
+					if (cam->hit.color != 0x000000)
+						find_n_nearest_photons(cam, &scene->cam_hit_color[buffer_coords], &scene->cam_hit_intensity[buffer_coords], scene->photon_list[0]);
 				}
 				coords.x += 1;
 			}
