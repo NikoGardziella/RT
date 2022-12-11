@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/07 14:45:44 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/09 15:55:26 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,6 +321,7 @@ t_3d		random_vector(t_3d refl_vec, float max_theta);
 t_color		define_checker_color(t_hit *hit);
 t_2d		spherical_map(t_object sphere, t_3d p);
 t_color		define_normal_color(t_3d hit_normal);
+t_3d		ft_rotate_vec3(t_3d v, t_3d rot);
 
 /* Color operations functions*/
 
