@@ -19,13 +19,12 @@ OBJECT sphere
 	origin 2.0 0.0 -30.0
 	radius 5.0
 	color FF0000
-	density 10.0
+	density 200.0
 }
 OBJECT plane
 {
 	origin 0.0 0.0 -70.0
 	axis 0.0 0.0 1.0
-	density 10.0
 	color CCCCCC
 }
 OBJECT light

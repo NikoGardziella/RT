@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_debugger.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmalesev <dmalesev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 09:18:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/29 12:27:39 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/08 09:54:42 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	draw_ray_arrow(t_img *img, t_3d ray, t_uint color, int mode)
 		draw_line(&(t_pxl_func){&put_pixel, img}, line, color, 0xFFFFFF);
 	}
 }
-/*
+
 void	ray_debugger(t_img *img, void *param)
 {
 	t_env	*env;
@@ -59,7 +59,7 @@ void	ray_debugger(t_img *img, void *param)
 		while (coords.x < img->dim.size.x)
 		{
 			ray = get_ray(coords, img, scene->camera);
-			draw_ray_arrow(img, ray.forward,0xFF0000, 2);
+			draw_ray_arrow(img, ray.forward, 0xFF0000, 2);
 			coords.x += 20;
 		}
 		coords.y += 20;
@@ -69,7 +69,8 @@ void	ray_debugger(t_img *img, void *param)
 	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
 	draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFFFF);
 }
-*/
+
+/*
 void	ray_debugger(t_img *img, void *param)
 {
 	t_env	*env;
@@ -78,7 +79,7 @@ void	ray_debugger(t_img *img, void *param)
 	float	theta;
 
 	env = param;
-	theta = 0.5f;
+	theta = 2.0f;
 	ray = random_vector(env->scene->camera->ray.forward, theta);
 	if (dot_product(env->scene->camera->ray.forward, ray) > 1.0f - (theta))
 		draw_ray_arrow(img, ray, 0x00CC00, 2);
@@ -89,3 +90,4 @@ void	ray_debugger(t_img *img, void *param)
 	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
 	draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFFFF);
 }
+*/

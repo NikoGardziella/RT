@@ -6,7 +6,7 @@
 #    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/11/30 15:45:10 by ctrouve          ###   ########.fr        #
+#    Updated: 2022/12/12 11:30:10 by ctrouve          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -112,7 +112,9 @@ SOURCES_LIST =	main.c\
 				images/ray_debugger.c\
 				images/render_scene.c\
 				images/slider.c\
-				images/specular.c\
+				images/draw_rgb_slider.c\
+				images/draw_shade_picker.c\
+				images/photon_cluster.c\
 				parser/add_object_to_scene.c\
 				parser/load_scene_camera.c\
 				parser/load_scene_objects.c\
@@ -135,7 +137,11 @@ SOURCES_LIST =	main.c\
 				ray_trace/calculate_normal.c\
 				ray_trace/intersects.c\
 				ray_trace/refraction.c\
-				ray_trace/shade.c
+				ray_trace/photon_mapping.c\
+				ray_trace/shoot_photons.c\
+				ray_trace/compare_ray_hits.c\
+				ray_trace/shade.c\
+				ray_trace/equiangular_sampling.c
 
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:05:29 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/29 13:02:30 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/08 10:02:20 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 void	put_images_to_screen(t_env *env)
 {
 	double	density;
+	double	lumen;
 
 	if (env->scene->resolution.x == env->scene->resolution_range.x && env->scene->resolution.y == env->scene->resolution_range.x)
 	{
-		process_image(&env->sdl, &env->img[2], 9, env);
+	//	process_image(&env->sdl, &env->img[2], 9, env);
 		process_image(&env->sdl, &env->img[0], 1, env);
 	}
 	else
@@ -27,11 +28,15 @@ void	put_images_to_screen(t_env *env)
 	}
 	process_image(&env->sdl, &env->img[4], 0, env);
 	process_image(&env->sdl, &env->img[5], 2, env);
-	process_image(&env->sdl, &env->img[2], 2, env);
 	if (env->sidebar == 1)
 	{
 		process_image(&env->sdl, &env->img[3], 2, env);
-		if(env->sel_ray.object != NULL)
+		if(env->sel_ray.object->type == LIGHT)
+		{
+			lumen = (env->sel_ray.object->lumen - 1)  / (MAX_LUMEN - 1);
+			process_image(&env->sdl, &env->img[7], 3, &lumen);
+		}
+		else if(env->sel_ray.object != NULL)
 		{
 			density = (env->sel_ray.object->density - 1)  / (MAX_DENSITY - 1);
 			process_image(&env->sdl, &env->img[6], 3, &env->sel_ray.object->roughness);

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/26 14:42:12 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/09 16:01:40 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	load_textures(t_env *env)
 {
-	env->bmptxtr.wasd = SDL_LoadBMP("test.bmp");
+	env->bmptxtr.wasd = SDL_LoadBMP("Grey_40.bmp");
 	if (env->bmptxtr.wasd == NULL)
 		close_prog(NULL, "Failed to load BMP texture...", -3);
 	/* env->bmptxtr.slider = SDL_LoadBMP("slider.bmp");
@@ -34,15 +34,27 @@ void	init_main(t_env *env)
 	env->font = load_font(font_path);
 	if (env->font == NULL)
 		close_prog(NULL, "Failed to load font...", -2);
-	env->scene->resolution_range = (t_2i){0, 5};
+	env->scene->resolution_range = (t_2i){0, 3};
 	env->scene->resolution.x = env->scene->resolution_range.x;
 	env->scene->resolution.y = env->scene->resolution_range.x;
 	env->scene->accum_resolution.x = env->scene->resolution_range.x;
 	env->scene->accum_resolution.y = env->scene->resolution_range.x;
 	env->scene->accum_buffer = (t_3d *)malloc(sizeof(t_3d) * (SCREEN_X * SCREEN_Y));
+	if (env->scene->accum_buffer == NULL)
+		close_prog(NULL, "Failed to malloc for accum_buffer...", -4);
+	env->scene->cam_hit_buffer = (t_cam_hit *)malloc(sizeof(t_cam_hit) * (SCREEN_X * SCREEN_Y));
+	if (env->scene->cam_hit_buffer == NULL)
+		close_prog(NULL, "Failed to malloc for cam_hit_buffer...", -5);
+	env->scene->cam_hit_color = (uint32_t *)malloc(sizeof(uint32_t) * (SCREEN_X * SCREEN_Y));
+	if (env->scene->cam_hit_color == NULL)
+		close_prog(NULL, "Failed to malloc for cam_hit_color...", -5);
+	env->scene->cam_hit_intensity = (uint32_t *)malloc(sizeof(uint32_t) * (SCREEN_X * SCREEN_Y));
+	if (env->scene->cam_hit_intensity == NULL)
+		close_prog(NULL, "Failed to malloc for cam_hit_intensity...", -5);
 	env->render_mode = -1;
 	env->sidebar = -1;
 	env->selected = -1;
 	env->state = 15252;
 	load_textures(env);
+	temp_env = env;
 }
