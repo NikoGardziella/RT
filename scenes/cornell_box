@@ -1,0 +1,45 @@
+OBJECT sphere
+	origin 20.0 -10.0 10.0
+	color FFFFFF
+	radius 10.0
+	density 2.0
+	roughness 0.0
+OBJECT sphere
+	origin -20.0 -30.0 0.0
+	color FFFFFF
+	density 200.0
+	radius 15.0
+	roughness 1.0
+OBJECT disc
+	origin 0.0 0.0 -35.0
+	color CCCCCC
+	radius 50.0
+	axis 0.0 0.0 1.0
+OBJECT disc
+	origin 0.0 35.0 0.0
+	color CCCCCC
+	radius 50.0
+	axis 0.0 -1.0 0.0
+OBJECT disc
+	origin 35.0 0.0 0.0
+	color 00FF00
+	radius 50.0
+	axis -1.0 0.0 0.0
+OBJECT disc
+	origin -35.0 0.0 0.0
+	color FF0000
+	radius 50.0
+	axis 1.0 0.0 0.0
+OBJECT disc
+	origin 0.0 -35.0 0.0
+	color 999999
+	radius 50.0
+	axis 0.0 1.0 0.0
+OBJECT light
+	origin 0.0 40.0 30.0
+	color FFFFFF
+	lumen 10.0
+	radius 10.0
+OBJECT camera
+	pos 0.0 0.0 80.0
+	fov 60.0

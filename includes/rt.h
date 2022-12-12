@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/11/29 12:05:29 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/09 16:51:35 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,15 @@
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
+# define THREADS 32
+# define PHOTONS 5000
+# define PHOTON_RADIUS 1.0
+# define N_CLOSEST_PHOTONS 1
+# define CAMERA_BOUNCES 4
+# define LIGHT_BOUNCES 3
+# define BOUNCE_COUNT 3
+# define MAX_DENSITY 5
+# define MAX_LUMEN 1000
 
 # define KEY_A 1
 # define KEY_W 2
@@ -36,9 +45,6 @@
 # define KEY_S 8
 # define KEY_SPACE 16
 # define KEY_LSHIFT 32
-
-# define BOUNCE_COUNT 2
-# define MAX_DENSITY 50
 
 # ifndef PI
 #  define PI 3.141592
@@ -121,6 +127,12 @@ typedef union		u_color
 	t_rgba			channel;
 }					t_color;
 
+typedef struct		s_emission
+{
+	t_color			color;
+	double			intensity;
+}					t_emission;
+
 typedef struct s_object
 {
 	double		axis_length;
@@ -156,6 +168,7 @@ typedef struct s_ray
 	t_3d		hit_point;
 	t_object	*object;
 	double		distance;
+	t_2i		coords;
 }				t_ray;
 
 typedef struct s_camera
@@ -167,10 +180,24 @@ typedef struct s_camera
 	double		aspect_ratio;
 }				t_camera;
 
+typedef struct s_ray_hit
+{
+	t_3d		point;
+	uint32_t	color;
+}				t_ray_hit;
+
+typedef struct s_cam_hit
+{
+	t_ray_hit	hit;
+	t_ray_hit	photon[N_CLOSEST_PHOTONS];
+}				t_cam_hit;
+
 typedef struct s_scene
 {
 	t_list		*object_list;
 	t_list		*light_list;
+	t_list		*photon_list[THREADS];
+	t_list		*last_photon_node[THREADS];
 	t_camera	*camera;
 	t_3d		camera_angle;
 	t_rgba		ambient_color;
@@ -178,6 +205,9 @@ typedef struct s_scene
 	t_2i		resolution;
 	t_2i		accum_resolution;
 	t_3d		*accum_buffer;
+	t_cam_hit	*cam_hit_buffer;
+	uint32_t	*cam_hit_color;
+	uint32_t	*cam_hit_intensity;
 }				t_scene;
 
 typedef struct s_dim
@@ -226,7 +256,7 @@ typedef struct s_env
 	t_img			*img;
 	t_scene			*scene;
 	t_font			*font;
-	unsigned int	keymap;
+	t_uint			keymap;
 	int8_t			sidebar;
 	int				render_mode;
 	t_ray			sel_ray;
@@ -235,7 +265,21 @@ typedef struct s_env
 	double			plot_time;
 	int				frame_index;
 	uint32_t		state;
+	double			photon_cluster_radius;
 }				t_env;
+
+t_env	*temp_env;
+
+typedef struct s_multithread
+{
+	t_env		*env;
+	t_img		*img;
+	t_2i		*resolution;
+	int			nb;
+	int			start;
+	int			end;
+	int 		render_mode;
+}				t_multithread;
 
 /*Parser Functions*/
 
@@ -257,17 +301,17 @@ t_mat		init_pmatrix(t_proj *proj);
 
 /*Keyboard functions*/
 
-void	keyboard_events(t_env *env);
-int		keyboard_hold(t_env *env);
+void		keyboard_events(t_env *env);
+int			keyboard_hold(t_env *env);
 
 /*Mouse functions*/
 
-void	mouse_events(void *param);
-int		mouse_main(void *param);
-void	left_button_up(void *param);
-void	left_button_down(void *param);
-void	right_button_up(void *param);
-void	right_button_down(void *param);
+void		mouse_events(void *param);
+int			mouse_main(void *param);
+void		left_button_up(void *param);
+void		left_button_down(void *param);
+void		right_button_up(void *param);
+void		right_button_down(void *param);
 
 /*Close and free functions*/
 
@@ -288,17 +332,26 @@ void		put_images_to_screen(t_env *env);
 void		gradual_render(t_img *img, void *param);
 void		render_screen(t_env *env);
 void		slider(t_img *img, void *param);
+void		draw_shade_picker(t_img *img, void *param);
+void		draw_rgb_slider(t_img *img, void *param);
+t_uint		rgb_slider(t_img *img, t_2i *coords);
+double 		get_smallest_photon_cluster(t_cam_hit *hit_buffer);
 
 /*Ray tracing functions*/
 
-t_color		raycast(t_ray *ray, t_scene *scene, int bounces);
+t_emission		raycast(t_ray *ray, t_scene *scene, int bounces);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
 uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, t_3d normal);
 t_3d		get_refraction_ray(t_3d normal, t_3d ray_dir, t_2d index);
+double		ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene);
 /*MOVE TO VECTOR LIBRARY LATER*/
 t_3d	random_vector(t_3d refl_vec, float max_theta);
+/*Photon mapping functions*/
+void	photon_mapping(t_env *env, t_img *img, t_multithread *tab);
+void	shoot_photons(t_scene *scene, size_t count, int thread_id);
+void	*compare_ray_hits(void *arg);
 
 /* Color operations functions*/
 
@@ -306,7 +359,7 @@ t_rgba		ft_add_rgba(t_rgba c1, t_rgba c2);
 t_rgba		ft_make_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 t_rgba		ft_mul_rgba_rgba(t_rgba a, t_rgba b);
 t_rgba		ft_mul_rgba(t_rgba c, double t);
-t_rgba			ft_lerp_rgba(t_rgba c1, t_rgba c2, double t);
+t_rgba		ft_lerp_rgba(t_rgba c1, t_rgba c2, double t);
 uint		ft_get_color(t_rgba c);
 
 /*Parser functions*/
@@ -337,9 +390,9 @@ int			intersect_plane(t_object *plane, t_ray ray, t_2d *t);
 int			intersect_cone(t_object *cone, t_ray ray, t_2d *t);
 int			intersect_sphere(t_object *sphere, t_ray ray, t_2d *t);
 int			intersect_cylinder(t_object *cylinder, t_ray ray, t_2d *t);
-int			intersects(t_ray *ray, t_list *object_list, t_hit *hit);
+int			intersects(t_ray *ray, t_list *object_list, t_hit *hit, int mode);
 int			intersect_box(t_object *box, t_ray ray, t_2d *t);
-t_2d		intersect_loop(t_ray *ray, t_list *objects, t_hit *hit);
+t_2d		intersect_loop(t_ray *ray, t_list *objects, t_hit *hit, int mode);
 
 /*Matrix transformation functions*/
 

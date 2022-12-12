@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 10:56:32 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/29 12:31:18 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/11/30 16:33:17 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	get_image_sizes(t_img *img)
 	offset = (t_2i){button.x * 30 / 100, button.y * 30 / 100};
 	img[0].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 	img[1].dim.size = (t_2i){button.x, button.y};
-	img[2].dim.size = (t_2i){SCREEN_X / 4, SCREEN_X / 4};
+	img[2].dim.size = (t_2i){img[0].dim.size.x / 3, img[0].dim.size.y / 3};
 	img[3].dim.size = (t_2i){SCREEN_X / 4, SCREEN_Y - (offset.y * 2)};
 	slider = (t_2i){img[3].dim.size.x - offset.x * 2, button.y};
 	img[4].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
@@ -62,7 +62,7 @@ static void	get_image_functions(t_img *img)
 	img[5].draw_func = &gradual_render;
 	img[6].draw_func = &slider;
 	img[7].draw_func = &slider;
-	img[8].draw_func = NULL;
+	img[8].draw_func = &draw_rgb_slider;
 	img[9].draw_func = NULL;
 }
 
