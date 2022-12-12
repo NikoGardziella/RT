@@ -16,8 +16,8 @@ OBJECT cone
 OBJECT cylinder
 {
 	origin 20.0 20.0 40.0
-	radius 4.0
-	axis 0.0 90.0 0.0
+	radius 8.0
+	axis 0 90.0 30.0
 	color FFD580
 }
 OBJECT sphere

@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 15:28:49 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/07 15:19:17 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/08 16:10:12 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,22 +74,73 @@ t_2d	plane_map(t_object plane, t_3d coords)
 	return (uv_coords);
 }
 
+static double	ft_deg_to_rad(double deg)
+{
+	return (deg * M_PI / 180.0);
+}
+
+t_3d	ft_rotate_vec3(t_3d v, t_3d rot)
+{
+	t_3d	res;
+
+	rot.x = ft_deg_to_rad(rot.x);
+	rot.y = ft_deg_to_rad(rot.y);
+	rot.z = ft_deg_to_rad(rot.z);
+	res.x = v.x;
+	res.y = v.y * cos(rot.x) + v.z * sin(rot.x);
+	res.z = -v.y * sin(rot.x) + v.z * cos(rot.x);
+	v = (t_3d){res.x, res.y, res.z};
+	res.x = v.x * cos(rot.y) + v.z * sin(rot.y);
+	res.y = v.y;
+	res.z = -v.x * sin(rot.y) + v.z * cos(rot.y);
+	v = (t_3d){res.x, res.y, res.z};
+	res.x = v.x * cos(rot.z) - v.y * sin(rot.z);
+	res.y = v.x * sin(rot.z) + v.y * cos(rot.z);
+	res.z = v.z;
+	return (res);
+}
+
 t_2d	cylinder_map(t_hit *hit, t_object cylinder, t_3d coords)
 {
 	double		theta; // azimuthal angle -π < theta <= π
 	double		raw_u; // -0.5 < raw_u <= 0.5
 	t_2d		uv_coords;
 	t_object	wrap_plane;
+	t_3d		new_coords;
+	// t_3d		u_axis;
+	// t_3d		v_axis;
+	t_3d		rot;
 
-	theta = atan2(coords.x - cylinder.origin.x, coords.z - cylinder.origin.z);
+	new_coords.x = coords.x - cylinder.origin.x;
+	new_coords.y = coords.y - cylinder.origin.y;
+	new_coords.z = coords.z - cylinder.origin.z;
+	
+	rot = normalize_vector(cylinder.axis);
+	rot = cross_product(rot, (t_3d){0, 1, 0});
+
+	new_coords = ft_rotate_vec3(new_coords, scale_vector(rot, -1));
+
+	theta = atan2(new_coords.x, new_coords.z);
 	raw_u = theta / (2 * PI);
 	uv_coords.x = 1 - (raw_u + 0.5);
-	uv_coords.y = (coords.y - cylinder.origin.y) / ( 2 * PI * cylinder.radius);
-	wrap_plane.axis = hit->normal;
+	uv_coords.y = (new_coords.y) / (2 * cylinder.radius * PI);
+
+	wrap_plane.normal = normalize_vector(hit->normal);
 	//uv_coords = plane_map(wrap_plane, (t_3d){uv_coords.x, uv_coords.y, 0});
 	return (uv_coords);
 }
 
+
+void	texture_cylinder(t_obj *cylinder, float3 hitpoint, float2 *coord)
+{
+	hitpoint -= cylinder->primitive.cylinder.pos;
+	hitpoint = change_of_basis(hitpoint, cylinder->basis);
+	float	phi = acos(hitpoint.x / cylinder->primitive.cylinder.r) / PI_2;
+	phi = hitpoint.z > 0 ? 1.f - phi : phi;
+	hitpoint /= cylinder->primitive.cylinder.tex_scale;		//should be parsed as a variable
+	coord->x = phi;
+	coord->y = -hitpoint.y;
+}
 /*
 ** If you want your checkers to look "square" on the sphere, be sure and set 
 ** the width to twice the height. This is because of how the spherical map is 
@@ -123,7 +174,7 @@ t_color	define_checker_color(t_hit *hit)
 	}
 	else
 	{
-		height = hit->object->radius * PI;
+		height = hit->object->radius * 2;
 		uv_pos = cylinder_map(hit, *hit->object, hit->point);
 		checker = init_checker(height, height, color_a, color_b);
 		color_out = uv_pattern_at(checker, uv_pos.x, uv_pos.y);
