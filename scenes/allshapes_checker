@@ -1,29 +1,22 @@
-OBJECT sphere
-{
-	origin 0.0 0.0 0.0
-	radius 25.0
-	roughness 1.0
-	color FF0000
-	pattern 2
-}
 OBJECT cone
 {
 	origin -20 0.0 40.0
 	radius 4.0
 	axis 0.0 10.0 0.0
+	pattern 2
 	color 9090EE
 }
 OBJECT cylinder
 {
-	origin 20.0 20.0 40.0
-	radius 8.0
-	axis 0 90.0 30.0
+	origin 0.0 0.0 0.0
+	radius 10.0
+	axis 0.0 90.0 45.0
 	color FFD580
 }
 OBJECT sphere
 {
-	origin -40.0 0.0 0.0
-	radius 15.0
+	origin 60.0 0.0 0.0
+	radius 25.0
 	roughness 1.0
 	color 00FFFF
 }

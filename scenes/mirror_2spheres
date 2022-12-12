@@ -4,7 +4,6 @@ OBJECT sphere
 	radius 25.0
 	roughness 1.0
 	color FF0000
-	pattern 2
 }
 OBJECT sphere
 {
@@ -13,7 +12,6 @@ OBJECT sphere
 	roughness 0.0
 	metal 1.0
 	color 00FFFF
-	pattern 0
 }
 OBJECT sphere
 {
@@ -29,7 +27,6 @@ OBJECT plane
 	axis 0.0 1.0 0.0
 	color 0000FF
 	roughness 1.0
-	pattern 2
 }
 
 OBJECT plane
@@ -38,7 +35,6 @@ OBJECT plane
 	axis 0.0 0.0 1.0
 	color 90EE90
 	roughness 1.0
-	pattern 2
 }
 
 OBJECT light

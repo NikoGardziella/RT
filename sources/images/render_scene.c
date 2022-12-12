@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/30 15:01:53 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/09 12:56:49 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,9 +166,9 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 				bounce_ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * 1));
 				color_refl = raycast(&bounce_ray, scene, bounces - 1);
 				//color.combined = color_refl.combined;
-					color_refl.channel.r *= (double)(hit.object->color.channel.r / 255.0);
-					color_refl.channel.g *= (double)(hit.object->color.channel.g / 255.0);
-					color_refl.channel.b *= (double)(hit.object->color.channel.b / 255.0);
+					color_refl.channel.r *= (uint8_t)floor(hit.object->color.channel.r / 255.0);
+					color_refl.channel.g *= (uint8_t)floor(hit.object->color.channel.g / 255.0);
+					color_refl.channel.b *= (uint8_t)floor(hit.object->color.channel.b / 255.0);
 				color.combined = transition_colors(color_refl.combined, color.combined, (float)hit.object->roughness);
 //				color.channel = ft_add_rgba(color_refl.channel, color.channel);
 			}
@@ -213,7 +213,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	{
 		while (i < 100)
 		{
-			put_pixel((t_2i){(int)(&env->state), (int)xorshift32(&env->state)}, 0xFFFFFF, img);
+			put_pixel((t_2i){(int)(env->state), (int)xorshift32(&env->state)}, 0xFFFFFF, img);
 			i++;
 		}
 		if (scene->accum_resolution.x == scene->resolution_range.x && scene->accum_resolution.y == scene->resolution_range.y)
