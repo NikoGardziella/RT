@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/12 11:28:00 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/12 14:25:52 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,13 @@ typedef union		u_color
 	t_rgba			channel;
 }					t_color;
 
+typedef struct s_checker
+{
+	double	width;
+	double	height;
+	t_color	color_a;
+	t_color	color_b;
+}				t_checker;
 typedef struct		s_emission
 {
 	t_color			color;
@@ -254,6 +261,15 @@ typedef struct s_mouse
 	t_2i	move;
 	uint8_t	state;
 }				t_mouse;
+
+typedef struct s_canvas
+{
+	int			magic_nbr;
+	int			width;
+	int			height;
+	double		color_scale;
+	void		*data;
+}				t_canvas;
 
 typedef struct s_env
 {
@@ -412,6 +428,13 @@ void		matrix_multip(t_3d *in, t_3d *out, t_mat *matrix);
 t_mat		multiply_matrices(t_mat *m1, t_mat *m2);
 t_mat		add_matrices(t_mat *m1, t_mat *m2);
 t_mat		scale_matrix(t_mat *m1, double factor);
+
+/* Mapping & pattern functions*/
+t_color		define_checker_color(t_hit *hit);
+t_2d		spherical_map(t_object sphere, t_3d p);
+t_color		define_normal_color(t_3d hit_normal);
+t_3d		ft_rotate_vec3(t_3d v, t_3d rot);
+t_canvas	canvas_from_ppm(char *path);
 
 /*Other functions*/
 

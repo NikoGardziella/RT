@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 15:28:49 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/12 11:05:58 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/12 12:30:55 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,57 +92,57 @@ t_2d	plane_map(t_object plane, t_3d coords)
 	return (uv_coords);
 }
 
-// t_2d	cylinder_map(t_object cylinder, t_3d coords)
-// {
-// 	double		theta; // azimuthal angle -π < theta <= π
-// 	double		raw_u; // -0.5 < raw_u <= 0.5
-// 	t_2d		uv_coords;
-// 	t_3d		new_coords;
-// 	t_3d		rot;
-
-// 	new_coords.x = coords.x - cylinder.origin.x;
-// 	new_coords.y = coords.y - cylinder.origin.y;
-// 	new_coords.z = coords.z - cylinder.origin.z;
-	
-// 	rot = normalize_vector(cylinder.axis);
-
-// 	new_coords = ft_rotate_vec3(new_coords, scale_vector(rot, -1));
-// 	theta = atan2(new_coords.x, new_coords.z);
-// 	raw_u = theta / (2 * PI);
-// 	uv_coords.x = 1 - (raw_u + 0.5);
-// 	uv_coords.y = (new_coords.y) / (2 * cylinder.radius * PI);
-// 	return (uv_coords);
-// }
-
-t_2d	cylinder_map(t_object cylinder, t_3d coords, t_hit *hit)
+t_2d	cylinder_map(t_object cylinder, t_3d coords)
 {
-	t_3d		new_x_axis;
-	t_3d		new_y_axis;
-	t_3d		new_z_axis;
-	t_3d		new_coords;
 	double		theta; // azimuthal angle -π < theta <= π
-	double		raw_u;
+	double		raw_u; // -0.5 < raw_u <= 0.5
 	t_2d		uv_coords;
-	t_3d		ori_to_hit;
-	t_3d		axis_hit;
-	t_3d		x_hit;
+	t_3d		new_coords;
+	t_3d		rot;
 
-	ori_to_hit = subtract_vectors(coords, cylinder.origin);
-	axis_hit = subtract_vectors(ori_to_hit, scale_vector(normalize_vector(hit->normal), cylinder.radius));
-	new_y_axis = normalize_vector(axis_hit);
-	//new_y_axis = normalize_vector(cylinder.axis);
-	x_hit = subtract_vectors(ori_to_hit, axis_hit);
-	new_x_axis = normalize_vector(x_hit);
-	new_z_axis = cross_product(new_x_axis, new_y_axis);
-	new_coords.x = dot_product(new_x_axis, ori_to_hit);
-	new_coords.x = dot_product(new_y_axis, ori_to_hit);
-	new_coords.x = dot_product(new_z_axis, ori_to_hit);
+	new_coords.x = coords.x - cylinder.origin.x;
+	new_coords.y = coords.y - cylinder.origin.y;
+	new_coords.z = coords.z - cylinder.origin.z;
+	
+	rot = normalize_vector(cylinder.axis);
+
+	new_coords = ft_rotate_vec3(new_coords, scale_vector(rot, -1));
 	theta = atan2(new_coords.x, new_coords.z);
-	raw_u = theta / (2 * M_PI);
+	raw_u = theta / (2 * PI);
 	uv_coords.x = 1 - (raw_u + 0.5);
-	uv_coords.y = new_coords.y / (2 * M_PI * cylinder.radius);
+	uv_coords.y = (new_coords.y) / (2 * cylinder.radius * PI);
 	return (uv_coords);
 }
+
+// t_2d	cylinder_map(t_object cylinder, t_3d coords, t_hit *hit)
+// {
+// 	t_3d		new_x_axis;
+// 	t_3d		new_y_axis;
+// 	t_3d		new_z_axis;
+// 	t_3d		new_coords;
+// 	double		theta; // azimuthal angle -π < theta <= π
+// 	double		raw_u;
+// 	t_2d		uv_coords;
+// 	t_3d		ori_to_hit;
+// 	t_3d		axis_hit;
+// 	t_3d		x_hit;
+
+// 	ori_to_hit = subtract_vectors(coords, cylinder.origin);
+// 	axis_hit = subtract_vectors(ori_to_hit, scale_vector(normalize_vector(hit->normal), cylinder.radius));
+// 	new_y_axis = normalize_vector(axis_hit);
+// 	//new_y_axis = normalize_vector(cylinder.axis);
+// 	x_hit = subtract_vectors(ori_to_hit, axis_hit);
+// 	new_x_axis = normalize_vector(x_hit);
+// 	new_z_axis = cross_product(new_x_axis, new_y_axis);
+// 	new_coords.x = dot_product(new_x_axis, ori_to_hit);
+// 	new_coords.x = dot_product(new_y_axis, ori_to_hit);
+// 	new_coords.x = dot_product(new_z_axis, ori_to_hit);
+// 	theta = atan2(new_coords.x, new_coords.z);
+// 	raw_u = theta / (2 * M_PI);
+// 	uv_coords.x = 1 - (raw_u + 0.5);
+// 	uv_coords.y = new_coords.y / (2 * M_PI * cylinder.radius);
+// 	return (uv_coords);
+// }
 
 /*
 ** If you want your checkers to look "square" on the sphere, be sure and set 
@@ -181,7 +181,7 @@ t_color	define_checker_color(t_hit *hit)
 	{
 		width = hit->object->radius;
 		height = width;
-		uv_pos = cylinder_map(*hit->object, hit->point, hit);
+		uv_pos = cylinder_map(*hit->object, hit->point);
 		checker = init_checker(width, height, color_a, color_b);
 		color_out = uv_pattern_at(checker, uv_pos.x, uv_pos.y);
 	}
