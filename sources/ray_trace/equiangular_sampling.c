@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 12:30:56 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/09 17:23:46 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/11 14:57:12 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,6 @@ double ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene)
 		}
 		stepIndex++;
 	}
-	t_ray camera_to_light;
-	camera_to_light.origin = ray.origin;
-	camera_to_light.forward = subtract_vectors(light->origin, ray.origin);
-	// if (intersect_loop(, scene->object_list, NULL, 0).x)
 	col = pow(col / (col + 1), 1.f / 2.2f);
 	return (col);
 }

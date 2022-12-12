@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/09 17:23:38 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/11 15:06:53 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ t_emission	raycast(t_ray *ray, t_scene *scene, int bounces)
 	t_object	*light;
 	t_list		*every_light;
 	every_light = scene->object_list;
+	light = NULL;
 	while (every_light)
 	{
 		light = (t_object *)every_light->content;
@@ -299,8 +300,11 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	int					i;
 
 	i = 0;
-	//if (env->frame_index > 0)
-	//	return ;
+	if (render_mode == 1)
+	{
+		bidirectional_path_tracing();
+		return ;
+	}
 	if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.y)
 	{
 		if (scene->accum_resolution.x == scene->resolution_range.x && scene->accum_resolution.y == scene->resolution_range.y)
