@@ -10,7 +10,8 @@ OBJECT cylinder
 {
 	origin 0.0 0.0 0.0
 	radius 10.0
-	axis 0.0 90.0 45.0
+	axis 0.0 0.0 0.0
+	rotate 0.0 0.0 45.0
 	color FFD580
 }
 OBJECT sphere
