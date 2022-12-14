@@ -22,12 +22,12 @@ OBJECT disc
 	axis 0.0 -1.0 0.0
 OBJECT disc
 	origin 35.0 0.0 0.0
-	color 00FF00
+	color 13FF13
 	radius 50.0
 	axis -1.0 0.0 0.0
 OBJECT disc
 	origin -35.0 0.0 0.0
-	color FF0000
+	color FF1313
 	radius 50.0
 	axis 1.0 0.0 0.0
 OBJECT disc
@@ -36,10 +36,10 @@ OBJECT disc
 	radius 50.0
 	axis 0.0 1.0 0.0
 OBJECT light
-	origin 0.0 40.0 30.0
+	origin 0.0 30.0 30.0
 	color FFFFFF
-	lumen 10.0
-	radius 10.0
+	lumen 20.0
+	radius 2.0
 OBJECT camera
 	pos 0.0 0.0 80.0
 	fov 60.0

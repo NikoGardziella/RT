@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/11 15:11:33 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/12/13 18:21:03 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -174,6 +174,7 @@ $(OBJECTS_DIRECTORY):
 	@mkdir -p $(OBJECTS_DIRECTORY)/mouse/left_button
 	@mkdir -p $(OBJECTS_DIRECTORY)/mouse/right_button
 	@mkdir -p $(OBJECTS_DIRECTORY)/ray_trace
+	@mkdir -p $(OBJECTS_DIRECTORY)/bidirectional_path_tracing
 	@printf "$(COLOR)$(MAKE_COLOR)__________________________________________________________________________________\n"
 	@printf "$(PRINT_NAME): Created $(OBJECTS_DIRECTORY) directory.$(RESET)\n\n\n"
 

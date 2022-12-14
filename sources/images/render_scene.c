@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/11 15:06:53 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/13 19:17:07 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,9 @@ void	*render_loop(void *arg)
 	t_camera			*camera;
 	t_scene				*scene;
 	t_emission			emission;
-
+	
+	emission.color.combined = 0x000000;
+	emission.intensity = 0;
 	tab = (t_multithread *)arg;
 	env = tab->env;
 	img = tab->img;
@@ -173,6 +175,8 @@ void	*render_loop(void *arg)
 		photon_mapping(env, img, tab);
 	}
 	// double col;
+	t_3d	color_temp;
+	color_temp = (t_3d){0.0, 0.0, 0.0};
 	while (coords.y < img->dim.size.y - 1)
 	{
 		if (coords.y % scene->resolution_range.y == resolution->y)
@@ -191,7 +195,11 @@ void	*render_loop(void *arg)
 					ray.object = NULL;
 					if (render_mode == -1)
 						emission = raycast(&ray, scene, -1);
-					else
+					else if (render_mode == 2)
+					{
+						color_temp = trace_eye_path(env, &ray, scene, CAMERA_BOUNCES);
+					}
+					else if (render_mode >= 0)
 					{
 						ray.coords = coords;
 						emission = raycast(&ray, scene, CAMERA_BOUNCES);
@@ -199,8 +207,6 @@ void	*render_loop(void *arg)
 					color.combined = emission.color.combined;
 					if (render_mode == 1)
 						emission.intensity = 1;
-					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
-						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
 					if (resolution == &scene->accum_resolution && env->frame_index > 0 && render_mode >= 0)
 					{
 						// t_color temp;
@@ -212,16 +218,34 @@ void	*render_loop(void *arg)
 						// color.channel.r =  (uint8_t)((float)color.channel.r * col);
 						// color.channel.g =  (uint8_t)((float)color.channel.g * col);
 						// color.channel.b =  (uint8_t)((float)color.channel.b * col);
-						
-						scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
-							(float)(color.channel.r * emission.intensity + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
-							(float)(color.channel.g * emission.intensity + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y),
-							(float)(color.channel.b * emission.intensity + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z)};
-						color.channel.r = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x / env->frame_index, 255));
-						color.channel.g = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y / env->frame_index, 255));
-						color.channel.b = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z / env->frame_index, 255));
+						if (render_mode == 2)
+						{
+							scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
+								(float)(color_temp.x + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
+								(float)(color_temp.y + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y),
+								(float)(color_temp.z + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z)};
+							//color.channel.r = (uint8_t)(fmin(color_temp.x, 255));
+							//color.channel.g = (uint8_t)(fmin(color_temp.y, 255));
+							//color.channel.b = (uint8_t)(fmin(color_temp.z, 255));
+							color.channel.r = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x / env->frame_index, 255));
+							color.channel.g = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y / env->frame_index, 255));
+							color.channel.b = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z / env->frame_index, 255));
+						}
+						if (render_mode <= 1)
+						{
+							scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
+								(float)(color.channel.r * emission.intensity + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
+									(float)(color.channel.g * emission.intensity + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y),
+									(float)(color.channel.b * emission.intensity + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z)};
+							color.channel.r = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x / env->frame_index, 255));
+							color.channel.g = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y / env->frame_index, 255));
+							color.channel.b = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z / env->frame_index, 255));
+						}
 					}
-					put_pixel(coords, color.combined, img);
+					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
+						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
+					//if (render_mode != 2)
+						put_pixel(coords, color.combined, img);
 					if (scene->resolution.x == scene->resolution.y)
 						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
 				}
@@ -300,11 +324,8 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	int					i;
 
 	i = 0;
-	if (render_mode == 1)
-	{
-		bidirectional_path_tracing();
-		return ;
-	}
+	//if (env->frame_index >= 3)
+	//	return ;
 	if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.y)
 	{
 		if (scene->accum_resolution.x == scene->resolution_range.x && scene->accum_resolution.y == scene->resolution_range.y)
@@ -329,6 +350,8 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	}
 	if (resolution->x == scene->resolution_range.x && resolution->y == scene->resolution_range.x)
 	{
+		if (render_mode == 2)
+			trace_light_path(scene);
 		ft_lstdel(&scene->photon_list[0], &del_photon_node);
 		ft_bzero(scene->cam_hit_color, SCREEN_X * SCREEN_Y * sizeof(uint32_t));
 		i = 0;

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/09 16:51:35 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/14 18:09:36 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@
 # define PHOTONS 5000
 # define PHOTON_RADIUS 1.0
 # define N_CLOSEST_PHOTONS 1
-# define CAMERA_BOUNCES 4
+# define CAMERA_BOUNCES 3
 # define LIGHT_BOUNCES 3
-# define BOUNCE_COUNT 3
 # define MAX_DENSITY 5
 # define MAX_LUMEN 1000
 
@@ -192,6 +191,13 @@ typedef struct s_cam_hit
 	t_ray_hit	photon[N_CLOSEST_PHOTONS];
 }				t_cam_hit;
 
+typedef struct s_light_path
+{
+	t_3d	color;
+	t_3d	origin;
+	t_3d	normal;
+}				t_light_path;
+
 typedef struct s_scene
 {
 	t_list		*object_list;
@@ -208,6 +214,7 @@ typedef struct s_scene
 	t_cam_hit	*cam_hit_buffer;
 	uint32_t	*cam_hit_color;
 	uint32_t	*cam_hit_intensity;
+	t_light_path	light_path[LIGHT_BOUNCES];
 }				t_scene;
 
 typedef struct s_dim
@@ -408,5 +415,10 @@ t_mat		scale_matrix(t_mat *m1, double factor);
 
 double		time_since_success(double ammount, int id,int mode);
 int			coords_in_area(t_dim dim, t_2i coords);
+
+/*Bidirectional path tracing functions*/
+
+void		trace_light_path(t_scene *scene);
+t_3d		trace_eye_path(t_env *env, t_ray *ray, t_scene *scene, int camera_bounces);
 
 #endif

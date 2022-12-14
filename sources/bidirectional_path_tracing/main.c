@@ -6,410 +6,231 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 15:15:57 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/11 15:32:18 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/14 19:49:53 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-#define eps 0.00001
-#define LIGHTPATHLENGTH 2
-#define EYEPATHLENGTH 3
-#define SAMPLES 8
+t_object	*unpack_light(t_list *lights, int index)
+{
+	int	current;
 
-#define SHOWSPLITLINE
-#define FULLBOX
-
-#define DOF
-#define ANIMATENOISE
-#define MOTIONBLUR
-
-#define MOTIONBLURFPS 240.
-
-#define LIGHTCOLOR vec3(16.86, 10.76, 8.2)*200.
-#define WHITECOLOR vec3(.7295, .7355, .729)*0.7
-#define GREENCOLOR vec3(.117, .4125, .115)*0.7
-#define REDCOLOR vec3(.611, .0555, .062)*0.7
-
-float hash1(inout float seed) {
-    return fract(sin(seed += 0.1)*43758.5453123);
+	current = 0;
+	while (lights)
+	{
+		if (((t_object *)lights->content)->type == LIGHT)
+		{
+			if (current == index)
+				return (((t_object *)lights->content));
+			else
+				current++;
+		}
+		lights = lights->next;
+	}
+	return (NULL);
 }
 
-vec2 hash2(inout float seed) {
-    return fract(sin(vec2(seed+=0.1,seed+=0.1))*vec2(43758.5453123,22578.1459123));
+t_3d	multiply_vectors(t_3d vector1, t_3d vector2)
+{
+	t_3d	multiplied;
+
+	multiplied.x = vector1.x * vector2.x;
+	multiplied.y = vector1.y * vector2.y;
+	multiplied.z = vector1.z * vector2.z;
+	return (multiplied);
 }
 
-vec3 hash3(inout float seed) {
-    return fract(sin(vec3(seed+=0.1,seed+=0.1,seed+=0.1))*vec3(43758.5453123,22578.1459123,19642.3490423));
+double	clamp(double value, double min, double max)
+{
+	if (value < min)
+		return (min);
+	if (value > max)
+		return (max);
+	return (value);
 }
 
-vec3 nSphere( in vec3 pos, in vec4 sph ) {
-    return (pos-sph.xyz)/sph.w;
+t_3d	get_brdf_ray(t_3d normal, t_ray *ray, t_hit *hit)
+{
+	t_3d	vec;
+	t_2d	indexes;
+
+	vec = random_vector(normal, 1.0f);
+	if(hit->object->roughness < 1.0)
+	{
+		/*float n1, n2, ndotr = dot(rd,n);
+		
+		if( ndotr > 0. ) {
+			n1 = 1./1.5; n2 = 1.;
+			n = -n;
+		} else {
+			n2 = 1./1.5; n1 = 1.;
+		}
+				
+		float r0 = (n1-n2)/(n1+n2); r0 *= r0;
+		float fresnel = r0 + (1.0 - r0) * pow(1.0 - abs(ndotr), 5.0);
+		*/
+		indexes = (t_2d){1.0, 1.0};
+		if (hit->inside == 1)
+			indexes.y = hit->object->density;
+		else
+			indexes.x = hit->object->density;
+		vec = get_refraction_ray(normal, ray->forward, indexes);
+		//if(hash1(&seed) < fresnel || m > 6.5)
+		if (hit->object->density > MAX_DENSITY)
+			vec = reflect_vector(ray->forward, normal);
+	}
+	return (vec);
 }
 
-float iSphere( in vec3 ro, in vec3 rd, in vec4 sph ) {
-    vec3 oc = ro - sph.xyz;
-    float b = dot(oc, rd);
-    float c = dot(oc, oc) - sph.w * sph.w;
-    float h = b * b - c;
-    if (h < 0.0) return -1.0;
+void	trace_light_path(t_scene *scene)
+{
+	t_3d		color;
+	t_3d		object_color;
+	t_ray		ray;
+	t_object	*light;
+	t_hit		hit;
+	int			i;
 
-	float s = sqrt(h);
-	float t1 = -b - s;
-	float t2 = -b + s;
-	
-	return t1 < 0.0 ? t2 : t1;
-}
-
-vec3 nPlane( in vec3 ro, in vec4 obj ) {
-    return obj.xyz;
-}
-
-float iPlane( in vec3 ro, in vec3 rd, in vec4 pla ) {
-    return (-pla.w - dot(pla.xyz,ro)) / dot( pla.xyz, rd );
-}
-
-//-----------------------------------------------------
-// scene
-//-----------------------------------------------------
-
-vec3 cosWeightedRandomHemisphereDirection( const vec3 n, inout float seed ) {
-  	vec2 r = hash2(seed);
-    
-	vec3  uu = normalize( cross( n, vec3(0.0,1.0,1.0) ) );
-	vec3  vv = cross( uu, n );
-	
-	float ra = sqrt(r.y);
-	float rx = ra*cos(6.2831*r.x); 
-	float ry = ra*sin(6.2831*r.x);
-	float rz = sqrt( 1.0-r.y );
-	vec3  rr = vec3( rx*uu + ry*vv + rz*n );
-    
-    return normalize( rr );
-}
-
-vec3 randomSphereDirection(inout float seed) {
-    vec2 h = hash2(seed) * vec2(2.,6.28318530718)-vec2(1,0);
-    float phi = h.y;
-	return vec3(sqrt(1.-h.x*h.x)*vec2(sin(phi),cos(phi)),h.x);
-}
-
-vec3 randomHemisphereDirection( const vec3 n, inout float seed ) {
-	vec3 dr = randomSphereDirection(seed);
-	return dot(dr,n) * dr;
-}
-
-//-----------------------------------------------------
-// light
-//-----------------------------------------------------
-
-const vec4 lightSphere = vec4( 3.0,7.5,2.5, .5 );
-vec4 movingSphere;
-
-void initMovingSphere( float time ) {
-	movingSphere = vec4( 1.+abs(1.0*sin(time*1.3)), 1.+abs(2.0*sin(time)), 7.-abs(6.*cos(time*0.4)), 1.0);
-}
-
-vec3 sampleLight( const in vec3 ro, inout float seed ) {
-    vec3 n = randomSphereDirection(seed) * lightSphere.w;
-    return lightSphere.xyz + n;
-}
-
-//-----------------------------------------------------
-// scene
-//-----------------------------------------------------
-
-vec2 intersect( in vec3 ro, in vec3 rd, inout vec3 normal ) {
-	vec2 res = vec2( 1e20, -1.0 );
-    float t;
-	
-	t = iPlane( ro, rd, vec4( 0.0, 1.0, 0.0,0.0 ) ); if( t>eps && t<res.x ) { res = vec2( t, 1. ); normal = vec3( 0., 1., 0.); }
-	t = iPlane( ro, rd, vec4( 0.0, 0.0,-1.0,8.0 ) ); if( t>eps && t<res.x ) { res = vec2( t, 1. ); normal = vec3( 0., 0.,-1.); }
-    t = iPlane( ro, rd, vec4( 1.0, 0.0, 0.0,0.0 ) ); if( t>eps && t<res.x ) { res = vec2( t, 2. ); normal = vec3( 1., 0., 0.); }
-#ifdef FULLBOX
-    t = iPlane( ro, rd, vec4( 0.0,-1.0, 0.0,5.49) ); if( t>eps && t<res.x && ro.z+rd.z*t < 5.5 ) { res = vec2( t, 1. ); normal = vec3( 0.,-1., 0.); }
-    t = iPlane( ro, rd, vec4(-1.0, 0.0, 0.0,5.59) ); if( t>eps && t<res.x ) { res = vec2( t, 3. ); normal = vec3(-1., 0., 0.); }
-#endif
-
-	t = iSphere( ro, rd, movingSphere             ); if( t>eps && t<res.x ) { res = vec2( t, 1. ); normal = nSphere( ro+t*rd, movingSphere ); }
-    t = iSphere( ro, rd, vec4( 4.0,1.0, 4.0, 1.0) ); if( t>eps && t<res.x ) { res = vec2( t, 5. ); normal = nSphere( ro+t*rd, vec4( 4.0,1.0, 4.0,1.0) ); }
-    t = iSphere( ro, rd, lightSphere ); if( t>eps && t<res.x ) { res = vec2( t, 0.0 );  normal = nSphere( ro+t*rd, lightSphere ); }
-					  
-    return res;					  
-}
-
-bool intersectShadow( in vec3 ro, in vec3 rd, in float dist ) {
-    float t;
-	
-	t = iSphere( ro, rd, movingSphere            );  if( t>eps && t<dist ) { return true; }
-    t = iSphere( ro, rd, vec4( 4.0,1.0, 4.0,1.0) );  if( t>eps && t<dist ) { return true; }
-#ifdef FULLBOX    
-    t = iPlane( ro, rd, vec4( 0.0,-1.0, 0.0,5.49) ); if( t>eps && t<dist && ro.z+rd.z*t < 5.5 ) { return true; }
-#endif
-    return false; // optimisation: other planes don't cast shadows in this scene
-}
-
-//-----------------------------------------------------
-// materials
-//-----------------------------------------------------
-
-vec3 matColor( const in float mat ) {
-	vec3 nor = vec3(0., 0.95, 0.);
-	
-	if( mat<3.5 ) nor = REDCOLOR;
-    if( mat<2.5 ) nor = GREENCOLOR;
-	if( mat<1.5 ) nor = WHITECOLOR;
-	if( mat<0.5 ) nor = LIGHTCOLOR;
-					  
-    return nor;					  
-}
-
-bool matIsSpecular( const in float mat ) {
-    return mat > 4.5;
-}
-
-bool matIsLight( const in float mat ) {
-    return mat < 0.5;
-}
-
-//-----------------------------------------------------
-// brdf
-//-----------------------------------------------------
-
-vec3 getBRDFRay( in vec3 n, const in vec3 rd, const in float m, inout bool specularBounce, inout float seed ) {
-    specularBounce = false;
-    
-    vec3 r = cosWeightedRandomHemisphereDirection( n, seed );
-    if(  !matIsSpecular( m ) ) {
-        return r;
-    } else {
-        specularBounce = true;
-        
-        float n1, n2, ndotr = dot(rd,n);
-        
-        if( ndotr > 0. ) {
-            n1 = 1./1.5; n2 = 1.;
-            n = -n;
-        } else {
-            n2 = 1./1.5; n1 = 1.;
-        }
-                
-        float r0 = (n1-n2)/(n1+n2); r0 *= r0;
-		float fresnel = r0 + (1.-r0) * pow(1.0-abs(ndotr),5.);
-        
-        vec3 ref = refract( rd, n, n2/n1 );        
-        if( ref == vec3(0) || hash1(seed) < fresnel || m > 6.5 ) {
-            ref = reflect( rd, n );
-        }
-        
-        return ref; // normalize( ref + 0.1 * r );
+	light = unpack_light(scene->object_list, 0);
+	ray.origin = light->origin;
+	ray.forward = random_vector((t_3d){0.0, 1.0, 0.0}, 2.0f);
+	ft_bzero(&scene->light_path, sizeof(t_light_path) * LIGHT_BOUNCES);
+	color.x = (double)light->color.channel.r / 255.0 * (light->lumen * light->lumen);
+	color.y = (double)light->color.channel.g / 255.0 * (light->lumen * light->lumen);
+	color.z = (double)light->color.channel.b / 255.0 * (light->lumen * light->lumen);
+	i = 0;
+	while (i < LIGHT_BOUNCES)
+	{
+		if (intersects(&ray, scene->object_list, &hit, 0))
+		{
+			ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS));
+			scene->light_path[i].origin = ray.origin;
+			object_color.x = (double)hit.object->color.channel.r / 255.0;
+			object_color.y = (double)hit.object->color.channel.g / 255.0;
+			object_color.z = (double)hit.object->color.channel.b / 255.0;
+			color = multiply_vectors(color, object_color);
+			if(hit.object->roughness > 0.0)
+				scene->light_path[i].color = color;
+			scene->light_path[i].normal = hit.normal;
+			ray.forward = get_brdf_ray(hit.normal, &ray, &hit);
+		}
+		else
+			break;
+		i += 1;
 	}
 }
 
-//-----------------------------------------------------
-// lightpath
-//-----------------------------------------------------
+t_3d	trace_eye_path(t_env *env, t_ray *ray, t_scene *scene, int camera_bounces)
+{
+	t_3d		calc_color;
+	t_3d		max_color;
+	t_3d		object_color;
+	t_object	*light;
+	t_hit		hit;
+	t_ray		light_ray;
+	t_3d		light_color;
+	t_3d		temp1;
 
-struct LightPathNode {
-    vec3 color;
-    vec3 position;
-    vec3 normal;
-};
+	calc_color = (t_3d){0.0, 0.0, 0.0};
+	max_color = (t_3d){1.0, 1.0, 1.0};
 
-LightPathNode lpNodes[LIGHTPATHLENGTH];
+	int		jdiff = 0;
 
-void constructLightPath( inout float seed ) {
-    vec3 ro = randomSphereDirection( seed );
-    vec3 rd = cosWeightedRandomHemisphereDirection( ro, seed );
-    ro = lightSphere.xyz - ro*lightSphere.w;
-    vec3 color = LIGHTCOLOR;
- 
-    for( int i=0; i<LIGHTPATHLENGTH; ++i ) {
-        lpNodes[i].position = lpNodes[i].color = lpNodes[i].normal = vec3(0.);
-    }
-    
-    bool specularBounce;
-    float w = 0.;
-    
-    for( int i=0; i<LIGHTPATHLENGTH; i++ ) {
-		vec3 normal;
-        vec2 res = intersect( ro, rd, normal );
-        
-        if( res.y > 0.5 && dot( rd, normal ) < 0. ) {
-            ro = ro + rd*res.x;            
-            color *= matColor( res.y );
-            
-            lpNodes[i].position = ro;
-            if( !matIsSpecular( res.y ) ) lpNodes[i].color = color;// * clamp( dot( normal, -rd ), 0., 1.);
-            lpNodes[i].normal = normal;
-            
-            rd = getBRDFRay( normal, rd, res.y, specularBounce, seed );
-        } else break;
-    }
-}
+	int	i;
+	i = 0;
+	while (i < camera_bounces)
+	{
+		light = unpack_light(scene->object_list, 0);
+		if (intersects(ray, scene->object_list, &hit, 1) == 0)
+		{
+			calc_color.x *= 255;
+			calc_color.y *= 255;
+			calc_color.z *= 255;
+			return (calc_color);
+		}
+		t_3d	normal;
+		normal = hit.normal;
+		if (hit.object->type == LIGHT)
+		{
+			object_color.x = hit.object->color.channel.r / 255 * (hit.object->lumen * hit.object->lumen);
+			object_color.y = hit.object->color.channel.g / 255 * (hit.object->lumen * hit.object->lumen);
+			object_color.z = hit.object->color.channel.b / 255 * (hit.object->lumen * hit.object->lumen);
+			calc_color = add_vectors(calc_color, multiply_vectors(max_color, object_color));
+			return (calc_color);
+		}
+		object_color.x = (double)hit.object->color.channel.r / 255.0;
+		object_color.y = (double)hit.object->color.channel.g / 255.0;
+		object_color.z = (double)hit.object->color.channel.b / 255.0;
+		ray->origin = add_vectors(hit.point, scale_vector(normal, BIAS));
+		ray->forward = get_brdf_ray(normal, ray, &hit);
+		if(hit.object->roughness > 0.0 || dot_product(ray->forward, normal) < 0.0)
+			max_color = multiply_vectors(max_color, object_color);
+		light_ray.forward = random_vector((t_3d){1.0, 0.0, 0.0}, 2.0f);
+		light_ray.origin = scale_vector(light_ray.forward, light->radius * random_rangef(0.0, 1.0, &env->state));
+		light_ray.origin = add_vectors(light->origin, light_ray.origin);
+		light_ray.forward = subtract_vectors(light_ray.origin, ray->origin);
+		light_ray.origin = ray->origin;
 
-//-----------------------------------------------------
-// eyepath
-//-----------------------------------------------------
+		/*Direct light*/
+		double	weight;
+		double	distance;
+		distance = vector_magnitude(light_ray.forward);
+		light_ray.forward = normalize_vector(light_ray.forward);
+		if(hit.object->roughness > 0.0 && distance < intersect_loop(&light_ray, scene->object_list, &hit, 0).x)
+		{
+			t_3d	light_to_ray;
+			double	cos_alpha_max;
 
-float getWeightForPath( int e, int l ) {
-    return float(e + l + 2);
-}
+			light_to_ray = subtract_vectors(light->origin, ray->origin);
+			cos_alpha_max = light->radius * light->radius;
+			cos_alpha_max /= dot_product(light_to_ray, light_to_ray);
+			cos_alpha_max = fmax(0.0, cos_alpha_max);
+			cos_alpha_max = fmin(1.0, cos_alpha_max);
+			cos_alpha_max = sqrt(1.0 - cos_alpha_max);
+			weight = 2.0 * (1.0 - cos_alpha_max);
+			light_color.x = (double)light->color.channel.r * (light->lumen * light->lumen) / 255.0;
+			light_color.y = (double)light->color.channel.g * (light->lumen * light->lumen) / 255.0;
+			light_color.z = (double)light->color.channel.b * (light->lumen * light->lumen) / 255.0;
+			temp1 = multiply_vectors(max_color, light_color);
+			weight *= fmin(1.0, fmax(0.0, dot_product(light_ray.forward, normal)));
+			temp1 = scale_vector(temp1, weight);
+			temp1 = divide_vector(temp1, jdiff - 1 + 2);
+			calc_color = add_vectors(calc_color, temp1);
+		}
+		if(hit.object->roughness > 0.0)
+		{
+			int	i;
 
-vec3 traceEyePath( in vec3 ro, in vec3 rd, const in bool bidirectTrace, inout float seed ) {
-    vec3 tcol = vec3(0.);
-    vec3 fcol  = vec3(1.);
-    
-    bool specularBounce = true; 
-	int jdiff = 0;
-    
-    for( int j=0; j<EYEPATHLENGTH; ++j ) {
-        vec3 normal;
-        
-        vec2 res = intersect( ro, rd, normal );
-        if( res.y < -0.5 ) {
-            return tcol;
-        }
-        
-        if( matIsLight( res.y ) ) {
-            if( bidirectTrace ) {
-            	if( specularBounce ) tcol += fcol*LIGHTCOLOR;
-            } else {
-               tcol += fcol*LIGHTCOLOR;
-            }
-            return tcol; // the light has no diffuse component, therefore we can return col
-        }
-        
-        ro = ro + res.x * rd;   
-        vec3 rdi = rd;
-        rd = getBRDFRay( normal, rd, res.y, specularBounce, seed );
-            
-        if(!specularBounce || dot(rd,normal) < 0.) {  
-        	fcol *= matColor( res.y );
-        }
-        
-        if( bidirectTrace  ) {
-		    vec3 ld = sampleLight( ro, seed ) - ro;       
-            
-            // path of (j+1) eyepath-nodes, and 1 lightpath-node ( = direct light sampling )
-            vec3 nld = normalize(ld);
-            if( !specularBounce &&  !intersectShadow( ro, nld, length(ld)) ) {
-                float cos_a_max = sqrt(1. - clamp(lightSphere.w * lightSphere.w / dot(lightSphere.xyz-ro, lightSphere.xyz-ro), 0., 1.));
-                float weight = 2. * (1. - cos_a_max);
-
-                tcol += (fcol * LIGHTCOLOR) * (weight * clamp(dot( nld, normal ), 0., 1.))
-                    / getWeightForPath(jdiff,-1);
-            }
-
-            
-            if( !matIsSpecular( res.y ) ) {
-                for( int i=0; i<LIGHTPATHLENGTH; ++i ) {
-                    // path of (j+1) eyepath-nodes, and i+2 lightpath-nodes.
-                    vec3 lp = lpNodes[i].position - ro;
-                    vec3 lpn = normalize( lp );
-                    vec3 lc = lpNodes[i].color;
-
-                    if( !intersectShadow(ro, lpn, length(lp)) ) {
-                        // weight for going from (j+1)th eyepath-node to (i+2)th lightpath-node
-                        
-                        // IS THIS CORRECT ???
-                        
-                        float weight = 
-                                 clamp( dot( lpn, normal ), 0.0, 1.) 
-                               * clamp( dot( -lpn, lpNodes[i].normal ), 0., 1.)
-                               * clamp(1. / dot(lp, lp), 0., 1.)
-                            ;
-
-                        tcol += lc * fcol * weight / getWeightForPath(jdiff,i);
-                    }
-                }
-            }
-        }
-        
-        if( !specularBounce) jdiff++; else jdiff = 0;
-    }  
-    
-    return tcol;
-}
-
-//-----------------------------------------------------
-// main
-//-----------------------------------------------------
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
-	vec2 q = fragCoord.xy / iResolution.xy;
-    
-	float splitCoord = (iMouse.x == 0.0) ? iResolution.x/2. + iResolution.x*cos(iTime*.5) : iMouse.x;
-    bool bidirectTrace = fragCoord.x < splitCoord;
-    
-    //-----------------------------------------------------
-    // camera
-    //-----------------------------------------------------
-
-    vec2 p = -1.0 + 2.0 * (fragCoord.xy) / iResolution.xy;
-    p.x *= iResolution.x/iResolution.y;
-
-#ifdef ANIMATENOISE
-    float seed = p.x + p.y * 3.43121412313 + fract(1.12345314312*iTime);
-#else
-    float seed = p.x + p.y * 3.43121412313;
-#endif
-    
-    vec3 ro = vec3(2.78, 2.73, -8.00);
-    vec3 ta = vec3(2.78, 2.73,  0.00);
-    vec3 ww = normalize( ta - ro );
-    vec3 uu = normalize( cross(ww,vec3(0.0,1.0,0.0) ) );
-    vec3 vv = normalize( cross(uu,ww));
-
-    //-----------------------------------------------------
-    // render
-    //-----------------------------------------------------
-
-    vec3 col = vec3(0.0);
-    vec3 tot = vec3(0.0);
-    vec3 uvw = vec3(0.0);
-    
-    for( int a=0; a<SAMPLES; a++ ) {
-
-        vec2 rpof = 4.*(hash2(seed)-vec2(0.5)) / iResolution.xy;
-	    vec3 rd = normalize( (p.x+rpof.x)*uu + (p.y+rpof.y)*vv + 3.0*ww );
-        
-#ifdef DOF
-	    vec3 fp = ro + rd * 12.0;
-   		vec3 rof = ro + (uu*(hash1(seed)-0.5) + vv*(hash1(seed)-0.5))*0.125;
-    	rd = normalize( fp - rof );
-#else
-        vec3 rof = ro;
-#endif        
-        
-#ifdef MOTIONBLUR
-        initMovingSphere( iTime + hash1(seed) / MOTIONBLURFPS );
-#else
-        initMovingSphere( iTime );        
-#endif
-        
-        if( bidirectTrace ) {
-            constructLightPath( seed );
-        }
-        
-        col = traceEyePath( rof, rd, bidirectTrace, seed );
-
-        tot += col;
-        
-        seed = mod( seed*1.1234567893490423, 13. );
-    }
-    
-    tot /= float(SAMPLES);
-    
-#ifdef SHOWSPLITLINE
-	if (abs(fragCoord.x - splitCoord) < 1.0) {
-		tot.x = 1.0;
+			i = 0;
+			while (i < LIGHT_BOUNCES)// && scene->light_path[i].color.x != 0.0 && scene->light_path[i].color.y != 0.0 && scene->light_path[i].color.z != 0.0)
+			{
+				t_3d	lp = subtract_vectors(scene->light_path[i].origin, ray->origin);
+				t_ray	lpn;
+				lpn.forward = normalize_vector(lp);
+				lpn.origin = ray->origin;
+				light_color = scene->light_path[i].color;
+				if(vector_magnitude(lp) < intersect_loop(&lpn, scene->object_list, &hit, 0).x)
+				{
+					weight = clamp(dot_product(lpn.forward, normal), 0.0, 1.0)
+						* clamp(dot_product(scale_vector(lpn.forward, -1), scene->light_path[i].normal), 0.0, 1.0)
+						* clamp(1.0 / dot_product(lp, lp), 0.0, 1.0);
+					temp1 = multiply_vectors(max_color, light_color);
+					temp1 = scale_vector(temp1, weight);
+					temp1 = divide_vector(temp1, jdiff + i + 2);
+					calc_color = add_vectors(calc_color, temp1);
+				}
+				i++;
+			}
+		}
+		if (hit.object->roughness > 0.0)
+			jdiff++;
+		else
+			jdiff = 0;
+		i++;
 	}
-#endif
-    
-	tot = pow( clamp(tot,0.0,1.0), vec3(0.45) );
-
-    fragColor = vec4( tot, 1.0 );
+	calc_color.x *= 255;
+	calc_color.y *= 255;
+	calc_color.z *= 255;
+	return (calc_color);
 }
-
-void	bidirectional_path_tracing()
