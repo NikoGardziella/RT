@@ -39,7 +39,7 @@ OBJECT light
 	origin 0.0 30.0 30.0
 	color FFFFFF
 	lumen 20.0
-	radius 2.0
+	radius 1.0
 OBJECT camera
 	pos 0.0 0.0 80.0
 	fov 60.0

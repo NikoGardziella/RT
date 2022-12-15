@@ -25,6 +25,8 @@ void take_screenshot(t_env *env)
 	SDL_FreeSurface(sshot);
 }
 
+
+
 void	key_down(t_env *env)
 {
 
@@ -57,6 +59,8 @@ void	key_down(t_env *env)
 			env->keymap |= KEY_LSHIFT;
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_K)
 				take_screenshot(env);
+		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_DELETE)
+				delete_selected_object(env);
 	}
 }
 

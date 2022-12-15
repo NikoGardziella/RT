@@ -130,6 +130,7 @@ SOURCES_LIST =	main.c\
 				mouse/right_button/down.c\
 				keyboard/events.c\
 				keyboard/hold.c\
+				keyboard/delete_object.c\
 				ray_trace/color_op.c\
 				ray_trace/get_camera_ray.c\
 				ray_trace/calculate_normal.c\

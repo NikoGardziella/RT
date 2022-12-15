@@ -13,7 +13,7 @@
 #include "rt.h"
 
 #define STEP_COUNT 16
-#define PARTICLE_INTENSITY 0.0
+
 #define LIGHT_INTENSITY 200.0
 #define SIGMA 0.3
 
@@ -118,7 +118,7 @@ double ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene)
 			// printf("%f\n", light_vector_length + dist);
 			double trans = exp(-SIGMA * ((light_vector_length + dist) / 30.f));
 			double geomTerm = 1.0 / dot_product(lightVec, lightVec);
-			col += SIGMA * PARTICLE_INTENSITY * LIGHT_INTENSITY * geomTerm * 2.f * trans / pdf;
+			col += SIGMA * scene->particle_intensity * light->lumen * geomTerm * 2.f * trans / pdf;
 		}
 		else
 		{

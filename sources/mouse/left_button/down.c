@@ -42,7 +42,13 @@ void	left_button_down(void *param)
 	}
 	else if (coords_in_area(env->img[7].dim, mouse_coords) && env->sel_ray.object->type == LIGHT && env->sidebar == 1)
 	{
+		printf("lumen slider");
 		env->sel_element = 5;
+	}
+	else if (coords_in_area(env->img[6].dim, mouse_coords) && env->sel_ray.object->type == LIGHT && env->sidebar == 1)
+	{
+		printf("intensity slider");
+		env->sel_element = 6;
 	}
 	else if (coords_in_area(env->img[7].dim, mouse_coords) && env->sel_ray.object != NULL && env->sidebar == 1)
 	{
@@ -64,7 +70,7 @@ void	left_button_down(void *param)
 		raycast(&env->sel_ray, env->scene, 1);
 		//if(env->sel_ray.object != NULL)
 		//env->sidebar = 1;
-		render_screen(env);
+		//render_screen(env);
 	}
 	else
 		return ;

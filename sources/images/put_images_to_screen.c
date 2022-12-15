@@ -16,6 +16,7 @@ void	put_images_to_screen(t_env *env)
 {
 	double	density;
 	double	lumen;
+	//double	particle_intensity;
 
 	if (env->scene->resolution.x == env->scene->resolution_range.x && env->scene->resolution.y == env->scene->resolution_range.x)
 	{
@@ -34,7 +35,9 @@ void	put_images_to_screen(t_env *env)
 		if(env->sel_ray.object->type == LIGHT)
 		{
 			lumen = (env->sel_ray.object->lumen - 1)  / (MAX_LUMEN - 1);
+			//particle_intensity = (env->scene->particle_intensity - 1)  / (MAX_PARTICLE_INTENSITY - 1);
 			process_image(&env->sdl, &env->img[7], 3, &lumen);
+			process_image(&env->sdl, &env->img[6], 3, &env->scene->particle_intensity);
 		}
 		else if(env->sel_ray.object != NULL)
 		{

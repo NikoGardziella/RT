@@ -37,6 +37,8 @@
 # define LIGHT_BOUNCES 3
 # define MAX_DENSITY 5
 # define MAX_LUMEN 1000
+# define MAX_PARTICLE_INTENSITY 100
+
 
 # define KEY_A 1
 # define KEY_W 2
@@ -138,7 +140,7 @@ typedef struct s_object
 	double		radius;
 	double		roughness;
 	double		density;
-	int			lumen;
+	double		lumen;
 	int			type;
 	t_color		color;
 	t_3d		axis;
@@ -215,6 +217,7 @@ typedef struct s_scene
 	uint32_t	*cam_hit_color;
 	uint32_t	*cam_hit_intensity;
 	t_light_path	light_path[LIGHT_BOUNCES];
+	double			particle_intensity;
 }				t_scene;
 
 typedef struct s_dim
@@ -310,6 +313,7 @@ t_mat		init_pmatrix(t_proj *proj);
 
 void		keyboard_events(t_env *env);
 int			keyboard_hold(t_env *env);
+void		delete_selected_object(t_env *env);
 
 /*Mouse functions*/
 
