@@ -6,7 +6,7 @@
 #    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/12 11:30:10 by ctrouve          ###   ########.fr        #
+#    Updated: 2022/12/14 15:04:52 by ctrouve          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -124,6 +124,7 @@ SOURCES_LIST =	main.c\
 				parser/read_object_transformations.c\
 				mapping/checkerboard.c\
 				mapping/normal_map.c\
+				mapping/canvas_from_ppm.c\
 				mouse/events.c\
 				mouse/mouse_main.c\
 				mouse/left_button/up.c\
