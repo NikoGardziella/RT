@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/15 17:46:42 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/15 20:05:52 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,8 +242,9 @@ typedef struct s_sdl
 
 typedef struct s_bmptxtr
 {
-	SDL_Surface	*wasd;
+	SDL_Surface	*sidebar;
 	SDL_Surface	*slider;
+	SDL_Surface	*slide;
 }				t_bmptxtr;
 
 typedef struct s_mouse
