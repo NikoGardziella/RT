@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 15:30:28 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/16 17:29:37 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:34:40 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 static void	angle_overflow(t_3d *angle)
 {
-	if (angle->x >= 90.0f)
-		angle->x = 90.0f;
-	else if (angle->x <= -90.0f)
-		angle->x = -90.0f;
+	if (angle->x > 360.0f)
+		angle->x -= 360.0f;
+	else if (angle->x < 0.0f)
+		angle->x += 360.0f;
 	if (angle->y > 360.0f)
 		angle->y -= 360.0f;
 	else if (angle->y < 0.0f)
@@ -38,7 +38,7 @@ static int	mouse_move(void *param)
 			angle_overflow(&env->scene->camera_angle);
 			env->scene->camera_angle.x -= (double)env->mouse.move.y / 5;
 			env->scene->camera_angle.y -= (double)env->mouse.move.x / 5;
-			env->scene->camera->ray.forward = rotate_point((t_3d){0.0f, 0.0f, -1.0f}, env->scene->camera_angle);
+			env->scene->camera->ray.forward = rotate_point(env->camera_default, env->scene->camera_angle);
 			//env->scene->camera->ray.forward = rotate_point(env->scene->camera->ray.forward, (t_3d){0.0f, -env->sdl.event.motion.xrel / 5, 0.0f});
 			//env->scene->camera->ray.forward = rotate_point(env->scene->camera->ray.forward, (t_3d){-env->sdl.event.motion.yrel / 5, 0.0f, 0.0f});
 			ret |= 1;

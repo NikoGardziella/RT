@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 16:47:49 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/09 13:19:09 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/15 17:42:32 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int	intersects(t_ray *ray, t_list *object_list, t_hit *hit, int mode)
 
 	t = intersect_loop(ray, object_list, hit, mode);
 	ray->distance = t.x;
+	if (mid)
+		printf("t.x %f\n", t.x);
 	if (t.x < T_MAX)
 	{
 		hit->point = scale_vector(ray->forward, t.x);

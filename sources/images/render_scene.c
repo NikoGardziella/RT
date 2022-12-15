@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/13 19:17:07 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/15 17:16:44 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ void	*render_loop(void *arg)
 	// double col;
 	t_3d	color_temp;
 	color_temp = (t_3d){0.0, 0.0, 0.0};
-	while (coords.y < img->dim.size.y - 1)
+	while (coords.y < img->dim.size.y)
 	{
 		if (coords.y % scene->resolution_range.y == resolution->y)
 		{
@@ -193,7 +193,7 @@ void	*render_loop(void *arg)
 					ray = get_ray(coords, img, camera);
 					ray.forward = random_vector(ray.forward, 0.002f);
 					ray.object = NULL;
-					if (render_mode == -1)
+					if (render_mode == -1 || env->frame_index == 0)
 						emission = raycast(&ray, scene, -1);
 					else if (render_mode == 2)
 					{

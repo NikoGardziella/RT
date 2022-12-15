@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/14 18:09:36 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/15 17:21:38 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
-# define THREADS 32
+# define THREADS 1
 # define PHOTONS 5000
 # define PHOTON_RADIUS 1.0
 # define N_CLOSEST_PHOTONS 1
@@ -273,6 +273,7 @@ typedef struct s_env
 	int				frame_index;
 	uint32_t		state;
 	double			photon_cluster_radius;
+	t_3d			camera_default;
 }				t_env;
 
 t_env	*temp_env;

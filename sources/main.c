@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/05 15:10:49 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:33:58 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ int	main(int argc, char **argv)
 	env.scene->camera = load_scene_camera(argv[1]);
 	if (env.scene->camera == NULL)
 		close_prog(NULL, "Parsing camera failed...", -1);
+	env.camera_default = env.scene->camera->ray.forward;
 	env.scene->object_list = load_scene_objects(argv[1]);
 	if (env.scene->object_list == NULL)
 		close_prog(NULL, "Parsing objects failed...", -1);
