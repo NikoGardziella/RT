@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/15 17:46:57 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/15 23:16:44 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_3d	random_vector(t_3d refl_vec, float max_theta)
 
 	if (dot_product(refl_vec, (t_3d){0.0, 1.0, 0.0}) == 1.0)
 		tangent = cross_product(refl_vec, (t_3d){0.0, 0.0, 1.0});
+	else if (dot_product(refl_vec, (t_3d){0.0, -1.0, 0.0}) == 1.0)
+		tangent = cross_product(refl_vec, (t_3d){0.0, 0.0, -1.0});
 	else
 		tangent = cross_product(refl_vec, (t_3d){0.0, 1.0, 0.0});
 	tangent = normalize_vector(tangent);

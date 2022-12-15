@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 10:56:32 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/15 15:01:45 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/15 22:52:23 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	get_image_sizes(t_img *img)
 	img[1].dim.size = (t_2i){button.x, button.y};
 	img[2].dim.size = (t_2i){img[0].dim.size.x / 3, img[0].dim.size.y / 3};
 	img[3].dim.size = (t_2i){SCREEN_X / 4, SCREEN_Y - (offset.y * 2)};
-	slider = (t_2i){img[3].dim.size.x - offset.x * 2, button.y};
+	slider = (t_2i){img[3].dim.size.x - offset.x * 2, button.y / 1};
 	img[4].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 	img[5].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 	img[6].dim.size = slider;

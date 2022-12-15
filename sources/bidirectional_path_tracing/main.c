@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 15:15:57 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/15 17:48:16 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/15 23:20:29 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,15 +150,17 @@ t_3d	trace_eye_path(t_env *env, t_ray *ray, t_scene *scene, int camera_bounces)
 
 	int	i;
 	i = 0;
+	/*
 	if (mid)
-	printf("i************ NEW FRAME\n");
+		printf("i************ NEW FRAME\n");
+	if (mid == 1)
+		printf("FIRST RAY x%f y%f z%f\n", ray->forward.x, ray->forward.y, ray->forward.z);
+	*/
 	while (i < camera_bounces)
 	{
 		light = unpack_light(scene->object_list, 0);
 		if (intersects(ray, scene->object_list, &hit, 1) == 0)
 		{
-			if (mid)
-			printf("TEST1\n");
 			calc_color.x *= 255;
 			calc_color.y *= 255;
 			calc_color.z *= 255;
@@ -168,8 +170,6 @@ t_3d	trace_eye_path(t_env *env, t_ray *ray, t_scene *scene, int camera_bounces)
 		normal = hit.normal;
 		if (hit.object->type == LIGHT)
 		{
-			if (mid)
-			printf("TEST2\n");
 			object_color.x = (double)hit.object->color.channel.r * (hit.object->lumen * hit.object->lumen) / 255.0;
 			object_color.y = (double)hit.object->color.channel.g * (hit.object->lumen * hit.object->lumen) / 255.0;
 			object_color.z = (double)hit.object->color.channel.b * (hit.object->lumen * hit.object->lumen) / 255.0;
@@ -199,8 +199,6 @@ t_3d	trace_eye_path(t_env *env, t_ray *ray, t_scene *scene, int camera_bounces)
 			t_3d	light_to_ray;
 			double	cos_alpha_max;
 
-			if (mid == 1)
-				printf("hit_point x%f y%f z%f\n", ray->origin.x, ray->origin.y, ray->origin.z);
 			light_to_ray = subtract_vectors(light->origin, ray->origin);
 			cos_alpha_max = light->radius * light->radius;
 			cos_alpha_max /= dot_product(light_to_ray, light_to_ray);
