@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/15 17:21:38 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/15 17:46:42 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,6 +253,20 @@ typedef struct s_mouse
 	uint8_t	state;
 }				t_mouse;
 
+typedef struct s_fog
+{
+	double	color_value;
+	double	offset;
+	double	offset_value;
+	double	trans;
+	double	geom_term;
+	t_ray	particle_ray;
+	t_3d	light_vec;
+	double	dist;
+	double	pdf;
+	double	light_vector_length;
+}				t_fog;
+
 typedef struct s_env
 {
 	int				selected;
@@ -320,6 +334,7 @@ void		left_button_up(void *param);
 void		left_button_down(void *param);
 void		right_button_up(void *param);
 void		right_button_down(void *param);
+int			mouse_scroll(void *param);
 
 /*Close and free functions*/
 
