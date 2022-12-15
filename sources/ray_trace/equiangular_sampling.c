@@ -5,130 +5,85 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/08 12:30:56 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/11 14:57:12 by dmalesev         ###   ########.fr       */
+/*   Created: 2022/12/15 14:21:39 by pnoutere          #+#    #+#             */
+/*   Updated: 2022/12/15 14:31:15 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
 #define STEP_COUNT 16
-
-#define LIGHT_INTENSITY 200.0
+#define PARTICLE_INTENSITY 1.0
+#define LIGHT_INTENSITY 100.0
 #define SIGMA 0.3
 
-double fract(double n)
+double	hash(double n)
 {
+	n = sin(n) * 43758.5453123;
 	return (n - (double)((int)n));
 }
 
-double hash(double n)
+double	mix(double x, double y, double a)
 {
-    return fract(sin(n) * 43758.5453123);
+	return (x + (y - x) * a);
 }
 
-double mix(double x, double y, double a)
+double	sample_equiangular(double offset_value, t_ray ray,
+	t_3d light_pos, double *dist)
 {
-	return (x * (1 - a) + y * a);
-}
+	t_2d	thetas;
+	double	pdf;
+	double	delta;
+	double	d;
+	double	t;
 
-
-// void sampleEquiAngular(
-// 	double u,
-// 	double max_distance,
-// 	t_3d ray_origin,
-// 	t_3d ray_direction,
-// 	t_3d lightPos,
-// 	double *dist,
-// 	double *pdf)
-// {
-// 	// get coord of closest point to light along (infinite) ray
-// 	double delta = dot_product(subtract_vectors(ray_origin, lightPos), ray_direction);
-
-// 	// get distance this point is from light
-// 	double D = vector_magnitude(add_vectors(ray_origin, subtract_vectors(lightPos, scale_vector(ray_direction, delta))));
-
-// 	// get angle of endpoints
-// 	double thetaA = atan((0.0 - delta) / D);
-// 	double thetaB = atan((max_distance - delta) / D);
-
-// 	// take sample
-	
-// 	double t = D * tan((1 - u) * thetaA + u * thetaB);
-// 	*dist = delta + t;
-// 	*pdf = D / fabs(thetaA - thetaB) / (D * D + *dist * *dist);
-// 	// *pdf = D / ((thetaB - thetaA) * ( D * D + t * t));
-// }
-
-void sampleEquiAngular(
-	double u,
-	double max_distance,
-	t_3d ray_origin,
-	t_3d ray_direction,
-	t_3d lightPos,
-	double *dist,
-	double *pdf)
-{
-	// get coord of closest point to light along (infinite) ray
-	double delta = dot_product(subtract_vectors(ray_origin, lightPos), ray_direction);
-
-	// get distance this point is from light
-	double D = vector_magnitude(add_vectors(ray_origin, subtract_vectors(lightPos, scale_vector(ray_direction, delta))));
-
-	// get angle of endpoints
-	double thetaA = atan((0.0 - delta) / D);
-	double thetaB = atan((max_distance - delta) / D);
-
-	// take sample
-	double t = D * tan(mix(thetaA, thetaB, u));
+	delta = dot_product(subtract_vectors(ray.origin, light_pos), ray.forward);
+	d = vector_magnitude(add_vectors(ray.origin,
+				subtract_vectors(light_pos, scale_vector(ray.forward, delta))));
+	thetas.x = atan((0.0 - delta) / d);
+	thetas.y = atan((ray.distance - delta) / d);
+	t = d * tan(mix(thetas.x, thetas.y, offset_value));
 	*dist = delta + t;
-	*pdf = D / ((thetaB - thetaA) * ( D * D + t * t));
+	pdf = d / ((thetas.y - thetas.x) * (d * d + t * t));
+	return (pdf);
 }
 
-
-double ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene)
+double	add_up_samples(t_ray ray, t_object *light, t_scene *scene, t_fog fog)
 {
-	double col = 0.f;
-	double offset = hash(coords.y * 640 + coords.x  + (double)time(NULL));
-	int stepIndex = 0;
-	// t_3d test = subtract_vectors(light->origin, ray.origin);
-	// double lengthidude = vector_magnitude(test);
-	// if (ray.distance < lengthidude)
-	// 	return (0.0);
-	while (stepIndex < STEP_COUNT)
+	fog.pdf = sample_equiangular(fog.offset_value, ray,
+			light->origin, &fog.dist);
+	fog.particle_ray.origin = add_vectors(ray.origin,
+			scale_vector(ray.forward, fog.dist));
+	fog.particle_ray.forward = subtract_vectors(light->origin,
+			fog.particle_ray.origin);
+	fog.light_vec = subtract_vectors(light->origin, fog.particle_ray.origin);
+	fog.light_vector_length = vector_magnitude(fog.particle_ray.forward);
+	fog.particle_ray.forward = normalize_vector(fog.particle_ray.forward);
+	if (fog.light_vector_length < intersect_loop(&fog.particle_ray,
+			scene->object_list, NULL, 0).x)
 	{
-		double u = ((double)stepIndex + offset) / (double)STEP_COUNT;
-		double dist;
-		double pdf;
-		
-		sampleEquiAngular(u, ray.distance, ray.origin, ray.forward, light->origin, &dist, &pdf);
-		
-		pdf *= (double)STEP_COUNT;
-		t_ray particle_ray;
-		particle_ray.origin = add_vectors(ray.origin, scale_vector(ray.forward, dist));
-		particle_ray.forward = subtract_vectors(light->origin, particle_ray.origin);
-		t_3d lightVec = subtract_vectors(light->origin, particle_ray.origin);
-		
-		double light_vector_length = vector_magnitude(particle_ray.forward);
-		particle_ray.forward = normalize_vector(particle_ray.forward);
-		// accumulate particle response if not occluded
-		// if light_vector doesn
-		if (light_vector_length < intersect_loop(&particle_ray, scene->object_list, NULL, 0).x)
-		{
-			// printf("%f\n", light_vector_length + dist);
-			double trans = exp(-SIGMA * ((light_vector_length + dist) / 30.f));
-			double geomTerm = 1.0 / dot_product(lightVec, lightVec);
-			col += SIGMA * scene->particle_intensity * light->lumen * geomTerm * 2.f * trans / pdf;
-		}
-		else
-		{
-			// col -= 0.10;
-			// if (col < 0.0)
-			// 	col = 0.0;
-		}
-		stepIndex++;
+		fog.trans = exp(-SIGMA * ((fog.light_vector_length + fog.dist) / 30.f));
+		fog.geom_term = 1.0 / dot_product(fog.light_vec, fog.light_vec);
+		fog.color_value += SIGMA * PARTICLE_INTENSITY * LIGHT_INTENSITY
+			* fog.geom_term * fog.trans / fog.pdf;
 	}
-	col = pow(col / (col + 1), 1.f / 2.2f);
-	return (col);
+	return (fog.color_value);
 }
 
+double	ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene)
+{
+	t_fog	fog;
+	int		step_index;
+
+	fog.color_value = 0.f;
+	fog.offset = hash(coords.y * 640 + coords.x + (double)time(NULL));
+	step_index = 0;
+	while (step_index < STEP_COUNT)
+	{
+		fog.offset_value = ((double)step_index + fog.offset) / STEP_COUNT;
+		fog.color_value = add_up_samples(ray, light, scene, fog);
+		step_index++;
+	}
+	fog.color_value = pow(fog.color_value / (fog.color_value + 1), 1.f / 2.2f);
+	return (fog.color_value);
+}
