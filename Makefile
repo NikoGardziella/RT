@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/08 13:09:53 by pnoutere         ###   ########.fr        #
+#    Updated: 2022/12/13 18:21:03 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -139,7 +139,8 @@ SOURCES_LIST =	main.c\
 				ray_trace/shoot_photons.c\
 				ray_trace/compare_ray_hits.c\
 				ray_trace/shade.c\
-				ray_trace/equiangular_sampling.c
+				ray_trace/equiangular_sampling.c\
+				bidirectional_path_tracing/main.c
 
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
@@ -173,6 +174,7 @@ $(OBJECTS_DIRECTORY):
 	@mkdir -p $(OBJECTS_DIRECTORY)/mouse/left_button
 	@mkdir -p $(OBJECTS_DIRECTORY)/mouse/right_button
 	@mkdir -p $(OBJECTS_DIRECTORY)/ray_trace
+	@mkdir -p $(OBJECTS_DIRECTORY)/bidirectional_path_tracing
 	@printf "$(COLOR)$(MAKE_COLOR)__________________________________________________________________________________\n"
 	@printf "$(PRINT_NAME): Created $(OBJECTS_DIRECTORY) directory.$(RESET)\n\n\n"
 
