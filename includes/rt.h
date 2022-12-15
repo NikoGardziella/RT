@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/09 16:51:35 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:51:22 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,20 @@ typedef struct s_mouse
 	t_2i	move;
 	uint8_t	state;
 }				t_mouse;
+
+typedef struct s_fog
+{
+	double	color_value;
+	double	offset;
+	double	offset_value;
+	double	trans;
+	double	geom_term;
+	t_ray	particle_ray;
+	t_3d	light_vec;
+	double	dist;
+	double	pdf;
+	double	light_vector_length;
+}				t_fog;
 
 typedef struct s_env
 {
