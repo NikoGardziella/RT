@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/15 14:32:28 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/15 15:57:43 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,6 +333,7 @@ void		left_button_up(void *param);
 void		left_button_down(void *param);
 void		right_button_up(void *param);
 void		right_button_down(void *param);
+int			mouse_scroll(void *param);
 
 /*Close and free functions*/
 

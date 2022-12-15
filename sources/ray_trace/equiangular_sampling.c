@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:21:39 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/15 15:01:55 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/15 15:19:07 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ double	ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene)
 	fog.offset = hash(coords.y * 640 + coords.x + (double)time(NULL));
 	step_index = 0;
 	while (step_index < STEP_COUNT)
-	{s
+	{
 		fog.offset_value = ((double)step_index + fog.offset) / STEP_COUNT;
 		fog.color_value = add_up_samples(ray, light, scene, fog);
 		step_index++;
