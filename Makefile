@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/15 15:54:29 by pnoutere         ###   ########.fr        #
+#    Updated: 2022/12/15 16:14:40 by pnoutere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,6 +101,7 @@ SOURCES_LIST =	main.c\
 				init/camera.c\
 				init/rotation_matrices.c\
 				matrix/transform.c\
+				matrix/matrix_math.c\
 				images/display_strings.c\
 				images/put_pixel.c\
 				images/main_image.c\
