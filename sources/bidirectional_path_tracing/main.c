@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 15:15:57 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/17 22:09:10 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/17 22:15:12 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ t_3d	trace_eye_path(t_env *env, t_ray *ray, t_scene *scene, int camera_bounces)
 			double	cos_alpha_max;
 
 			light_to_ray = subtract_vectors(light->origin, ray->origin);
-			cos_alpha_max = light->radius;
+			cos_alpha_max = light->radius * 0.5;
 			cos_alpha_max /= dot_product(light_to_ray, light_to_ray);
 			cos_alpha_max = fmax(0.0, cos_alpha_max);
 			cos_alpha_max = fmin(1.0, cos_alpha_max);
