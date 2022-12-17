@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/17 20:25:05 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/17 20:52:23 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -444,7 +444,7 @@ t_3d		trace_eye_path(t_env *env, t_ray *ray, t_scene *scene, int camera_bounces)
 
 /*Saving scene file functions*/
 
-
+void		save_scene(t_scene *scene, char *path);
 char		*get_object_type(t_object *object);
 char		*get_object_vector(const t_3d *vector, int axis);
 char		*get_object_float(float value);

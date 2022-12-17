@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/17 17:34:29 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/17 21:14:55 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ t_2i	get_rgb_coords(t_env *env, t_2i current_coords)
 void prog_clock(t_env *env)
 {
 	t_2i		coords;
+	t_2i		rgb_coords;
 	uint32_t	rgb;
 
 	if (env->sel_element == 2)
@@ -114,9 +115,10 @@ void prog_clock(t_env *env)
 	}
 	if (env->sel_element == 4)
 	{
-		coords = get_rgb_coords(env, env->mouse.pos);
-		env->sel_ray.object->rgb_coords = coords;
-		env->sel_ray.object->color.combined = (rgb_slider(&env->img[8], &coords));
+		rgb_coords = get_rgb_coords(env, env->mouse.pos);
+		env->sel_ray.object->rgb_coords = rgb_coords;
+		rgb = (rgb_slider(&env->img[8], &rgb_coords));
+		env->sel_ray.object->color.combined = shade_picker(&env->img[9], &env->sel_ray.object->shade_coords, rgb);
 		render_screen(env);
 	}
 	if (env->sel_element == 6)
@@ -129,8 +131,6 @@ void prog_clock(t_env *env)
 		coords.x = ft_min(coords.x, env->img[9].dim.size.x - 1);
 		coords.y = ft_min(coords.y, env->img[9].dim.size.y - 1);
 		env->sel_ray.object->shade_coords = coords;
-		t_2i	rgb_coords;
-
 		rgb_coords = get_rgb_coords(env, env->sel_ray.object->rgb_coords);
 		rgb = rgb_slider(&env->img[8], &rgb_coords);
 		env->sel_ray.object->color.combined = shade_picker(&env->img[9], &coords, rgb);

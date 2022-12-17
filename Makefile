@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/17 20:22:54 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/12/17 21:00:42 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ ifneq ($(MAKECMDGOALS), debug)
 FLAGS = -Wall -Wextra -Werror -Wconversion
 endif
 #FLAGS += $(DEBUG_FLAGS)
-FLAGS += $(OPTI_FLAGS)
+#FLAGS += $(OPTI_FLAGS)
 
 #SYSTEM LIBRARIES
 
