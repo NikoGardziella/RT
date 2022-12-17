@@ -6,9 +6,12 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/15 16:14:40 by pnoutere         ###   ########.fr        #
+#    Updated: 2022/12/17 17:13:51 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+#RULES
+#make debug - same like make, but without flags -Wall -Wextra -Werror -Wconversion
 
 #COLORS
 COLOR := $(shell printf "\e[38;2")
@@ -38,7 +41,9 @@ CC  = gcc
 #FLAGS
 OPTI_FLAGS = -O3 -flto
 DEBUG_FLAGS = -g -fsanitize=address
+ifneq ($(MAKECMDGOALS), debug)
 FLAGS = -Wall -Wextra -Werror -Wconversion
+endif
 #FLAGS += $(DEBUG_FLAGS)
 FLAGS += $(OPTI_FLAGS)
 
@@ -159,7 +164,10 @@ ifneq ($(MAKECMDGOALS),progress_bar)
 $(info Entering $(PRINT_NAME) Makefile!)
 endif
 
+
 all: $(SDL2) $(LIBFT) $(DM_2D) $(DM_VECTORS) $(DM_BDF_RENDER) $(NAME)
+
+debug: all
 
 $(NAME): $(OBJECTS_DIRECTORY) $(OBJECTS)
 	@$(CC) $(FLAGS) $(INCLUDES) $(OBJECTS) $(SDL2_LIBS) $(SDL2_CFLAGS) $(LIBS) -o $(NAME)
