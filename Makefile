@@ -6,12 +6,18 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/17 17:13:51 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/12/17 20:22:54 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #RULES
-#make debug - same like make, but without flags -Wall -Wextra -Werror -Wconversion
+#make (all) - compiles all project without relinking;
+#make clean - cleans all the object files of the project;
+#make fclean - same like clean, but deletes binary file as well;
+#make re - runs fclean and all rules;
+#make bclean - deletes only binary file;
+#make debug - same like make all, but without flags all extra error conversion;
+#make rtclean - runs clean rule for all dependency libraries except SDL2;
 
 #COLORS
 COLOR := $(shell printf "\e[38;2")
@@ -147,7 +153,9 @@ SOURCES_LIST =	main.c\
 				ray_trace/compare_ray_hits.c\
 				ray_trace/shade.c\
 				ray_trace/equiangular_sampling.c\
-				bidirectional_path_tracing/main.c
+				bidirectional_path_tracing/main.c\
+				save_scene/save_scene.c\
+				save_scene/get_object_info.c
 
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
@@ -183,8 +191,9 @@ $(OBJECTS_DIRECTORY):
 	@mkdir -p $(OBJECTS_DIRECTORY)/keyboard
 	@mkdir -p $(OBJECTS_DIRECTORY)/mouse/left_button
 	@mkdir -p $(OBJECTS_DIRECTORY)/mouse/right_button
-	@mkdir -p $(OBJECTS_DIRECTORY)/ray_trace
+	@mkdir -p $(OBJECTS_DIRECTORY)/ray_trace	
 	@mkdir -p $(OBJECTS_DIRECTORY)/bidirectional_path_tracing
+	@mkdir -p $(OBJECTS_DIRECTORY)/save_scene
 	@printf "$(COLOR)$(MAKE_COLOR)__________________________________________________________________________________\n"
 	@printf "$(PRINT_NAME): Created $(OBJECTS_DIRECTORY) directory.$(RESET)\n\n\n"
 

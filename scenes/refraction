@@ -31,19 +31,8 @@ OBJECT light
 {
 	origin -20.0 0.0 0.0
 	lumen 20.0
-	color 00FF00
-}
-OBJECT light
-{
-	origin -20.0 8.0 0.0
-	lumen 20.0
-	color 0000FF
-}
-OBJECT light
-{
-	origin -20.0 4.0 0.0
-	lumen 20.0
-	color FF0000
+	radius 5.0
+	color FFFFFF
 }
 OBJECT camera
 {

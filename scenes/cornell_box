@@ -11,27 +11,27 @@ OBJECT sphere
 	radius 15.0
 	roughness 1.0
 OBJECT plane
-	origin 0.0 0.0 -35.0
+	origin 0.0 0.0 -60.0
 	color CCCCCC
-	radius 50.0
+	radius 60.0
 	axis 0.0 0.0 1.0
-OBJECT plane
-	origin 0.0 35.0 0.0
+OBJECT disc
+	origin 0.0 60.0 0.0
 	color CCCCCC
 	radius 50.0
 	axis 0.0 1.0 0.0
 OBJECT plane
-	origin 35.0 0.0 0.0
+	origin 60.0 0.0 0.0
 	color 13FF13
 	radius 50.0
 	axis -1.0 0.0 0.0
 OBJECT plane
-	origin -35.0 0.0 0.0
+	origin -60.0 0.0 0.0
 	color FF1313
 	radius 50.0
 	axis 1.0 0.0 0.0
 OBJECT plane
-	origin 0.0 -35.0 0.0
+	origin 0.0 -60.0 0.0
 	color 999999
 	radius 50.0
 	axis 0.0 1.0 0.0
@@ -39,7 +39,7 @@ OBJECT light
 	origin 0.0 30.0 30.0
 	color FFFFFF
 	lumen 20.0
-	radius 2.0
+	radius 30.0
 OBJECT camera
 	pos 0.0 0.0 80.0
 	fov 60.0

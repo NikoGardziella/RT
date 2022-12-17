@@ -6,7 +6,7 @@
 #    By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 09:10:41 by dmalesev          #+#    #+#              #
-#    Updated: 2022/11/28 09:20:36 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/12/17 20:12:04 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ SOURCES_LIST = \
 		ft_lstprelast.c ft_lstappnew.c ft_strfree.c ft_memfree.c \
 		ft_ftoa.c ft_nbrsize.c ft_atof.c ft_swap.c get_next_line.c \
 		ft_max.c ft_min.c ft_strs_in_file.c ft_atoh.c ft_reverse_bits.c\
-		ft_maxf.c xorshift32.c random_rangef.c
+		ft_maxf.c xorshift32.c random_rangef.c ft_htoa.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
 
