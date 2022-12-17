@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 15:15:57 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/17 21:02:24 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/17 22:09:10 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,18 +220,20 @@ t_3d	trace_eye_path(t_env *env, t_ray *ray, t_scene *scene, int camera_bounces)
 		double	distance;
 		distance = vector_magnitude(light_ray.forward);
 		light_ray.forward = normalize_vector(light_ray.forward);
+		/*
 		(void)distance;
 		(void)weight;
 		(void)temp1;
 		(void)light_color;
-		/*
+		*/
+		
 		if(hit.object->roughness > 0.0 && distance < intersect_loop(&light_ray, scene->object_list, &hit, 0).x)
 		{
 			t_3d	light_to_ray;
 			double	cos_alpha_max;
 
 			light_to_ray = subtract_vectors(light->origin, ray->origin);
-			cos_alpha_max = 1;//light->radius * light->radius;
+			cos_alpha_max = light->radius;
 			cos_alpha_max /= dot_product(light_to_ray, light_to_ray);
 			cos_alpha_max = fmax(0.0, cos_alpha_max);
 			cos_alpha_max = fmin(1.0, cos_alpha_max);
@@ -246,7 +248,7 @@ t_3d	trace_eye_path(t_env *env, t_ray *ray, t_scene *scene, int camera_bounces)
 			temp1 = divide_vector(temp1, jdiff - 1 + 2);
 			calc_color = add_vectors(calc_color, temp1);
 		}
-		*/
+		
 		/*if(hit.object->roughness > 0.0)
 		{
 			int	i;

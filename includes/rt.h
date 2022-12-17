@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/17 20:52:23 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/17 21:52:43 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -449,5 +449,7 @@ char		*get_object_type(t_object *object);
 char		*get_object_vector(const t_3d *vector, int axis);
 char		*get_object_float(float value);
 char		*get_object_hex(unsigned int value);
+void		write_objects_to_file(t_list *object_list, int fd);
+void		write_camera_to_file(t_camera *camera, int fd);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/17 21:00:42 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/12/17 21:42:25 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -155,7 +155,9 @@ SOURCES_LIST =	main.c\
 				ray_trace/equiangular_sampling.c\
 				bidirectional_path_tracing/main.c\
 				save_scene/save_scene.c\
-				save_scene/get_object_info.c
+				save_scene/get_object_info.c\
+				save_scene/write_objects_to_file.c\
+				save_scene/write_camera_to_file.c
 
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
