@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 16:03:21 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/17 21:16:19 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/18 23:06:52 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,12 @@ void	key_down(t_env *env)
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_TAB)
 		{
 			env->sidebar *= -1;
+			if (env->sidebar == -1)
+				ft_bzero(&env->sel_ray, sizeof(t_ray));
 			render_screen(env);
 		}
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_G)
-			save_scene(env->scene, "scenes/saved");
+			save_scene(env->scene, env->file_path);
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_A)
 			env->keymap |= KEY_A;
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_W)

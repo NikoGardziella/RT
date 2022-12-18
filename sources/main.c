@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/17 21:14:55 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/18 23:06:18 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ int	main(int argc, char **argv)
 	if (argc > 2)
 		close_prog(NULL, "Too many arguments to run program...", -1);
 	ft_bzero(&env, sizeof(t_env));
+	env.file_path = argv[1];
 	init_main(&env);
 	env.scene->camera = load_scene_camera(argv[1]);
 	if (env.scene->camera == NULL)

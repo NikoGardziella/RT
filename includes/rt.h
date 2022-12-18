@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/17 21:52:43 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/18 23:05:57 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,6 +292,7 @@ typedef struct s_env
 	double			photon_cluster_radius;
 	t_3d			camera_default;
 	double			slider_value;
+	char			*file_path;
 }				t_env;
 
 t_env	*temp_env;
