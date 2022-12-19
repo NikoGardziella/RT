@@ -35,6 +35,7 @@ char	*get_object_vector(const t_3d *vector, int axis)
 {
 	char	*str;
 
+	str = NULL;
 	if (axis == 0)
 		str = ft_ftoa(vector->x, 5);
 	else if (axis == 1)

@@ -47,9 +47,9 @@ void	delete_selected_object(t_env *env)
 			ft_lstdelone(&env->scene->object_list, &del_object);
 		}
 		prev = env->scene->object_list;
-		if (env->scene->object_list!= NULL)
+		if (env->scene->object_list != NULL)
 			env->scene->object_list = (env->scene->object_list)->next;
 	}
-	env->scene->object_list= temp;
+	env->scene->object_list = temp;
 	env->sel_ray.object = NULL;
 }
