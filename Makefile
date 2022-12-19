@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
+#    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/19 19:54:14 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/12/19 20:54:31 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -115,6 +115,7 @@ SOURCES_LIST =	main.c\
 				matrix/matrix_math.c\
 				images/display_strings.c\
 				images/put_pixel.c\
+				images/blit_functions.c\
 				images/main_image.c\
 				images/gradual_render.c\
 				images/process_image.c\
@@ -135,6 +136,7 @@ SOURCES_LIST =	main.c\
 				parser/read_object_info.c\
 				parser/read_object_info1.c\
 				parser/read_object_transformations.c\
+				parser/load_scene_objects_names.c\
 				mouse/events.c\
 				mouse/mouse_main.c\
 				mouse/left_button/up.c\
@@ -155,6 +157,7 @@ SOURCES_LIST =	main.c\
 				ray_trace/refraction.c\
 				ray_trace/quadratic.c\
 				ray_trace/shade.c\
+				ray_trace/light_up_functions.c\
 				ray_trace/equiangular_sampling.c\
 				bidirectional_path_tracing/main.c\
 				bidirectional_path_tracing/estimate_diffuse.c\

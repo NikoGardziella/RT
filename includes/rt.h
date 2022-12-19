@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/19 20:27:45 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:00:41 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,12 +126,6 @@ typedef union		u_color
 	uint32_t		combined;
 	t_rgba			channel;
 }					t_color;
-
-typedef struct		s_emission
-{
-	t_color			color;
-	double			intensity;
-}					t_emission;
 
 typedef struct s_object
 {
@@ -310,6 +304,34 @@ typedef struct s_multithread
 	int 		render_mode;
 }				t_multithread;
 
+typedef struct s_blit
+{
+	SDL_Surface *src;
+	SDL_Surface *dest;
+	t_2d		step;
+	uint32_t	*srcaddr;
+	uint32_t	offset;
+	uint32_t	*destaddr;
+	t_2d		coords;
+	t_dim		*srcrect;
+	t_dim		*destrect;
+}				t_blit;
+
+typedef struct s_light_up
+{
+	t_list		*object_list_start;
+	t_object	*object;
+	t_color		color;
+	float		level;
+	double		t;
+	int			light_bounces;
+	t_object	temp_light;
+	t_hit		hit;
+	t_3d		light_normal;
+	t_ray		shadow;
+	t_3d		normal;
+}				t_light_up;
+
 /*Parser Functions*/
 
 t_list		*load_scene_objects(char *path);
@@ -369,16 +391,20 @@ void		draw_rgb_slider(t_img *img, void *param);
 t_uint		shade_picker(t_img *img, t_2i *coords, uint32_t color);
 t_uint		rgb_slider(t_img *img, t_2i *coords);
 double		get_smallest_photon_cluster(t_cam_hit *hit_buffer);
+void		blit_surface(SDL_Surface *src, t_dim *srcrect,
+				SDL_Surface *dest, t_dim *destrect);
 
 /*Ray tracing functions*/
 
-t_emission		raycast(t_ray *ray, t_scene *scene, int bounces);
+t_color		raycast(t_ray *ray, t_scene *scene, int bounces);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
 uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, t_3d normal);
 t_3d		get_refraction_ray(t_3d normal, t_3d ray_dir, t_2d index);
 double		ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene);
+t_color		calc_light(t_color final, t_color light, t_color object, double level);
+t_3d		cast_light_ray(t_object *light, t_list *object_list, t_3d normal, t_ray *light_ray);
 /*MOVE TO VECTOR LIBRARY LATER*/
 t_3d	random_vector(t_3d refl_vec, float max_theta);
 
@@ -407,6 +433,7 @@ int			radius(char *line, t_object *object);
 int			lumen(char *line, t_object *object);
 int			roughness(char *line, t_object *object);
 int			density(char *line, t_object *object);
+void		set_object_names(char **str);
 
 /*Drawing functions*/
 
