@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/19 15:23:05 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:52:05 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,28 +104,31 @@ t_emission	raycast(t_ray *ray, t_scene *scene, int bounces)
 		if (hit.object->type == LIGHT)
 			color.combined = 0x000000;
 	}
-	t_object	*light;
-	t_list		*every_light;
-	every_light = scene->object_list;
-	light = NULL;
-	while (every_light)
+	double	col;
+	t_color	temp;
+	if (bounces > 0)
 	{
-		light = (t_object *)every_light->content;
-		if (light->type == LIGHT)
+		t_object	*light;
+		t_list		*every_light;
+		every_light = scene->object_list;
+		light = NULL;
+		while (every_light)
 		{
-			break ;
+			light = (t_object *)every_light->content;
+			if (light->type == LIGHT)
+			{
+				break ;
+			}
+			every_light = every_light->next;
 		}
-		every_light = every_light->next;
+
+		col = ray_march(ray->coords, *ray, light, scene);
+		temp.combined = light->color.combined;
+		temp.channel.r = (uint8_t)((float)temp.channel.r * col);
+		temp.channel.g = (uint8_t)((float)temp.channel.g * col);
+		temp.channel.b = (uint8_t)((float)temp.channel.b * col);
+		color.combined = transition_colors(color.combined, temp.combined, (float)col);
 	}
-	double col = ray_march(ray->coords, *ray, light, scene);
-
-	t_color temp;
-	temp.combined = light->color.combined;
-	temp.channel.r = (uint8_t)((float)temp.channel.r * col);
-	temp.channel.g = (uint8_t)((float)temp.channel.g * col);
-	temp.channel.b = (uint8_t)((float)temp.channel.b * col);
-
-	color.combined = transition_colors(color.combined, temp.combined, (float)col);
 	emission.color.combined = color.combined;
 	return (emission);
 }
