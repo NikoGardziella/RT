@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   images.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 10:56:32 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/30 16:33:17 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/17 17:19:16 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	get_image_sizes(t_img *img)
 	t_2i	button;
 	t_2i	offset;
 	t_2i	slider;
+	t_2i	rgb_slider;
+	t_2i	shade_picker;
 
 	button = (t_2i){SCREEN_X / 40, SCREEN_Y / 25};
 	offset = (t_2i){button.x * 30 / 100, button.y * 30 / 100};
@@ -24,13 +26,15 @@ static void	get_image_sizes(t_img *img)
 	img[1].dim.size = (t_2i){button.x, button.y};
 	img[2].dim.size = (t_2i){img[0].dim.size.x / 3, img[0].dim.size.y / 3};
 	img[3].dim.size = (t_2i){SCREEN_X / 4, SCREEN_Y - (offset.y * 2)};
-	slider = (t_2i){img[3].dim.size.x - offset.x * 2, button.y};
+	slider = (t_2i){img[3].dim.size.x - offset.x * 2, button.y / 1};
+	rgb_slider = (t_2i){img[3].dim.size.x, img[3].dim.size.y * 5 / 100};
+	shade_picker = (t_2i){img[3].dim.size.x, img[3].dim.size.y * 20 / 100};
 	img[4].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 	img[5].dim.size = (t_2i){SCREEN_X, SCREEN_Y};
 	img[6].dim.size = slider;
 	img[7].dim.size = slider;
-	img[8].dim.size = slider;
-	img[9].dim.size = slider;
+	img[8].dim.size = rgb_slider;
+	img[9].dim.size = shade_picker;
 }
 
 static void	get_image_positions(t_img *img)
@@ -48,8 +52,8 @@ static void	get_image_positions(t_img *img)
 	img[5].dim.start = (t_2i){0, 0};
 	img[6].dim.start = (t_2i){img[3].dim.start.x + offset.x,img[3].dim.start.y + img[3].dim.size.y / 4};
 	img[7].dim.start = (t_2i){img[3].dim.start.x + offset.x,img[3].dim.start.y + img[3].dim.size.y / 3};
-	img[8].dim.start = (t_2i){img[3].dim.start.x + offset.x,img[3].dim.start.y + img[3].dim.size.y / 2};
-	img[9].dim.start = (t_2i){img[3].dim.start.x + offset.x,img[3].dim.start.y + img[3].dim.size.y / 1};
+	img[8].dim.start = (t_2i){img[3].dim.start.x, img[3].dim.start.y + (img[3].dim.size.y * 75 / 100)};
+	img[9].dim.start = (t_2i){img[3].dim.start.x, img[3].dim.start.y + (img[3].dim.size.y * 80 / 100)};
 }
 
 static void	get_image_functions(t_img *img)
@@ -63,7 +67,7 @@ static void	get_image_functions(t_img *img)
 	img[6].draw_func = &slider;
 	img[7].draw_func = &slider;
 	img[8].draw_func = &draw_rgb_slider;
-	img[9].draw_func = NULL;
+	img[9].draw_func = &draw_shade_picker;
 }
 
 t_img	*free_images(t_img *img, size_t count)

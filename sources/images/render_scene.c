@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/15 14:30:57 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/15 23:16:44 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_3d	random_vector(t_3d refl_vec, float max_theta)
 
 	if (dot_product(refl_vec, (t_3d){0.0, 1.0, 0.0}) == 1.0)
 		tangent = cross_product(refl_vec, (t_3d){0.0, 0.0, 1.0});
+	else if (dot_product(refl_vec, (t_3d){0.0, -1.0, 0.0}) == 1.0)
+		tangent = cross_product(refl_vec, (t_3d){0.0, 0.0, -1.0});
 	else
 		tangent = cross_product(refl_vec, (t_3d){0.0, 1.0, 0.0});
 	tangent = normalize_vector(tangent);
@@ -177,7 +179,7 @@ void	*render_loop(void *arg)
 	// double col;
 	t_3d	color_temp;
 	color_temp = (t_3d){0.0, 0.0, 0.0};
-	while (coords.y < img->dim.size.y - 1)
+	while (coords.y < img->dim.size.y)
 	{
 		if (coords.y % scene->resolution_range.y == resolution->y)
 		{
@@ -193,7 +195,7 @@ void	*render_loop(void *arg)
 					ray = get_ray(coords, img, camera);
 					ray.forward = random_vector(ray.forward, 0.002f);
 					ray.object = NULL;
-					if (render_mode == -1)
+					if (render_mode == -1 || env->frame_index == 0)
 						emission = raycast(&ray, scene, -1);
 					else if (render_mode == 2)
 					{

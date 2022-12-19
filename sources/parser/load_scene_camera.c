@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 14:35:11 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/11/02 11:23:11 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/17 21:29:03 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	set_camera(t_camera *cam)
 {
 	cam->ray.origin = (t_3d){0.0f, 0.0f, 0.0f};
 	cam->ray.forward = (t_3d){0.0f, 0.0f, -1.0f};
+	cam->fov = 60;
 }
 
 static t_camera	*read_camera_file(int fd, t_camera *camera)

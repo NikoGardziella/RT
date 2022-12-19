@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 12:28:36 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/10/31 21:24:04 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/17 19:04:04 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ char	*ft_ftoa(double f, size_t prec)
 	if (f < 0 && f > -1)
 		len++;
 	str = ft_strnew(len);
+	if (str == NULL)
+		return (NULL);
 	pre = 0;
 	edges(&f, &pre, str, prec);
 	i = 0;

@@ -6,9 +6,18 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/13 18:21:03 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/12/17 21:42:25 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+#RULES
+#make (all) - compiles all project without relinking;
+#make clean - cleans all the object files of the project;
+#make fclean - same like clean, but deletes binary file as well;
+#make re - runs fclean and all rules;
+#make bclean - deletes only binary file;
+#make debug - same like make all, but without flags all extra error conversion;
+#make rtclean - runs clean rule for all dependency libraries except SDL2;
 
 #COLORS
 COLOR := $(shell printf "\e[38;2")
@@ -38,9 +47,11 @@ CC  = gcc
 #FLAGS
 OPTI_FLAGS = -O3 -flto
 DEBUG_FLAGS = -g -fsanitize=address
+ifneq ($(MAKECMDGOALS), debug)
 FLAGS = -Wall -Wextra -Werror -Wconversion
+endif
 #FLAGS += $(DEBUG_FLAGS)
-FLAGS += $(OPTI_FLAGS)
+#FLAGS += $(OPTI_FLAGS)
 
 #SYSTEM LIBRARIES
 
@@ -101,6 +112,7 @@ SOURCES_LIST =	main.c\
 				init/camera.c\
 				init/rotation_matrices.c\
 				matrix/transform.c\
+				matrix/matrix_math.c\
 				images/display_strings.c\
 				images/put_pixel.c\
 				images/main_image.c\
@@ -128,6 +140,7 @@ SOURCES_LIST =	main.c\
 				mouse/left_button/down.c\
 				mouse/right_button/up.c\
 				mouse/right_button/down.c\
+				mouse/mouse_scroll.c\
 				keyboard/events.c\
 				keyboard/hold.c\
 				keyboard/delete_object.c\
@@ -141,7 +154,11 @@ SOURCES_LIST =	main.c\
 				ray_trace/compare_ray_hits.c\
 				ray_trace/shade.c\
 				ray_trace/equiangular_sampling.c\
-				bidirectional_path_tracing/main.c
+				bidirectional_path_tracing/main.c\
+				save_scene/save_scene.c\
+				save_scene/get_object_info.c\
+				save_scene/write_objects_to_file.c\
+				save_scene/write_camera_to_file.c
 
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
@@ -158,7 +175,10 @@ ifneq ($(MAKECMDGOALS),progress_bar)
 $(info Entering $(PRINT_NAME) Makefile!)
 endif
 
+
 all: $(SDL2) $(LIBFT) $(DM_2D) $(DM_VECTORS) $(DM_BDF_RENDER) $(NAME)
+
+debug: all
 
 $(NAME): $(OBJECTS_DIRECTORY) $(OBJECTS)
 	@$(CC) $(FLAGS) $(INCLUDES) $(OBJECTS) $(SDL2_LIBS) $(SDL2_CFLAGS) $(LIBS) -o $(NAME)
@@ -174,8 +194,9 @@ $(OBJECTS_DIRECTORY):
 	@mkdir -p $(OBJECTS_DIRECTORY)/keyboard
 	@mkdir -p $(OBJECTS_DIRECTORY)/mouse/left_button
 	@mkdir -p $(OBJECTS_DIRECTORY)/mouse/right_button
-	@mkdir -p $(OBJECTS_DIRECTORY)/ray_trace
+	@mkdir -p $(OBJECTS_DIRECTORY)/ray_trace	
 	@mkdir -p $(OBJECTS_DIRECTORY)/bidirectional_path_tracing
+	@mkdir -p $(OBJECTS_DIRECTORY)/save_scene
 	@printf "$(COLOR)$(MAKE_COLOR)__________________________________________________________________________________\n"
 	@printf "$(PRINT_NAME): Created $(OBJECTS_DIRECTORY) directory.$(RESET)\n\n\n"
 

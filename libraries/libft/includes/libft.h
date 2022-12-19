@@ -6,7 +6,7 @@
 /*   By: dmalesev <dmalesev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 09:17:53 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/28 09:21:31 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/17 20:12:40 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ char			**ft_strsplit(char const *s, char c);
 int				ft_ftoi(float n);
 char			*ft_itoa(int n);
 char			*ft_ftoa(double f, size_t prec);
+char			*ft_htoa(unsigned int hex);
+
 void			ft_putchar(char c);
 void			ft_putstr(char const *s);
 void			ft_putendl(char const *s);
