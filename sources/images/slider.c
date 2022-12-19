@@ -6,7 +6,7 @@
 /*   By: ngardzie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:28 by ngardzie          #+#    #+#             */
-/*   Updated: 2022/12/17 21:59:32 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 11:56:31 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	slider(t_img *img, void *param)
 	dim.size.y = img->dim.size.y * 33 / 100 + 1;
 	end_coords.x = dim.size.x;
 	end_coords.y = dim.size.y;
-	draw_rectf(&(t_pxl_func){&put_pixel, img}, coords, end_coords, 0x002142);
+	//draw_rectf(&(t_pxl_func){&put_pixel, img}, coords, end_coords, 0x002142);
 	blit_surface(env->bmptxtr.slider, NULL, img->surface, &dim);
 	coords.x = (int)((double)dim.size.x * env->slider_value);
 	coords.y = dim.start.y;
