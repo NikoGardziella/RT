@@ -24,8 +24,8 @@
 # include <stdio.h>
 # include <time.h>
 
-# define SCREEN_X 2560 / 4
-# define SCREEN_Y 1440 / 4
+# define SCREEN_X 2560 / 2
+# define SCREEN_Y 1440 / 2
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
@@ -33,10 +33,11 @@
 # define PHOTONS 5000
 # define PHOTON_RADIUS 1.0
 # define N_CLOSEST_PHOTONS 1
-# define CAMERA_BOUNCES 5
+# define CAMERA_BOUNCES 50
 # define LIGHT_BOUNCES 3
 # define MAX_DENSITY 5
 # define MAX_LUMEN 100
+# define MAX_PARTICLE_INTENSITY 10
 
 # define KEY_A 1
 # define KEY_W 2
@@ -138,7 +139,7 @@ typedef struct s_object
 	double		radius;
 	double		roughness;
 	double		density;
-	int			lumen;
+	double		lumen;
 	int			type;
 	t_color		color;
 	t_3d		axis;
@@ -217,6 +218,7 @@ typedef struct s_scene
 	uint32_t	*cam_hit_color;
 	uint32_t	*cam_hit_intensity;
 	t_light_path	light_path[LIGHT_BOUNCES];
+	double			particle_intensity;
 }				t_scene;
 
 typedef struct s_dim
@@ -330,6 +332,8 @@ t_mat		init_pmatrix(t_proj *proj);
 
 void		keyboard_events(t_env *env);
 int			keyboard_hold(t_env *env);
+void		delete_selected_object(t_env *env);
+void		take_screenshot(t_env *env);
 
 /*Mouse functions*/
 
@@ -402,6 +406,10 @@ int			read_camera_info(char *line, t_camera *camera);
 int			read_object_info(char *line, t_object *object);
 int			transformations(char *line, t_object *object);
 int			add_object(t_list **objects, t_object *object);
+int			radius(char *line, t_object *object);
+int			lumen(char *line, t_object *object);
+int			roughness(char *line, t_object *object);
+int			density(char *line, t_object *object);
 
 /*Drawing functions*/
 

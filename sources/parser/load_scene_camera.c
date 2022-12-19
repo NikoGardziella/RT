@@ -47,7 +47,7 @@ static int	read_camera(t_camera *camera, char *line)
 			reading = 0;
 			return (1);
 		}
-		read_camera_info(line, camera); /*function to extract pos, look_at and fov*/
+		read_camera_info(line, camera);
 	}
 	return (0);
 }
@@ -61,11 +61,10 @@ void	set_camera(t_camera *cam)
 
 static t_camera	*read_camera_file(int fd, t_camera *camera)
 {
-	int	ret;
-	char*line;
+	int		ret;
+	char	*line;
 
 	ret = 1;
-	//ft_bzero(camera, sizeof(t_camera));
 	set_camera(camera);
 	while (ret > 0)
 	{	
@@ -75,10 +74,8 @@ static t_camera	*read_camera_file(int fd, t_camera *camera)
 			break ;
 		read_camera(camera, line);
 		if (line != NULL)
-			free(line); 
+			free(line);
 	}
-	/* at this point, camera->pos, look and fov are parsed*/
-	//init_camera(camera, camera->pos, camera->look_at, camera->fov);
 	return (camera);
 }
 
@@ -91,13 +88,9 @@ t_camera	*load_scene_camera(char *path)
 	if (fd < 0)
 		close_prog(NULL, "Open path failed", -1);
 	camera = malloc(sizeof(t_camera));
-	/*PROTECC MALLOG*/
 	camera = read_camera_file(fd, camera);
-	if(camera == NULL)
-	{
-		printf("no cam, closing RT");
+	if (camera == NULL)
 		close_prog(NULL, "Read_camera_file failed...", -1);
-	}
 	if (fd >= 0)
 		close(fd);
 	return (camera);

@@ -138,11 +138,22 @@ void prog_clock(t_env *env)
 	}
 	if (env->sel_element == 5)
 	{
-		env->sel_ray.object->lumen = (int)(1.0 + (((double)MAX_LUMEN - 1) / env->img[7].dim.size.x * (env->mouse.pos.x - env->img[7].dim.start.x)));
-		env->sel_ray.object->lumen = ft_max(env->sel_ray.object->lumen, 0);
-		env->sel_ray.object->lumen = ft_min(env->sel_ray.object->lumen , MAX_LUMEN);
+		env->sel_ray.object->lumen = 1 + ((MAX_LUMEN - 1) / env->img[7].dim.size.x * (env->mouse.pos.x - env->img[7].dim.start.x));
+		env->sel_ray.object->lumen = fmax(env->sel_ray.object->lumen, 0);
+		env->sel_ray.object->lumen = fmin(env->sel_ray.object->lumen , MAX_LUMEN);
 		render_screen(env);
 	}
+/*	if(env->sel_element == 6)
+	{
+		printf("element 6");
+		env->scene->particle_intensity = 1 + ((MAX_PARTICLE_INTENSITY - 1) / env->img[6].dim.size.x * (env->mouse.pos.x - env->img[6].dim.start.x));
+		env->scene->particle_intensity = fmax(env->scene->particle_intensity, 0);
+		env->scene->particle_intensity = fmin(env->scene->particle_intensity, MAX_PARTICLE_INTENSITY);
+		env->sel_ray.object->lumen = (int)(1.0 + (((double)MAX_LUMEN - 1) / env->img[7].dim.size.x * (env->mouse.pos.x - env->img[7].dim.start.x)));
+		env->sel_ray.object->lumen = fmax(env->sel_ray.object->lumen, 0);
+		env->sel_ray.object->lumen = fmin(env->sel_ray.object->lumen , MAX_LUMEN);
+		render_screen(env);
+	} */
 }
 
 int	main(int argc, char **argv)

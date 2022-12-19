@@ -12,20 +12,6 @@
 
 #include "rt.h"
 
-void	take_screenshot(t_env *env)
-{
-	SDL_Surface	*sshot;
-
-	sshot = SDL_CreateRGBSurface(0, SCREEN_X, SCREEN_Y, 24,
-			0x00FF0000, 0x0000FF00, 0x000000FF, 0);
-	blit_surface(env->img[0].surface, NULL, sshot, NULL);
-	SDL_LockSurface(sshot);
-	if (SDL_SaveBMP(sshot, "screenshot.bmp") != 0)
-		ft_putendl("SDL screenshot error");
-	SDL_UnlockSurface(sshot);
-	SDL_FreeSurface(sshot);
-}
-
 static void	check_scancode_r(t_env *env)
 {
 	if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_R)
@@ -35,6 +21,26 @@ static void	check_scancode_r(t_env *env)
 			env->render_mode = -1;
 		render_screen(env);
 	}
+}
+
+void	check_key(SDL_Scancode key, t_env *env)
+{
+	if (key == SDL_SCANCODE_G)
+		save_scene(env->scene, env->file_path);
+	else if (key == SDL_SCANCODE_A)
+		env->keymap |= KEY_A;
+	else if (key == SDL_SCANCODE_W)
+		env->keymap |= KEY_W;
+	else if (key == SDL_SCANCODE_D)
+		env->keymap |= KEY_D;
+	else if (key == SDL_SCANCODE_S)
+		env->keymap |= KEY_S;
+	else if (key == SDL_SCANCODE_SPACE)
+		env->keymap |= KEY_SPACE;
+	else if (key == SDL_SCANCODE_LSHIFT)
+		env->keymap |= KEY_LSHIFT;
+	else if (key == SDL_SCANCODE_K)
+		take_screenshot(env);
 }
 
 void	key_down(t_env *env)
@@ -55,22 +61,7 @@ void	key_down(t_env *env)
 				ft_bzero(&env->sel_ray, sizeof(t_ray));
 			render_screen(env);
 		}
-		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_G)
-			save_scene(env->scene, env->file_path);
-		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_A)
-			env->keymap |= KEY_A;
-		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_W)
-			env->keymap |= KEY_W;
-		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_D)
-			env->keymap |= KEY_D;
-		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_S)
-			env->keymap |= KEY_S;
-		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_SPACE)
-			env->keymap |= KEY_SPACE;
-		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_LSHIFT)
-			env->keymap |= KEY_LSHIFT;
-		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_K)
-			take_screenshot(env);
+		check_key(env->sdl.event.key.keysym.scancode, env);
 	}
 }
 
