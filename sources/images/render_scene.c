@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/19 15:54:56 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 16:28:53 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ void	*render_loop(void *arg)
 						}
 					}
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
-						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
+						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.1f);
 					put_pixel(coords, color.combined, img);
 					if (scene->resolution.x == scene->resolution.y)
 						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);

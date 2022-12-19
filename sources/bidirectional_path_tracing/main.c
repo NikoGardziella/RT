@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 15:15:57 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 15:44:32 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/19 16:26:12 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ t_3d	get_brdf_ray(t_3d normal, t_ray *ray, t_hit *hit)
 	t_3d	vec;
 	t_2d	index;
 
-	vec = random_vector(normal, 1.0f);
-	if(hit->object->roughness < 1.0)
+	vec = random_vector(normal, (float)hit->object->roughness);
+	if(random_rangef(0.0, 1.0) > hit->object->roughness)
 	{
 		index = (t_2d){1.0, 1.0};
 		if (hit->inside == 0)
@@ -101,6 +101,7 @@ t_3d	get_brdf_ray(t_3d normal, t_ray *ray, t_hit *hit)
 		if(random_rangef(0.0, 1.0) < fresnel_probability || hit->object->density == MAX_DENSITY)
 		{
 			vec = reflect_vector(ray->forward, normal);
+			vec = random_vector(vec, (float)hit->object->roughness);
 			ray->origin = add_vectors(hit->point, scale_vector(normal, BIAS * 1));
 		}
 	}
@@ -122,7 +123,7 @@ t_3d	trace_eye_path(t_ray *ray, t_scene *scene, int camera_bounces)
 	calc_color = (t_3d){0.0, 0.0, 0.0};
 	max_color = (t_3d){1.0, 1.0, 1.0};
 	int		jdiff = 0;
-	int	i;
+	int		i;
 	i = 0;
 	while (i < camera_bounces)
 	{
@@ -182,7 +183,7 @@ t_3d	trace_eye_path(t_ray *ray, t_scene *scene, int camera_bounces)
 			weight *= fmin(1.0, fmax(0.0, dot_product(light_ray.forward, normal)));
 			temp1 = scale_vector(temp1, weight);
 			temp1 = divide_vector(temp1, jdiff - 1 + 2);
-			calc_color = add_vectors(calc_color, temp1);
+			calc_color = add_vectors(calc_color, scale_vector(temp1, hit.object->roughness));
 		}
 		if (hit.object->roughness > 0.0)
 			jdiff++;
