@@ -46,7 +46,7 @@ OBJECT plane
 OBJECT light
 {
 	origin 0.0 50 60
-	lumen 1000.0
+	lumen 10.0
 	color FFFFFF
 }
 

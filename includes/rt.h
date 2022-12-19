@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/18 23:05:57 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 13:24:32 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -413,15 +413,15 @@ void		blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *d
 
 /*Intersect functions*/
 
-int			intersect_disc(t_object *disc, t_ray ray, t_2d *t);
 int			quadratic_equation(t_quadratic *q, t_2d *t);
 int			intersect_plane(t_object *plane, t_ray ray, t_2d *t);
 int			intersect_cone(t_object *cone, t_ray ray, t_2d *t);
 int			intersect_sphere(t_object *sphere, t_ray ray, t_2d *t);
 int			intersect_cylinder(t_object *cylinder, t_ray ray, t_2d *t);
-int			intersects(t_ray *ray, t_list *object_list, t_hit *hit, int mode);
+int			intersect_disc(t_object *disc, t_ray ray, t_2d *t);
 int			intersect_box(t_object *box, t_ray ray, t_2d *t);
 t_2d		intersect_loop(t_ray *ray, t_list *objects, t_hit *hit, int mode);
+int			intersects(t_ray *ray, t_list *object_list, t_hit *hit, int mode);
 
 /*Matrix transformation functions*/
 

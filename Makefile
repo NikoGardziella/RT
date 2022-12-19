@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
+#    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/17 21:42:25 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/12/19 13:26:27 by ctrouve          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -146,9 +146,12 @@ SOURCES_LIST =	main.c\
 				ray_trace/color_op.c\
 				ray_trace/get_camera_ray.c\
 				ray_trace/calculate_normal.c\
+				ray_trace/intersect_basic_shapes.c\
+				ray_trace/intersect_box.c\
 				ray_trace/intersects.c\
 				ray_trace/refraction.c\
 				ray_trace/photon_mapping.c\
+				ray_trace/quadratic.c\
 				ray_trace/shoot_photons.c\
 				ray_trace/compare_ray_hits.c\
 				ray_trace/shade.c\
