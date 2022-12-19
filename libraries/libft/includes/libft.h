@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <dmalesev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 09:17:53 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/17 20:12:40 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:11:44 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int				ft_min(int n1, int n2);
 size_t			ft_strs_in_file(char *path, char *str);
 
 /*Random number functions*/
-uint32_t		xorshift32(uint32_t *state);
-double			random_rangef(double min, double max, uint32_t *state);
+uint32_t		xorshift32();
+double			random_rangef(double min, double max);
 
 #endif

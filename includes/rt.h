@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/19 13:24:32 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/19 15:23:34 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define PHOTONS 5000
 # define PHOTON_RADIUS 1.0
 # define N_CLOSEST_PHOTONS 1
-# define CAMERA_BOUNCES 50
+# define CAMERA_BOUNCES 3
 # define LIGHT_BOUNCES 3
 # define MAX_DENSITY 5
 # define MAX_LUMEN 100
@@ -449,7 +449,7 @@ int			coords_in_area(t_dim dim, t_2i coords);
 /*Bidirectional path tracing functions*/
 
 void		trace_light_path(t_scene *scene);
-t_3d		trace_eye_path(t_env *env, t_ray *ray, t_scene *scene, int camera_bounces);
+t_3d		trace_eye_path(t_ray *ray, t_scene *scene, int camera_bounces);
 
 /*Saving scene file functions*/
 
