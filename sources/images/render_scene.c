@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/19 15:52:05 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:54:56 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,16 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-uint32_t	state = 1234;
-
-t_3d	random_vector(t_3d refl_vec, float max_theta)
-{
-	t_3d	vec;
-	t_3d	tangent;
-	t_3d	bitangent;
-	float	phi;
-	float	theta;
-
-	if (dot_product(refl_vec, (t_3d){0.0, 1.0, 0.0}) == 1.0)
-		tangent = cross_product(refl_vec, (t_3d){0.0, 0.0, 1.0});
-	else if (dot_product(refl_vec, (t_3d){0.0, -1.0, 0.0}) == 1.0)
-		tangent = cross_product(refl_vec, (t_3d){0.0, 0.0, -1.0});
-	else
-		tangent = cross_product(refl_vec, (t_3d){0.0, 1.0, 0.0});
-	tangent = normalize_vector(tangent);
-	bitangent = cross_product(refl_vec, tangent);
-	tangent = cross_product(refl_vec, bitangent);
-	tan_temp[0] = tangent;
-	tan_temp[1] = bitangent;
-	phi = (float)random_rangef(0.0, 2.0f * PI, &state);
-	theta = (float)random_rangef(0.0, max_theta * PI / 2, &state);
-	vec = scale_vector(tangent, cos(phi));
-	vec = add_vectors(vec, scale_vector(bitangent, sin(phi)));
-	vec = scale_vector(vec, sin(theta));
-	vec = add_vectors(vec, scale_vector(refl_vec, cos(theta)));
-	return (vec);
-}
-
 t_emission	raycast(t_ray *ray, t_scene *scene, int bounces)
 {
-	t_hit	hit;
-	t_color	color;
+	t_hit		hit;
+	t_color		color;
 	t_emission	emission;
 	t_emission	color_refl;
 	t_emission	color_refr;
-	t_ray	shadow_ray;
-	t_ray	bounce_ray;
+	t_ray		shadow_ray;
+	t_ray		bounce_ray;
+	
 
 	color.combined = 0x000000;
 	emission.intensity = 1;
@@ -121,7 +92,6 @@ t_emission	raycast(t_ray *ray, t_scene *scene, int bounces)
 			}
 			every_light = every_light->next;
 		}
-
 		col = ray_march(ray->coords, *ray, light, scene);
 		temp.combined = light->color.combined;
 		temp.channel.r = (uint8_t)((float)temp.channel.r * col);
@@ -202,7 +172,7 @@ void	*render_loop(void *arg)
 					}
 					else if (render_mode == 1)
 					{
-						color_temp = trace_eye_path(env, &ray, scene, CAMERA_BOUNCES);
+						color_temp = trace_eye_path(&ray, scene, CAMERA_BOUNCES);
 					}
 					color.combined = emission.color.combined;
 					emission.intensity = 1;

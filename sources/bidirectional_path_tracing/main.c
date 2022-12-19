@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 15:15:57 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 14:34:15 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:44:32 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_3d	get_brdf_ray(t_3d normal, t_ray *ray, t_hit *hit)
 		//	printf("fresnel_probability %f\n", fresnel_probability);
 		vec = get_refraction_ray(normal, ray->forward, index);
 		ray->origin = add_vectors(hit->point, scale_vector(normal, BIAS * -1));
-		if(random_rangef(0.0, 1.0, &temp_env->state) < fresnel_probability || hit->object->density == MAX_DENSITY)
+		if(random_rangef(0.0, 1.0) < fresnel_probability || hit->object->density == MAX_DENSITY)
 		{
 			vec = reflect_vector(ray->forward, normal);
 			ray->origin = add_vectors(hit->point, scale_vector(normal, BIAS * 1));
@@ -107,7 +107,8 @@ t_3d	get_brdf_ray(t_3d normal, t_ray *ray, t_hit *hit)
 	return (vec);
 }
 
-t_3d	trace_eye_path(t_env *env, t_ray *ray, t_scene *scene, int camera_bounces)
+
+t_3d	trace_eye_path(t_ray *ray, t_scene *scene, int camera_bounces)
 {
 	t_3d		calc_color;
 	t_3d		max_color;
@@ -154,7 +155,7 @@ t_3d	trace_eye_path(t_env *env, t_ray *ray, t_scene *scene, int camera_bounces)
 		if(hit.object->roughness >= 0.0 || dot_product(ray->forward, normal) < 0.0)
 			max_color = multiply_vectors(max_color, object_color);
 		light_ray.forward = random_vector((t_3d){0.0, 1.0, 0.0}, 2.0f);
-		light_ray.origin = scale_vector(light_ray.forward, light->radius * random_rangef(0.0, 1.0, &env->state));
+		light_ray.origin = scale_vector(light_ray.forward, light->radius * random_rangef(0.0, 1.0));
 		light_ray.origin = add_vectors(light->origin, light_ray.origin);
 		light_ray.forward = subtract_vectors(light_ray.origin, ray->origin);
 		light_ray.origin = ray->origin;

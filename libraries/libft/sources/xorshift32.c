@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   xorshift32.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 08:25:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 15:04:36 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:46:28 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-uint32_t	xorshift32()
+uint32_t	xorshift32(void)
 {
 	static uint32_t	x;
 

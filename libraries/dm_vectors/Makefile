@@ -6,7 +6,7 @@
 #    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 09:10:41 by dmalesev          #+#    #+#              #
-#    Updated: 2022/11/28 16:36:33 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/12/19 15:16:01 by ctrouve          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,8 @@ SOURCES_LIST =	add_vectors.c\
 				divide_vector.c\
 				vector_magnitude.c\
 				reflect_vector.c\
-				angle_between_vectors.c
+				angle_between_vectors.c\
+				random_vector.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCE_COUNT = $(words $(SOURCES_LIST))
 
