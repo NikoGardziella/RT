@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 09:25:30 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/17 16:58:32 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 14:53:50 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static void	set_object_names(char **str)
 {
-		str[0] = "light";
-		str[1] = "sphere";
-		str[2] = "plane";
-		str[3] = "cone";
-		str[4] = "cylinder";
-		str[5] = "box";
-		str[6] = "disc";
+	str[0] = "light";
+	str[1] = "sphere";
+	str[2] = "plane";
+	str[3] = "cone";
+	str[4] = "cylinder";
+	str[5] = "box";
+	str[6] = "disc";
 }
 
 static int	check_if_object(char *line)
@@ -52,6 +52,18 @@ static int	check_if_object(char *line)
 	return (-2);
 }
 
+static t_object	setup_object(void)
+{
+	t_object	object;
+
+	ft_bzero(&object, sizeof(t_object));
+	object.roughness = 1.0f;
+	object.density = MAX_DENSITY;
+	object.type = -1;
+	object.rgb_coords = (t_2i){-1, -1};
+	return (object);
+}
+
 int	read_object(t_object *object, char *line)
 {
 	static int	reading;
@@ -60,6 +72,7 @@ int	read_object(t_object *object, char *line)
 		return (-1);
 	if (reading == 0)
 	{
+		*object = setup_object();
 		object->type = check_if_object(line);
 		if (object->type >= 0)
 			reading = 1;
@@ -76,17 +89,6 @@ int	read_object(t_object *object, char *line)
 	return (0);
 }
 
-t_object	setup_object(void)
-{
-	t_object	object;
-
-	object.roughness = 1.0f;
-	object.density = MAX_DENSITY;
-	object.type = -1;
-	object.rgb_coords = (t_2i){-1, -1};
-	return (object);
-}
-
 t_list	*read_scene_file(int fd)
 {
 	t_object	object;
@@ -94,10 +96,8 @@ t_list	*read_scene_file(int fd)
 	int			ret;
 	char		*line;
 
-	object = setup_object();
 	ret = 1;
 	objects_list = NULL;
-	ft_bzero(&object, sizeof(t_object));
 	while (ret > 0)
 	{	
 		line = NULL;
@@ -125,7 +125,6 @@ t_list	*load_scene_objects(char *path)
 	if (fd < 0)
 		return (NULL);
 	objects_list = read_scene_file(fd);
-	if (fd >= 0)
-		close(fd);
+	close(fd);
 	return (objects_list);
 }

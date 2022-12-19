@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/19 15:26:53 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/19 15:38:09 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,11 +171,6 @@ void	*render_loop(void *arg)
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	coords.y = 0;
-	if (render_mode == 1)
-	{
-		photon_mapping(env, img, tab);
-	}
-	// double col;
 	t_3d	color_temp;
 	color_temp = (t_3d){0.0, 0.0, 0.0};
 	while (coords.y < img->dim.size.y)
@@ -194,45 +189,32 @@ void	*render_loop(void *arg)
 					ray = get_ray(coords, img, camera);
 					ray.forward = random_vector(ray.forward, 0.002f);
 					ray.object = NULL;
-					if (render_mode == -1 || env->frame_index == 0)
+					if (env->frame_index == 0)
 						emission = raycast(&ray, scene, -1);
-					else if (render_mode == 2)
-					{
-						color_temp = trace_eye_path(&ray, scene, CAMERA_BOUNCES);
-					}
-					else if (render_mode >= 0)
+					else if (render_mode == 0)
 					{
 						ray.coords = coords;
 						emission = raycast(&ray, scene, CAMERA_BOUNCES);
 					}
+					else if (render_mode == 1)
+					{
+						color_temp = trace_eye_path(&ray, scene, CAMERA_BOUNCES);
+					}
 					color.combined = emission.color.combined;
-					if (render_mode == 1)
-						emission.intensity = 1;
+					emission.intensity = 1;
 					if (resolution == &scene->accum_resolution && env->frame_index > 0 && render_mode >= 0)
 					{
-						// t_color temp;
-						// temp.combined = light->color.combined;
-						// temp.channel.r = (uint8_t)((float)temp.channel.r * col);
-						// temp.channel.g = (uint8_t)((float)temp.channel.g * col);
-						// temp.channel.b = (uint8_t)((float)temp.channel.b * col);
-						// color.combined = transition_colors(color.combined, temp.combined, (float)col);
-						// color.channel.r =  (uint8_t)((float)color.channel.r * col);
-						// color.channel.g =  (uint8_t)((float)color.channel.g * col);
-						// color.channel.b =  (uint8_t)((float)color.channel.b * col);
-						if (render_mode == 2)
+						if (render_mode == 1)
 						{
 							scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
 								(float)(color_temp.x + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
 								(float)(color_temp.y + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y),
 								(float)(color_temp.z + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z)};
-							//color.channel.r = (uint8_t)(fmin(color_temp.x, 255));
-							//color.channel.g = (uint8_t)(fmin(color_temp.y, 255));
-							//color.channel.b = (uint8_t)(fmin(color_temp.z, 255));
 							color.channel.r = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x / env->frame_index, 255));
 							color.channel.g = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y / env->frame_index, 255));
 							color.channel.b = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z / env->frame_index, 255));
 						}
-						if (render_mode <= 1)
+						if (render_mode == 0)
 						{
 							scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
 								(float)(color.channel.r * emission.intensity + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
@@ -245,8 +227,7 @@ void	*render_loop(void *arg)
 					}
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
-					//if (render_mode != 2)
-						put_pixel(coords, color.combined, img);
+					put_pixel(coords, color.combined, img);
 					if (scene->resolution.x == scene->resolution.y)
 						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
 				}
@@ -258,65 +239,6 @@ void	*render_loop(void *arg)
 	return (NULL);
 }
 
-static void	connect_photon_thread_lists(t_scene *scene)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (i < (THREADS - 1))
-	{
-		if (scene->last_photon_node[j] != NULL && scene->photon_list[i + 1] != NULL)
-		{
-			scene->last_photon_node[j]->next = scene->photon_list[i + 1];
-			j++;
-		}
-		i++;
-	}
-}
-
-static void	del_photon_node(void *content, size_t content_size)
-{
-	(void)content_size;
-	free(content);
-}
-
-static void	draw_photon_scene(t_img *img, void *param)
-{
-	t_env		*env;
-	t_2i		coords;
-	t_color		color;
-	uint32_t	intensity;
-
-	env = param;
-	coords.y = 0;
-	while (coords.y < SCREEN_Y)
-	{
-		coords.x = 0;
-		while (coords.x < SCREEN_X)
-		{
-			color.combined = env->scene->cam_hit_color[coords.x + coords.y * SCREEN_X];
-			intensity = env->scene->cam_hit_intensity[coords.x + coords.y * SCREEN_X];
-			env->scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
-				(float)(color.channel.r * intensity + env->scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
-					(float)(color.channel.g * intensity + env->scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y),
-					(float)(color.channel.b * intensity + env->scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z)};
-			coords.x += 1;
-		}
-		coords.y += 1;
-	}
-	coords = (t_2i){0, 0};
-	int	i;
-	i = 0;
-	while (i < THREADS)
-	{
-		display_int(&(t_pxl){env->font, put_pixel, img}, coords, (int)ft_lstsize(env->scene->photon_list[i]), (t_2i){0xFFFFFF, 0x000000});
-		coords.y += (int)env->font->bound_box[1];
-		i++;
-	}
-}
-
 void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 {
 	t_2i				*resolution;
@@ -325,8 +247,6 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	int					i;
 
 	i = 0;
-	//if (env->frame_index >= 3)
-	//	return ;
 	if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.y)
 	{
 		if (scene->accum_resolution.x == scene->resolution_range.x && scene->accum_resolution.y == scene->resolution_range.y)
@@ -338,8 +258,6 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	}
 	else
 	{
-		// ft_bzero(scene->accum_buffer, (size_t)(img->surface->w * img->surface->h) * sizeof(t_3d));
-		//ft_bzero(scene->cam_hit_buffer, SCREEN_X * SCREEN_Y * sizeof(t_cam_hit));
 		if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.x)
 		{
 			ft_bzero(scene->accum_buffer, SCREEN_X * SCREEN_Y * sizeof(t_3d));
@@ -348,20 +266,6 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 		resolution = &scene->resolution;
 		scene->accum_resolution.x = scene->resolution_range.x;
 		scene->accum_resolution.y = scene->resolution_range.x;
-	}
-	if (resolution->x == scene->resolution_range.x && resolution->y == scene->resolution_range.x)
-	{
-		if (render_mode == 2)
-			trace_light_path(scene);
-		ft_lstdel(&scene->photon_list[0], &del_photon_node);
-		ft_bzero(scene->cam_hit_color, SCREEN_X * SCREEN_Y * sizeof(uint32_t));
-		i = 0;
-		while (i < THREADS)
-		{
-			scene->photon_list[i] = NULL;
-			scene->last_photon_node[i] = NULL;
-			i++;
-		}
 	}
 	i = 0;
 	while (i < THREADS)
@@ -382,42 +286,8 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 		pthread_join(tids[i], NULL);
 		i++;
 	}
-	if (render_mode == 1)
-	{
-		connect_photon_thread_lists(scene);
-		//(void)connect_photon_thread_lists;
-		
-		i = 0;
-		while (i < THREADS)
-		{
-			tab[i].start = i * (img->surface->w / THREADS);
-			tab[i].end = (i + 1) * (img->surface->w / THREADS);
-			tab[i].img = img;
-			tab[i].env = env;
-			tab[i].nb = i;
-			tab[i].render_mode = render_mode;
-			tab[i].resolution = resolution;
-			pthread_create(&tids[i], NULL, compare_ray_hits, (void *)&tab[i]);
-			i++;
-		}
-		i = 0;
-		while (i < THREADS)
-		{
-			pthread_join(tids[i], NULL);
-			i++;
-		}
-		//(void)draw_photon_scene;
-		//env->photon_cluster_radius = get_smallest_photon_cluster(scene->cam_hit_buffer);
-	}
-	// render_loop(img, render_mode, resolution, env);
-	// coords / color / ray
-	// assign_tab(t_data *img, t_draw *tab, int i)
 	if (resolution->x == scene->resolution_range.y - 1 && resolution->y == scene->resolution_range.y - 1)
-	{
-		if (render_mode == 1)
-			draw_photon_scene(img, env);
 		env->frame_index += 1;
-	}
 	if (resolution->x < scene->resolution_range.y && resolution->y < scene->resolution_range.y)
 		resolution->x += 1;
 	if (resolution->x >= scene->resolution_range.y && resolution->y < scene->resolution_range.y)

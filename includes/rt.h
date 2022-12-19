@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/19 15:23:34 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/19 15:48:07 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include <stdio.h>
 # include <time.h>
 
-# define SCREEN_X 2560 / 2
-# define SCREEN_Y 1440 / 2
+# define SCREEN_X 2560 / 4
+# define SCREEN_Y 1440 / 4
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
@@ -33,7 +33,7 @@
 # define PHOTONS 5000
 # define PHOTON_RADIUS 1.0
 # define N_CLOSEST_PHOTONS 1
-# define CAMERA_BOUNCES 3
+# define CAMERA_BOUNCES 5
 # define LIGHT_BOUNCES 3
 # define MAX_DENSITY 5
 # define MAX_LUMEN 100
@@ -381,10 +381,7 @@ t_3d		get_refraction_ray(t_3d normal, t_3d ray_dir, t_2d index);
 double		ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene);
 /*MOVE TO VECTOR LIBRARY LATER*/
 t_3d	random_vector(t_3d refl_vec, float max_theta);
-/*Photon mapping functions*/
-void	photon_mapping(t_env *env, t_img *img, t_multithread *tab);
-void	shoot_photons(t_scene *scene, size_t count, int thread_id);
-void	*compare_ray_hits(void *arg);
+
 
 /* Color operations functions*/
 

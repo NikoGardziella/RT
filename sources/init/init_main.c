@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 13:21:17 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:01:32 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	init_main(t_env *env)
 	env->scene->accum_buffer = (t_3d *)malloc(sizeof(t_3d)
 			* (SCREEN_X * SCREEN_Y));
 	init_checks(env);
-	env->render_mode = -1;
+	env->render_mode = 0;
 	env->sidebar = -1;
 	env->selected = -1;
 	env->state = 15252;

@@ -1,26 +1,26 @@
 OBJECT sphere
-	origin 20.00000 -10.00000 10.00000
+	origin 46.71745 -23.10021 26.29189
 	axis 0.00000 1.00000 0.00000
 	radius 10.00000
 	roughness 0.00000
 	density 2.00000
 	color 00FFFFFF
 OBJECT sphere
-	origin -20.00000 -30.00000 0.00000
+	origin -71.00426 -71.35530 83.14000
 	axis 0.00000 1.00000 0.00000
 	radius 15.00000
 	roughness 1.00000
 	density 5.00000
 	color 00FFFFFF
 OBJECT plane
-	origin 0.00000 0.00000 -60.00000
+	origin 18.48153 32.31062 -51.33914
 	axis 0.00000 0.00000 1.00000
 	radius 60.00000
 	roughness 1.00000
 	density 5.00000
 	color 00CCCCCC
 OBJECT disc
-	origin 0.00000 60.00000 0.00000
+	origin -44.00866 34.96195 -9.76385
 	axis 0.00000 1.00000 0.00000
 	radius 50.00000
 	roughness 1.00000
@@ -44,16 +44,16 @@ OBJECT plane
 	origin 0.00000 -60.00000 0.00000
 	axis 0.00000 1.00000 0.00000
 	radius 50.00000
-	roughness 1.00000
-	density 5.00000
+	roughness 0.00000
+	density 2.76315
 	color 00999999
 OBJECT light
-	origin 0.00000 30.00000 30.00000
+	origin -36.13304 -14.47045 58.73856
 	axis 0.00000 1.00000 0.00000
 	radius 30.00000
 	lumen 20.00000
 	color 00FFFFFF
 OBJECT camera
-	pos 29.49834 10.86516 158.54490
-	look 29.32577 10.71266 157.57179
+	pos 33.23658 -21.52869 122.57664
+	look 32.84320 -21.80099 121.69852
 	fov 60.00000

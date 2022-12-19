@@ -6,7 +6,7 @@
 #    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/19 13:26:27 by ctrouve          ###   ########.fr        #
+#    Updated: 2022/12/19 15:49:50 by ctrouve          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -153,10 +153,6 @@ SOURCES_LIST =	main.c\
 				ray_trace/intersect_box.c\
 				ray_trace/intersects.c\
 				ray_trace/refraction.c\
-				ray_trace/photon_mapping.c\
-				ray_trace/quadratic.c\
-				ray_trace/shoot_photons.c\
-				ray_trace/compare_ray_hits.c\
 				ray_trace/shade.c\
 				ray_trace/equiangular_sampling.c\
 				bidirectional_path_tracing/main.c\
