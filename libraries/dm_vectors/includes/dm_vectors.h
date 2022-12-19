@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 16:41:10 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 15:15:49 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/19 18:26:15 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_3d	add_vectors(t_3d vect1, t_3d vect2);
 t_3d	subtract_vectors(t_3d vect1, t_3d vect2);
 t_3d	scale_vector(t_3d vect, double factor);
 t_3d	divide_vector(t_3d vect, double factor);
+t_3d	multiply_vectors(t_3d vector1, t_3d vector2);
 
 /*Vector math*/
 t_3d	cross_product(t_3d vect1, t_3d vect2);

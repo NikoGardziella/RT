@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/19 15:48:07 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/19 20:27:45 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -447,6 +447,8 @@ int			coords_in_area(t_dim dim, t_2i coords);
 
 void		trace_light_path(t_scene *scene);
 t_3d		trace_eye_path(t_ray *ray, t_scene *scene, int camera_bounces);
+t_3d		hit_direct_light(t_object *object, t_3d calc_color, t_3d max, int mode);
+double		estimate_diffuse(t_scene *scene, t_hit *hit, t_object *light, t_ray *ray);
 
 /*Saving scene file functions*/
 

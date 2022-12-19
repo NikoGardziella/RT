@@ -6,7 +6,7 @@
 #    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/19 15:52:00 by ctrouve          ###   ########.fr        #
+#    Updated: 2022/12/19 19:54:14 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ ifneq ($(MAKECMDGOALS), debug)
 FLAGS = -Wall -Wextra -Werror -Wconversion
 endif
 #FLAGS += $(DEBUG_FLAGS)
-#FLAGS += $(OPTI_FLAGS)
+FLAGS += $(OPTI_FLAGS)
 
 #SYSTEM LIBRARIES
 
@@ -157,6 +157,8 @@ SOURCES_LIST =	main.c\
 				ray_trace/shade.c\
 				ray_trace/equiangular_sampling.c\
 				bidirectional_path_tracing/main.c\
+				bidirectional_path_tracing/estimate_diffuse.c\
+				bidirectional_path_tracing/hit_direct_light.c\
 				save_scene/save_scene.c\
 				save_scene/get_object_info.c\
 				save_scene/write_objects_to_file.c\
