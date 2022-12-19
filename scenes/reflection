@@ -1,75 +1,75 @@
 OBJECT sphere
 	origin -50.00000 0.00000 0.00000
-	axis 0.00000 0.00000 0.00000
+	axis 0.00000 1.00000 0.00000
 	radius 9.00000
 	roughness 0.00000
 	density 1.50000
 	color 00FFFFFF
 OBJECT sphere
 	origin -40.00000 0.00000 0.00000
-	axis 0.00000 0.00000 0.00000
+	axis 0.00000 1.00000 0.00000
 	radius 7.00000
 	roughness 0.00000
 	density 5.00000
 	color 00444444
 OBJECT sphere
 	origin -30.00000 0.00000 0.00000
-	axis 0.00000 0.00000 0.00000
+	axis 0.00000 1.00000 0.00000
 	radius 5.00000
 	roughness 0.00000
 	density 5.00000
 	color 00FFC0CB
 OBJECT sphere
 	origin -20.00000 0.00000 0.00000
-	axis 0.00000 0.00000 0.00000
+	axis 0.00000 1.00000 0.00000
 	radius 5.00000
 	roughness 0.20000
 	density 5.00000
 	color 00FFFF00
 OBJECT sphere
 	origin -10.00000 0.00000 0.00000
-	axis 0.00000 0.00000 0.00000
+	axis 0.00000 1.00000 0.00000
 	radius 5.00000
 	roughness 0.40000
 	density 5.00000
 	color 0000FFFF
 OBJECT sphere
 	origin 0.00000 0.00000 0.00000
-	axis 0.00000 0.00000 0.00000
+	axis 0.00000 1.00000 0.00000
 	radius 5.00000
 	roughness 0.60000
 	density 5.00000
 	color 00FFC0CB
 OBJECT sphere
 	origin 10.00000 0.00000 0.00000
-	axis 0.00000 0.00000 0.00000
+	axis 0.00000 1.00000 0.00000
 	radius 5.00000
 	roughness 0.80000
 	density 5.00000
 	color 00FFC0CB
 OBJECT sphere
 	origin 20.00000 0.00000 0.00000
-	axis 0.00000 0.00000 0.00000
+	axis 0.00000 1.00000 0.00000
 	radius 5.00000
 	roughness 0.99900
 	density 5.00000
 	color 00FFC0CB
 OBJECT sphere
 	origin 30.00000 0.00000 0.00000
-	axis 0.00000 0.00000 0.00000
+	axis 0.00000 1.00000 0.00000
 	radius 5.00000
 	roughness 1.00000
 	density 5.00000
 	color 00FFC0CB
 OBJECT disc
-	origin 0.00000 -5.00000 0.00000
+	origin -9.39457 -27.97832 34.18040
 	axis 0.00000 1.00000 0.00000
 	radius 50.00000
-	roughness 1.00000
-	density 5.00000
-	color 00CCCCCC
+	roughness 0.17763
+	density 1.68421
+	color 004A5CF3
 OBJECT sphere
-	origin 0.00000 0.00000 60.00000
+	origin 6.15295 -4.81208 56.94790
 	axis 0.00000 1.00000 0.00000
 	radius 20.00000
 	roughness 0.20000
@@ -82,6 +82,6 @@ OBJECT light
 	lumen 50.00000
 	color 00FFFFFF
 OBJECT camera
-	pos 39.25962 24.96036 56.20739
-	look 38.78978 24.58900 55.40655
+	pos 47.92970 27.12764 51.89406
+	look 47.34304 26.33642 51.72142
 	fov 60.00000

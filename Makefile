@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/17 21:42:25 by dmalesev         ###   ########.fr        #
+#    Updated: 2022/12/19 18:34:23 by pnoutere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -115,6 +115,7 @@ SOURCES_LIST =	main.c\
 				matrix/matrix_math.c\
 				images/display_strings.c\
 				images/put_pixel.c\
+				images/blit_functions.c\
 				images/main_image.c\
 				images/gradual_render.c\
 				images/process_image.c\

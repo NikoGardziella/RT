@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/18 23:05:57 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 18:35:59 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,6 +310,19 @@ typedef struct s_multithread
 	int 		render_mode;
 }				t_multithread;
 
+typedef struct s_blit
+{
+	SDL_Surface *src;
+	SDL_Surface *dest;
+	t_2d		step;
+	uint32_t	*srcaddr;
+	uint32_t	offset;
+	uint32_t	*destaddr;
+	t_2d		coords;
+	t_dim		*srcrect;
+	t_dim		*destrect;
+}				t_blit;
+
 /*Parser Functions*/
 
 t_list		*load_scene_objects(char *path);
@@ -369,6 +382,8 @@ void		draw_rgb_slider(t_img *img, void *param);
 t_uint		shade_picker(t_img *img, t_2i *coords, uint32_t color);
 t_uint		rgb_slider(t_img *img, t_2i *coords);
 double		get_smallest_photon_cluster(t_cam_hit *hit_buffer);
+void		blit_surface(SDL_Surface *src, t_dim *srcrect,
+				SDL_Surface *dest, t_dim *destrect);
 
 /*Ray tracing functions*/
 
