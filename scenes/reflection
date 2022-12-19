@@ -1,5 +1,5 @@
 OBJECT sphere
-	origin -50.00000 0.00000 0.00000
+	origin -10.33110 4.53998 22.17640
 	axis 0.00000 1.00000 0.00000
 	radius 9.00000
 	roughness 0.00000
@@ -76,12 +76,17 @@ OBJECT sphere
 	density 5.00000
 	color 00FFFFFF
 OBJECT light
-	origin 10.00000 15.00000 25.00000
+	origin 7.46616 25.88331 7.16665
 	axis 0.00000 1.00000 0.00000
 	radius 2.00000
-	lumen 50.00000
+	lumen 30.00000
 	color 00FFFFFF
 OBJECT camera
+<<<<<<< HEAD
 	pos 47.92970 27.12764 51.89406
 	look 47.34304 26.33642 51.72142
+=======
+	pos 24.46257 15.79981 34.06133
+	look 23.89038 15.36672 33.36489
+>>>>>>> ee14a54f21688eea6499c1a5b729c3bde93be245
 	fov 60.00000

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/19 18:35:59 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/19 18:37:55 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include <stdio.h>
 # include <time.h>
 
-# define SCREEN_X 2560 / 2
-# define SCREEN_Y 1440 / 2
+# define SCREEN_X 2560 / 4
+# define SCREEN_Y 1440 / 4
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
@@ -33,7 +33,7 @@
 # define PHOTONS 5000
 # define PHOTON_RADIUS 1.0
 # define N_CLOSEST_PHOTONS 1
-# define CAMERA_BOUNCES 3
+# define CAMERA_BOUNCES 5
 # define LIGHT_BOUNCES 3
 # define MAX_DENSITY 5
 # define MAX_LUMEN 100
@@ -433,15 +433,15 @@ void		blit_surface(SDL_Surface *src, t_dim *srcrect, SDL_Surface *dest, t_dim *d
 
 /*Intersect functions*/
 
-int			intersect_disc(t_object *disc, t_ray ray, t_2d *t);
 int			quadratic_equation(t_quadratic *q, t_2d *t);
 int			intersect_plane(t_object *plane, t_ray ray, t_2d *t);
 int			intersect_cone(t_object *cone, t_ray ray, t_2d *t);
 int			intersect_sphere(t_object *sphere, t_ray ray, t_2d *t);
 int			intersect_cylinder(t_object *cylinder, t_ray ray, t_2d *t);
-int			intersects(t_ray *ray, t_list *object_list, t_hit *hit, int mode);
+int			intersect_disc(t_object *disc, t_ray ray, t_2d *t);
 int			intersect_box(t_object *box, t_ray ray, t_2d *t);
 t_2d		intersect_loop(t_ray *ray, t_list *objects, t_hit *hit, int mode);
+int			intersects(t_ray *ray, t_list *object_list, t_hit *hit, int mode);
 
 /*Matrix transformation functions*/
 
@@ -461,7 +461,7 @@ int			coords_in_area(t_dim dim, t_2i coords);
 /*Bidirectional path tracing functions*/
 
 void		trace_light_path(t_scene *scene);
-t_3d		trace_eye_path(t_env *env, t_ray *ray, t_scene *scene, int camera_bounces);
+t_3d		trace_eye_path(t_ray *ray, t_scene *scene, int camera_bounces);
 
 /*Saving scene file functions*/
 

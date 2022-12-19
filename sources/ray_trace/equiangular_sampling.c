@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   equiangular_sampling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmalesev <dmalesev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:21:39 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/15 15:19:07 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/19 13:26:17 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ double	add_up_samples(t_ray ray, t_object *light, t_scene *scene, t_fog fog)
 	{
 		fog.trans = exp(-SIGMA * ((fog.light_vector_length + fog.dist) / 30.f));
 		fog.geom_term = 1.0 / dot_product(fog.light_vec, fog.light_vec);
-		fog.color_value += SIGMA * PARTICLE_INTENSITY * LIGHT_INTENSITY
+		fog.color_value += SIGMA * PARTICLE_INTENSITY * (double)light->lumen
 			* fog.geom_term * fog.trans / fog.pdf;
 	}
 	return (fog.color_value);

@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   xorshift32.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 08:25:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/28 08:28:36 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:46:28 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-uint32_t	xorshift32(uint32_t *state)
+uint32_t	xorshift32(void)
 {
-	uint32_t	x;
+	static uint32_t	x;
 
-	x = *state;
+	x = 15262;
 	x ^= x << 13;
 	x ^= x >> 17;
 	x ^= x << 5;
-	*state = x;
 	return (x);
 }

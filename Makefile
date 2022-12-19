@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/19 18:34:23 by pnoutere         ###   ########.fr        #
+#    Updated: 2022/12/19 18:38:07 by pnoutere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -150,8 +150,11 @@ SOURCES_LIST =	main.c\
 				ray_trace/color_op.c\
 				ray_trace/get_camera_ray.c\
 				ray_trace/calculate_normal.c\
+				ray_trace/intersect_basic_shapes.c\
+				ray_trace/intersect_box.c\
 				ray_trace/intersects.c\
 				ray_trace/refraction.c\
+				ray_trace/quadratic.c\
 				ray_trace/shade.c\
 				ray_trace/equiangular_sampling.c\
 				bidirectional_path_tracing/main.c\

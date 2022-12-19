@@ -1,0 +1,56 @@
+OBJECT cone
+{
+	origin -20 0.0 40.0
+	radius 4.0
+	axis 0.0 10.0 0.0
+	pattern 2
+	color 9090EE
+}
+OBJECT cylinder
+{
+	origin 0.0 0.0 0.0
+	radius 10.0
+	axis 0.0 0.0 0.0
+	rotate 0.0 0.0 45.0
+	color FFD580
+}
+OBJECT sphere
+{
+	origin 60.0 0.0 0.0
+	radius 25.0
+	roughness 1.0
+	color 00FFFF
+}
+OBJECT plane
+{
+	origin 0.0 -40.0 0.0
+	axis 0.0 90.0 0.0
+	color 0000FF
+	roughness 1.0
+}
+OBJECT plane
+{
+	origin 0.0 0.0 -60.0
+	axis 0.0 0.0 90.0
+	color 90EE90
+	roughness 1.0
+}
+OBJECT plane
+{
+	origin 0.0 0.0 -60.0
+	axis 45 30 90.0
+	color EE9090
+	roughness 1.0
+}
+OBJECT light
+{
+	origin 0.0 50 60
+	lumen 1000.0
+	color FFFFFF
+}
+OBJECT camera
+{
+	pos 0 0 120
+	look 0 0 0
+	fov 60
+}
