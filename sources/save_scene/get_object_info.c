@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 18:58:44 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/17 21:18:33 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 11:58:15 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	*get_object_vector(const t_3d *vector, int axis)
 {
 	char	*str;
 
+	str = NULL;
 	if (axis == 0)
 		str = ft_ftoa(vector->x, 5);
 	else if (axis == 1)
