@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/19 21:00:41 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:20:23 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,15 +204,9 @@ typedef struct s_scene
 	t_camera	*camera;
 	t_3d		camera_angle;
 	t_rgba		ambient_color;
-	t_2i		resolution_range;
-	t_2i		resolution;
-	t_2i		accum_resolution;
+	t_2i		subframe_range;
+	t_2i		subframe;
 	t_3d		*accum_buffer;
-	t_cam_hit	*cam_hit_buffer;
-	uint32_t	*cam_hit_color;
-	uint32_t	*cam_hit_intensity;
-	t_light_path	light_path[LIGHT_BOUNCES];
-	double			particle_intensity;
 }				t_scene;
 
 typedef struct s_dim
@@ -297,7 +291,7 @@ typedef struct s_multithread
 {
 	t_env		*env;
 	t_img		*img;
-	t_2i		*resolution;
+	t_2i		*subframe;
 	int			nb;
 	int			start;
 	int			end;
@@ -380,7 +374,6 @@ t_2i		display_int(t_pxl *pxl, t_2i coords, int nbr, t_2i color);
 void		main_image(t_img *img, void *param);
 void		sidebar_button(t_img *img, void *param);
 void		sidebar(t_img *img, void *param);
-void		ray_debugger(t_img *img, void *param);
 void		render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode);
 void		put_images_to_screen(t_env *env);
 void		gradual_render(t_img *img, void *param);
@@ -406,7 +399,7 @@ double		ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene);
 t_color		calc_light(t_color final, t_color light, t_color object, double level);
 t_3d		cast_light_ray(t_object *light, t_list *object_list, t_3d normal, t_ray *light_ray);
 /*MOVE TO VECTOR LIBRARY LATER*/
-t_3d	random_vector(t_3d refl_vec, float max_theta);
+t_3d		random_vector(t_3d refl_vec, float max_theta);
 
 
 /* Color operations functions*/

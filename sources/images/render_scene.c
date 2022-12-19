@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/19 21:02:19 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:20:18 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 	return (color);
 }
 
-static void	resolution_adjust(t_2i coords, uint32_t color, t_img *img, int res_range)
+static void	subframe_adjust(t_2i coords, uint32_t color, t_img *img, int res_range)
 {
 	t_2i	res_coords;
 
@@ -113,33 +113,33 @@ void	*render_loop(void *arg)
 	t_env				*env;
 	t_img				*img;
 	t_multithread		*tab;
-	t_2i				*resolution;
+	t_2i				*subframe;
 	int 				render_mode;
 	t_2i				coords;
 	t_ray				ray;
 	t_color				color;
 	t_camera			*camera;
 	t_scene				*scene;
+	t_3d				color_temp;
 	
 	tab = (t_multithread *)arg;
 	env = tab->env;
 	img = tab->img;
-	resolution = tab->resolution;
+	subframe = tab->subframe;
 	render_mode = tab->render_mode;
 	scene = env->scene;
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	coords.y = 0;
-	t_3d	color_temp;
 	color_temp = (t_3d){0.0, 0.0, 0.0};
 	while (coords.y < img->dim.size.y)
 	{
-		if (coords.y % scene->resolution_range.y == resolution->y)
+		if (coords.y % scene->subframe_range.y == subframe->y)
 		{
 			coords.x = tab->start;
 			while (coords.x < tab->end)
 			{
-				if (coords.x % scene->resolution_range.y == resolution->x)
+				if (coords.x % scene->subframe_range.y == subframe->x)
 				{
 					if (coords.x == img->dim.size.x / 2 && coords.y == img->dim.size.y / 2)
 						mid = 1;
@@ -159,24 +159,22 @@ void	*render_loop(void *arg)
 						color_temp.z = color.channel.b;
 					}
 					else if (render_mode == 0)
-					{
 						color_temp = trace_eye_path(&ray, scene, CAMERA_BOUNCES);
-					}
-					if (resolution == &scene->accum_resolution && env->frame_index > 0 && render_mode >= 0)
+					if (subframe == &scene->accum_subframe && env->frame_index > 0 && render_mode >= 0)
 					{
-						scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
-							(float)(color_temp.x + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
+							scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
+								(float)(color_temp.x + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
 								(float)(color_temp.y + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y),
 								(float)(color_temp.z + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z)};
-						color.channel.r = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x / env->frame_index, 255));
-						color.channel.g = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y / env->frame_index, 255));
-						color.channel.b = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z / env->frame_index, 255));
+							color.channel.r = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x / env->frame_index, 255));
+							color.channel.g = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y / env->frame_index, 255));
+							color.channel.b = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z / env->frame_index, 255));
 					}
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.1f);
 					put_pixel(coords, color.combined, img);
-					if (scene->resolution.x == scene->resolution.y)
-						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
+					if (scene->subframe.x == scene->subframe.y)
+						subframe_adjust(coords, color.combined, img, scene->subframe_range.y - scene->subframe.y);
 				}
 				coords.x += 1;
 			}
@@ -188,31 +186,31 @@ void	*render_loop(void *arg)
 
 void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 {
-	t_2i				*resolution;
+	t_2i				*subframe;
 	pthread_t			tids[THREADS];
 	t_multithread		tab[THREADS];
 	int					i;
 
 	i = 0;
-	if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.y)
+	if (scene->subframe.x == scene->subframe_range.x && scene->subframe.y == scene->subframe_range.y)
 	{
-		if (scene->accum_resolution.x == scene->resolution_range.x && scene->accum_resolution.y == scene->resolution_range.y)
+		if (scene->accum_subframe.x == scene->subframe_range.x && scene->accum_subframe.y == scene->subframe_range.y)
 		{
-			scene->accum_resolution.x = scene->resolution_range.x;
-			scene->accum_resolution.y = scene->resolution_range.x;
+			scene->accum_subframe.x = scene->subframe_range.x;
+			scene->accum_subframe.y = scene->subframe_range.x;
 		}
-		resolution = &scene->accum_resolution;
+		subframe = &scene->accum_subframe;
 	}
 	else
 	{
-		if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.x)
+		if (scene->subframe.x == scene->subframe_range.x && scene->subframe.y == scene->subframe_range.x)
 		{
 			ft_bzero(scene->accum_buffer, SCREEN_X * SCREEN_Y * sizeof(t_3d));
 			env->frame_index = 0;
 		}
-		resolution = &scene->resolution;
-		scene->accum_resolution.x = scene->resolution_range.x;
-		scene->accum_resolution.y = scene->resolution_range.x;
+		subframe = &scene->subframe;
+		scene->accum_subframe.x = scene->subframe_range.x;
+		scene->accum_subframe.y = scene->subframe_range.x;
 	}
 	i = 0;
 	while (i < THREADS)
@@ -223,7 +221,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 		tab[i].env = env;
 		tab[i].nb = i;
 		tab[i].render_mode = render_mode;
-		tab[i].resolution = resolution;
+		tab[i].subframe = subframe;
 		pthread_create(&tids[i], NULL, render_loop, (void *)&tab[i]);
 		i++;
 	}
@@ -233,13 +231,13 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 		pthread_join(tids[i], NULL);
 		i++;
 	}
-	if (resolution->x == scene->resolution_range.y - 1 && resolution->y == scene->resolution_range.y - 1)
+	if (subframe->x == scene->subframe_range.y - 1 && subframe->y == scene->subframe_range.y - 1)
 		env->frame_index += 1;
-	if (resolution->x < scene->resolution_range.y && resolution->y < scene->resolution_range.y)
-		resolution->x += 1;
-	if (resolution->x >= scene->resolution_range.y && resolution->y < scene->resolution_range.y)
+	if (subframe->x < scene->subframe_range.y && subframe->y < scene->subframe_range.y)
+		subframe->x += 1;
+	if (subframe->x >= scene->subframe_range.y && subframe->y < scene->subframe_range.y)
 	{
-		resolution->x = scene->resolution_range.x;
-		resolution->y += 1;
+		subframe->x = scene->subframe_range.x;
+		subframe->y += 1;
 	}
 }

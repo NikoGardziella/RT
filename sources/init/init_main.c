@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 15:01:32 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:22:43 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,6 @@ void	init_checks(t_env *env)
 {
 	if (env->scene->accum_buffer == NULL)
 		close_prog(NULL, "Failed to malloc for accum_buffer...", -4);
-	env->scene->cam_hit_buffer = (t_cam_hit *)malloc(
-			sizeof(t_cam_hit) * (SCREEN_X * SCREEN_Y));
-	if (env->scene->cam_hit_buffer == NULL)
-		close_prog(NULL, "Failed to malloc for cam_hit_buffer...", -5);
-	env->scene->cam_hit_color = (uint32_t *)malloc(sizeof(uint32_t)
-			* (SCREEN_X * SCREEN_Y));
-	if (env->scene->cam_hit_color == NULL)
-		close_prog(NULL, "Failed to malloc for cam_hit_color...", -5);
-	env->scene->cam_hit_intensity = (uint32_t *)malloc(sizeof(uint32_t)
-			* (SCREEN_X * SCREEN_Y));
-	if (env->scene->cam_hit_intensity == NULL)
-		close_prog(NULL, "Failed to malloc for cam_hit_intensity...", -5);
 }
 
 void	init_main(t_env *env)
@@ -55,11 +43,9 @@ void	init_main(t_env *env)
 	env->font = load_font(font_path);
 	if (env->font == NULL)
 		close_prog(NULL, "Failed to load font...", -2);
-	env->scene->resolution_range = (t_2i){0, 3};
-	env->scene->resolution.x = env->scene->resolution_range.x;
-	env->scene->resolution.y = env->scene->resolution_range.x;
-	env->scene->accum_resolution.x = env->scene->resolution_range.x;
-	env->scene->accum_resolution.y = env->scene->resolution_range.x;
+	env->scene->subframe_range = (t_2i){0, 3};
+	env->scene->subframe.x = env->scene->subframe_range.x;
+	env->scene->subframe.y = env->scene->subframe_range.x;
 	env->scene->accum_buffer = (t_3d *)malloc(sizeof(t_3d)
 			* (SCREEN_X * SCREEN_Y));
 	init_checks(env);
