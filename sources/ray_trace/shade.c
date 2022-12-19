@@ -42,13 +42,13 @@ static t_color	calc_light(t_color final, t_color light, t_color object, double l
 	return (final);
 }
 
-static t_3d	offset_shadow_ray(t_ray shadow, double radius)
+/*static t_3d	offset_shadow_ray(t_ray shadow, double radius)
 {
 	shadow.forward = normalize_vector(shadow.forward);
 	shadow.forward = random_vector(shadow.forward, 1.0f);
 	shadow.forward = scale_vector(shadow.forward, -radius);
 	return (shadow.forward);
-}
+} */
 
 static int	check_for_refraction(t_ray *shadow, t_list *object_list)
 {
@@ -59,8 +59,6 @@ static int	check_for_refraction(t_ray *shadow, t_list *object_list)
 	ret = 0;
 	while (intersects(shadow, object_list, &hit, 0) && hit.object != NULL && hit.object->density < MAX_DENSITY)
 	{
-		//shadow->forward = subtract_vectors(hit.object->origin, shadow->origin);
-		//shadow->forward = offset_shadow_ray(*shadow, hit.object->radius);
 		shadow->forward = get_refraction_ray(hit.normal, shadow->forward, (t_2d){1, hit.object->density});
 		shadow->origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * -1));
 		ret = 1;
@@ -70,14 +68,11 @@ static int	check_for_refraction(t_ray *shadow, t_list *object_list)
 
 static t_3d	cast_light_ray(t_object *light, t_list *object_list, t_3d normal, t_ray *light_ray, double roughness)
 {
-	t_hit		hit;
+	t_hit	hit;
 
 	light_ray->forward = reflect_vector(light_ray->forward, hit.normal);
-	//light_ray->forward = random_vector(light_ray->forward, (float)roughness);
-	//light_ray->forward = random_vector(light_ray->forward, (float)roughness);
 	light_ray->forward = random_vector(normal, (float)roughness);
 	light_ray->forward = random_vector(normal, 0.5f);
-	//light_ray->forward = random_vector((t_3d){0.0, 1.0, 0.0}, 2);
 	if (intersects(light_ray, object_list, &hit, 0))
 	{
 		light->color.channel.r = (uint8_t)(light->color.channel.r * (double)(hit.object->color.channel.r / 255.0));
@@ -119,18 +114,14 @@ uint32_t	light_up(t_list *object_list, t_color obj_color, t_ray shadow, t_3d nor
 			{
 				temp_light.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * -1));
 				light_normal = scale_vector(hit.normal, -1);
-			}
+			} 
 			light_bounces = LIGHT_BOUNCES;
 			while (light_bounces >= 0)
 			{
 				shadow.forward = subtract_vectors(temp_light.origin, shadow.origin);
-				//shadow.forward = add_vectors(shadow.forward, offset_shadow_ray(shadow, object->radius));
-				(void)offset_shadow_ray;
-				(void)check_for_refraction;
 				t = vector_magnitude(shadow.forward);
 				shadow.forward = normalize_vector(shadow.forward);
-				//if (check_for_refraction(&shadow, object_list_start) || 
-				if (t < intersect_loop(&shadow, object_list_start, &hit, 0).x)
+				if (check_for_refraction(&shadow, object_list_start) || t < intersect_loop(&shadow, object_list_start, &hit, 0).x)
 				{
 					level = (float)get_light_level(t, temp_light.lumen, normal, shadow.forward);
 					color = calc_light(color, temp_light.color, obj_color, (double)(level));

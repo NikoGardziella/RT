@@ -165,12 +165,12 @@ void	*render_loop(void *arg)
 					ray.object = NULL;
 					if (env->frame_index == 0)
 						emission = raycast(&ray, scene, -1);
-					else if (render_mode == 0)
+					else if (render_mode == 1)
 					{
 						ray.coords = coords;
 						emission = raycast(&ray, scene, CAMERA_BOUNCES);
 					}
-					else if (render_mode == 1)
+					else if (render_mode == 0)
 					{
 						color_temp = trace_eye_path(&ray, scene, CAMERA_BOUNCES);
 					}
@@ -178,7 +178,7 @@ void	*render_loop(void *arg)
 					emission.intensity = 1;
 					if (resolution == &scene->accum_resolution && env->frame_index > 0 && render_mode >= 0)
 					{
-						if (render_mode == 1)
+						if (render_mode == 0)
 						{
 							scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
 								(float)(color_temp.x + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
@@ -188,7 +188,7 @@ void	*render_loop(void *arg)
 							color.channel.g = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y / env->frame_index, 255));
 							color.channel.b = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z / env->frame_index, 255));
 						}
-						if (render_mode == 0)
+						if (render_mode == 1)
 						{
 							scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
 								(float)(color.channel.r * emission.intensity + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
