@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/19 18:41:50 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:49:59 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ void	*render_loop(void *arg)
 	t_camera			*camera;
 	t_scene				*scene;
 	t_emission			emission;
+	t_3d				color_temp;
 	
 	emission.color.combined = 0x000000;
 	emission.intensity = 0;
@@ -145,7 +146,6 @@ void	*render_loop(void *arg)
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	coords.y = 0;
-	t_3d	color_temp;
 	color_temp = (t_3d){0.0, 0.0, 0.0};
 	while (coords.y < img->dim.size.y)
 	{
@@ -171,15 +171,17 @@ void	*render_loop(void *arg)
 						emission = raycast(&ray, scene, CAMERA_BOUNCES);
 					}
 					else if (render_mode == 0)
-					{
 						color_temp = trace_eye_path(&ray, scene, CAMERA_BOUNCES);
-					}
 					color.combined = emission.color.combined;
 					emission.intensity = 1;
+					if (render_mode == 1)
+					{
+						color_temp.x = color.channel.r;
+						color_temp.y = color.channel.g;
+						color_temp.z = color.channel.b;
+					}
 					if (resolution == &scene->accum_resolution && env->frame_index > 0 && render_mode >= 0)
 					{
-						if (render_mode == 0)
-						{
 							scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
 								(float)(color_temp.x + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
 								(float)(color_temp.y + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y),
@@ -187,17 +189,6 @@ void	*render_loop(void *arg)
 							color.channel.r = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x / env->frame_index, 255));
 							color.channel.g = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y / env->frame_index, 255));
 							color.channel.b = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z / env->frame_index, 255));
-						}
-						if (render_mode == 1)
-						{
-							scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
-								(float)(color.channel.r * emission.intensity + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
-									(float)(color.channel.g * emission.intensity + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y),
-									(float)(color.channel.b * emission.intensity + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z)};
-							color.channel.r = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x / env->frame_index, 255));
-							color.channel.g = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].y / env->frame_index, 255));
-							color.channel.b = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z / env->frame_index, 255));
-						}
 					}
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
 						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.1f);

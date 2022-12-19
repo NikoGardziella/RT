@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/19 20:31:06 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:50:42 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -386,7 +386,6 @@ t_2i		display_int(t_pxl *pxl, t_2i coords, int nbr, t_2i color);
 void		main_image(t_img *img, void *param);
 void		sidebar_button(t_img *img, void *param);
 void		sidebar(t_img *img, void *param);
-void		ray_debugger(t_img *img, void *param);
 void		render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode);
 void		put_images_to_screen(t_env *env);
 void		gradual_render(t_img *img, void *param);
@@ -402,7 +401,7 @@ void		blit_surface(SDL_Surface *src, t_dim *srcrect,
 
 /*Ray tracing functions*/
 
-t_emission		raycast(t_ray *ray, t_scene *scene, int bounces);
+t_emission	raycast(t_ray *ray, t_scene *scene, int bounces);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
@@ -412,7 +411,7 @@ double		ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene);
 t_color		calc_light(t_color final, t_color light, t_color object, double level);
 t_3d		cast_light_ray(t_object *light, t_list *object_list, t_3d normal, t_ray *light_ray);
 /*MOVE TO VECTOR LIBRARY LATER*/
-t_3d	random_vector(t_3d refl_vec, float max_theta);
+t_3d		random_vector(t_3d refl_vec, float max_theta);
 
 
 /* Color operations functions*/

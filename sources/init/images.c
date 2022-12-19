@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 10:56:32 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 20:12:23 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:52:22 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static void	get_image_functions(t_img *img)
 {
 	img[0].draw_func = &main_image;
 	img[1].draw_func = &sidebar_button;
-	img[2].draw_func = &ray_debugger;
 	img[3].draw_func = &sidebar;
 	img[4].draw_func = NULL;
 	img[5].draw_func = &gradual_render;

@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/19 19:54:55 by pnoutere         ###   ########.fr        #
+#    Updated: 2022/12/19 20:50:07 by pnoutere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -122,7 +122,6 @@ SOURCES_LIST =	main.c\
 				images/sidebar_button.c\
 				images/sidebar.c\
 				images/put_images_to_screen.c\
-				images/ray_debugger.c\
 				images/render_scene.c\
 				images/slider.c\
 				images/draw_rgb_slider.c\

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:40:17 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/14 12:30:12 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:53:08 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_color	get_pixel(t_2i coords, void *param)
 	offset = coords.y * img->surface->pitch;
 	offset += coords.x * img->surface->format->BytesPerPixel;
 	dest = (uint32_t *)((uint8_t *)img->surface->pixels + offset);
-	color.combined = (uint32_t)*dest;
+	color.combined = (uint32_t)(*dest);
 	return (color);
 }
 
