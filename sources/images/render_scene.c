@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/15 23:16:44 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 14:31:10 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,8 +207,7 @@ void	*render_loop(void *arg)
 						emission = raycast(&ray, scene, CAMERA_BOUNCES);
 					}
 					color.combined = emission.color.combined;
-					if (render_mode == 1)
-						emission.intensity = 1;
+					emission.intensity = 1;
 					if (resolution == &scene->accum_resolution && env->frame_index > 0 && render_mode >= 0)
 					{
 						// t_color temp;
@@ -343,6 +342,8 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 		//ft_bzero(scene->cam_hit_buffer, SCREEN_X * SCREEN_Y * sizeof(t_cam_hit));
 		if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.x)
 		{
+			if (render_mode == 2)
+				trace_light_path(scene);
 			ft_bzero(scene->accum_buffer, SCREEN_X * SCREEN_Y * sizeof(t_3d));
 			env->frame_index = 0;
 		}
@@ -352,8 +353,6 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	}
 	if (resolution->x == scene->resolution_range.x && resolution->y == scene->resolution_range.x)
 	{
-		if (render_mode == 2)
-			trace_light_path(scene);
 		ft_lstdel(&scene->photon_list[0], &del_photon_node);
 		ft_bzero(scene->cam_hit_color, SCREEN_X * SCREEN_Y * sizeof(uint32_t));
 		i = 0;

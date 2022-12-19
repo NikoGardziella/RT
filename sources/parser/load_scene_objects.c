@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 09:25:30 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/17 16:58:32 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 12:07:27 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,16 @@ int	read_object(t_object *object, char *line)
 		return (-1);
 	if (reading == 0)
 	{
+		ft_bzero(object, sizeof(t_object));
+		object->roughness = 1.0f;
+		object->density = MAX_DENSITY;
+		object->type = -1;
+		object->rgb_coords = (t_2i){-1, -1};
 		object->type = check_if_object(line);
 		if (object->type >= 0)
+		{
 			reading = 1;
+		}
 	}
 	else if (reading == 1)
 	{
@@ -80,11 +87,6 @@ t_list	*read_scene_file(int fd)
 
 	ret = 1;
 	objects_list = NULL;
-	ft_bzero(&object, sizeof(t_object));
-	object.roughness = 1.0f;
-	object.density = MAX_DENSITY;
-	object.type = -1;
-	object.rgb_coords = (t_2i){-1, -1};
 	while (ret > 0)
 	{	
 		line = NULL;
