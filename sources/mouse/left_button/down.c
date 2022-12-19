@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:39:02 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 20:30:30 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:36:45 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	select_object(t_env *env, t_2i mouse_coords, t_camera *camera)
 	render_screen(env);
 }
 
-void	left_button_down_checks(t_env *env, t_img *img,
+void	left_button_down_checks(t_env *env,
 	t_2i mouse, t_object *o)
 {
 	int	*s;
@@ -72,5 +72,5 @@ void	left_button_down(void *param)
 	camera = env->scene->camera;
 	env->mouse.state |= 1;
 	SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y);
-	left_button_down_checks(env, mouse_coords, camera);
+	left_button_down_checks(env, mouse_coords, env->sel_ray.object);
 }
