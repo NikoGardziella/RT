@@ -38,7 +38,6 @@ static int	position(char *line, t_camera *camera)
 	return (0);
 }
 
-
 static int	look_at(char *line, t_camera *camera)
 {
 	t_3d	look_at;

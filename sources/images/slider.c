@@ -34,6 +34,8 @@ void	slider(t_img *img, void *param)
 	coords.x = (int)((double)dim.size.x * env->slider_value);
 	coords.y = dim.start.y;
 	draw_rectf(&(t_pxl_func){&put_pixel, img}, coords, end_coords, 0x002142);
+	blit_surface(env->bmptxtr.slider, NULL, img->surface, &dim);
+	draw_rectf(&(t_pxl_func){&put_pixel, img}, coords, end_coords, 0x002142);
 	coords = (t_2i){(int)((double)img->dim.size.x * env->slider_value), size};
 	draw_circlef(&(t_pxl_func){&put_pixel, img}, coords, size, 0x002142);
 	draw_circle(&(t_pxl_func){&put_pixel, img}, coords, size, 0xFFFFFF);

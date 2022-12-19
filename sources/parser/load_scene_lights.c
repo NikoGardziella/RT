@@ -82,7 +82,6 @@ t_list	*read_lights_file(int fd)
 	return (lights_list);
 }
 
-/*similar to load_scene_objects but will constitute a linked list of only the lights*/
 t_list	*load_scene_lights(char *path)
 {
 	t_list	*lights_list;
@@ -91,7 +90,6 @@ t_list	*load_scene_lights(char *path)
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		return (NULL);
-
 	lights_list = read_lights_file(fd);
 	if (fd >= 0)
 		close(fd);

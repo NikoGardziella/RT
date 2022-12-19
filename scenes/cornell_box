@@ -45,10 +45,10 @@ OBJECT plane
 	axis 0.00000 1.00000 0.00000
 	radius 50.00000
 	roughness 0.00000
-	density 1.78947
+	density 1.78946
 	color 00999999
 OBJECT light
-	origin -36.13305 -14.47045 58.73856
+	origin -36.13304 -14.47045 58.73856
 	axis 0.00000 1.00000 0.00000
 	radius 30.00000
 	lumen 20.00000

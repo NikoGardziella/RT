@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 15:15:57 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 14:30:26 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 14:34:15 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ t_3d	get_brdf_ray(t_3d normal, t_ray *ray, t_hit *hit)
 		double	fresnel_probability;
 
 		angle = angle_between_vectors(scale_vector(ray->forward, 1), normal);
-		fresnel_probability = fresnel_reflection3(angle, index.x, index.y);
+		fresnel_probability = fresnel_reflection(angle, index.x, index.y);
 		if (hit->object->type == PLANE || hit->object->type == DISC)
 			index = (t_2d){1.0, 1.0};
 		//if (mid)

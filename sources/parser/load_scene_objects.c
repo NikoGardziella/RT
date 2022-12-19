@@ -6,11 +6,22 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 09:25:30 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 12:07:27 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 14:53:50 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+static void	set_object_names(char **str)
+{
+	str[0] = "light";
+	str[1] = "sphere";
+	str[2] = "plane";
+	str[3] = "cone";
+	str[4] = "cylinder";
+	str[5] = "box";
+	str[6] = "disc";
+}
 
 static int	check_if_object(char *line)
 {
@@ -21,13 +32,7 @@ static int	check_if_object(char *line)
 	{
 		line = ft_strstr(line, str[0]);
 		line += ft_strlen(str[0]);
-		str[0] = "light";
-		str[1] = "sphere";
-		str[2] = "plane";
-		str[3] = "cone";
-		str[4] = "cylinder";
-		str[5] = "box";
-		str[6] = "disc";
+		set_object_names(str);
 		if (ft_strnequ(ft_strstr(line, str[0]), str[0], ft_strlen(str[0])))
 			return (0);
 		else if (ft_strnequ(ft_strstr(line, str[1]), str[1], ft_strlen(str[1])))
@@ -47,6 +52,18 @@ static int	check_if_object(char *line)
 	return (-2);
 }
 
+static t_object	setup_object(void)
+{
+	t_object	object;
+
+	ft_bzero(&object, sizeof(t_object));
+	object.roughness = 1.0f;
+	object.density = MAX_DENSITY;
+	object.type = -1;
+	object.rgb_coords = (t_2i){-1, -1};
+	return (object);
+}
+
 int	read_object(t_object *object, char *line)
 {
 	static int	reading;
@@ -55,16 +72,10 @@ int	read_object(t_object *object, char *line)
 		return (-1);
 	if (reading == 0)
 	{
-		ft_bzero(object, sizeof(t_object));
-		object->roughness = 1.0f;
-		object->density = MAX_DENSITY;
-		object->type = -1;
-		object->rgb_coords = (t_2i){-1, -1};
+		*object = setup_object();
 		object->type = check_if_object(line);
 		if (object->type >= 0)
-		{
 			reading = 1;
-		}
 	}
 	else if (reading == 1)
 	{
@@ -113,9 +124,7 @@ t_list	*load_scene_objects(char *path)
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		return (NULL);
-
 	objects_list = read_scene_file(fd);
-	if (fd >= 0)
-		close(fd);
+	close(fd);
 	return (objects_list);
 }

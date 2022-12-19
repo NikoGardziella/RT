@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/15 20:05:02 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 13:21:17 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,24 @@ static void	load_textures(t_env *env)
 		close_prog(NULL, "Failed to load BMP texture...", -3);
 }
 
+void	init_checks(t_env *env)
+{
+	if (env->scene->accum_buffer == NULL)
+		close_prog(NULL, "Failed to malloc for accum_buffer...", -4);
+	env->scene->cam_hit_buffer = (t_cam_hit *)malloc(
+			sizeof(t_cam_hit) * (SCREEN_X * SCREEN_Y));
+	if (env->scene->cam_hit_buffer == NULL)
+		close_prog(NULL, "Failed to malloc for cam_hit_buffer...", -5);
+	env->scene->cam_hit_color = (uint32_t *)malloc(sizeof(uint32_t)
+			* (SCREEN_X * SCREEN_Y));
+	if (env->scene->cam_hit_color == NULL)
+		close_prog(NULL, "Failed to malloc for cam_hit_color...", -5);
+	env->scene->cam_hit_intensity = (uint32_t *)malloc(sizeof(uint32_t)
+			* (SCREEN_X * SCREEN_Y));
+	if (env->scene->cam_hit_intensity == NULL)
+		close_prog(NULL, "Failed to malloc for cam_hit_intensity...", -5);
+}
+
 void	init_main(t_env *env)
 {
 	char	*font_path;
@@ -33,7 +51,7 @@ void	init_main(t_env *env)
 	if (env->scene == NULL)
 		close_prog(NULL, "Malloc env.scene failed...", -1);
 	font_path = "libraries/dm_bdf_render/examples/bdf_files/ic8x8u.bdf";
-	font_path = "libraries/dm_bdf_render/examples/bdf_files/cascadia_code_semi_bold-12.bdf";
+	font_path = "cascadia_code_semi_bold-12.bdf";
 	env->font = load_font(font_path);
 	if (env->font == NULL)
 		close_prog(NULL, "Failed to load font...", -2);
@@ -42,18 +60,9 @@ void	init_main(t_env *env)
 	env->scene->resolution.y = env->scene->resolution_range.x;
 	env->scene->accum_resolution.x = env->scene->resolution_range.x;
 	env->scene->accum_resolution.y = env->scene->resolution_range.x;
-	env->scene->accum_buffer = (t_3d *)malloc(sizeof(t_3d) * (SCREEN_X * SCREEN_Y));
-	if (env->scene->accum_buffer == NULL)
-		close_prog(NULL, "Failed to malloc for accum_buffer...", -4);
-	env->scene->cam_hit_buffer = (t_cam_hit *)malloc(sizeof(t_cam_hit) * (SCREEN_X * SCREEN_Y));
-	if (env->scene->cam_hit_buffer == NULL)
-		close_prog(NULL, "Failed to malloc for cam_hit_buffer...", -5);
-	env->scene->cam_hit_color = (uint32_t *)malloc(sizeof(uint32_t) * (SCREEN_X * SCREEN_Y));
-	if (env->scene->cam_hit_color == NULL)
-		close_prog(NULL, "Failed to malloc for cam_hit_color...", -5);
-	env->scene->cam_hit_intensity = (uint32_t *)malloc(sizeof(uint32_t) * (SCREEN_X * SCREEN_Y));
-	if (env->scene->cam_hit_intensity == NULL)
-		close_prog(NULL, "Failed to malloc for cam_hit_intensity...", -5);
+	env->scene->accum_buffer = (t_3d *)malloc(sizeof(t_3d)
+			* (SCREEN_X * SCREEN_Y));
+	init_checks(env);
 	env->render_mode = -1;
 	env->sidebar = -1;
 	env->selected = -1;
