@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/19 18:37:55 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/19 19:09:39 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -422,6 +422,7 @@ int			radius(char *line, t_object *object);
 int			lumen(char *line, t_object *object);
 int			roughness(char *line, t_object *object);
 int			density(char *line, t_object *object);
+void		set_object_names(char **str);
 
 /*Drawing functions*/
 

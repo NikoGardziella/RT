@@ -3,25 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   load_scene_objects.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 09:25:30 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 14:53:50 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 19:08:35 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-
-static void	set_object_names(char **str)
-{
-	str[0] = "light";
-	str[1] = "sphere";
-	str[2] = "plane";
-	str[3] = "cone";
-	str[4] = "cylinder";
-	str[5] = "box";
-	str[6] = "disc";
-}
 
 static int	check_if_object(char *line)
 {
