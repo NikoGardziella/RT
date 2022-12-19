@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/19 19:14:04 by pnoutere         ###   ########.fr        #
+#    Updated: 2022/12/19 19:54:55 by pnoutere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -157,6 +157,7 @@ SOURCES_LIST =	main.c\
 				ray_trace/refraction.c\
 				ray_trace/quadratic.c\
 				ray_trace/shade.c\
+				ray_trace/light_up_functions.c\
 				ray_trace/equiangular_sampling.c\
 				bidirectional_path_tracing/main.c\
 				save_scene/save_scene.c\

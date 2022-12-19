@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/19 19:09:39 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/19 19:59:45 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,6 +323,21 @@ typedef struct s_blit
 	t_dim		*destrect;
 }				t_blit;
 
+typedef struct s_light_up
+{
+	t_list		*object_list_start;
+	t_object	*object;
+	t_color		color;
+	float		level;
+	double		t;
+	int			light_bounces;
+	t_object	temp_light;
+	t_hit		hit;
+	t_3d		light_normal;
+	t_ray		shadow;
+	t_3d		normal;
+}				t_light_up;
+
 /*Parser Functions*/
 
 t_list		*load_scene_objects(char *path);
@@ -394,6 +409,8 @@ t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
 uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, t_3d normal);
 t_3d		get_refraction_ray(t_3d normal, t_3d ray_dir, t_2d index);
 double		ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene);
+t_color		calc_light(t_color final, t_color light, t_color object, double level);
+t_3d		cast_light_ray(t_object *light, t_list *object_list, t_3d normal, t_ray *light_ray);
 /*MOVE TO VECTOR LIBRARY LATER*/
 t_3d	random_vector(t_3d refl_vec, float max_theta);
 
