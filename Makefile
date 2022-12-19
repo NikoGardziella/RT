@@ -133,6 +133,7 @@ SOURCES_LIST =	main.c\
 				parser/load_scene_lights.c\
 				parser/read_camera_info.c\
 				parser/read_object_info.c\
+				parser/read_object_info1.c\
 				parser/read_object_transformations.c\
 				mouse/events.c\
 				mouse/mouse_main.c\
@@ -143,6 +144,8 @@ SOURCES_LIST =	main.c\
 				mouse/mouse_scroll.c\
 				keyboard/events.c\
 				keyboard/hold.c\
+				keyboard/delete_object.c\
+				keyboard/take_screenshot.c\
 				ray_trace/color_op.c\
 				ray_trace/get_camera_ray.c\
 				ray_trace/calculate_normal.c\

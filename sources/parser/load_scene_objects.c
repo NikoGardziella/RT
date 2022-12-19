@@ -12,6 +12,17 @@
 
 #include "rt.h"
 
+static void	set_object_names(char **str)
+{
+		str[0] = "light";
+		str[1] = "sphere";
+		str[2] = "plane";
+		str[3] = "cone";
+		str[4] = "cylinder";
+		str[5] = "box";
+		str[6] = "disc";
+}
+
 static int	check_if_object(char *line)
 {
 	char	*str[7];
@@ -21,13 +32,7 @@ static int	check_if_object(char *line)
 	{
 		line = ft_strstr(line, str[0]);
 		line += ft_strlen(str[0]);
-		str[0] = "light";
-		str[1] = "sphere";
-		str[2] = "plane";
-		str[3] = "cone";
-		str[4] = "cylinder";
-		str[5] = "box";
-		str[6] = "disc";
+		set_object_names(str);
 		if (ft_strnequ(ft_strstr(line, str[0]), str[0], ft_strlen(str[0])))
 			return (0);
 		else if (ft_strnequ(ft_strstr(line, str[1]), str[1], ft_strlen(str[1])))
@@ -71,6 +76,17 @@ int	read_object(t_object *object, char *line)
 	return (0);
 }
 
+t_object	setup_object(void)
+{
+	t_object	object;
+
+	object.roughness = 1.0f;
+	object.density = MAX_DENSITY;
+	object.type = -1;
+	object.rgb_coords = (t_2i){-1, -1};
+	return (object);
+}
+
 t_list	*read_scene_file(int fd)
 {
 	t_object	object;
@@ -78,13 +94,10 @@ t_list	*read_scene_file(int fd)
 	int			ret;
 	char		*line;
 
+	object = setup_object();
 	ret = 1;
 	objects_list = NULL;
 	ft_bzero(&object, sizeof(t_object));
-	object.roughness = 1.0f;
-	object.density = MAX_DENSITY;
-	object.type = -1;
-	object.rgb_coords = (t_2i){-1, -1};
 	while (ret > 0)
 	{	
 		line = NULL;
@@ -111,7 +124,6 @@ t_list	*load_scene_objects(char *path)
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		return (NULL);
-
 	objects_list = read_scene_file(fd);
 	if (fd >= 0)
 		close(fd);
