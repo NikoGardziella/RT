@@ -381,10 +381,7 @@ t_3d		get_refraction_ray(t_3d normal, t_3d ray_dir, t_2d index);
 double		ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene);
 /*MOVE TO VECTOR LIBRARY LATER*/
 t_3d	random_vector(t_3d refl_vec, float max_theta);
-/*Photon mapping functions*/
-void	photon_mapping(t_env *env, t_img *img, t_multithread *tab);
-void	shoot_photons(t_scene *scene, size_t count, int thread_id);
-void	*compare_ray_hits(void *arg);
+
 
 /* Color operations functions*/
 

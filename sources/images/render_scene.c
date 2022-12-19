@@ -172,10 +172,6 @@ void	*render_loop(void *arg)
 	camera = scene->camera;
 	*camera = init_camera(img->dim.size, camera->ray.origin, camera->ray.forward, camera->fov);
 	coords.y = 0;
-	if (render_mode == 1)
-	{
-		photon_mapping(env, img, tab);
-	}
 	// double col;
 	t_3d	color_temp;
 	color_temp = (t_3d){0.0, 0.0, 0.0};
@@ -257,24 +253,6 @@ void	*render_loop(void *arg)
 		coords.y += 1;
 	}
 	return (NULL);
-}
-
-static void	connect_photon_thread_lists(t_scene *scene)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (i < (THREADS - 1))
-	{
-		if (scene->last_photon_node[j] != NULL && scene->photon_list[i + 1] != NULL)
-		{
-			scene->last_photon_node[j]->next = scene->photon_list[i + 1];
-			j++;
-		}
-		i++;
-	}
 }
 
 static void	del_photon_node(void *content, size_t content_size)
@@ -382,33 +360,6 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	{
 		pthread_join(tids[i], NULL);
 		i++;
-	}
-	if (render_mode == 1)
-	{
-		connect_photon_thread_lists(scene);
-		//(void)connect_photon_thread_lists;
-		
-		i = 0;
-		while (i < THREADS)
-		{
-			tab[i].start = i * (img->surface->w / THREADS);
-			tab[i].end = (i + 1) * (img->surface->w / THREADS);
-			tab[i].img = img;
-			tab[i].env = env;
-			tab[i].nb = i;
-			tab[i].render_mode = render_mode;
-			tab[i].resolution = resolution;
-			pthread_create(&tids[i], NULL, compare_ray_hits, (void *)&tab[i]);
-			i++;
-		}
-		i = 0;
-		while (i < THREADS)
-		{
-			pthread_join(tids[i], NULL);
-			i++;
-		}
-		//(void)draw_photon_scene;
-		//env->photon_cluster_radius = get_smallest_photon_cluster(scene->cam_hit_buffer);
 	}
 	// render_loop(img, render_mode, resolution, env);
 	// coords / color / ray
