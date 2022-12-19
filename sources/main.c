@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/18 23:06:18 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:27:29 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void prog_clock(t_env *env)
 	}
 	if (env->sel_element == 5)
 	{
-		env->sel_ray.object->lumen = 1 + ((MAX_LUMEN - 1) / env->img[7].dim.size.x * (env->mouse.pos.x - env->img[7].dim.start.x));
+		env->sel_ray.object->lumen = 1 + (((double)MAX_LUMEN - 1) / env->img[7].dim.size.x * (env->mouse.pos.x - env->img[7].dim.start.x));
 		env->sel_ray.object->lumen = fmax(env->sel_ray.object->lumen, 0);
 		env->sel_ray.object->lumen = fmin(env->sel_ray.object->lumen , MAX_LUMEN);
 		render_screen(env);
