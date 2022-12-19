@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_shade_picker.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ngardzie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 11:13:44 by ngardzie          #+#    #+#             */
-/*   Updated: 2022/12/17 20:47:41 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:12:56 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void	draw_shade_picker(t_img *img, void *param)
 		coords.x = 0;
 	color = rgb_slider(img, &coords);
 	shade_picker_iter(img, color);
-	draw_selector(img, env->sel_ray.object->shade_coords, env->sel_ray.object->color.combined);
+	draw_selector(img, env->sel_ray.object->shade_coords,
+		env->sel_ray.object->color.combined);
 	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
 	draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFFFF);
 }
