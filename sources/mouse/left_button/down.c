@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:39:02 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/17 17:20:08 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:30:30 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,32 +32,32 @@ void	select_object(t_env *env, t_2i mouse_coords, t_camera *camera)
 	render_screen(env);
 }
 
-void	left_button_down_checks(t_env *env, t_2i mouse_coords, t_camera	*camera)
+void	left_button_down_checks(t_env *env, t_img *img,
+	t_2i mouse, t_object *o)
 {
-	if (coords_in_area(env->img[1].dim, mouse_coords))
-		env->sidebar = (int8_t)(env->sidebar * -1);
-	else if (coords_in_area(env->img[7].dim, mouse_coords)
-		&& env->sel_ray.object != NULL && env->sel_ray.object->type == LIGHT && env->sidebar == 1)
+	int	*s;
+
+	s = &(env->sidebar);
+	if (coords_in_area(env->img[1].dim, mouse))
+		*s = (int8_t)(*s * -1);
+	else if (coords_in_area(env->img[7].dim, mouse)
+		&& o != NULL && o->type == LIGHT && *s == 1)
 		env->sel_element = 5;
-	else if (coords_in_area(env->img[6].dim, mouse_coords)
-		&& env->sel_ray.object != NULL && env->sel_ray.object->type != LIGHT && env->sidebar == 1)
+	else if (coords_in_area(env->img[6].dim, mouse)
+		&& o != NULL && o->type != LIGHT && *s == 1)
 		env->sel_element = 2;
-	else if (coords_in_area(env->img[7].dim, mouse_coords)
-		&& env->sel_ray.object != NULL && env->sel_ray.object->type != LIGHT && env->sidebar == 1)
+	else if (coords_in_area(env->img[7].dim, mouse)
+		&& o != NULL && o->type != LIGHT && *s == 1)
 		env->sel_element = 3;
-	else if (coords_in_area(env->img[8].dim, mouse_coords)
-		&& env->sel_ray.object != NULL && env->sidebar == 1)
+	else if (coords_in_area(env->img[8].dim, mouse) && o != NULL && *s == 1)
 		env->sel_element = 4;
-	else if (coords_in_area(env->img[9].dim, mouse_coords)
-		&& env->sel_ray.object != NULL && env->sidebar == 1)
+	else if (coords_in_area(env->img[9].dim, mouse) && o != NULL && *s == 1)
 		env->sel_element = 6;
-	else if (coords_in_area(env->img[3].dim, mouse_coords) && env->sidebar == 1)
+	else if (coords_in_area(env->img[3].dim, mouse) && *s == 1)
 	{
 	}
-	else if (coords_in_area(env->img[0].dim, mouse_coords))
-	{
-		select_object(env, mouse_coords, camera);
-	}
+	else if (coords_in_area(env->img[0].dim, mouse))
+		select_object(env, mouse, env->scene->camera);
 	else
 		return ;
 }
