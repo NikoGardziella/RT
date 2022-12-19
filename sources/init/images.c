@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 10:56:32 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/17 17:19:16 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 13:08:41 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,19 @@ static void	get_image_positions(t_img *img)
 	offset = (t_2i){button.x * 30 / 100, button.y * 30 / 100};
 	img[0].dim.start = (t_2i){0, 0};
 	img[1].dim.start = (t_2i){0 + offset.x, 0 + offset.y};
-	img[2].dim.start = (t_2i){SCREEN_X - img[2].dim.size.x - offset.x, 0 + offset.y};
+	img[2].dim.start = (t_2i){SCREEN_X
+		- img[2].dim.size.x - offset.x, 0 + offset.y};
 	img[3].dim.start = (t_2i){0 + offset.x, 0 + offset.y};
 	img[4].dim.start = (t_2i){0, 0};
 	img[5].dim.start = (t_2i){0, 0};
-	img[6].dim.start = (t_2i){img[3].dim.start.x + offset.x,img[3].dim.start.y + img[3].dim.size.y / 4};
-	img[7].dim.start = (t_2i){img[3].dim.start.x + offset.x,img[3].dim.start.y + img[3].dim.size.y / 3};
-	img[8].dim.start = (t_2i){img[3].dim.start.x, img[3].dim.start.y + (img[3].dim.size.y * 75 / 100)};
-	img[9].dim.start = (t_2i){img[3].dim.start.x, img[3].dim.start.y + (img[3].dim.size.y * 80 / 100)};
+	img[6].dim.start = (t_2i){img[3].dim.start.x
+		+ offset.x, img[3].dim.start.y + img[3].dim.size.y / 4};
+	img[7].dim.start = (t_2i){img[3].dim.start.x
+		+ offset.x, img[3].dim.start.y + img[3].dim.size.y / 3};
+	img[8].dim.start = (t_2i){img[3].dim.start.x,
+		img[3].dim.start.y + (img[3].dim.size.y * 75 / 100)};
+	img[9].dim.start = (t_2i){img[3].dim.start.x,
+		img[3].dim.start.y + (img[3].dim.size.y * 80 / 100)};
 }
 
 static void	get_image_functions(t_img *img)
