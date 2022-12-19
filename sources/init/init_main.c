@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/09 16:01:40 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/15 20:05:02 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 static void	load_textures(t_env *env)
 {
-	env->bmptxtr.wasd = SDL_LoadBMP("Grey_40.bmp");
-	if (env->bmptxtr.wasd == NULL)
+	env->bmptxtr.sidebar = SDL_LoadBMP("ui_sidebar.bmp");
+	if (env->bmptxtr.sidebar == NULL)
 		close_prog(NULL, "Failed to load BMP texture...", -3);
-	/* env->bmptxtr.slider = SDL_LoadBMP("slider.bmp");
+	env->bmptxtr.slider = SDL_LoadBMP("ui_slider.bmp");
 	if (env->bmptxtr.slider == NULL)
-		close_prog(NULL, "Failed to load BMP texture...", -3); */
+		close_prog(NULL, "Failed to load BMP texture...", -3);
+	env->bmptxtr.slide = SDL_LoadBMP("ui_slide.bmp");
+	if (env->bmptxtr.slide == NULL)
+		close_prog(NULL, "Failed to load BMP texture...", -3);
 }
 
 void	init_main(t_env *env)

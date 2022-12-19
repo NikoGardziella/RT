@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/09 16:51:35 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/18 23:05:57 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,10 @@
 # define PHOTONS 5000
 # define PHOTON_RADIUS 1.0
 # define N_CLOSEST_PHOTONS 1
-# define CAMERA_BOUNCES 4
+# define CAMERA_BOUNCES 5
 # define LIGHT_BOUNCES 3
-# define BOUNCE_COUNT 3
 # define MAX_DENSITY 5
-# define MAX_LUMEN 1000
+# define MAX_LUMEN 100
 
 # define KEY_A 1
 # define KEY_W 2
@@ -150,6 +149,8 @@ typedef struct s_object
 	t_3d		origin;
 	t_3d		position;
 	t_3d		rotation;
+	t_2i		rgb_coords;
+	t_2i		shade_coords;
 }				t_object;
 
 typedef struct s_hit
@@ -192,6 +193,13 @@ typedef struct s_cam_hit
 	t_ray_hit	photon[N_CLOSEST_PHOTONS];
 }				t_cam_hit;
 
+typedef struct s_light_path
+{
+	t_3d	color;
+	t_3d	origin;
+	t_3d	normal;
+}				t_light_path;
+
 typedef struct s_scene
 {
 	t_list		*object_list;
@@ -208,6 +216,7 @@ typedef struct s_scene
 	t_cam_hit	*cam_hit_buffer;
 	uint32_t	*cam_hit_color;
 	uint32_t	*cam_hit_intensity;
+	t_light_path	light_path[LIGHT_BOUNCES];
 }				t_scene;
 
 typedef struct s_dim
@@ -235,8 +244,9 @@ typedef struct s_sdl
 
 typedef struct s_bmptxtr
 {
-	SDL_Surface	*wasd;
+	SDL_Surface	*sidebar;
 	SDL_Surface	*slider;
+	SDL_Surface	*slide;
 }				t_bmptxtr;
 
 typedef struct s_mouse
@@ -245,6 +255,20 @@ typedef struct s_mouse
 	t_2i	move;
 	uint8_t	state;
 }				t_mouse;
+
+typedef struct s_fog
+{
+	double	color_value;
+	double	offset;
+	double	offset_value;
+	double	trans;
+	double	geom_term;
+	t_ray	particle_ray;
+	t_3d	light_vec;
+	double	dist;
+	double	pdf;
+	double	light_vector_length;
+}				t_fog;
 
 typedef struct s_env
 {
@@ -257,7 +281,7 @@ typedef struct s_env
 	t_scene			*scene;
 	t_font			*font;
 	t_uint			keymap;
-	int8_t			sidebar;
+	int				sidebar;
 	int				render_mode;
 	t_ray			sel_ray;
 	t_bmptxtr		bmptxtr;
@@ -266,6 +290,9 @@ typedef struct s_env
 	int				frame_index;
 	uint32_t		state;
 	double			photon_cluster_radius;
+	t_3d			camera_default;
+	double			slider_value;
+	char			*file_path;
 }				t_env;
 
 t_env	*temp_env;
@@ -312,6 +339,7 @@ void		left_button_up(void *param);
 void		left_button_down(void *param);
 void		right_button_up(void *param);
 void		right_button_down(void *param);
+int			mouse_scroll(void *param);
 
 /*Close and free functions*/
 
@@ -334,8 +362,9 @@ void		render_screen(t_env *env);
 void		slider(t_img *img, void *param);
 void		draw_shade_picker(t_img *img, void *param);
 void		draw_rgb_slider(t_img *img, void *param);
+t_uint		shade_picker(t_img *img, t_2i *coords, uint32_t color);
 t_uint		rgb_slider(t_img *img, t_2i *coords);
-double 		get_smallest_photon_cluster(t_cam_hit *hit_buffer);
+double		get_smallest_photon_cluster(t_cam_hit *hit_buffer);
 
 /*Ray tracing functions*/
 
@@ -408,5 +437,20 @@ t_mat		scale_matrix(t_mat *m1, double factor);
 
 double		time_since_success(double ammount, int id,int mode);
 int			coords_in_area(t_dim dim, t_2i coords);
+
+/*Bidirectional path tracing functions*/
+
+void		trace_light_path(t_scene *scene);
+t_3d		trace_eye_path(t_env *env, t_ray *ray, t_scene *scene, int camera_bounces);
+
+/*Saving scene file functions*/
+
+void		save_scene(t_scene *scene, char *path);
+char		*get_object_type(t_object *object);
+char		*get_object_vector(const t_3d *vector, int axis);
+char		*get_object_float(float value);
+char		*get_object_hex(unsigned int value);
+void		write_objects_to_file(t_list *object_list, int fd);
+void		write_camera_to_file(t_camera *camera, int fd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:34:58 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/11/23 14:50:11 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/15 17:15:59 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,5 @@ void	gradual_render(t_img *img, void *param)
 	draw_circle(&(t_pxl_func){&put_pixel, img}, coords, 3, 0x5D8ACF);
 	draw_circle(&(t_pxl_func){&put_pixel, img}, coords, 4, 0x052156);
 	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};
-	draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFF00);
+	//draw_rect(&(t_pxl_func){&put_pixel, img}, (t_2i){0, 0}, coords, 0xFFFF00);
 }

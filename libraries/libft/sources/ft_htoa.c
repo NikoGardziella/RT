@@ -1,22 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   angle_between_vectors.c                            :+:      :+:    :+:   */
+/*   ft_htoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/28 16:35:58 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/16 19:50:57 by dmalesev         ###   ########.fr       */
+/*   Created: 2022/12/17 20:09:57 by dmalesev          #+#    #+#             */
+/*   Updated: 2022/12/17 20:11:47 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "dm_vectors.h"
+#include "libft.h"
 
-double	angle_between_vectors(t_3d v1, t_3d v2)
+char	*ft_htoa(unsigned int hex)
 {
-	double	magn[2];
+	char	*str;
+	int		i;
 
-	magn[0] = vector_magnitude(v1);
-	magn[1] = vector_magnitude(v2);
-	return (acos(dot_product(v1, v2) / (magn[0] + magn[1])));
+	str = malloc(sizeof(char) * 9);
+	if (str == NULL)
+		return (NULL);
+	i = 7;
+	while (i >= 0)
+	{
+		str[i] = "0123456789ABCDEF"[hex & 0xF];
+		hex >>= 4;
+		i--;
+	}
+	str[8] = '\0';
+	return (str);
 }
