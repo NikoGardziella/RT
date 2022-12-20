@@ -3,93 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/20 10:08:27 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 11:17:00 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 #include <stdlib.h>
 #include <pthread.h>
-
-t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
-{
-	t_hit		hit;
-	t_color		color;
-	t_color		color_refl;
-	t_color		color_refr;
-	t_ray		shadow_ray;
-	t_ray		bounce_ray;
-	
-	color.combined = 0x000000;
-	ft_bzero(&hit, sizeof(t_hit));
-	if (intersects(ray, scene->object_list, &hit, 1))
-	{
-		if (hit.object->type == LIGHT || bounces <= 0)
-		{
-			color = hit.color;
-			return (color);
-		}
-		shadow_ray.origin = scale_vector(hit.normal, BIAS);
-		shadow_ray.origin = add_vectors(hit.point, shadow_ray.origin);
-		if (hit.object->roughness <= 1.0f)
-		{
-			bounce_ray.forward = reflect_vector(ray->forward, hit.normal);
-			bounce_ray.forward = random_vector(bounce_ray.forward, (float)hit.object->roughness);
-			bounce_ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * 1));
-			color.combined = light_up(scene->object_list, hit.object->color, shadow_ray, hit.normal);
-			color_refl = raycast(&bounce_ray, scene, bounces - 1);
-			color_refl.channel.r = (uint8_t)(color_refl.channel.r * (double)(hit.object->color.channel.r / 255.0));
-			color_refl.channel.g = (uint8_t)(color_refl.channel.g * (double)(hit.object->color.channel.g / 255.0));
-			color_refl.channel.b = (uint8_t)(color_refl.channel.b * (double)(hit.object->color.channel.b / 255.0));
-			color.combined = transition_colors(color_refl.combined, color.combined, (float)hit.object->roughness);
-		}
-		if (hit.object->density < MAX_DENSITY)
-		{
-			if (hit.inside == 1)
-				bounce_ray.forward = get_refraction_ray(hit.normal, ray->forward, (t_2d){hit.object->density, 1});
-			else
-				bounce_ray.forward = get_refraction_ray(hit.normal, ray->forward, (t_2d){1, hit.object->density});
-			bounce_ray.forward = random_vector(bounce_ray.forward, (float)hit.object->roughness);
-			bounce_ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * -1));
-			if (hit.inside == 1)
-				bounces -= 1;
-			double	angle;
-			angle = fmax(dot_product(scale_vector(bounce_ray.forward, -1), hit.normal), 0.0);
-			color_refr = raycast(&bounce_ray, scene, bounces);
-			color.combined = transition_colors(color.combined, color_refr.combined, (float)angle);
-		}
-		if (hit.object->type == LIGHT)
-			color.combined = 0x000000;
-	}
-	double	col;
-	t_color	temp;
-	if (bounces > 0)
-	{
-		t_object	*light;
-		t_list		*every_light;
-		every_light = scene->object_list;
-		light = NULL;
-		while (every_light)
-		{
-			light = (t_object *)every_light->content;
-			if (light->type == LIGHT)
-			{
-				break ;
-			}
-			every_light = every_light->next;
-		}
-		col = ray_march(ray->coords, *ray, light, scene);
-		temp.combined = light->color.combined;
-		temp.channel.r = (uint8_t)((float)temp.channel.r * col);
-		temp.channel.g = (uint8_t)((float)temp.channel.g * col);
-		temp.channel.b = (uint8_t)((float)temp.channel.b * col);
-		color.combined = transition_colors(color.combined, temp.combined, (float)col);
-	}
-	return (color);
-}
 
 static void	subframe_adjust(t_2i coords, uint32_t color, t_img *img, int res_range)
 {
