@@ -69,7 +69,6 @@ void	write_objects_to_file(t_list *object_list, int fd)
 	int			type;
 	t_3d		axis;
 
-
 	while (object_list != NULL)
 	{
 		object = (t_object *)object_list->content;
