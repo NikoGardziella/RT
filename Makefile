@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/19 20:50:07 by pnoutere         ###   ########.fr        #
+#    Updated: 2022/12/20 09:50:30 by pnoutere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -126,7 +126,6 @@ SOURCES_LIST =	main.c\
 				images/slider.c\
 				images/draw_rgb_slider.c\
 				images/draw_shade_picker.c\
-				images/photon_cluster.c\
 				parser/add_object_to_scene.c\
 				parser/load_scene_camera.c\
 				parser/load_scene_objects.c\
@@ -143,6 +142,7 @@ SOURCES_LIST =	main.c\
 				mouse/right_button/up.c\
 				mouse/right_button/down.c\
 				mouse/mouse_scroll.c\
+				mouse/selected_element.c\
 				keyboard/events.c\
 				keyboard/hold.c\
 				keyboard/delete_object.c\

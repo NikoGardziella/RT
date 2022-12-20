@@ -6,11 +6,26 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 15:01:32 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 09:59:31 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+
+void	sdl_init(t_sdl *sdl)
+{
+	if (SDL_Init(SDL_INIT_VIDEO) != 0)
+		SDL_Quit();
+	if (SCREEN_X < 200 || SCREEN_X > 2560 || SCREEN_Y < 200 || SCREEN_Y > 1440)
+		close_prog(NULL, "Window size specified not in range...", -1);
+	sdl->window = SDL_CreateWindow("Ray Tracer",
+			800, 400, SCREEN_X, SCREEN_Y, 0);
+	if (sdl->window == NULL)
+		close_prog(NULL, "Creating window failed...", -1);
+	sdl->screen = SDL_GetWindowSurface(sdl->window);
+	if (sdl->screen == NULL)
+		close_prog(NULL, "Creating window surface failed...", -1);
+}
 
 static void	load_textures(t_env *env)
 {

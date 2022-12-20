@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/19 20:50:42 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:02:34 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -345,10 +345,12 @@ int			add_object(t_list **objects, t_object *object);
 int			read_object_info(char *line, t_object *object);
 int			transformations(char *line, t_object *object);
 int			read_object(t_object *object, char *line);
+void		del_object(void *content, size_t content_size);
 
 /*Init functions*/
 
 void		init_main(t_env *env);
+void		sdl_init(t_sdl *sdl);
 t_img		*create_images(size_t count);
 t_mat		init_rmatrix_x(double angle_x);
 t_mat		init_rmatrix_z(double angle_z);
@@ -372,6 +374,11 @@ void		left_button_down(void *param);
 void		right_button_up(void *param);
 void		right_button_down(void *param);
 int			mouse_scroll(void *param);
+void		check_if_element_six(t_env *env, t_2i rgb_coords,
+				uint32_t rgb, t_2i *coords);
+void		prog_lock_checks(t_env *env, t_2i *rgb_coords, uint32_t *rgb);
+void		check_if_four(t_env *env, t_2i *rgb_coords, uint32_t *rgb);
+void		prog_clock(t_env *env);
 
 /*Close and free functions*/
 
