@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/19 20:49:59 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:08:27 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,23 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-t_emission	raycast(t_ray *ray, t_scene *scene, int bounces)
+t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 {
 	t_hit		hit;
 	t_color		color;
-	t_emission	emission;
-	t_emission	color_refl;
-	t_emission	color_refr;
+	t_color		color_refl;
+	t_color		color_refr;
 	t_ray		shadow_ray;
 	t_ray		bounce_ray;
 	
-
 	color.combined = 0x000000;
-	emission.intensity = 1;
 	ft_bzero(&hit, sizeof(t_hit));
 	if (intersects(ray, scene->object_list, &hit, 1))
 	{
-		if (hit.object->type == LIGHT)
+		if (hit.object->type == LIGHT || bounces <= 0)
 		{
-			emission.intensity = hit.object->lumen;
-			emission.color = hit.color;
-			return (emission);
-		}
-		if (bounces <= 0)
-		{
-			emission.color = hit.color;
-			return (emission);
+			color = hit.color;
+			return (color);
 		}
 		shadow_ray.origin = scale_vector(hit.normal, BIAS);
 		shadow_ray.origin = add_vectors(hit.point, shadow_ray.origin);
@@ -50,11 +41,10 @@ t_emission	raycast(t_ray *ray, t_scene *scene, int bounces)
 			bounce_ray.origin = add_vectors(hit.point, scale_vector(hit.normal, BIAS * 1));
 			color.combined = light_up(scene->object_list, hit.object->color, shadow_ray, hit.normal);
 			color_refl = raycast(&bounce_ray, scene, bounces - 1);
-			emission.intensity = color_refl.intensity;
-			color_refl.color.channel.r = (uint8_t)(color_refl.color.channel.r * (double)(hit.object->color.channel.r / 255.0));
-			color_refl.color.channel.g = (uint8_t)(color_refl.color.channel.g * (double)(hit.object->color.channel.g / 255.0));
-			color_refl.color.channel.b = (uint8_t)(color_refl.color.channel.b * (double)(hit.object->color.channel.b / 255.0));
-			color.combined = transition_colors(color_refl.color.combined, color.combined, (float)hit.object->roughness);
+			color_refl.channel.r = (uint8_t)(color_refl.channel.r * (double)(hit.object->color.channel.r / 255.0));
+			color_refl.channel.g = (uint8_t)(color_refl.channel.g * (double)(hit.object->color.channel.g / 255.0));
+			color_refl.channel.b = (uint8_t)(color_refl.channel.b * (double)(hit.object->color.channel.b / 255.0));
+			color.combined = transition_colors(color_refl.combined, color.combined, (float)hit.object->roughness);
 		}
 		if (hit.object->density < MAX_DENSITY)
 		{
@@ -69,8 +59,7 @@ t_emission	raycast(t_ray *ray, t_scene *scene, int bounces)
 			double	angle;
 			angle = fmax(dot_product(scale_vector(bounce_ray.forward, -1), hit.normal), 0.0);
 			color_refr = raycast(&bounce_ray, scene, bounces);
-			emission.intensity = color_refr.intensity;
-			color.combined = transition_colors(color.combined, color_refr.color.combined, (float)angle);
+			color.combined = transition_colors(color.combined, color_refr.combined, (float)angle);
 		}
 		if (hit.object->type == LIGHT)
 			color.combined = 0x000000;
@@ -99,11 +88,10 @@ t_emission	raycast(t_ray *ray, t_scene *scene, int bounces)
 		temp.channel.b = (uint8_t)((float)temp.channel.b * col);
 		color.combined = transition_colors(color.combined, temp.combined, (float)col);
 	}
-	emission.color.combined = color.combined;
-	return (emission);
+	return (color);
 }
 
-static void	resolution_adjust(t_2i coords, uint32_t color, t_img *img, int res_range)
+static void	subframe_adjust(t_2i coords, uint32_t color, t_img *img, int res_range)
 {
 	t_2i	res_coords;
 
@@ -125,22 +113,19 @@ void	*render_loop(void *arg)
 	t_env				*env;
 	t_img				*img;
 	t_multithread		*tab;
-	t_2i				*resolution;
+	t_2i				*subframe;
 	int 				render_mode;
 	t_2i				coords;
 	t_ray				ray;
 	t_color				color;
 	t_camera			*camera;
 	t_scene				*scene;
-	t_emission			emission;
 	t_3d				color_temp;
 	
-	emission.color.combined = 0x000000;
-	emission.intensity = 0;
 	tab = (t_multithread *)arg;
 	env = tab->env;
 	img = tab->img;
-	resolution = tab->resolution;
+	subframe = tab->subframe;
 	render_mode = tab->render_mode;
 	scene = env->scene;
 	camera = scene->camera;
@@ -149,38 +134,29 @@ void	*render_loop(void *arg)
 	color_temp = (t_3d){0.0, 0.0, 0.0};
 	while (coords.y < img->dim.size.y)
 	{
-		if (coords.y % scene->resolution_range.y == resolution->y)
+		if (coords.y % scene->subframe_range.y == subframe->y)
 		{
 			coords.x = tab->start;
 			while (coords.x < tab->end)
 			{
-				if (coords.x % scene->resolution_range.y == resolution->x)
+				if (coords.x % scene->subframe_range.y == subframe->x)
 				{
-					if (coords.x == img->dim.size.x / 2 && coords.y == img->dim.size.y / 2)
-						mid = 1;
-					else
-						mid = 0;
 					ray = get_ray(coords, img, camera);
 					ray.forward = random_vector(ray.forward, 0.002f);
 					ray.object = NULL;
 					if (env->frame_index == 0)
-						emission = raycast(&ray, scene, -1);
+						color = raycast(&ray, scene, -1);
 					else if (render_mode == 1)
 					{
 						ray.coords = coords;
-						emission = raycast(&ray, scene, CAMERA_BOUNCES);
-					}
-					else if (render_mode == 0)
-						color_temp = trace_eye_path(&ray, scene, CAMERA_BOUNCES);
-					color.combined = emission.color.combined;
-					emission.intensity = 1;
-					if (render_mode == 1)
-					{
+						color = raycast(&ray, scene, CAMERA_BOUNCES);
 						color_temp.x = color.channel.r;
 						color_temp.y = color.channel.g;
 						color_temp.z = color.channel.b;
 					}
-					if (resolution == &scene->accum_resolution && env->frame_index > 0 && render_mode >= 0)
+					else if (render_mode == 0)
+						color_temp = trace_eye_path(&ray, scene, CAMERA_BOUNCES);
+					if (env->frame_index > 0 && render_mode >= 0)
 					{
 							scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
 								(float)(color_temp.x + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
@@ -191,10 +167,10 @@ void	*render_loop(void *arg)
 							color.channel.b = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z / env->frame_index, 255));
 					}
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
-						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.1f);
+						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
 					put_pixel(coords, color.combined, img);
-					if (scene->resolution.x == scene->resolution.y)
-						resolution_adjust(coords, color.combined, img, scene->resolution_range.y - scene->resolution.y);
+					if (scene->subframe.x == scene->subframe.y && env->frame_index == 0)
+						subframe_adjust(coords, color.combined, img, scene->subframe_range.y - scene->subframe.y);
 				}
 				coords.x += 1;
 			}
@@ -206,32 +182,22 @@ void	*render_loop(void *arg)
 
 void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 {
-	t_2i				*resolution;
+	t_2i				*subframe;
 	pthread_t			tids[THREADS];
 	t_multithread		tab[THREADS];
 	int					i;
 
 	i = 0;
-	if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.y)
+	subframe = &scene->subframe;
+	if (subframe->y >= scene->subframe_range.y)
 	{
-		if (scene->accum_resolution.x == scene->resolution_range.x && scene->accum_resolution.y == scene->resolution_range.y)
-		{
-			scene->accum_resolution.x = scene->resolution_range.x;
-			scene->accum_resolution.y = scene->resolution_range.x;
-		}
-		resolution = &scene->accum_resolution;
+		subframe->x = scene->subframe_range.x;
+		subframe->y = scene->subframe_range.x;
 	}
-	else
-	{
-		if (scene->resolution.x == scene->resolution_range.x && scene->resolution.y == scene->resolution_range.x)
-		{
-			ft_bzero(scene->accum_buffer, SCREEN_X * SCREEN_Y * sizeof(t_3d));
-			env->frame_index = 0;
-		}
-		resolution = &scene->resolution;
-		scene->accum_resolution.x = scene->resolution_range.x;
-		scene->accum_resolution.y = scene->resolution_range.x;
-	}
+	if (subframe->x == scene->subframe_range.x
+			&& subframe->y == scene->subframe_range.x
+			&& env->frame_index == 0)
+		ft_bzero(scene->accum_buffer, SCREEN_X * SCREEN_Y * sizeof(t_3d));
 	i = 0;
 	while (i < THREADS)
 	{
@@ -241,7 +207,7 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 		tab[i].env = env;
 		tab[i].nb = i;
 		tab[i].render_mode = render_mode;
-		tab[i].resolution = resolution;
+		tab[i].subframe = subframe;
 		pthread_create(&tids[i], NULL, render_loop, (void *)&tab[i]);
 		i++;
 	}
@@ -251,13 +217,13 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 		pthread_join(tids[i], NULL);
 		i++;
 	}
-	if (resolution->x == scene->resolution_range.y - 1 && resolution->y == scene->resolution_range.y - 1)
+	if (subframe->x == scene->subframe_range.y - 1 && subframe->y == scene->subframe_range.y - 1)
 		env->frame_index += 1;
-	if (resolution->x < scene->resolution_range.y && resolution->y < scene->resolution_range.y)
-		resolution->x += 1;
-	if (resolution->x >= scene->resolution_range.y && resolution->y < scene->resolution_range.y)
+	if (subframe->x < scene->subframe_range.y && subframe->y < scene->subframe_range.y)
+		subframe->x += 1;
+	if (subframe->x >= scene->subframe_range.y && subframe->y < scene->subframe_range.y)
 	{
-		resolution->x = scene->resolution_range.x;
-		resolution->y += 1;
+		subframe->x = scene->subframe_range.x;
+		subframe->y += 1;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:34:58 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 21:12:28 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:28:58 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,15 @@ void	gradual_render(t_img *img, void *param)
 	env = param;
 	pxl = (t_pxl){env->font, put_pixel, img};
 	color = (t_2i){0x00000, 0xFFFFFF};
-	if (env->scene->resolution.x == env->scene->resolution_range.x
-		&& env->scene->resolution.y == env->scene->resolution_range.y)
+	if (env->scene->subframe.x == env->scene->subframe_range.x
+		&& env->scene->subframe.y == env->scene->subframe_range.y)
 	{
-		if (env->scene->accum_resolution.x == env->scene->resolution_range.x
-			&& env->scene->accum_resolution.y == env->scene->resolution_range.x)
+		if (env->scene->subframe.x == env->scene->subframe_range.x
+			&& env->scene->subframe.y == env->scene->subframe_range.x)
 			env->plot_time = (double)time_since_success(0.0f, 0, 2);
 	}
-	if (env->scene->accum_resolution.x == env->scene->resolution_range.x
-		&& env->scene->accum_resolution.y == env->scene->resolution_range.y)
+	if (env->scene->subframe.x == env->scene->subframe_range.x
+		&& env->scene->subframe.y == env->scene->subframe_range.y)
 		env->plot_time = (double)time_since_success(0.0f, 0, 2);
 	coords = (t_2i){0, img->dim.size.y - (int)env->font->bound_box[1]};
 	coords = display_str(&pxl, coords, "Plot time: ", color);

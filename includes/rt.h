@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/20 10:10:17 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:17:03 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <stdio.h>
 # include <time.h>
 
-# define SCREEN_X 1000
-# define SCREEN_Y 650
+# define SCREEN_X 800
+# define SCREEN_Y 460
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
@@ -48,9 +48,6 @@
 # ifndef PI
 #  define PI 3.141592
 # endif
-
-/*DELETE THESE LATER*/
-int		mid;
 
 /*Typedef enums*/
 
@@ -125,12 +122,6 @@ typedef union u_color
 	t_rgba			channel;
 }					t_color;
 
-typedef struct s_emission
-{
-	t_color			color;
-	double			intensity;
-}					t_emission;
-
 typedef struct s_object
 {
 	double		axis_length;
@@ -201,22 +192,16 @@ typedef struct s_light_path
 
 typedef struct s_scene
 {
-	t_list			*object_list;
-	t_list			*light_list;
-	t_list			*photon_list[THREADS];
-	t_list			*last_photon_node[THREADS];
-	t_camera		*camera;
-	t_3d			camera_angle;
-	t_rgba			ambient_color;
-	t_2i			resolution_range;
-	t_2i			resolution;
-	t_2i			accum_resolution;
-	t_3d			*accum_buffer;
-	t_cam_hit		*cam_hit_buffer;
-	uint32_t		*cam_hit_color;
-	uint32_t		*cam_hit_intensity;
-	t_light_path	light_path[LIGHT_BOUNCES];
-	double			particle_intensity;
+	t_list		*object_list;
+	t_list		*light_list;
+	t_list		*photon_list[THREADS];
+	t_list		*last_photon_node[THREADS];
+	t_camera	*camera;
+	t_3d		camera_angle;
+	t_rgba		ambient_color;
+	t_2i		subframe_range;
+	t_2i		subframe;
+	t_3d		*accum_buffer;
 }				t_scene;
 
 typedef struct s_dim
@@ -295,13 +280,11 @@ typedef struct s_env
 	char			*file_path;
 }				t_env;
 
-t_env	*g_temp_env;
-
 typedef struct s_multithread
 {
 	t_env		*env;
 	t_img		*img;
-	t_2i		*resolution;
+	t_2i		*subframe;
 	int			nb;
 	int			start;
 	int			end;
@@ -406,7 +389,7 @@ void		blit_surface(SDL_Surface *src, t_dim *srcrect,
 
 /*Ray tracing functions*/
 
-t_emission	raycast(t_ray *ray, t_scene *scene, int bounces);
+t_color		raycast(t_ray *ray, t_scene *scene, int bounces);
 uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
@@ -483,6 +466,8 @@ int			coords_in_area(t_dim dim, t_2i coords);
 /*Bidirectional path tracing functions*/
 
 t_3d		trace_eye_path(t_ray *ray, t_scene *scene, int camera_bounces);
+t_3d		hit_direct_light(t_object *object, t_3d calc_color, t_3d max, int mode);
+double		estimate_diffuse(t_scene *scene, t_hit *hit, t_object *light, t_ray *ray);
 
 /*Saving scene file functions*/
 

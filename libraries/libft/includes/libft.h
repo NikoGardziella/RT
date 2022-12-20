@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 09:17:53 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 15:11:44 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/19 18:21:54 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void			ft_putstr_fd(char const *s, int fd);
 void			ft_putendl_fd(char const *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 unsigned int	ft_reverse_bits(unsigned int x, int bits);
+double			clampf(double value, double min, double max);
 
 /*Linked list functions and typedef*/
 typedef struct s_list

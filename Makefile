@@ -6,7 +6,7 @@
 #    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/20 09:50:30 by pnoutere         ###   ########.fr        #
+#    Updated: 2022/12/20 10:16:46 by pnoutere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ ifneq ($(MAKECMDGOALS), debug)
 FLAGS = -Wall -Wextra -Werror -Wconversion
 endif
 #FLAGS += $(DEBUG_FLAGS)
-#FLAGS += $(OPTI_FLAGS)
+FLAGS += $(OPTI_FLAGS)
 
 #SYSTEM LIBRARIES
 
@@ -147,7 +147,6 @@ SOURCES_LIST =	main.c\
 				keyboard/hold.c\
 				keyboard/delete_object.c\
 				keyboard/take_screenshot.c\
-				ray_trace/color_op.c\
 				ray_trace/get_camera_ray.c\
 				ray_trace/calculate_normal.c\
 				ray_trace/intersect_basic_shapes.c\
@@ -159,6 +158,8 @@ SOURCES_LIST =	main.c\
 				ray_trace/light_up_functions.c\
 				ray_trace/equiangular_sampling.c\
 				bidirectional_path_tracing/main.c\
+				bidirectional_path_tracing/estimate_diffuse.c\
+				bidirectional_path_tracing/hit_direct_light.c\
 				save_scene/save_scene.c\
 				save_scene/get_object_info.c\
 				save_scene/write_objects_to_file.c\

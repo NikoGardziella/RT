@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 15:30:28 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/20 09:48:04 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:14:21 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,7 @@ int	mouse_main(void *param)
 	ret |= mouse_move(param);
 	ret |= mouse_hold(param);
 	ret |= mouse_scroll(param);
+	if (ret == 1)
+		env->frame_index = 0;
 	return (ret);
 }

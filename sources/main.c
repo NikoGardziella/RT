@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/20 10:01:26 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:14:55 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	render_screen(t_env *env)
 	if (time_since_success(fps, 0, 2) >= fps)
 	{
 		env->frame_index = 0;
-		env->scene->resolution.x = env->scene->resolution_range.x;
-		env->scene->resolution.y = env->scene->resolution_range.x;
+		env->scene->subframe.x = env->scene->subframe_range.x;
+		env->scene->subframe.y = env->scene->subframe_range.x;
 		put_images_to_screen(env);
 	}
 }

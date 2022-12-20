@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:05:29 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 21:04:18 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/20 09:48:26 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,9 @@ static void	check_object_and_process(t_env *env)
 
 void	put_images_to_screen(t_env *env)
 {
-	if (env->scene->resolution.x == env->scene->resolution_range.x
-		&& env->scene->resolution.y == env->scene->resolution_range.x)
+	if (env->scene->subframe.x == env->scene->subframe_range.x
+		&& env->scene->subframe.y == env->scene->subframe_range.x
+		&& env->frame_index == 0)
 		process_image(&env->sdl, &env->img[0], 1, env);
 	else
 		process_image(&env->sdl, &env->img[0], 0, env);

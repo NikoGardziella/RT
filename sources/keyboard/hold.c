@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 15:53:27 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/15 15:10:15 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:33:10 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,7 @@ int	keyboard_hold(t_env *env)
 
 	ret = 0;
 	ret |= move_camera(env);
+	if (ret == 1)
+		env->frame_index = 0;
 	return (ret);
 }

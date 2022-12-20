@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:28 by ngardzie          #+#    #+#             */
-/*   Updated: 2022/12/19 20:41:05 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:03:03 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	slider(t_img *img, void *param)
 
 	env = param;
 	draw_rectf(&(t_pxl_func){&put_pixel, img},
-		(t_2i){0, 0}, img->dim.size, 0x00FF0000);
+		(t_2i){0, 0}, img->dim.size, 0xFFFF0000);
 	size = img->dim.size.y / 2;
 	dim.start.x = 0;
 	dim.start.y = img->dim.size.y * 33 / 100;
