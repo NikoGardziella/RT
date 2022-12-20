@@ -42,6 +42,8 @@ void	check_key(SDL_Scancode key, t_env *env)
 		env->keymap |= KEY_LSHIFT;
 	else if (key == SDL_SCANCODE_K)
 		take_screenshot(env);
+	else if (key == SDL_SCANCODE_DELETE)
+		delete_selected_object(env);
 }
 
 void	key_down(t_env *env)
