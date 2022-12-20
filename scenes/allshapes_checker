@@ -1,56 +1,66 @@
 OBJECT cone
-{
-	origin -20 0.0 40.0
-	radius 4.0
-	axis 0.0 10.0 0.0
-	pattern 2
-	color 9090EE
-}
+	origin -20.000000 0.00000 40.000000
+	axis 0.00000 1000000 0.00000
+	radius 4.000000
+	roughness 1000000
+	density 5.000000
+	color 009090EE
 OBJECT cylinder
-{
-	origin 0.0 0.0 0.0
-	radius 10.0
-	axis 0.0 0.0 0.0
-	rotate 0.0 0.0 45.0
-	color FFD580
-}
+	origin 0.00000 0.00000 0.00000
+	axis -0.70710 0.70710 0.00000
+	radius 1.000000
+	roughness 1.000000
+	density 5.000000
+	color 00FFD580
 OBJECT sphere
-{
-	origin 60.0 0.0 0.0
-	radius 25.0
-	roughness 1.0
-	color 00FFFF
-}
+	origin 60.000000 0.00000 0.00000
+	axis 0.00000 0.00000 0.00000
+	radius 2.000000
+	roughness 1.000000
+	density 5.000000
+	color 0000FFFF
+OBJECT disc
+	origin 10.000000 0.00000 0.00000
+	axis 0.00000 0.00000 0.00000
+	radius 2.000000
+	roughness 1.000000
+	density 50.00000
+	color 0000FFFF
+OBJECT box
+	origin -4.3454799 -1.5916533 8.3824988
+	axis 0.57735 0.57735 0.57735
+	radius 7.00000
+	roughness 1.000000
+	density 5.000000
+	color 00520011
 OBJECT plane
-{
-	origin 0.0 -40.0 0.0
-	axis 0.0 90.0 0.0
-	color 0000FF
-	roughness 1.0
-}
+	origin 0.00000 -40000000 0.00000
+	axis 0.00000 1000000 0.00000
+	radius 0.00000
+	roughness 1000000
+	density 5000000
+	color 000000FF
 OBJECT plane
-{
-	origin 0.0 0.0 -60.0
-	axis 0.0 0.0 90.0
-	color 90EE90
-	roughness 1.0
-}
+	origin 0.00000 0.00000 -60000000
+	axis 0.00000 0.00000 1000000
+	radius 0.00000
+	roughness 1000000
+	density 5000000
+	color 0090EE90
 OBJECT plane
-{
-	origin 0.0 0.0 -60.0
-	axis 45 30 90.0
-	color EE9090
-	roughness 1.0
-}
+	origin 0.00000 0.00000 -60000000
+	axis 0.42857 0.28571 0.85714
+	radius 0.00000
+	roughness 1000000
+	density 5000000
+	color 00EE9090
 OBJECT light
-{
-	origin 0.0 50 60
-	lumen 1000.0
-	color FFFFFF
-}
+	origin 5.313933 1.5378055 1.60622077
+	axis 0.00000 0.00000 0.00000
+	radius 5.000000
+	lumen 3.7861700
+	color 00FFFFFF
 OBJECT camera
-{
-	pos 0 0 120
-	look 0 0 0
-	fov 60
-}
+	pos 7.111933 1.0525811 1.37365422
+	look 6.888900 1.0311088 1.36414555
+	fov 6.0000000
