@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+         #
+#    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/20 10:16:46 by pnoutere         ###   ########.fr        #
+#    Updated: 2022/12/20 11:17:54 by ctrouve          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -122,10 +122,12 @@ SOURCES_LIST =	main.c\
 				images/sidebar_button.c\
 				images/sidebar.c\
 				images/put_images_to_screen.c\
+				images/raycast.c\
 				images/render_scene.c\
 				images/slider.c\
 				images/draw_rgb_slider.c\
 				images/draw_shade_picker.c\
+				images/select_render_mode.c\
 				parser/add_object_to_scene.c\
 				parser/load_scene_camera.c\
 				parser/load_scene_objects.c\
