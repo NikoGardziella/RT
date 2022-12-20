@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ftoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 12:28:36 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/20 11:36:59 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/17 19:04:04 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 static long long int	abs_val(long long int nbr)
 {
@@ -47,6 +46,7 @@ static char	get_digit(double nbr, long long int i, size_t prec)
 
 static void	edges(double *f, long long int *pre, char *str, size_t prec)
 {
+	*pre = 0;
 	if (*f < 0)
 	{
 		str[0] = '-';
@@ -67,15 +67,6 @@ static void	edges(double *f, long long int *pre, char *str, size_t prec)
 	}
 }
 
-static void	dot_str(char *str, double f, long long int pre, long long int i)
-{
-	if ((long long int)nbr_length((long long int)f) == i + pre)
-	{
-		str[i + pre] = '.';
-		pre++;
-	}
-}
-
 char	*ft_ftoa(double f, size_t prec)
 {
 	char			*str;
@@ -83,20 +74,21 @@ char	*ft_ftoa(double f, size_t prec)
 	long long int	i;
 	long long int	pre;
 
-	if (!(prec > 0))
-		prec = 0;
-	len = (nbr_length((long long int)f) + 1 + prec);
+	len = (nbr_length((long long int)f) + 1 + (size_t)ft_min((int)prec, 0));
 	if (f < 0 && f > -1)
 		len++;
 	str = ft_strnew(len);
 	if (str == NULL)
 		return (NULL);
-	pre = 0;
 	edges(&f, &pre, str, prec);
 	i = 0;
 	while (i < (long long int)len - pre)
 	{
-		dot_str(str, f, pre, i);
+		if ((long long int)nbr_length((long long int)f) == i + pre)
+		{
+			str[i + pre] = '.';
+			pre++;
+		}
 		str[i + pre] = get_digit(f, i, prec);
 		i++;
 	}
