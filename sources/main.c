@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/20 10:14:55 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/20 15:12:55 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	close_prog(void *param, char *exit_msg, int exit_code)
 		env = param;
 		return ;
 	}
+	if (exit_code == -19)
+		exit(exit_code);
 	free_images(env->img, IMAGES);
 	if (env->font != NULL)
 		free_font(&env->font);
@@ -57,10 +59,11 @@ void	main_checks(int argc, char **argv, t_env *env)
 {
 	close_prog(env, "Initializing close program function.", 42);
 	if (argc > 2)
-		close_prog(NULL, "Too many arguments to run program...", -1);
+		close_prog(NULL, "Too many arguments to run program...", -19);
 	ft_bzero(env, sizeof(t_env));
 	env->file_path = argv[1];
 	init_main(env);
+	printf("here 1\n");
 	env->scene->camera = load_scene_camera(argv[1]);
 	if (env->scene->camera == NULL)
 		close_prog(NULL, "Parsing camera failed...", -1);

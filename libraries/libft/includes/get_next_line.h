@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <dmalesev@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/20 17:14:54 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/07/25 08:55:49 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 15:13:36 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "libft.h"
 
 # define FD_MAX 10240
-# define BUFF_SIZE 12
+# define BUFF_SIZE 1024
 
 int		get_next_line(const int fd, char **line);
 
