@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/20 12:10:26 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 12:54:06 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <math.h>
 # include <stdio.h>
 # include <time.h>
-#include <pthread.h>
+# include <pthread.h>
 
 # define SCREEN_X 800
 # define SCREEN_Y 460
@@ -135,8 +135,6 @@ typedef struct s_object
 	t_3d		length;
 	t_3d		normal;
 	t_3d		origin;
-	t_3d		position;//position vs. origin ?
-	t_3d		rotation;//is it used?
 	t_2i		rgb_coords;
 	t_2i		shade_coords;
 }				t_object;
@@ -453,8 +451,8 @@ int			coords_in_area(t_dim dim, t_2i coords);
 /*Bidirectional path tracing functions*/
 
 t_3d		trace_eye_path(t_ray *ray, t_scene *scene, int camera_bounces);
-t_3d		hit_direct_light(t_object *object, t_3d calc_color, t_3d max, int mode);
-double		estimate_diffuse(t_scene *scene, t_hit *hit, t_object *light, t_ray *ray);
+t_3d		hit_direct_light(t_object *o, t_3d calc_color, t_3d max, int mode);
+double		estimate_diffuse(t_scene *s, t_hit *hit, t_object *l, t_ray *ray);
 
 /*Saving scene file functions*/
 

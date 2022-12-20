@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/20 11:22:05 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/20 12:45:34 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	*render_loop(void *arg)
 {
-	t_multithread		*tab;	
-	t_2i				coords;
+	t_multithread	*tab;
+	t_2i			coords;
 
 	tab = (t_multithread *)arg;
 	*tab->env->scene->camera = init_camera(tab->img->dim.size,
@@ -42,9 +42,9 @@ void	*render_loop(void *arg)
 
 void	multithreading(t_2i *subframe, t_img *img, t_env *env, int render_mode)
 {
-	pthread_t			tids[THREADS];
-	t_multithread		tab[THREADS];
-	int					i;
+	pthread_t		tids[THREADS];
+	t_multithread	tab[THREADS];
+	int				i;
 
 	i = 0;
 	while (i < THREADS)
