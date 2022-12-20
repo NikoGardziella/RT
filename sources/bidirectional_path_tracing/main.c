@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 15:15:57 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/20 11:21:55 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 12:09:31 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ double	fresnel_reflection(double theta, double n1, double n2)
 	double	r;
 	double	s;
 
+	theta = fmod(theta, PI / 2);
 	if (theta > PI / 2)
 		theta = PI - theta;
-	theta = fmod(theta, PI / 2);
 	s = sqrt(1 - pow(n1 / n2 * sin(theta), 2));
-	r_par = (n1 * cos(theta) - n2 * s / (n1 * cos(theta) + n2 * s));
+	r_par = (n1 * cos(theta) - n2 * s) / (n1 * cos(theta) + n2 * s);
 	r_perp = (n1 * s - n2 * cos(theta)) / (n1 * s + n2 * cos(theta));
 	r = (r_par + r_perp) / 2;
 	r = clampf(r, 0.0, 1.0);
@@ -62,7 +62,7 @@ t_3d	get_brdf_ray(t_3d normal, t_ray *ray, t_hit *hit)
 	index = (t_2d){1.0, hit->object->density};
 	if (hit->inside == 1)
 		index = (t_2d){hit->object->density, 1.0};
-	angle = angle_between_vectors(scale_vector(ray->forward, 1), normal);
+	angle = angle_between_vectors(scale_vector(ray->forward, -1), normal);
 	f = fresnel_reflection(angle, index.x, index.y);
 	if (hit->object->type == PLANE || hit->object->type == DISC)
 		index = (t_2d){1.0, 1.0};

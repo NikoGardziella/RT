@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/20 11:04:13 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 11:51:07 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,9 @@
 # define BIAS 0.000001
 # define IMAGES 10
 # define THREADS 32
-# define PHOTONS 5000
-# define PHOTON_RADIUS 1.0
-# define N_CLOSEST_PHOTONS 1
 # define CAMERA_BOUNCES 5
 # define LIGHT_BOUNCES 3
-# define MAX_DENSITY 5
+# define MAX_DENSITY 50
 # define MAX_LUMEN 100
 # define MAX_PARTICLE_INTENSITY 10
 
@@ -172,31 +169,10 @@ typedef struct s_camera
 	double		aspect_ratio;
 }				t_camera;
 
-typedef struct s_ray_hit
-{
-	t_3d		point;
-	uint32_t	color;
-}				t_ray_hit;
-
-typedef struct s_cam_hit
-{
-	t_ray_hit	hit;
-	t_ray_hit	photon[N_CLOSEST_PHOTONS];
-}				t_cam_hit;
-
-typedef struct s_light_path
-{
-	t_3d	color;
-	t_3d	origin;
-	t_3d	normal;
-}				t_light_path;
-
 typedef struct s_scene
 {
 	t_list		*object_list;
 	t_list		*light_list;
-	t_list		*photon_list[THREADS];
-	t_list		*last_photon_node[THREADS];
 	t_camera	*camera;
 	t_3d		camera_angle;
 	t_rgba		ambient_color;
