@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/12/20 09:59:31 by pnoutere         ###   ########.fr       */
+=======
+/*   Updated: 2022/12/20 09:48:22 by ctrouve          ###   ########.fr       */
+>>>>>>> de7485ce16511c9281c7d68217174512761102a7
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +87,5 @@ void	init_main(t_env *env)
 	env->selected = -1;
 	env->state = 15252;
 	load_textures(env);
-	temp_env = env;
+	g_temp_env = env; //  not used anywhere?
 }
