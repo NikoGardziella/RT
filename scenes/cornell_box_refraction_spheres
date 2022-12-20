@@ -66,15 +66,15 @@ OBJECT plane
 	axis 0.00000 1.00000 0.00000
 	radius 50.00000
 	roughness 0.00000
-	density 1.88814
+	density 1.88812
 	color 00FFFFFF
 OBJECT light
-	origin -25.76882 22.62538 23.45341
+	origin -37.28755 28.25015 24.64849
 	axis 0.00000 1.00000 0.00000
 	radius 30.00000
-	lumen 19.00000
+	lumen 23.14473
 	color 00FFFFFF
 OBJECT camera
 	pos -17.20629 32.09396 191.05294
-	look -17.34232 31.54057 190.23120
+	look -17.34231 31.54056 190.23119
 	fov 60.00000
