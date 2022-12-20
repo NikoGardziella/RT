@@ -39,7 +39,6 @@
 # define PARTICLE_INTENSITY 1.0
 # define SIGMA 0.3
 
-
 # define KEY_A 1
 # define KEY_W 2
 # define KEY_D 4
