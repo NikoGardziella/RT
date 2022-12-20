@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/20 12:10:26 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:33:09 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,23 @@
 # include <math.h>
 # include <stdio.h>
 # include <time.h>
-#include <pthread.h>
+# include <pthread.h>
 
-# define SCREEN_X 800
-# define SCREEN_Y 460
+# define SCREEN_X 640
+# define SCREEN_Y 480
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
 # define THREADS 32
-# define CAMERA_BOUNCES 5
+# define CAMERA_BOUNCES 4
 # define LIGHT_BOUNCES 3
-# define MAX_DENSITY 50
+# define MAX_DENSITY 10
 # define MAX_LUMEN 100
 # define MAX_PARTICLE_INTENSITY 10
+# define STEP_COUNT 16
+# define PARTICLE_INTENSITY 1.0
+# define SIGMA 0.3
+
 
 # define KEY_A 1
 # define KEY_W 2
@@ -135,8 +139,6 @@ typedef struct s_object
 	t_3d		length;
 	t_3d		normal;
 	t_3d		origin;
-	t_3d		position;//position vs. origin ?
-	t_3d		rotation;//is it used?
 	t_2i		rgb_coords;
 	t_2i		shade_coords;
 }				t_object;
@@ -288,6 +290,7 @@ typedef struct s_bdpt_color
 	t_3d	calc;
 	t_3d	max;
 	t_3d	object;
+	int		jdiff;
 }				t_bdpt_color;
 
 typedef struct s_light_up
@@ -453,8 +456,8 @@ int			coords_in_area(t_dim dim, t_2i coords);
 /*Bidirectional path tracing functions*/
 
 t_3d		trace_eye_path(t_ray *ray, t_scene *scene, int camera_bounces);
-t_3d		hit_direct_light(t_object *object, t_3d calc_color, t_3d max, int mode);
-double		estimate_diffuse(t_scene *scene, t_hit *hit, t_object *light, t_ray *ray);
+t_3d		hit_direct_light(t_object *o, t_3d calc_color, t_3d max, int mode);
+double		estimate_diffuse(t_scene *s, t_hit *hit, t_object *l, t_ray *ray);
 
 /*Saving scene file functions*/
 

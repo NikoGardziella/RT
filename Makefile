@@ -6,7 +6,7 @@
 #    By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 12:36:10 by pnoutere          #+#    #+#              #
-#    Updated: 2022/12/20 11:17:54 by ctrouve          ###   ########.fr        #
+#    Updated: 2022/12/20 13:00:46 by dmalesev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ MAKEFLAGS += --no-print-directory
 SHELL = /bin/bash
 
 #MAKEFILE CONFIGURATIONS
-MAKE_COLOR = ;50;235;150m
+MAKE_COLOR = ;31;140;191m
 PROJECT_NAME = RT
 NAME = $(PROJECT_NAME)
 PRINT_NAME = $(BOLD)$(COLOR)$(MAKE_COLOR)$(PROJECT_NAME)$(RESET)

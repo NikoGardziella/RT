@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 15:30:28 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/20 10:14:21 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:59:12 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 static void	angle_overflow(t_3d *angle)
 {
-	if (angle->x > 360.0f)
-		angle->x -= 360.0f;
-	else if (angle->x < 0.0f)
-		angle->x += 360.0f;
+	if (angle->x >= 85.0f)
+		angle->x = 85.0f;
+	else if (angle->x <= -85.0f)
+		angle->x = -85.0f;
 	if (angle->y > 360.0f)
 		angle->y -= 360.0f;
 	else if (angle->y < 0.0f)
@@ -38,7 +38,7 @@ static int	mouse_move(void *param)
 			angle_overflow(&env->scene->camera_angle);
 			env->scene->camera_angle.x -= (double)env->mouse.move.y / 5;
 			env->scene->camera_angle.y -= (double)env->mouse.move.x / 5;
-			env->scene->camera->ray.forward = rotate_point(env->camera_default,
+			env->scene->camera->ray.forward = rotate_point((t_3d){0, 0, -1},
 					env->scene->camera_angle);
 			ret |= 1;
 		}

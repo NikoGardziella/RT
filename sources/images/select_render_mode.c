@@ -6,7 +6,7 @@
 /*   By: ngardzie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 11:41:05 by ngardzie          #+#    #+#             */
-/*   Updated: 2022/12/20 11:41:12 by ngardzie         ###   ########.fr       */
+/*   Updated: 2022/12/20 13:24:29 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,43 +30,40 @@ void	subframe_adjust(t_2i coords, uint32_t color, t_img *img, int range)
 	}
 }
 
-t_color	mode_1(t_multithread *tab, t_color color, t_ray *ray, t_2i coords)
+t_color	accum_buffer(t_multithread *tab, t_3d in_color, t_2i coords)
 {
-	t_3d	color_temp;
+	t_color	color;
+	int		buffer_coords;
+	t_3d	*accum_pixel;
+	int		frame;
 
-	ray->coords = coords;
-	color = raycast(ray, tab->env->scene, CAMERA_BOUNCES);
-	color_temp.x = color.channel.r;
-	color_temp.y = color.channel.g;
-	color_temp.z = color.channel.b;
+	frame = tab->env->frame_index;
+	buffer_coords = coords.y * tab->img->dim.size.x + coords.x;
+	accum_pixel = &tab->env->scene->accum_buffer[buffer_coords];
+	*accum_pixel = add_vectors(*accum_pixel, in_color);
+	color.channel.r = (uint8_t)(fmin(accum_pixel->x / frame, 255));
+	color.channel.g = (uint8_t)(fmin(accum_pixel->y / frame, 255));
+	color.channel.b = (uint8_t)(fmin(accum_pixel->z / frame, 255));
 	return (color);
 }
 
-t_color	mode_0(t_multithread *tab, t_color color, t_ray *ray, t_2i coords)
+t_3d	mode_1(t_multithread *tab, t_ray *ray)
 {
-	t_3d	color_temp;
+	t_color	color;
+	t_3d	in_color;
 
-	color_temp = trace_eye_path(ray, tab->env->scene, CAMERA_BOUNCES);
-	if (tab->env->frame_index > 0 && tab->render_mode >= 0)
-	{
-		tab->env->scene->accum_buffer[coords.y * tab->img->dim.size.x
-			+ coords.x] = (t_3d){
-			(float)(color_temp.x + tab->env->scene->accum_buffer[coords.y
-				* tab->img->dim.size.x + coords.x].x),
-			(float)(color_temp.y + tab->env->scene->accum_buffer[coords.y
-				* tab->img->dim.size.x + coords.x].y),
-			(float)(color_temp.z + tab->env->scene->accum_buffer[coords.y
-				* tab->img->dim.size.x + coords.x].z)};
-		color.channel.r = (uint8_t)(fmin(tab->env->scene->accum_buffer[coords.y
-					* tab->img->dim.size.x + coords.x].x
-					/ tab->env->frame_index, 255));
-		color.channel.g = (uint8_t)(fmin(tab->env->scene->accum_buffer[coords.y
-					* tab->img->dim.size.x + coords.x].y
-					/ tab->env->frame_index, 255));
-		color.channel.b = (uint8_t)(fmin(tab->env->scene->accum_buffer[coords.y
-					* tab->img->dim.size.x + coords.x].z
-					/ tab->env->frame_index, 255));
-	}
+	color = raycast(ray, tab->env->scene, CAMERA_BOUNCES);
+	in_color.x = (double)color.channel.r;
+	in_color.y = (double)color.channel.g;
+	in_color.z = (double)color.channel.b;
+	return (in_color);
+}
+
+t_3d	mode_0(t_multithread *tab, t_ray *ray)
+{
+	t_3d	color;
+
+	color = trace_eye_path(ray, tab->env->scene, CAMERA_BOUNCES);
 	return (color);
 }
 
@@ -74,16 +71,20 @@ void	select_render_mode(t_multithread *tab, t_2i coords)
 {
 	t_ray			ray;
 	t_color			color;
+	t_3d			in_color;
 
 	ray = get_ray(coords, tab->img, tab->env->scene->camera);
 	ray.forward = random_vector(ray.forward, 0.002f);
+	ray.coords = coords;
 	ray.object = NULL;
 	if (tab->env->frame_index == 0)
 		color = raycast(&ray, tab->env->scene, -1);
-	if (tab->render_mode == 0)
-		color = mode_0(tab, color, &ray, coords);
+	else if (tab->render_mode == 0)
+		in_color = mode_0(tab, &ray);
 	else if (tab->render_mode == 1)
-		color = mode_1(tab, color, &ray, coords);
+		in_color = mode_1(tab, &ray);
+	if (tab->env->frame_index > 0)
+		color = accum_buffer(tab, in_color, coords);
 	if (tab->env->sel_ray.object != NULL && tab->env->sel_ray.object
 		== ray.object)
 		color.combined = transition_colors(color.combined,

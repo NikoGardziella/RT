@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:05:29 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/20 09:48:26 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 13:33:25 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	put_images_to_screen(t_env *env)
 		process_image(&env->sdl, &env->img[0], 0, env);
 	process_image(&env->sdl, &env->img[4], 0, env);
 	process_image(&env->sdl, &env->img[5], 2, env);
+	process_image(&env->sdl, &env->img[2], 1, env);
 	if (env->sidebar == 1)
 	{
 		process_image(&env->sdl, &env->img[3], 2, env);
