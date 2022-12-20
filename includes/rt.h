@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/20 10:17:03 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:25:19 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <math.h>
 # include <stdio.h>
 # include <time.h>
+#include <pthread.h>
 
 # define SCREEN_X 800
 # define SCREEN_Y 460

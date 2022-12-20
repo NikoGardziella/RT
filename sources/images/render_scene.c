@@ -6,13 +6,11 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/20 10:08:27 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:25:04 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-#include <stdlib.h>
-#include <pthread.h>
 
 t_color	raycast(t_ray *ray, t_scene *scene, int bounces)
 {
