@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_object.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ngardzie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:02:58 by ngardzie          #+#    #+#             */
-/*   Updated: 2022/12/15 15:03:13 by ngardzie         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:20:36 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,11 @@ void	del_object(void *content, size_t content_size)
 	t_object	*object;
 
 	object = (t_object *)content;
-	ft_bzero(content, content_size);
-	free(object);
+	if (object != NULL)
+	{
+		ft_bzero(content, content_size);
+		free(object);
+	}
 }
 
 void	delete_selected_object(t_env *env)
