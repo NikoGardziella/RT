@@ -6,7 +6,7 @@
 /*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 19:15:44 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 20:34:16 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 11:09:25 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_3d	hit_direct_light(t_object *object, t_3d calc_color, t_3d max, int mode)
 	t_3d	object_color;
 	float	lumen_squared;
 
-	lumen_squared = 1;
 	object_color.x = (double)object->color.channel.r;
 	object_color.y = (double)object->color.channel.g;
 	object_color.z = (double)object->color.channel.b;

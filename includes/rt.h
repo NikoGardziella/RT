@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/20 10:25:19 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 11:04:13 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ typedef struct s_scene
 	t_2i		subframe_range;
 	t_2i		subframe;
 	t_3d		*accum_buffer;
+	int			jdiff;
 }				t_scene;
 
 typedef struct s_dim
@@ -304,6 +305,13 @@ typedef struct s_blit
 	t_dim		*srcrect;
 	t_dim		*destrect;
 }				t_blit;
+
+typedef struct s_bdpt_color
+{
+	t_3d	calc;
+	t_3d	max;
+	t_3d	object;
+}				t_bdpt_color;
 
 typedef struct s_light_up
 {
