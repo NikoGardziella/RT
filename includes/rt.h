@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/20 11:06:39 by ctrouve          ###   ########.fr       */
+/*   Updated: 2022/12/20 11:22:41 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <math.h>
 # include <stdio.h>
 # include <time.h>
+#include <pthread.h>
 
 # define SCREEN_X 800
 # define SCREEN_Y 460
@@ -32,7 +33,7 @@
 # define PHOTONS 5000
 # define PHOTON_RADIUS 1.0
 # define N_CLOSEST_PHOTONS 1
-# define CAMERA_BOUNCES 5
+# define CAMERA_BOUNCES 3
 # define LIGHT_BOUNCES 3
 # define MAX_DENSITY 5
 # define MAX_LUMEN 100
