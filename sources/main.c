@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:48 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/20 15:12:55 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/20 15:45:25 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	main_checks(int argc, char **argv, t_env *env)
 	ft_bzero(env, sizeof(t_env));
 	env->file_path = argv[1];
 	init_main(env);
-	printf("here 1\n");
 	env->scene->camera = load_scene_camera(argv[1]);
 	if (env->scene->camera == NULL)
 		close_prog(NULL, "Parsing camera failed...", -1);

@@ -67,6 +67,8 @@ void	write_objects_to_file(t_list *object_list, int fd)
 {
 	t_object	*object;
 	int			type;
+	t_3d		axis;
+
 
 	while (object_list != NULL)
 	{
@@ -74,7 +76,8 @@ void	write_objects_to_file(t_list *object_list, int fd)
 		type = object->type;
 		write_object_type(fd, object);
 		write_object_vector(fd, "\torigin ", &object->origin);
-		write_object_vector(fd, "\taxis ", &object->axis);
+		axis = scale_vector(object->axis, object->axis_length);
+		write_object_vector(fd, "\taxis ", &axis);
 		write_object_float(fd, "\tradius ", (float)object->radius);
 		if (type == LIGHT)
 			write_object_float(fd, "\tlumen ", (float)object->lumen);
