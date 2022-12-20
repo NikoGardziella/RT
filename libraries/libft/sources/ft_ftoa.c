@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ftoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmalesev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 12:28:36 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/17 19:04:04 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 11:36:59 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,15 @@ static void	edges(double *f, long long int *pre, char *str, size_t prec)
 	}
 }
 
+static void	dot_str(char *str, double f, long long int pre, long long int i)
+{
+	if ((long long int)nbr_length((long long int)f) == i + pre)
+	{
+		str[i + pre] = '.';
+		pre++;
+	}
+}
+
 char	*ft_ftoa(double f, size_t prec)
 {
 	char			*str;
@@ -87,11 +96,7 @@ char	*ft_ftoa(double f, size_t prec)
 	i = 0;
 	while (i < (long long int)len - pre)
 	{
-		if ((long long int)nbr_length((long long int)f) == i + pre)
-		{
-			str[i + pre] = '.';
-			pre++;
-		}
+		dot_str(str, f, pre, i);
 		str[i + pre] = get_digit(f, i, prec);
 		i++;
 	}
