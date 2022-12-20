@@ -116,7 +116,7 @@ int				ft_min(int n1, int n2);
 size_t			ft_strs_in_file(char *path, char *str);
 
 /*Random number functions*/
-uint32_t		xorshift32();
+uint32_t		xorshift32(void);
 double			random_rangef(double min, double max);
 
 #endif
