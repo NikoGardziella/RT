@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/20 12:54:06 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:00:26 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define THREADS 32
 # define CAMERA_BOUNCES 5
 # define LIGHT_BOUNCES 3
-# define MAX_DENSITY 50
+# define MAX_DENSITY 10
 # define MAX_LUMEN 100
 # define MAX_PARTICLE_INTENSITY 10
 
@@ -286,6 +286,7 @@ typedef struct s_bdpt_color
 	t_3d	calc;
 	t_3d	max;
 	t_3d	object;
+	int		jdiff;
 }				t_bdpt_color;
 
 typedef struct s_light_up

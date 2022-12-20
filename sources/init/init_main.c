@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:07:49 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/20 10:13:50 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/20 13:24:00 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	init_main(t_env *env)
 	env->font = load_font(font_path);
 	if (env->font == NULL)
 		close_prog(NULL, "Failed to load font...", -2);
-	env->scene->subframe_range = (t_2i){0, 3};
+	env->scene->subframe_range = (t_2i){0, 5};
 	env->scene->subframe.x = env->scene->subframe_range.x;
 	env->scene->subframe.y = env->scene->subframe_range.x;
 	env->scene->accum_buffer = (t_3d *)malloc(sizeof(t_3d)
