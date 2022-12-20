@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/12/20 10:02:34 by pnoutere         ###   ########.fr       */
-=======
-/*   Updated: 2022/12/20 09:52:35 by ctrouve          ###   ########.fr       */
->>>>>>> de7485ce16511c9281c7d68217174512761102a7
+/*   Updated: 2022/12/20 10:10:17 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +51,6 @@
 
 /*DELETE THESE LATER*/
 int		mid;
-t_3d	tan_temp[2];
 
 /*Typedef enums*/
 
@@ -151,8 +146,8 @@ typedef struct s_object
 	t_3d		length;
 	t_3d		normal;
 	t_3d		origin;
-	t_3d		position;
-	t_3d		rotation;
+	t_3d		position;//position vs. origin ?
+	t_3d		rotation;//is it used?
 	t_2i		rgb_coords;
 	t_2i		shade_coords;
 }				t_object;
@@ -397,7 +392,7 @@ void		main_image(t_img *img, void *param);
 void		sidebar_button(t_img *img, void *param);
 void		sidebar(t_img *img, void *param);
 void		render_scene(t_env *env, t_img *img, t_scene *scene, \
-			int render_mode);
+				int render_mode);
 void		put_images_to_screen(t_env *env);
 void		gradual_render(t_img *img, void *param);
 void		render_screen(t_env *env);
@@ -406,7 +401,6 @@ void		draw_shade_picker(t_img *img, void *param);
 void		draw_rgb_slider(t_img *img, void *param);
 t_uint		shade_picker(t_img *img, t_2i *coords, uint32_t color);
 t_uint		rgb_slider(t_img *img, t_2i *coords);
-double		get_smallest_photon_cluster(t_cam_hit *hit_buffer);
 void		blit_surface(SDL_Surface *src, t_dim *srcrect,
 				SDL_Surface *dest, t_dim *destrect);
 
@@ -417,13 +411,13 @@ uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
 uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, \
-			t_3d normal);
+				t_3d normal);
 t_3d		get_refraction_ray(t_3d normal, t_3d ray_dir, t_2d index);
 double		ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene);
 t_color		calc_light(t_color final, t_color light, t_color object, \
 			double level);
 t_3d		cast_light_ray(t_object *light, t_list *object_list, t_3d normal, \
-			t_ray *light_ray);
+				t_ray *light_ray);
 
 /* Color operations functions*/
 
@@ -432,7 +426,6 @@ t_rgba		ft_make_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 t_rgba		ft_mul_rgba_rgba(t_rgba a, t_rgba b);
 t_rgba		ft_mul_rgba(t_rgba c, double t);
 t_rgba		ft_lerp_rgba(t_rgba c1, t_rgba c2, double t);
-uint		ft_get_color(t_rgba c);
 
 /*Parser functions*/
 
@@ -489,7 +482,6 @@ int			coords_in_area(t_dim dim, t_2i coords);
 
 /*Bidirectional path tracing functions*/
 
-void		trace_light_path(t_scene *scene);
 t_3d		trace_eye_path(t_ray *ray, t_scene *scene, int camera_bounces);
 
 /*Saving scene file functions*/
