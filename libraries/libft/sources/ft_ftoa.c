@@ -74,17 +74,15 @@ char	*ft_ftoa(double f, size_t prec)
 	long long int	i;
 	long long int	pre;
 
-	if (prec < 0)
-		prec = 0;
-	len = (nbr_length((long long int)f) + 1 + prec);
+	len = (nbr_length((long long int)f) + 1 + (size_t)ft_max((int)prec, 0));
 	if (f < 0 && f > -1)
 		len++;
 	str = ft_strnew(len);
 	if (str == NULL)
 		return (NULL);
 	edges(&f, &pre, str, prec);
-	i = -1;
-	while (i++ < (long long int)len - pre)
+	i = 0;
+	while (i < (long long int)len - pre)
 	{
 		if ((long long int)nbr_length((long long int)f) == i + pre)
 		{
@@ -92,6 +90,7 @@ char	*ft_ftoa(double f, size_t prec)
 			pre++;
 		}
 		str[i + pre] = get_digit(f, i, prec);
+		i++;
 	}
 	return (str);
 }
