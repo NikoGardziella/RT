@@ -386,6 +386,7 @@ void		draw_shade_picker(t_img *img, void *param);
 void		draw_rgb_slider(t_img *img, void *param);
 t_uint		shade_picker(t_img *img, t_2i *coords, uint32_t color);
 t_uint		rgb_slider(t_img *img, t_2i *coords);
+void		select_render_mode(t_multithread *tab, t_2i coords);
 void		blit_surface(SDL_Surface *src, t_dim *srcrect,
 				SDL_Surface *dest, t_dim *destrect);
 

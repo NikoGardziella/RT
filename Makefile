@@ -127,6 +127,7 @@ SOURCES_LIST =	main.c\
 				images/slider.c\
 				images/draw_rgb_slider.c\
 				images/draw_shade_picker.c\
+				images/select_render_mode.c\
 				parser/add_object_to_scene.c\
 				parser/load_scene_camera.c\
 				parser/load_scene_objects.c\
