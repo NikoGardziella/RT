@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_image.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:33:20 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/20 10:26:14 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/20 12:11:49 by ctrouve          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	main_image(t_img *img, void *param)
 	if (env->frame_index > 0)
 	{
 		render_scene(env, &env->img[5], env->scene, env->render_mode);
-		//blit_surface(img->surface, NULL, env->img[5].surface, NULL);
 	}
 	else
 	{
