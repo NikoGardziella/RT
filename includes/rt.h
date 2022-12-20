@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/20 10:05:50 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:09:06 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <stdio.h>
 # include <time.h>
 
-# define SCREEN_X 1000
-# define SCREEN_Y 650
+# define SCREEN_X 800
+# define SCREEN_Y 460
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
@@ -48,10 +48,6 @@
 # ifndef PI
 #  define PI 3.141592
 # endif
-
-/*DELETE THESE LATER*/
-int		mid;
-t_3d	tan_temp[2];
 
 /*Typedef enums*/
 
@@ -126,15 +122,6 @@ typedef union u_color
 	t_rgba			channel;
 }					t_color;
 
-<<<<<<< HEAD
-=======
-typedef struct s_emission
-{
-	t_color			color;
-	double			intensity;
-}					t_emission;
-
->>>>>>> de7485ce16511c9281c7d68217174512761102a7
 typedef struct s_object
 {
 	double		axis_length;
@@ -150,8 +137,8 @@ typedef struct s_object
 	t_3d		length;
 	t_3d		normal;
 	t_3d		origin;
-	t_3d		position;
-	t_3d		rotation;
+	t_3d		position;//position vs. origin ?
+	t_3d		rotation;//is it used?
 	t_2i		rgb_coords;
 	t_2i		shade_coords;
 }				t_object;
@@ -205,7 +192,6 @@ typedef struct s_light_path
 
 typedef struct s_scene
 {
-<<<<<<< HEAD
 	t_list		*object_list;
 	t_list		*light_list;
 	t_list		*photon_list[THREADS];
@@ -216,24 +202,6 @@ typedef struct s_scene
 	t_2i		subframe_range;
 	t_2i		subframe;
 	t_3d		*accum_buffer;
-=======
-	t_list			*object_list;
-	t_list			*light_list;
-	t_list			*photon_list[THREADS];
-	t_list			*last_photon_node[THREADS];
-	t_camera		*camera;
-	t_3d			camera_angle;
-	t_rgba			ambient_color;
-	t_2i			resolution_range;
-	t_2i			resolution;
-	t_2i			accum_resolution;
-	t_3d			*accum_buffer;
-	t_cam_hit		*cam_hit_buffer;
-	uint32_t		*cam_hit_color;
-	uint32_t		*cam_hit_intensity;
-	t_light_path	light_path[LIGHT_BOUNCES];
-	double			particle_intensity;
->>>>>>> de7485ce16511c9281c7d68217174512761102a7
 }				t_scene;
 
 typedef struct s_dim
@@ -311,8 +279,6 @@ typedef struct s_env
 	double			slider_value;
 	char			*file_path;
 }				t_env;
-
-t_env	*g_temp_env;
 
 typedef struct s_multithread
 {
@@ -402,7 +368,7 @@ void		main_image(t_img *img, void *param);
 void		sidebar_button(t_img *img, void *param);
 void		sidebar(t_img *img, void *param);
 void		render_scene(t_env *env, t_img *img, t_scene *scene, \
-			int render_mode);
+				int render_mode);
 void		put_images_to_screen(t_env *env);
 void		gradual_render(t_img *img, void *param);
 void		render_screen(t_env *env);
@@ -411,7 +377,6 @@ void		draw_shade_picker(t_img *img, void *param);
 void		draw_rgb_slider(t_img *img, void *param);
 t_uint		shade_picker(t_img *img, t_2i *coords, uint32_t color);
 t_uint		rgb_slider(t_img *img, t_2i *coords);
-double		get_smallest_photon_cluster(t_cam_hit *hit_buffer);
 void		blit_surface(SDL_Surface *src, t_dim *srcrect,
 				SDL_Surface *dest, t_dim *destrect);
 
@@ -422,13 +387,13 @@ uint32_t	shade(t_scene *scene, t_hit *hit);
 t_3d		calculate_normal(t_object *object, t_3d hit_point, t_2d t);
 t_ray		get_ray(t_2i coords, t_img *img, t_camera *camera);
 uint32_t	light_up(t_list *scene, t_color obj_color, t_ray to_light, \
-			t_3d normal);
+				t_3d normal);
 t_3d		get_refraction_ray(t_3d normal, t_3d ray_dir, t_2d index);
 double		ray_march(t_2i coords, t_ray ray, t_object *light, t_scene *scene);
 t_color		calc_light(t_color final, t_color light, t_color object, \
 			double level);
 t_3d		cast_light_ray(t_object *light, t_list *object_list, t_3d normal, \
-			t_ray *light_ray);
+				t_ray *light_ray);
 
 /* Color operations functions*/
 
@@ -437,7 +402,6 @@ t_rgba		ft_make_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 t_rgba		ft_mul_rgba_rgba(t_rgba a, t_rgba b);
 t_rgba		ft_mul_rgba(t_rgba c, double t);
 t_rgba		ft_lerp_rgba(t_rgba c1, t_rgba c2, double t);
-uint		ft_get_color(t_rgba c);
 
 /*Parser functions*/
 
@@ -494,7 +458,6 @@ int			coords_in_area(t_dim dim, t_2i coords);
 
 /*Bidirectional path tracing functions*/
 
-void		trace_light_path(t_scene *scene);
 t_3d		trace_eye_path(t_ray *ray, t_scene *scene, int camera_bounces);
 t_3d		hit_direct_light(t_object *object, t_3d calc_color, t_3d max, int mode);
 double		estimate_diffuse(t_scene *scene, t_hit *hit, t_object *light, t_ray *ray);

@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/20 09:56:20 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 10:08:27 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,10 +141,6 @@ void	*render_loop(void *arg)
 			{
 				if (coords.x % scene->subframe_range.y == subframe->x)
 				{
-					if (coords.x == img->dim.size.x / 2 && coords.y == img->dim.size.y / 2)
-						mid = 1;
-					else
-						mid = 0;
 					ray = get_ray(coords, img, camera);
 					ray.forward = random_vector(ray.forward, 0.002f);
 					ray.object = NULL;
