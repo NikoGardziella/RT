@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 17:07:07 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/20 14:00:26 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:33:09 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,21 @@
 # include <time.h>
 # include <pthread.h>
 
-# define SCREEN_X 800
-# define SCREEN_Y 460
+# define SCREEN_X 640
+# define SCREEN_Y 480
 # define T_MAX 100000000.0f
 # define BIAS 0.000001
 # define IMAGES 10
 # define THREADS 32
-# define CAMERA_BOUNCES 5
+# define CAMERA_BOUNCES 4
 # define LIGHT_BOUNCES 3
 # define MAX_DENSITY 10
 # define MAX_LUMEN 100
 # define MAX_PARTICLE_INTENSITY 10
+# define STEP_COUNT 16
+# define PARTICLE_INTENSITY 1.0
+# define SIGMA 0.3
+
 
 # define KEY_A 1
 # define KEY_W 2

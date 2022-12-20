@@ -6,16 +6,11 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:21:39 by pnoutere          #+#    #+#             */
-/*   Updated: 2022/12/19 19:04:06 by pnoutere         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:18:03 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-
-#define STEP_COUNT 16
-#define PARTICLE_INTENSITY 1.0
-#define LIGHT_INTENSITY 100.0
-#define SIGMA 0.3
 
 double	hash(double n)
 {
