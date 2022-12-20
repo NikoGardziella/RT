@@ -44,8 +44,8 @@ OBJECT plane
 	origin 0.00000 -60.00000 0.00000
 	axis 0.00000 1.00000 0.00000
 	radius 50.00000
-	roughness 0.00000
-	density 4.15789
+	roughness 0.23025
+	density 5.00000
 	color 00ADA0A0
 OBJECT light
 	origin -22.88661 32.34591 50.69717
@@ -54,6 +54,6 @@ OBJECT light
 	lumen 17.00000
 	color 00FFFFFF
 OBJECT camera
-	pos 49.85652 17.28768 148.11151
-	look 49.78299 17.05370 147.14205
+	pos 36.95076 54.79495 161.97515
+	look 36.77932 54.17058 161.21308
 	fov 60.00000

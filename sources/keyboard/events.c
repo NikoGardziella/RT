@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 16:03:21 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 15:01:25 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 09:54:20 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	check_scancode_r(t_env *env)
 		env->render_mode += 1;
 		if (env->render_mode > 1)
 			env->render_mode = 0;
+		env->frame_index = 0;
 		render_screen(env);
 	}
 }
@@ -52,6 +53,7 @@ void	key_down(t_env *env)
 		{
 			env->sidebar = -1;
 			ft_bzero(&env->sel_ray, sizeof(t_ray));
+			env->frame_index = 0;
 			render_screen(env);
 		}
 		else if (env->sdl.event.key.keysym.scancode == SDL_SCANCODE_TAB)

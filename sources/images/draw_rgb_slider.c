@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_rgb_slider.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ngardzie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 11:14:11 by ngardzie          #+#    #+#             */
-/*   Updated: 2022/12/17 16:36:58 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:13:50 by pnoutere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ void	draw_rgb_slider(t_img *img, void *param)
 		coords = (t_2i){(int)((double)img->dim.size.x * slider_value), size};
 		slider_color = rgb_slider(img, (t_2i *)param);
 		slider_color = transition_colors(slider_color, 0x000000, 0.5f);
-		draw_circlef(&(t_pxl_func){&put_pixel, img}, coords, size, slider_color);
+		draw_circlef(&(t_pxl_func){&put_pixel, img},
+			coords, size, slider_color);
 		draw_circle(&(t_pxl_func){&put_pixel, img}, coords, size, 0xFFFFFF);
 	}
 	coords = (t_2i){img->dim.size.x - 1, img->dim.size.y - 1};

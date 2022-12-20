@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:38:21 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/19 21:20:18 by dmalesev         ###   ########.fr       */
+/*   Updated: 2022/12/20 09:56:20 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ void	*render_loop(void *arg)
 					}
 					else if (render_mode == 0)
 						color_temp = trace_eye_path(&ray, scene, CAMERA_BOUNCES);
-					if (subframe == &scene->accum_subframe && env->frame_index > 0 && render_mode >= 0)
+					if (env->frame_index > 0 && render_mode >= 0)
 					{
 							scene->accum_buffer[coords.y * img->dim.size.x + coords.x] = (t_3d){
 								(float)(color_temp.x + scene->accum_buffer[coords.y * img->dim.size.x + coords.x].x),
@@ -171,9 +171,9 @@ void	*render_loop(void *arg)
 							color.channel.b = (uint8_t)(fmin(scene->accum_buffer[coords.y * img->dim.size.x + coords.x].z / env->frame_index, 255));
 					}
 					if (env->sel_ray.object != NULL && env->sel_ray.object == ray.object)
-						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.1f);
+						color.combined = transition_colors(color.combined, ~color.combined & 0x00FFFFFF, 0.25f);
 					put_pixel(coords, color.combined, img);
-					if (scene->subframe.x == scene->subframe.y)
+					if (scene->subframe.x == scene->subframe.y && env->frame_index == 0)
 						subframe_adjust(coords, color.combined, img, scene->subframe_range.y - scene->subframe.y);
 				}
 				coords.x += 1;
@@ -192,26 +192,16 @@ void	render_scene(t_env *env, t_img *img, t_scene *scene, int render_mode)
 	int					i;
 
 	i = 0;
-	if (scene->subframe.x == scene->subframe_range.x && scene->subframe.y == scene->subframe_range.y)
+	subframe = &scene->subframe;
+	if (subframe->y >= scene->subframe_range.y)
 	{
-		if (scene->accum_subframe.x == scene->subframe_range.x && scene->accum_subframe.y == scene->subframe_range.y)
-		{
-			scene->accum_subframe.x = scene->subframe_range.x;
-			scene->accum_subframe.y = scene->subframe_range.x;
-		}
-		subframe = &scene->accum_subframe;
+		subframe->x = scene->subframe_range.x;
+		subframe->y = scene->subframe_range.x;
 	}
-	else
-	{
-		if (scene->subframe.x == scene->subframe_range.x && scene->subframe.y == scene->subframe_range.x)
-		{
-			ft_bzero(scene->accum_buffer, SCREEN_X * SCREEN_Y * sizeof(t_3d));
-			env->frame_index = 0;
-		}
-		subframe = &scene->subframe;
-		scene->accum_subframe.x = scene->subframe_range.x;
-		scene->accum_subframe.y = scene->subframe_range.x;
-	}
+	if (subframe->x == scene->subframe_range.x
+			&& subframe->y == scene->subframe_range.x
+			&& env->frame_index == 0)
+		ft_bzero(scene->accum_buffer, SCREEN_X * SCREEN_Y * sizeof(t_3d));
 	i = 0;
 	while (i < THREADS)
 	{
