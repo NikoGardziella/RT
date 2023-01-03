@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 14:35:11 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/20 14:43:38 by pnoutere         ###   ########.fr       */
+/*   Updated: 2023/01/03 15:32:55 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ t_camera	*load_scene_camera(char *path)
 	if (fd < 0)
 		close_prog(NULL, "Open path failed", -1);
 	camera = malloc(sizeof(t_camera));
-	camera = read_camera_file(fd, camera);
 	if (camera == NULL)
 		close_prog(NULL, "Read_camera_file failed...", -1);
+	camera = read_camera_file(fd, camera);
 	if (fd >= 0)
 		close(fd);
 	return (camera);
