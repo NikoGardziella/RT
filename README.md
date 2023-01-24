@@ -21,7 +21,7 @@
 * Renders pretty images.
 * Uses ray tracing.
 
-<img src="final_render.gif"></img>
+<img src="final_render.png"></img>
 
 
 ## How To Use
