@@ -26,7 +26,7 @@
 ## Render of caustics with 16000+ frames.
 <img src="nice_caustic_sphere.bmp"></img>
 
-## Another render with bit bigger resolution..
+## Another render with a bit bigger resolution..
 <img src="screenshot.bmp"></img>
 
 
