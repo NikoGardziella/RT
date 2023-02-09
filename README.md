@@ -29,6 +29,8 @@
 ## Another render with a bit bigger resolution..
 <img src="screenshot.bmp"></img>
 
+## More complex lighting scene with 35000+ frames.
+<img src="screenshot2.bmp"></img>
 
 ## How To Use
 
