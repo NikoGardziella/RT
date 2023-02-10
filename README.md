@@ -8,7 +8,7 @@
   <img src="movement.gif"></img>
 </div>
 
-<h3 align="center">RAY TRACER ENGINE WRITTEN IN SDL2</h3>
+<h3 align="center">PATH TRACING RENDERING ENGINE WRITTEN IN SDL2</h3>
 
 <p align="center">
   <a href="#what-does-it-do">What does it do?</a> •
@@ -19,7 +19,7 @@
 ## What does it do?
 
 * Renders pretty images.
-* Uses ray tracing.
+* Uses path tracing algorithm.
 
 <img src="final_render.png"></img>
 
