@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-    Raytracer (README UNDER CONSTRUCTION)
+    Raytracer
   <br>
 </h1>
 
