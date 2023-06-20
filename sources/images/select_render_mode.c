@@ -6,7 +6,7 @@
 /*   By: ngardzie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 11:41:05 by ngardzie          #+#    #+#             */
-/*   Updated: 2022/12/20 13:24:29 by dmalesev         ###   ########.fr       */
+/*   Updated: 2023/06/20 22:28:46 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_3d	mode_0(t_multithread *tab, t_ray *ray)
 void	select_render_mode(t_multithread *tab, t_2i coords)
 {
 	t_ray			ray;
-	t_color			color;
+	t_color			color = (t_color){};
 	t_3d			in_color;
 
 	ray = get_ray(coords, tab->img, tab->env->scene->camera);

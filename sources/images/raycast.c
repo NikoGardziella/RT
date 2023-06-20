@@ -6,7 +6,7 @@
 /*   By: ctrouve <ctrouve@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 11:16:30 by ctrouve           #+#    #+#             */
-/*   Updated: 2022/12/20 11:17:10 by ctrouve          ###   ########.fr       */
+/*   Updated: 2023/06/20 22:27:21 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static t_color	color_refract(t_ray *ray, t_scene *scene, t_hit hit, \
 {
 	t_ray	bounce_ray;
 	t_color	color_refr;
-	t_color	color;
+	t_color	color = (t_color){};
 	double	angle;
 
 	if (hit.inside == 1)

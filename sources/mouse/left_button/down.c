@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:39:02 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/19 20:39:10 by pnoutere         ###   ########.fr       */
+/*   Updated: 2023/06/20 22:27:42 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,8 @@ void	left_button_down(void *param)
 {
 	t_env		*env;
 	t_2i		mouse_coords;
-	t_camera	*camera;
 
 	env = param;
-	camera = env->scene->camera;
 	env->mouse.state |= 1;
 	SDL_GetMouseState(&mouse_coords.x, &mouse_coords.y);
 	left_button_down_checks(env, mouse_coords, env->sel_ray.object);

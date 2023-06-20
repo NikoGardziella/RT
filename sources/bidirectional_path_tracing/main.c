@@ -6,7 +6,7 @@
 /*   By: pnoutere <pnoutere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 15:15:57 by dmalesev          #+#    #+#             */
-/*   Updated: 2022/12/20 15:43:06 by dmalesev         ###   ########.fr       */
+/*   Updated: 2023/06/20 22:28:16 by dmalesev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_3d	get_brdf_ray(t_3d normal, t_ray *ray, t_hit *hit)
 	if (hit->inside == 1)
 		index = (t_2d){hit->object->density, 1.0};
 	angle = angle_between_vectors(scale_vector(ray->forward, -1), normal);
+	(void)angle;
 	if (hit->object->type == PLANE || hit->object->type == DISC)
 		index = (t_2d){1.0, 1.0};
 	vec = get_refraction_ray(normal, ray->forward, index);
