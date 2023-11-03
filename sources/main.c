@@ -113,7 +113,7 @@ int	main(int argc, char **argv)
 			break ;
 		if (time_since_success(0.01, 1, 2) >= 0.01)
 			continue ;
-		if (((keyboard_hold(&env) & 1) == 1) | ((mouse_main(&env) & 1) == 1))
+		if (((keyboard_hold(&env) & 1) == 1) || ((mouse_main(&env) & 1) == 1))
 			render_screen(&env);
 		prog_clock(&env);
 		put_images_to_screen(&env);
